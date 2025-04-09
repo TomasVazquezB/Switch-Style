@@ -1,0 +1,44 @@
+#main-header {
+    width: 100%;
+    position: fixed;
+    top: 0;
+    background-color: white;
+    border-bottom: 6px solid #000;
+    height: 80vh; 
+}
+
+main {
+    margin-top: 100px; 
+}
+
+#top-stories {
+    width: 1000px;
+    margin: auto;
+    margin-top: 50px;
+}
+
+.navbar-top {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    left: 0;
+    right: 0;
+    background-color: #7C8C3F;
+    z-index: 1000;
+}
+
+.nav-link {
+    margin-right: 10px;
+    flex-grow: 0;
+    text-align: center;
+    color: white;
+    transition: color 0.3s; 
+}
+
+.nav-link:hover {
+    color: #d4d4d4; 
+}
+
+.nav-link:active {
+    color: #d4d4d4; 
+}
