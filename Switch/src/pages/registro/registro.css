@@ -1,0 +1,36 @@
+.box {
+    background-color: #7C8C3F;
+    padding: 20px;
+    border-radius: 10px;
+    width:  12cm; 
+    height: 14cm; 
+    margin: 0 auto; 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+  
+  }
+
+.button-registro {
+  background-color: #c8dfc7;
+  color: #4e4c4c;
+  border: none;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  border-radius: 5px;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  opacity: 1;
+  visibility: visible; 
+}
+.button-registro:hover {
+  background-color: #a6c9a0;
+  color: #ffffff;
+}
+    .bienvenida {
+    color: #ebe4e4;
+    font-size: 1em;
+    margin-top: 6%;
+    font-weight: bold;
+  }

@@ -12,7 +12,22 @@
     border-radius: 20px; 
 }
 
-.bienvenidos {
+.mas-buscado {
+    margin-top: 10px;
+    position: absolute;
+    width: 700px; 
+    height: 60px; 
+    top: 100px; 
+    text-align: center; 
+    left: 50%; 
+    padding: 3px;
+    transform: translateX(-50%); 
+    background-color: rgba(194, 217, 160, 1);
+    color: rgba(49, 64, 28, 1);
+    border-radius: 20px; 
+}
+
+.ultimas-prendas {
     margin-top: 10px;
     position: absolute;
     width: 700px; 

@@ -52,7 +52,7 @@ export function LoginPage() {
                                     </div>
                                     <div className="form-row">
                                         <div className="input-group mb-3 col-12">
-                                            <input type="text" name="identificador" className="form-control input_user" required placeholder="Correo electrónico o usuario" value={formData.identificador} onChange={handleChange} />
+                                            <input type="text" name="identificador" className="form-control input_user" required placeholder="Email" value={formData.identificador} onChange={handleChange} />
                                         </div>
                                     </div>
                                     <div className="form-row">

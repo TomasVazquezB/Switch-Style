@@ -27,17 +27,14 @@ const Header = () => {
                             <img src="/src/assets/img/TurismoPOP.png" width="30" height="30" className="d-inline-block align-top" alt=""/>
                         </Navbar.Brand>
                         <Nav className="ms-auto">
-                            <Nav.Link as={NavLink} to="/paquetes" onClick={handleClick}>Paquetes</Nav.Link>
-                            <Nav.Link as={NavLink} to="/actividades" onClick={handleClick}>Actividades</Nav.Link>
-                            <Nav.Link as={NavLink} to="/vuelos" onClick={handleClick}>Vuelos</Nav.Link>
                             <Nav.Link as={NavLink} to="/contacto" onClick={handleClick}>Contacto</Nav.Link>
                             <Nav.Link as={NavLink} to="/faq" onClick={handleClick}>FAQ</Nav.Link>
                             <Nav.Link as={NavLink} to="/quienessomos" onClick={handleClick}>Quienes Somos</Nav.Link>
                         </Nav>
                     </div>
                     <Nav className="ms-auto">
+                        <Nav.Link as={NavLink} to="/registro" onClick={handleClick}>Sign Up</Nav.Link>
                         <Nav.Link as={NavLink} to="/login" onClick={handleClick}>Login</Nav.Link>
-                        <Nav.Link as={NavLink} to="/registro" onClick={handleClick}>Registro</Nav.Link>
                     </Nav>
                 </Container>
             </Navbar>
