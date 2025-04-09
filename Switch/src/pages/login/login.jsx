@@ -38,36 +38,47 @@ export function LoginPage() {
     };
 
     return (
-        <div className="container">
-            <div className="d-flex align-items-center justify-content-center vh-100">
-                <div className="box">
-                    <div className="col-auto">
-                        <div className="register_card">
-                            <div className="d-flex justify-content-center form_container">
-                                <form onSubmit={handleSubmit}>
-                                    <div className="form-row">
-                                        <div className="input-group mb-3 col-12">
-                                            <h1 className="bienvenida">Ingresar</h1>
-                                        </div>
-                                    </div>
-                                    <div className="form-row">
-                                        <div className="input-group mb-3 col-12">
-                                            <input type="text" name="identificador" className="form-control input_user" required placeholder="Email" value={formData.identificador} onChange={handleChange} />
-                                        </div>
-                                    </div>
-                                    <div className="form-row">
-                                        <div className="input-group mb-3 col-12">
-                                            <input type="password" name="contrasena" className="form-control input_pass" required placeholder="Contraseña" value={formData.contrasena} onChange={handleChange} />
-                                        </div>
-                                    </div>
-                                    {error && <div className="alert alert-danger" role="alert">{error}</div>}
-                                    <div className="d-flex justify-content-center mt-3 login_container">
-                                        <button type="submit" className="button-login">Ingresar</button>
-                                    </div>
-                                </form>
+        <div className="login-container">
+            <div className="image-container">
+            <img src="/login.jpg" alt="Imagen" className="login-image" />
+
+            </div>
+            <div className="login-box">
+                <div className="login-form">
+                    <h1 className="bienvenida">Ingresar</h1>
+                    <h3 className="bienvenido">Bienvenido de vuelta</h3>
+                    <form onSubmit={handleSubmit}>
+                        <div className="form-row">
+                            <div className="input-group mb-3 col-12">
+                                <input 
+                                    type="text" 
+                                    name="identificador" 
+                                    className="form-control input_user" 
+                                    required 
+                                    placeholder="Email" 
+                                    value={formData.identificador} 
+                                    onChange={handleChange} 
+                                />
                             </div>
                         </div>
-                    </div>
+                        <div className="form-row">
+                            <div className="input-group mb-3 col-12">
+                                <input 
+                                    type="password" 
+                                    name="contrasena" 
+                                    className="form-control input_pass" 
+                                    required 
+                                    placeholder="Contraseña" 
+                                    value={formData.contrasena} 
+                                    onChange={handleChange} 
+                                />
+                            </div>
+                        </div>
+                        {error && <div className="alert alert-danger" role="alert">{error}</div>}
+                        <div className="d-flex justify-content-center mt-3 login_container">
+                            <button type="submit" className="button-login">Ingresar</button>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>

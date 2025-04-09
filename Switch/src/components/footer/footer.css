@@ -1,52 +1,99 @@
-body, html {
-    height: 100%;
-    margin: 0;
-  }
-  
-  #root {
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
-  }
-  
-  .footer {
-    margin-top: 20px;
-    width: 100%;
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    background-color: #000000;
-    border-top: 1px solid #e0e0e0; 
-    padding: 0;
-    font-size: 0.6rem; 
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-  }
-  
-  .footer-text {
-    flex: 1;
-    text-align: center;
-  }
-  
-  .right-section {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end;
-    margin-left: auto;
-    padding-right: 1rem;
-  }
-  
-  .footer-link {
-    margin-bottom: 0.5rem;
-    text-decoration: none;
-    color: white;
-    font-size: 0.5rem; 
-    transition: color 0.3s;
-  }
-  
-  .footer-link:hover, .footer-link:focus {
-    color: #d4d4d4;
-  }
-  
+/* Aseguramos que el contenido ocupe toda la altura disponible y que el footer se quede al fondo */
+html, body {
+  height: 100%;
+  margin: 0;
+  display: flex;
+  flex-direction: column; /* Apila los elementos de arriba hacia abajo */
+}
+
+/* El contenedor principal ocupa el espacio restante para empujar el footer hacia abajo */
+.main-content {
+  flex-grow: 1;
+}
+
+/* Estilos del Footer */
+.footer {
+  background-color: #000000;
+  color: white;
+  padding: 20px;
+  font-size: 1rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  width: 100%;
+  position: relative;
+  bottom: 0;
+}
+
+/* Estructura del contenedor del footer */
+.footer-container {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+/* Sección izquierda para los derechos reservados */
+.footer-left {
+  flex: 1;
+  display: flex;
+  justify-content: flex-start; /* Alineación a la izquierda */
+  align-items: center;
+  padding-left: 20px;
+}
+
+/* Sección derecha para las redes sociales e información de contacto */
+.footer-right {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding-right: 20px;
+  text-align: left;
+}
+
+/* Información de contacto */
+.footer-contact {
+  margin-top: 10px;
+}
+
+.contact-info {
+  display: flex;
+  align-items: center;
+  margin-bottom: 5px;
+}
+
+.contact-info svg {
+  margin-right: 8px;
+}
+
+/* Estilos para las redes sociales */
+.social-icons {
+  display: flex;
+  flex-direction: column; /* Las redes sociales estarán una debajo de la otra */
+  align-items: flex-start;
+  margin-top: 20px;
+}
+
+.social-icon {
+  display: flex;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.social-icon svg {
+  margin-right: 8px;
+}
+
+/* Estilo de los enlaces de las redes sociales */
+.footer-link {
+  font-size: 1em;
+  color: white;
+  margin-left: 10px; /* Deja espacio entre el icono y el texto */
+}
+
+/* Texto de derechos reservados */
+.footer-text {
+  text-align: left;
+  font-size: 0.9em;
+}

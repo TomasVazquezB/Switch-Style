@@ -8,75 +8,120 @@ export function RegistroPage() {
         apellido: '',
         email: '',
         usuario: '',
-        contrasena: ''
+        contrasena: '',
+        aceptarTerminos: false,
     });
 
     const handleChange = (e) => {
         setFormData({
             ...formData,
-            [e.target.name]: e.target.value
+            [e.target.name]: e.target.value,
+        });
+    };
+
+    const handleCheckboxChange = (e) => {
+        setFormData({
+            ...formData,
+            aceptarTerminos: e.target.checked,
         });
     };
 
     const handleSubmit = (e) => {
         e.preventDefault();
+        if (!formData.aceptarTerminos) {
+            alert("Debes aceptar los términos y condiciones.");
+            return;
+        }
         registrarUsuario(formData)
-            .then(usuario => {
+            .then((usuario) => {
                 alert(`Usuario ${usuario.nombre} registrado con éxito`);
                 setFormData({
                     nombre: '',
                     apellido: '',
                     email: '',
                     usuario: '',
-                    contrasena: ''
+                    contrasena: '',
+                    aceptarTerminos: false,
                 });
             })
-            .catch(error => {
+            .catch((error) => {
                 alert(error.message);
             });
     };
 
     return (
-        <div className="container">
-            <div className="d-flex align-items-center justify-content-center vh-100">
-                <div className="box">
-                    <div className="col-auto">
-                        <div className="register_card">
-                            <div className="form_container">
-                                <form onSubmit={handleSubmit}>
-                                    <div className="form-row">
-                                        <div className="input-group mb-3 col-12">
-                                            <h1 className="bienvenida">Sign UP</h1>
-                                        </div>
-                                    </div>
-                                    <div className="form-row">
-                                        <div className="input-group mb-3 col-6">
-                                            <input type="text" name="nombre" className="form-control input_user" required placeholder="Nombre" value={formData.nombre} onChange={handleChange} />
-                                        </div>
-                                        <div className="input-group mb-3 col-6">
-                                            <input type="text" name="apellido" className="form-control input_pass" required placeholder="Apellido" value={formData.apellido} onChange={handleChange} />
-                                        </div>
-                                    </div>
-                                    <div className="form-row">
-                                        <div className="input-group mb-3 col-12">
-                                            <input type="email" name="email" className="form-control input_user" required placeholder="Email" value={formData.email} onChange={handleChange} />
-                                        </div>
-                                    </div>
-                                    <div className="form-row">
-                                        <div className="input-group mb-3 col-6">
-                                            <input type="password" name="contrasena" className="form-control input_user" required placeholder="Contraseña" value={formData.contrasena} onChange={handleChange} />
-                                        </div>
-                                        {/* <div className="input-group mb-3 col-6">
-                                            <input type="password" name="repetir-contrasena" className="form-control input_pass" required placeholder="Repetir Contraseña" value={formData.repetir-contrasena} onChange={handleChange} />
-                                        </div> */}
-                                    </div>
-                                    <div className="d-flex justify-content-center mt-3 login_container">
-                                        <button type="submit" className="button-registro">Registrarse</button>
-                                    </div>
-                                </form>
+        <div className="registro-container">
+            <div className="image-container">
+                <img src="/registro.jpg" alt="Imagen" className="registro-image" />
+            </div>
+            <div className="registro-box">
+                <div className="registro-form">
+                    <form onSubmit={handleSubmit}>
+                        <h1 className="bienvenida">Registrarse</h1>
+                        <h3 className="informacion-registro">Registrate para unirte a nuestra comunidad</h3>
+                        <div className="form-row">
+                            <div className="input-group mb-3 col-6">
+                                <input 
+                                    type="text" 
+                                    name="nombre" 
+                                    className="form-control input_user" 
+                                    required 
+                                    placeholder="Nombre" 
+                                    value={formData.nombre} 
+                                    onChange={handleChange} 
+                                />
+                            </div>
+                            <div className="input-group mb-3 col-6">
+                                <input 
+                                    type="text" 
+                                    name="apellido" 
+                                    className="form-control input_user" 
+                                    required 
+                                    placeholder="Apellido" 
+                                    value={formData.apellido} 
+                                    onChange={handleChange} 
+                                />
                             </div>
                         </div>
-                    </div>
+                        <div className="form-row">
+                            <div className="input-group mb-3 col-12">
+                                <input 
+                                    type="email" 
+                                    name="email" 
+                                    className="form-control input_user" 
+                                    required 
+                                    placeholder="Email" 
+                                    value={formData.email} 
+                                    onChange={handleChange} 
+                                />
+                            </div>
+                        </div>
+                        <div className="form-row">
+                            <div className="input-group mb-3 col-6">
+                                <input 
+                                    type="password" 
+                                    name="contrasena" 
+                                    className="form-control input_pass" 
+                                    required 
+                                    placeholder="Contraseña" 
+                                    value={formData.contrasena} 
+                                    onChange={handleChange} 
+                                />
+                            </div>
+                        </div>
+                        <div className="form-row aceptar-terminos">
+                            <input 
+                                type="checkbox" 
+                                name="aceptarTerminos" 
+                                checked={formData.aceptarTerminos} 
+                                onChange={handleCheckboxChange} 
+                            />
+                            <span>Acepto los términos y condiciones</span>
+                        </div>
+                        <div className="d-flex justify-content-center mt-3">
+                            <button type="submit" className="button-registro">Registrarse</button>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>

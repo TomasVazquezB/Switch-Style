@@ -1,36 +1,84 @@
-.box {
-    background-color: #7C8C3F;
-    padding: 20px;
-    border-radius: 10px;
-    width:  12cm; 
-    height: 14cm; 
-    margin: 0 auto; 
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-  }
-
-  .button-login {
-    background-color: #c8dfc7;
-    color: #4e4c4c;
-    border: none;
-    padding: 10px 20px;
-    font-size: 16px;
-    cursor: pointer;
-    border-radius: 5px;
-    transition: background-color 0.3s ease, color 0.3s ease;
-    opacity: 1;
-    visibility: visible; 
-  }
-    
-  .button-login:hover {
-    background-color: #a6c9a0;
-    color: #ffffff;
+.login-container {
+  display: flex;
+  height: 100vh;
 }
-    .bienvenida {
-    color: #ebe4e4;
-    font-size: 1em;
-    margin-top: 6%;
-    font-weight: bold;
-  }
+
+.image-container {
+  flex: 1;
+  background-color: #f4f4f4;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.login-image {
+  max-width: 100%;
+  height: auto;
+  border-radius: 10px;
+}
+
+.login-box {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  border-radius: 10px;
+}
+
+.login-form {
+  width: 80%;
+  max-width: 400px;
+  padding: 20px;
+  background-color: white;
+  border-radius: 10px;
+  text-align: center; 
+}
+
+.bienvenida {
+  color: #000000; 
+  font-size: 1.5em;
+  margin-bottom: 20px;
+  font-weight: bold;
+}
+
+.input_user, .input_pass {
+  background-color: #ffffff; 
+  color: #000000; 
+  border: 1px solid #000000; 
+  padding: 10px;
+  border-radius: 5px;
+  width: 100%;
+  margin-bottom: 15px;
+}
+
+
+.button-login {
+  background-color: #000000; 
+  color: #ffffff; 
+  border: 1px solid #000000; 
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  border-radius: 5px;
+  width: 100%; 
+  margin-top: 20px;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.button-login:hover {
+  background-color: #333333; 
+  color: #ffffff; 
+}
+
+.alert-danger {
+  color: #ff0000;
+  font-weight: bold;
+}
+
+.bienvenido {
+  color: #6c757d; 
+  font-size: 1.2em; 
+  margin-bottom: 20px; 
+  text-align: center; 
+}
