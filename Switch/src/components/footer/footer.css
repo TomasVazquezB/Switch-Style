@@ -15,8 +15,8 @@ html, body {
 .footer {
   background-color: #000000;
   color: white;
-  padding: 20px;
-  font-size: 1rem;
+  padding: 6px 20px; /* Reducido el padding del footer para hacerlo aún más pequeño */
+  font-size: 0.75rem; /* Reducido el tamaño de la fuente aún más */
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
@@ -30,7 +30,7 @@ html, body {
   display: flex;
   justify-content: flex-end; /* Mueve todo el contenido a la derecha */
   width: 100%;
-  margin-bottom: 20px;
+  margin-bottom: 5px; /* Reducir el espacio inferior aún más */
 }
 
 /* Sección izquierda para los derechos reservados */
@@ -45,15 +45,19 @@ html, body {
 /* Sección derecha para las redes sociales e información de contacto */
 .footer-right {
   display: flex;
-  flex-direction: column;
-  align-items: flex-end; /* Alineación a la derecha */
+  flex-direction: column; /* Mantener los elementos en columna */
+  align-items: flex-end; /* Alinea los elementos a la derecha */
   padding-right: 20px;
-  text-align: right; /* Alinea el texto a la derecha */
+  text-align: right;
 }
 
 /* Información de contacto */
 .footer-contact {
-  margin-top: 10px;
+  margin-top: 0;
+  display: flex;
+  flex-direction: column; /* Mantener la información de contacto en columna */
+  align-items: flex-end; /* Alinear la información de contacto a la derecha */
+  margin-bottom: 10px; /* Separar los contactos de las redes sociales */
 }
 
 .contact-info {
@@ -69,9 +73,9 @@ html, body {
 /* Estilos para las redes sociales */
 .social-icons {
   display: flex;
-  flex-direction: column; /* Las redes sociales estarán una debajo de la otra */
-  align-items: flex-end; /* Alineación a la derecha */
-  margin-top: 20px;
+  flex-direction: column; /* Mantener las redes sociales una debajo de la otra */
+  align-items: flex-end; /* Alinear las redes sociales a la derecha */
+  margin-top: 25px; /* Aumentado el margen para mover las redes sociales aún más abajo */
 }
 
 .social-icon {
@@ -94,5 +98,5 @@ html, body {
 /* Texto de derechos reservados */
 .footer-text {
   text-align: left;
-  font-size: 0.9em;
+  font-size: 0.7em; /* Reducir un poco más el tamaño del texto */
 }
