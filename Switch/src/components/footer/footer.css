@@ -28,7 +28,7 @@ html, body {
 /* Estructura del contenedor del footer */
 .footer-container {
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-end; /* Mueve todo el contenido a la derecha */
   width: 100%;
   margin-bottom: 20px;
 }
@@ -44,12 +44,11 @@ html, body {
 
 /* Sección derecha para las redes sociales e información de contacto */
 .footer-right {
-  flex: 1;
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
+  align-items: flex-end; /* Alineación a la derecha */
   padding-right: 20px;
-  text-align: left;
+  text-align: right; /* Alinea el texto a la derecha */
 }
 
 /* Información de contacto */
@@ -71,7 +70,7 @@ html, body {
 .social-icons {
   display: flex;
   flex-direction: column; /* Las redes sociales estarán una debajo de la otra */
-  align-items: flex-start;
+  align-items: flex-end; /* Alineación a la derecha */
   margin-top: 20px;
 }
 
