@@ -8,27 +8,27 @@ import { FAQPage } from './pages/faq/faq';
 import { QuienesSomosPage } from './pages/quienessomos/quienessomos';
 import { RegistroPage } from './pages/registro/registro';
 import { LoginPage } from './pages/login/login';
-import  AdminPage  from './pages/admin/admin';
+import AdminPage from './pages/admin/admin';
+import CarritoPage from './pages/carrito/carrito';  // Asegúrate de importar la página del carrito
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [count, setCount] = useState(0);
 
   return (
-    <>
-  <Router>
-            <Header />
-            <Routes>
-                <Route path="/" element={<Home />} />
-                <Route path="/FAQ" element={<FAQPage />} />
-                <Route path="/quienessomos" element={<QuienesSomosPage />} />
-                <Route path="/login" element={<LoginPage />} />
-                <Route path="/admin" element={<AdminPage />} />
-                <Route path="/registro" element={<RegistroPage />} />
-            </Routes>
-            <Footer />
-            </Router>
-    </>
-  )
+    <Router>
+      <Header />
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/FAQ" element={<FAQPage />} />
+        <Route path="/quienessomos" element={<QuienesSomosPage />} />
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/admin" element={<AdminPage />} />
+        <Route path="/registro" element={<RegistroPage />} />
+        <Route path="/carrito" element={<CarritoPage />} />  {/* Ruta para el carrito */}
+      </Routes>
+      <Footer />
+    </Router>
+  );
 }
 
 export default App;
