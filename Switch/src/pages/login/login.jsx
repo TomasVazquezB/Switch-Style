@@ -41,7 +41,6 @@ export function LoginPage() {
         <div className="login-container">
             <div className="image-container">
             <img src="/login.jpg" alt="Imagen" className="login-image" />
-
             </div>
             <div className="login-box">
                 <div className="login-form">

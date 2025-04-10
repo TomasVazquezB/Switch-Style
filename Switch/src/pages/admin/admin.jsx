@@ -3,7 +3,7 @@ import './admin.css';
 
 const AdminPage = () => {
     const [usuariosList, setUsuariosList] = useState([
-        { id: 1, nombre: 'Angelito', apellido: 'Lopez Campos', email: 'angelmlc200324@gmail.com', usuario: 'angelito', rol: 'admin' },
+        { id: 1, nombre: 'Tomas', apellido: 'Vazquez Brouver', email: 'tomas.vazquez@davinci.edu.ar', usuario: 'tomas', rol: 'admin' },
     ]);
 
     const [paquetesList, setPaquetesList] = useState([

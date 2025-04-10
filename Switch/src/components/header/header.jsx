@@ -10,33 +10,29 @@ import { BsMoon, BsSun } from 'react-icons/bs';
 
 const Header = () => {
     const [isDarkMode, setIsDarkMode] = useState(false);
-    const [isLoggedIn, setIsLoggedIn] = useState(false);  // Estado para controlar si el usuario está logueado
-    const [showProfileMenu, setShowProfileMenu] = useState(false); // Controlar si el menú de perfil está visible
+    const [isLoggedIn, setIsLoggedIn] = useState(false);  
+    const [showProfileMenu, setShowProfileMenu] = useState(false); 
     const navigate = useNavigate();
 
-    // Verificar el estado del modo oscuro al cargar la página (por defecto oscuro)
     useEffect(() => {
         const savedMode = localStorage.getItem('darkMode');
         if (savedMode === 'true') {
-            setIsDarkMode(true); // Si el usuario guardó que quiere modo oscuro, aplicar
+            setIsDarkMode(true); 
         } else {
-            setIsDarkMode(false); // Si no, aplicar modo claro por defecto
+            setIsDarkMode(false); 
         }
 
-        // Verificar si el usuario está logueado (esto es solo un ejemplo, ajusta según tu autenticación)
-        const loggedIn = localStorage.getItem('isLoggedIn');  // Por ejemplo, si hay un token
+        const loggedIn = localStorage.getItem('isLoggedIn');  
         setIsLoggedIn(loggedIn === 'true');
     }, []);
 
-    // Cambiar entre modo oscuro y claro
     const toggleDarkMode = () => {
         const newMode = !isDarkMode;
         setIsDarkMode(newMode);
         document.body.classList.toggle('dark-mode', newMode);
-        localStorage.setItem('darkMode', newMode.toString());  // Guardar la preferencia en el localStorage
+        localStorage.setItem('darkMode', newMode.toString());  
     };
 
-    // Manejar el clic de los enlaces
     const handleClick = (e) => {
         const links = document.querySelectorAll('.nav-link');
         links.forEach(link => link.classList.remove('clicked'));
@@ -46,37 +42,31 @@ const Header = () => {
         }, 2000);
     };
 
-    // Función para manejar el clic en el ícono de perfil
     const handleProfileClick = () => {
-        setShowProfileMenu(!showProfileMenu); // Alternar visibilidad del menú de perfil
+        setShowProfileMenu(!showProfileMenu); 
     };
 
-    // Función para cerrar sesión
     const handleLogout = () => {
-        // Eliminar la información de sesión (ajusta según cómo gestionas la sesión)
-        localStorage.removeItem('isLoggedIn');  // Esto depende de cómo manejes la autenticación
+        localStorage.removeItem('isLoggedIn');  
         setIsLoggedIn(false);
-        navigate('/login');  // Redirigir al usuario al login o inicio
+        navigate('/login');  
     };
 
-    // Función para redirigir al carrito
+    
     const goToCart = () => {
-        navigate('/carrito');  // Redirige a la página del carrito
+        navigate('/carrito');  
     };
 
-    // Para que la navbar se cargue con fondo negro al inicio (independientemente del modo)
     useEffect(() => {
         document.body.classList.add(isDarkMode ? 'dark-mode' : 'light-mode');
     }, [isDarkMode]);
 
     return (
         <>
-            {/* Barra de Anuncio */}
             <div className="offer-bar bg-info text-white text-center py-2">
-                <p>¡No te pierdas nuestras ofertas especiales de esta semana!</p>
+                <p>¡Suscribite para obtener ofertas unicas y obten un 15% en tu primer compra!</p>
             </div>
 
-            {/* Navbar Principal */}
             <Navbar expand="lg" className={`navbar-top ${isDarkMode ? 'bg-dark' : 'bg-light'}`}>
                 <Container fluid style={{ maxWidth: "100%" }}>
                     <Navbar.Brand as={NavLink} to="/" onClick={() => navigate('/')}>
@@ -84,13 +74,11 @@ const Header = () => {
                     </Navbar.Brand>
 
                     <Navbar.Toggle aria-controls="navbarNav" />
-
                     <Navbar.Collapse id="navbarNav">
                         <Nav className="me-auto">
                             <Nav.Link as={NavLink} to="/faq" onClick={handleClick}>FAQ</Nav.Link>
                             <Nav.Link as={NavLink} to="/quienessomos" onClick={handleClick}>Quienes Somos</Nav.Link>
                             
-                            {/* Interruptor de Modo Claro/Oscuro con Íconos */}
                             <div className="mode-switch">
                                 <BsSun className={`mode-icon ${isDarkMode ? 'inactive' : 'active'}`} />
                                 <label className="switch">
@@ -101,37 +89,29 @@ const Header = () => {
                             </div>
                         </Nav>
 
-                        {/* Buscador y Iconos */}
                         <div className="search-container">
                             <input className="search-input" type="search" placeholder="Buscar por producto, categoría o marca" aria-label="Search" />
                             <button className="search-btn">
                                 <FaSearch />
                             </button>
-
                             <Nav.Link as={NavLink} to="/favoritos">
                                 <FaHeart className={`navbar-icon ${isDarkMode ? 'text-white' : 'text-dark'}`} />
                             </Nav.Link>
-                            {/* Aquí usamos la función goToCart para redirigir al carrito */}
                             <Nav.Link onClick={goToCart}>
                                 <FaShoppingCart className={`navbar-icon ${isDarkMode ? 'text-white' : 'text-dark'}`} />
                             </Nav.Link>
                         </div>
 
-                        {/* Si el usuario está logueado, mostrar el icono de perfil */}
                         <Nav className="ms-auto">
                             {isLoggedIn ? (
                                 <div className="profile-container">
-                                    <FaUserCircle 
-                                        className="navbar-icon profile-icon" 
-                                        onClick={handleProfileClick} 
-                                    />
+                                    <FaUserCircle className="navbar-icon profile-icon" onClick={handleProfileClick} />
                                     {showProfileMenu && (
                                         <div className="profile-menu">
                                             <NavLink to="/perfil">Mi Perfil</NavLink>
                                             <NavLink to="/pedidos">Mis Pedidos</NavLink>
-                                            {/* Aquí agregamos el enlace de "Favoritos" dentro del menú */}
                                             <NavLink to="/favoritos">Mis Favoritos</NavLink>
-                                            <button onClick={handleLogout}>Salir</button>  {/* Botón para salir */}
+                                            <button onClick={handleLogout}>Salir</button>  
                                         </div>
                                     )}
                                 </div>
@@ -146,7 +126,6 @@ const Header = () => {
                 </Container>
             </Navbar>
 
-            {/* Barra de categorías debajo de la principal */}
             <Navbar expand="lg" className={`bg-${isDarkMode ? 'dark' : 'light'}`}>
                 <Container fluid>
                     <Nav className="me-auto">

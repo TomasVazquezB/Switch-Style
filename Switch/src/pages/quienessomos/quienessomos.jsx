@@ -9,9 +9,7 @@ export function QuienesSomosPage() {
                     <h1 className="quienessomos">¿Quiénes Somos?</h1>
                 </div>
                 <div className="info-container">
-                    <p className="info">
-                    
-                    </p>
+                    <p className="info"></p>
                 </div>
                 <div className="team-cards">
                     <div className="team-card">

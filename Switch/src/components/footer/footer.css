@@ -1,22 +1,19 @@
-/* Aseguramos que el contenido ocupe toda la altura disponible y que el footer se quede al fondo */
 html, body {
   height: 100%;
   margin: 0;
   display: flex;
-  flex-direction: column; /* Apila los elementos de arriba hacia abajo */
+  flex-direction: column; 
 }
 
-/* El contenedor principal ocupa el espacio restante para empujar el footer hacia abajo */
 .main-content {
   flex-grow: 1;
 }
 
-/* Estilos del Footer */
 .footer {
   background-color: #000000;
   color: white;
-  padding: 6px 20px; /* Reducido el padding del footer para hacerlo aún más pequeño */
-  font-size: 0.75rem; /* Reducido el tamaño de la fuente aún más */
+  padding: 6px 20px; 
+  font-size: 0.75rem; 
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
@@ -25,39 +22,35 @@ html, body {
   bottom: 0;
 }
 
-/* Estructura del contenedor del footer */
 .footer-container {
   display: flex;
-  justify-content: flex-end; /* Mueve todo el contenido a la derecha */
+  justify-content: flex-end; 
   width: 100%;
-  margin-bottom: 5px; /* Reducir el espacio inferior aún más */
+  margin-bottom: 5px; 
 }
 
-/* Sección izquierda para los derechos reservados */
 .footer-left {
   flex: 1;
   display: flex;
-  justify-content: flex-start; /* Alineación a la izquierda */
+  justify-content: flex-start; 
   align-items: center;
   padding-left: 20px;
 }
 
-/* Sección derecha para las redes sociales e información de contacto */
 .footer-right {
   display: flex;
-  flex-direction: column; /* Mantener los elementos en columna */
-  align-items: flex-end; /* Alinea los elementos a la derecha */
+  flex-direction: column; 
+  align-items: flex-end; 
   padding-right: 20px;
   text-align: right;
 }
 
-/* Información de contacto */
 .footer-contact {
   margin-top: 0;
   display: flex;
-  flex-direction: column; /* Mantener la información de contacto en columna */
-  align-items: flex-end; /* Alinear la información de contacto a la derecha */
-  margin-bottom: 10px; /* Separar los contactos de las redes sociales */
+  flex-direction: column; 
+  align-items: flex-end; 
+  margin-bottom: 10px; 
 }
 
 .contact-info {
@@ -70,12 +63,11 @@ html, body {
   margin-right: 8px;
 }
 
-/* Estilos para las redes sociales */
 .social-icons {
   display: flex;
-  flex-direction: column; /* Mantener las redes sociales una debajo de la otra */
-  align-items: flex-end; /* Alinear las redes sociales a la derecha */
-  margin-top: 25px; /* Aumentado el margen para mover las redes sociales aún más abajo */
+  flex-direction: column; 
+  align-items: flex-end; 
+  margin-top: 25px; 
 }
 
 .social-icon {
@@ -88,15 +80,13 @@ html, body {
   margin-right: 8px;
 }
 
-/* Estilo de los enlaces de las redes sociales */
 .footer-link {
   font-size: 1em;
   color: white;
-  margin-left: 10px; /* Deja espacio entre el icono y el texto */
+  margin-left: 10px; 
 }
 
-/* Texto de derechos reservados */
 .footer-text {
   text-align: left;
-  font-size: 0.7em; /* Reducir un poco más el tamaño del texto */
+  font-size: 0.7em;
 }

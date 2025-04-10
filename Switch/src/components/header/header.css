@@ -1,4 +1,3 @@
-/* Barra de ofertas (debe estar por encima de la navbar) */
 .offer-bar {
     background-color: #17a2b8;
     color: white;
@@ -6,78 +5,68 @@
     font-size: 1rem;
     padding: 10px 0;
     font-weight: bold;
-    z-index: 1001;  /* Aseguramos que no se superponga a la navbar */
+    z-index: 1001;  
 }
 
-/* Navbar Principal */
 .navbar-top {
     position: fixed;
     top: 0;
     width: 100%;
     left: 0;
     right: 0;
-    background-color: #000000;  /* Fondo por defecto negro */
+    background-color: #000000;  
     z-index: 1000;
     padding: 15px 0;
     transition: background-color 0.3s ease;
 }
 
-/* Modo oscuro */
 .dark-mode .navbar-top {
-    background-color: #000000;  /* Fondo negro en modo oscuro */
+    background-color: #000000;  
     color: #fff;
 }
 
-/* Modo claro */
 .light-mode .navbar-top {
-    background-color: #f8f9fa;  /* Fondo claro en modo claro */
+    background-color: #f8f9fa;  
     color: #000;
 }
 
-/* Navbar Links */
 .navbar-top .nav-link {
-    color: white;  /* Por defecto las letras son blancas en modo oscuro */
+    color: white;  
     text-align: center;
     transition: color 0.3s;
     font-size: 1rem;
     padding: 8px 15px;
 }
 
-/* Modo oscuro: los enlaces permanecen blancos */
 .dark-mode .navbar-top .nav-link {
-    color: white;  /* Letras blancas en modo oscuro */
+    color: white;  
 }
 
-/* Enlaces de la Navbar en modo claro */
 .light-mode .navbar-top .nav-link {
-    color: black;  /* Letras negras en modo claro */
+    color: black;  
 }
 
-/* Efecto hover y cuando el enlace está activo */
 .navbar-top .nav-link:hover {
-    color: #d4d4d4;  /* Gris claro cuando pasa el cursor por encima */
+    color: #d4d4d4;  
 }
 
-/* Enlace activo (cuando el usuario está en la sección) */
 .navbar-top .nav-link.active {
-    color: #888;  /* Gris claro cuando el enlace está seleccionado */
+    color: #888;  
 }
 
-/* Cambio de color de los iconos del corazón y carrito */
 .navbar-icon {
     font-size: 1.5rem;
     transition: color 0.3s ease;
 }
 
 .navbar-icon.text-white {
-    color: white;  /* Íconos blancos por defecto */
+    color: white;  
 }
 
 .navbar-icon.text-dark {
-    color: black;  /* Íconos negros en modo claro */
+    color: black;  
 }
 
-/* Estilos del interruptor de modo oscuro */
 .mode-switch {
     display: inline-flex;
     align-items: center;
@@ -137,14 +126,13 @@ input:checked + .slider:before {
 }
 
 .mode-icon.active {
-    color: #FFD700;  /* Color dorado para el icono activo */
+    color: #FFD700; 
 }
 
 .mode-icon.inactive {
-    color: #666;  /* Color gris para el icono inactivo */
+    color: #666;  
 }
 
-/* Menú de perfil */
 .profile-container {
     position: relative;
 }
@@ -174,7 +162,6 @@ input:checked + .slider:before {
     background-color: #f0f0f0;
 }
 
-/* Estilos para el contenedor de búsqueda */
 .search-container {
     position: relative;
     display: flex;
@@ -211,19 +198,16 @@ input:checked + .slider:before {
     box-shadow: none; 
 }
 
-/* Responsividad para móviles */
 @media (max-width: 768px) {
     .search-input {
         width: 350px; 
     }
 }
 
-/* Ajustar el espacio debajo de la Navbar */
 body {
-    padding-top: 135px;  /* Ajustamos el padding-top para evitar la superposición de la navbar */
+    padding-top: 135px; 
 }
 
-/* Para las secciones que siguen la navbar, agregar padding superior */
 section {
-    padding-top: 20px;  /* Espacio adicional debajo de la navbar */
+    padding-top: 20px;  
 }
