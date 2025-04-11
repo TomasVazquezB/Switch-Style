@@ -7,15 +7,15 @@ const AdminPage = () => {
     ]);
 
     const [paquetesList, setPaquetesList] = useState([
-        { id: 1, nombre: 'Paquete a Paris', descripcion: 'Descripción del Paquete' },
-        { id: 2, nombre: 'Paquete a Bariloche', descripcion: 'Descripción del Paquete' },
-        { id: 3, nombre: 'Paquete a Brasil', descripcion: 'Descripción del Paquete' },
+        { id: 1, nombre: '', descripcion: '' },
+        { id: 2, nombre: '', descripcion: '' },
+        { id: 3, nombre: '', descripcion: '' },
     ]);
 
     const [actividadesList, setActividadesList] = useState([
-        { id: 1, nombre: 'Senderismo', descripcion: 'Descripción de la Actividad' },
-        { id: 2, nombre: 'Trekking', descripcion: 'Descripción de la Actividad' },
-        { id: 3, nombre: 'Escalada', descripcion: 'Descripción de la Actividad' },
+        { id: 1, nombre: '', descripcion: '' },
+        { id: 2, nombre: '', descripcion: '' },
+        { id: 3, nombre: '', descripcion: '' },
     ]);
 
     const [formDataUsuario, setFormDataUsuario] = useState({
@@ -40,24 +40,15 @@ const AdminPage = () => {
     });
 
     const handleChangeUsuario = (e) => {
-        setFormDataUsuario({
-            ...formDataUsuario,
-            [e.target.name]: e.target.value
-        });
+        setFormDataUsuario({...formDataUsuario,[e.target.name]: e.target.value});
     };
 
     const handleChangePaquete = (e) => {
-        setFormDataPaquete({
-            ...formDataPaquete,
-            [e.target.name]: e.target.value
-        });
+        setFormDataPaquete({...formDataPaquete,[e.target.name]: e.target.value});
     };
 
     const handleChangeActividad = (e) => {
-        setFormDataActividad({
-            ...formDataActividad,
-            [e.target.name]: e.target.value
-        });
+        setFormDataActividad({...formDataActividad,[e.target.name]: e.target.value});
     };
 
     const handleSubmitUsuario = (e) => {
@@ -132,7 +123,7 @@ const AdminPage = () => {
             <div className="row">
                 <div className="col admin-content">
                     <h1 className="admin-title">¡Bienvenido, Administrador!</h1>
-                    <p className="admin-text">Esta es la página de administrador. Aquí puedes gestionar usuarios, paquetes turísticos, actividades y otras funciones administrativas.</p>
+                    <p className="admin-text">Esta es la página de administrador. Aquí puedes gestionar usuarios y otras funciones administrativas.</p>
                     <br/>
                     <div className="form-registro-usuario">
                         <h3>Alta/Baja/Modificación de Usuarios</h3>
@@ -194,7 +185,7 @@ const AdminPage = () => {
                     <br/>   
 
                     <div className="form-paquetes-actividades">
-                        <h3>Alta/Baja/Modificación de Paquetes Turísticos</h3>
+                        <h3>Alta/Baja/Modificación</h3>
                         <br/>
                         <form onSubmit={handleSubmitPaquete}>
                             <div className="form-row">
@@ -208,7 +199,7 @@ const AdminPage = () => {
                     </div>
                     <br/>
                     <div className="paquetes-section">
-                        <h3>Paquetes Turísticos</h3>
+                        <h3>Paquetes</h3>
                         <table className="table">
                             <thead>
                                 <tr>

@@ -7,9 +7,7 @@ const CarritoPage = () => {
   const agregarProducto = (producto) => {
     const existente = productosCarrito.find(item => item.id === producto.id);
     if (existente) {
-      const newProductos = productosCarrito.map(item =>
-        item.id === producto.id ? { ...item, cantidad: item.cantidad + 1 } : item
-      );
+      const newProductos = productosCarrito.map(item => item.id === producto.id ? { ...item, cantidad: item.cantidad + 1 } : item);
       setProductosCarrito(newProductos);
     } else {
       setProductosCarrito([...productosCarrito, { ...producto, cantidad: 1 }]);
@@ -22,9 +20,7 @@ const CarritoPage = () => {
   };
 
   const actualizarCantidad = (idProducto, cantidad) => {
-    const newProductos = productosCarrito.map(item =>
-      item.id === idProducto ? { ...item, cantidad: cantidad } : item
-    );
+    const newProductos = productosCarrito.map(item => item.id === idProducto ? { ...item, cantidad: cantidad } : item);
     setProductosCarrito(newProductos);
   };
 
@@ -58,7 +54,7 @@ const CarritoPage = () => {
               <tbody>
                 {productosCarrito.map((producto, index) => (
                   <tr key={index}>
-                    <td><img src={producto.imagen} alt={producto.nombre} className="cart-item-image" /></td>
+                    <td><img src={producto.imagen} alt={producto.nombre} className="cart-item-image"/></td>
                     <td>{producto.nombre}</td>
                     <td>${producto.precio.toFixed(2)}</td>
                     <td>

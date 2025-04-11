@@ -13,10 +13,7 @@ export function LoginPage() {
     const navigate = useNavigate();
 
     const handleChange = (e) => {
-        setFormData({
-            ...formData,
-            [e.target.name]: e.target.value
-        });
+        setFormData({...formData,[e.target.name]: e.target.value});
     };
 
     const handleSubmit = (e) => {
@@ -32,9 +29,7 @@ export function LoginPage() {
                     navigate('/');
                 }
             })
-            .catch(error => {
-                setError(error.message);
-            });
+            .catch(error => {setError(error.message);});
     };
 
     return (

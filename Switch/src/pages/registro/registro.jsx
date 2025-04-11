@@ -13,17 +13,11 @@ export function RegistroPage() {
     });
 
     const handleChange = (e) => {
-        setFormData({
-            ...formData,
-            [e.target.name]: e.target.value,
-        });
+        setFormData({...formData,[e.target.name]: e.target.value,});
     };
 
     const handleCheckboxChange = (e) => {
-        setFormData({
-            ...formData,
-            aceptarTerminos: e.target.checked,
-        });
+        setFormData({...formData,aceptarTerminos: e.target.checked,});
     };
 
     const handleSubmit = (e) => {
@@ -44,9 +38,7 @@ export function RegistroPage() {
                     aceptarTerminos: false,
                 });
             })
-            .catch((error) => {
-                alert(error.message);
-            });
+            .catch((error) => {alert(error.message);});
     };
 
     return (
