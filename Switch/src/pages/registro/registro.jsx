@@ -20,8 +20,7 @@ export function RegistroPage() {
         setFormData({...formData,aceptarTerminos: e.target.checked,});
     };
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
+    const handleSubmit = (e) => {e.preventDefault();
         if (!formData.aceptarTerminos) {
             alert("Debes aceptar los términos y condiciones.");
             return;

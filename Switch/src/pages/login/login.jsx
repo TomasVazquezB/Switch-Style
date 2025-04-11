@@ -12,8 +12,7 @@ export function LoginPage() {
     const [error, setError] = useState(null);
     const navigate = useNavigate();
 
-    const handleChange = (e) => {
-        setFormData({...formData,[e.target.name]: e.target.value});
+    const handleChange = (e) => {setFormData({...formData,[e.target.name]: e.target.value});
     };
 
     const handleSubmit = (e) => {
@@ -70,7 +69,7 @@ export function LoginPage() {
                         </div>
                         {error && <div className="alert alert-danger" role="alert">{error}</div>}
                         <div className="d-flex justify-content-center mt-3 login_container">
-                            <button type="submit" className="button-login">Ingresar</button>
+                        <button type="submit" className="button-login">Ingresar</button>
                         </div>
                     </form>
                 </div>

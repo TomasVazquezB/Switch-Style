@@ -9,62 +9,47 @@ import { FaSearch, FaHeart, FaShoppingCart, FaUserCircle } from 'react-icons/fa'
 import { BsMoon, BsSun } from 'react-icons/bs';
 
 const Header = () => {
-    const [isDarkMode, setIsDarkMode] = useState(false);
+    const [isDarkMode, setIsDarkMode] = useState(true); 
     const [isLoggedIn, setIsLoggedIn] = useState(false);  
     const [showProfileMenu, setShowProfileMenu] = useState(false); 
     const navigate = useNavigate();
 
-    useEffect(() => {
-        const savedMode = localStorage.getItem('darkMode');
+    useEffect(() => {document.body.classList.add(isDarkMode ? 'dark-mode' : 'light-mode');
+        localStorage.setItem('darkMode', isDarkMode.toString());  
+        const loggedIn = localStorage.getItem('isLoggedIn');
+        setIsLoggedIn(loggedIn === 'true');
+    }, [isDarkMode]);
+
+    useEffect(() => {const savedMode = localStorage.getItem('darkMode');
         if (savedMode === 'true') {
             setIsDarkMode(true); 
         } else {
             setIsDarkMode(false); 
         }
-
-        const loggedIn = localStorage.getItem('isLoggedIn');  
-        setIsLoggedIn(loggedIn === 'true');
     }, []);
 
-    const toggleDarkMode = () => {
-        const newMode = !isDarkMode;
-        setIsDarkMode(newMode);
-        document.body.classList.toggle('dark-mode', newMode);
-        localStorage.setItem('darkMode', newMode.toString());  
-    };
+    const toggleDarkMode = () => {setIsDarkMode(!isDarkMode);};
 
-    const handleClick = (e) => {
-        const links = document.querySelectorAll('.nav-link');
+    const handleClick = (e) => {const links = document.querySelectorAll('.nav-link');
         links.forEach(link => link.classList.remove('clicked'));
         e.target.classList.add('clicked');
-        setTimeout(() => {
-            e.target.classList.remove('clicked');
+        setTimeout(() => {e.target.classList.remove('clicked');
         }, 2000);
     };
 
-    const handleProfileClick = () => {
-        setShowProfileMenu(!showProfileMenu); 
-    };
+    const handleProfileClick = () => {etShowProfileMenu(!showProfileMenu);};
 
-    const handleLogout = () => {
-        localStorage.removeItem('isLoggedIn');  
+    const handleLogout = () => {localStorage.removeItem('isLoggedIn');
         setIsLoggedIn(false);
-        navigate('/login');  
+        navigate('/login');
     };
 
-    
-    const goToCart = () => {
-        navigate('/carrito');  
-    };
-
-    useEffect(() => {
-        document.body.classList.add(isDarkMode ? 'dark-mode' : 'light-mode');
-    }, [isDarkMode]);
+    const goToCart = () => {navigate('/carrito');};
 
     return (
         <>
-            <div className="offer-bar bg-info text-white text-center py-2">
-                <p>¡Suscribite para obtener ofertas unicas y obten un 15% en tu primer compra!</p>
+            <div className={`offer-bar ${isDarkMode ? 'bg-white' : 'bg-info'} text-center py-2`}>
+                <p className={isDarkMode ? 'text-dark' : 'text-white'}>¡Suscribite para obtener ofertas unicas y obten un 15% en tu primer compra!</p>
             </div>
 
             <Navbar expand="lg" className={`navbar-top ${isDarkMode ? 'bg-dark' : 'bg-light'}`}>
@@ -80,32 +65,32 @@ const Header = () => {
                             <Nav.Link as={NavLink} to="/quienessomos" onClick={handleClick}>Quienes Somos</Nav.Link>
                             
                             <div className="mode-switch">
-                                <BsSun className={`mode-icon ${isDarkMode ? 'inactive' : 'active'}`} />
+                                <BsSun className={`mode-icon ${isDarkMode ? 'inactive' : 'active'}`}/>
                                 <label className="switch">
-                                    <input type="checkbox" onChange={toggleDarkMode} checked={isDarkMode} />
+                                    <input type="checkbox" onChange={toggleDarkMode} checked={isDarkMode}/>
                                     <span className="slider"></span>
                                 </label>
-                                <BsMoon className={`mode-icon ${isDarkMode ? 'active' : 'inactive'}`} />
+                                <BsMoon className={`mode-icon ${isDarkMode ? 'active' : 'inactive'}`}/>
                             </div>
                         </Nav>
 
                         <div className="search-container">
-                            <input className="search-input" type="search" placeholder="Buscar por producto, categoría o marca" aria-label="Search" />
+                            <input className="search-input" type="search" placeholder="Buscar por producto, categoría o marca" aria-label="Search"/>
                             <button className="search-btn">
-                                <FaSearch />
+                                <FaSearch/>
                             </button>
-                            <Nav.Link as={NavLink} to="/favoritos">
-                                <FaHeart className={`navbar-icon ${isDarkMode ? 'text-white' : 'text-dark'}`} />
+                            <Nav.Link as={NavLink} to="/favoritos" className="icon-separator">
+                                <FaHeart className={`navbar-icon ${isDarkMode ? 'text-white' : 'text-dark'}`}/>
                             </Nav.Link>
-                            <Nav.Link onClick={goToCart}>
-                                <FaShoppingCart className={`navbar-icon ${isDarkMode ? 'text-white' : 'text-dark'}`} />
+                            <Nav.Link onClick={goToCart} className="icon-separator">
+                                <FaShoppingCart className={`navbar-icon ${isDarkMode ? 'text-white' : 'text-dark'}`}/>
                             </Nav.Link>
                         </div>
 
                         <Nav className="ms-auto">
                             {isLoggedIn ? (
                                 <div className="profile-container">
-                                    <FaUserCircle className="navbar-icon profile-icon" onClick={handleProfileClick} />
+                                    <FaUserCircle className="navbar-icon profile-icon" onClick={handleProfileClick}/>
                                     {showProfileMenu && (
                                         <div className="profile-menu">
                                             <NavLink to="/perfil">Mi Perfil</NavLink>
@@ -126,9 +111,9 @@ const Header = () => {
                 </Container>
             </Navbar>
 
-            <Navbar expand="lg" className={`bg-${isDarkMode ? 'dark' : 'light'}`}>
+            <Navbar expand="lg" className={`navbar-bottom ${isDarkMode ? 'bg-dark' : 'bg-light'}`}>
                 <Container fluid>
-                    <Nav className="me-auto">
+                    <Nav className="me-auto" style={{ justifyContent: 'space-evenly', width: '100%' }}>
                         <Nav.Link as={NavLink} to="/ropa/hombres" onClick={handleClick}>Hombres</Nav.Link>
                         <Nav.Link as={NavLink} to="/ropa/mujeres" onClick={handleClick}>Mujeres</Nav.Link>
                         <Nav.Link as={NavLink} to="/ropa/ninos" onClick={handleClick}>Niños</Nav.Link>

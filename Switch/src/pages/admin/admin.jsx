@@ -2,9 +2,7 @@ import React, { useState } from 'react';
 import './admin.css';
 
 const AdminPage = () => {
-    const [usuariosList, setUsuariosList] = useState([
-        { id: 1, nombre: 'Tomas', apellido: 'Vazquez Brouver', email: 'tomas.vazquez@davinci.edu.ar', usuario: 'tomas', rol: 'admin' },
-    ]);
+    const [usuariosList, setUsuariosList] = useState([{ id: 1, nombre: 'Tomas', apellido: 'Vazquez Brouver', email: 'tomas.vazquez@davinci.edu.ar', usuario: 'tomas', rol: 'admin' },]);
 
     const [paquetesList, setPaquetesList] = useState([
         { id: 1, nombre: '', descripcion: '' },
@@ -39,20 +37,13 @@ const AdminPage = () => {
         descripcion: ''
     });
 
-    const handleChangeUsuario = (e) => {
-        setFormDataUsuario({...formDataUsuario,[e.target.name]: e.target.value});
-    };
+    const handleChangeUsuario = (e) => {setFormDataUsuario({...formDataUsuario,[e.target.name]: e.target.value});};
 
-    const handleChangePaquete = (e) => {
-        setFormDataPaquete({...formDataPaquete,[e.target.name]: e.target.value});
-    };
+    const handleChangePaquete = (e) => {setFormDataPaquete({...formDataPaquete,[e.target.name]: e.target.value});};
 
-    const handleChangeActividad = (e) => {
-        setFormDataActividad({...formDataActividad,[e.target.name]: e.target.value});
-    };
+    const handleChangeActividad = (e) => {setFormDataActividad({...formDataActividad,[e.target.name]: e.target.value});};
 
-    const handleSubmitUsuario = (e) => {
-        e.preventDefault();
+    const handleSubmitUsuario = (e) => {e.preventDefault();
         const newUsuario = {
             id: usuariosList.length + 1,
             nombre: formDataUsuario.nombre,
@@ -73,8 +64,7 @@ const AdminPage = () => {
     };
 
 
-    const handleSubmitPaquete = (e) => {
-        e.preventDefault();
+    const handleSubmitPaquete = (e) => {e.preventDefault();
         const newPaquete = {
             id: paquetesList.length + 1, 
             nombre: formDataPaquete.nombre,
@@ -88,8 +78,7 @@ const AdminPage = () => {
         });
     };
 
-    const handleSubmitActividad = (e) => {
-        e.preventDefault();
+    const handleSubmitActividad = (e) => {e.preventDefault();
         const newActividad = {
             id: actividadesList.length + 1, 
             nombre: formDataActividad.nombre,
@@ -103,20 +92,11 @@ const AdminPage = () => {
         });
     };
 
-    const eliminarUsuario = (id) => {
-        const updatedUsuarios = usuariosList.filter(usuario => usuario.id !== id);
-        setUsuariosList(updatedUsuarios);
-    };
+    const eliminarUsuario = (id) => {const updatedUsuarios = usuariosList.filter(usuario => usuario.id !== id); setUsuariosList(updatedUsuarios);};
 
-    const eliminarPaquete = (id) => {
-        const updatedPaquetes = paquetesList.filter(paquete => paquete.id !== id);
-        setPaquetesList(updatedPaquetes);
-    };
+    const eliminarPaquete = (id) => {const updatedPaquetes = paquetesList.filter(paquete => paquete.id !== id); setPaquetesList(updatedPaquetes);};
 
-    const eliminarActividad = (id) => {
-        const updatedActividades = actividadesList.filter(actividad => actividad.id !== id);
-        setActividadesList(updatedActividades);
-    };
+    const eliminarActividad = (id) => {const updatedActividades = actividadesList.filter(actividad => actividad.id !== id); setActividadesList(updatedActividades);};
 
     return (
         <div className="admin-container">
@@ -189,7 +169,7 @@ const AdminPage = () => {
                         <br/>
                         <form onSubmit={handleSubmitPaquete}>
                             <div className="form-row">
-                                <input type="text" name="nombre" placeholder="Nombre del Paquete" value={formDataPaquete.nombre} onChange={handleChangePaquete} />
+                                <input type="text" name="nombre" placeholder="Nombre del Paquete" value={formDataPaquete.nombre} onChange={handleChangePaquete}/>
                                 <textarea name="descripcion" placeholder="Descripción del Paquete" value={formDataPaquete.descripcion} onChange={handleChangePaquete}></textarea>
                             </div>
                             <div className="form-row">
@@ -231,7 +211,7 @@ const AdminPage = () => {
                         <br/>
                         <form onSubmit={handleSubmitActividad}>
                             <div className="form-row">
-                                <input type="text" name="nombre" placeholder="Nombre de la Actividad" value={formDataActividad.nombre} onChange={handleChangeActividad} />
+                                <input type="text" name="nombre" placeholder="Nombre de la Actividad" value={formDataActividad.nombre} onChange={handleChangeActividad}/>
                                 <textarea name="descripcion" placeholder="Descripción de la Actividad" value={formDataActividad.descripcion} onChange={handleChangeActividad}></textarea>
                             </div>
                             <div className="form-row">

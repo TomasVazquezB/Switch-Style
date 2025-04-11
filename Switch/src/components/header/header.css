@@ -1,5 +1,5 @@
 .offer-bar {
-    background-color: #17a2b8;
+    background-color: #17a2b8; 
     color: white;
     text-align: center;
     font-size: 1rem;
@@ -8,50 +8,89 @@
     z-index: 1001;  
 }
 
+.dark-mode .offer-bar {
+    background-color: #17a2b8; 
+}
+
+.light-mode .offer-bar {
+    background-color: #000000;  
+    color: white;  
+}
+
 .navbar-top {
     position: fixed;
     top: 0;
     width: 100%;
     left: 0;
     right: 0;
-    background-color: #000000;  
     z-index: 1000;
     padding: 15px 0;
     transition: background-color 0.3s ease;
+    border-bottom: 2px solid #ddd; 
 }
 
 .dark-mode .navbar-top {
     background-color: #000000;  
     color: #fff;
+    border-bottom: 2px solid #444; 
 }
 
 .light-mode .navbar-top {
     background-color: #f8f9fa;  
     color: #000;
+    border-bottom: 2px solid #ddd; 
 }
 
-.navbar-top .nav-link {
+.navbar-bottom .nav-link {
     color: white;  
     text-align: center;
     transition: color 0.3s;
     font-size: 1rem;
-    padding: 8px 15px;
+    padding: 8px 5px; 
 }
 
-.dark-mode .navbar-top .nav-link {
+.dark-mode .navbar-bottom .nav-link {
     color: white;  
 }
 
-.light-mode .navbar-top .nav-link {
+.light-mode .navbar-bottom .nav-link {
     color: black;  
 }
 
-.navbar-top .nav-link:hover {
+.navbar-bottom .nav-link:hover {
     color: #d4d4d4;  
 }
 
-.navbar-top .nav-link.active {
+.navbar-bottom .nav-link.active {
     color: #888;  
+}
+
+.navbar-bottom .nav-link {
+    text-align: center;
+    width: 100%;
+}
+
+.navbar-bottom .nav {
+    display: flex;
+    justify-content: space-evenly;
+    width: 100%;
+}
+
+.navbar-bottom .nav-link::after {
+    content: '|';
+    margin-left: 5px;  
+    margin-right: 5px;  
+    font-size: 1.5rem;
+    color: #ccc;
+    display: inline-block;
+}
+
+.dark-mode .navbar-bottom .nav-link::after {
+    color: #fff; 
+}
+
+.light-mode .navbar-bottom .nav-link::after {
+    color: #000; 
 }
 
 .navbar-icon {
@@ -65,6 +104,11 @@
 
 .navbar-icon.text-dark {
     color: black;  
+}
+
+.icon-separator {
+    margin-left: 15px;
+    margin-right: 15px;
 }
 
 .mode-switch {
@@ -119,18 +163,12 @@ input:checked + .slider:before {
     transform: translateX(14px);
 }
 
-.mode-icon {
-    font-size: 1.5rem;
-    color: #ccc;
-    transition: color 0.3s ease;
+.dark-mode .mode-icon {
+    color: white; 
 }
 
-.mode-icon.active {
-    color: #FFD700; 
-}
-
-.mode-icon.inactive {
-    color: #666;  
+.light-mode .mode-icon {
+    color: black; 
 }
 
 .profile-container {
@@ -196,6 +234,23 @@ input:checked + .slider:before {
 .search-btn:focus {
     outline: none;
     box-shadow: none; 
+}
+
+.navbar-bottom .nav-link.faq {
+    display: none; 
+}
+
+.profile-menu .about-us {
+    display: block; 
+    padding: 10px;
+    text-decoration: none;
+    color: #000;
+    font-size: 0.9rem;
+    transition: background-color 0.3s;
+}
+
+.profile-menu .about-us:hover {
+    background-color: #f0f0f0;
 }
 
 @media (max-width: 768px) {

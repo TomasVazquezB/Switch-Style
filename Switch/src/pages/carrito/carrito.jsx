@@ -24,13 +24,9 @@ const CarritoPage = () => {
     setProductosCarrito(newProductos);
   };
 
-  const vaciarCarrito = () => {
-    setProductosCarrito([]);
-  };
+  const vaciarCarrito = () => {setProductosCarrito([]);};
 
-  const calcularTotal = () => {
-    return productosCarrito.reduce((total, producto) => total + (producto.precio * producto.cantidad), 0).toFixed(2);
-  };
+  const calcularTotal = () => {return productosCarrito.reduce((total, producto) => total + (producto.precio * producto.cantidad), 0).toFixed(2);};
 
   return (
     <div className="carrito-container">
