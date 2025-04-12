@@ -46,6 +46,27 @@ const Header = () => {
 
     const goToCart = () => {navigate('/carrito');};
 
+    useEffect(() => {
+        const body = document.body;
+        const navbars = document.querySelectorAll('.navbar-top, .navbar-bottom');
+    
+        // Elimina todas las clases previas
+        body.classList.remove('dark-mode', 'light-mode');
+        navbars.forEach(nav => nav.classList.remove('navbar-light-mode'));
+    
+        // Aplica la clase correspondiente
+        if (isDarkMode) {
+            body.classList.add('dark-mode');
+        } else {
+            body.classList.add('light-mode');
+            navbars.forEach(nav => nav.classList.add('navbar-light-mode'));
+        }
+    
+        localStorage.setItem('darkMode', isDarkMode.toString());
+        const loggedIn = localStorage.getItem('isLoggedIn');
+        setIsLoggedIn(loggedIn === 'true');
+    }, [isDarkMode]);
+
     return (
         <>
             <div className={`offer-bar ${isDarkMode ? 'bg-white' : 'bg-info'} text-center py-2`}>
@@ -61,8 +82,8 @@ const Header = () => {
                     <Navbar.Toggle aria-controls="navbarNav" />
                     <Navbar.Collapse id="navbarNav">
                         <Nav className="me-auto">
-                            <Nav.Link as={NavLink} to="/faq" onClick={handleClick}>FAQ</Nav.Link>
-                            <Nav.Link as={NavLink} to="/quienessomos" onClick={handleClick}>Quienes Somos</Nav.Link>
+                            <Nav.Link  className={`navbar-icon ${isDarkMode ? 'text-white' : 'text-dark'}`} as={NavLink} to="/faq" onClick={handleClick}>FAQ</Nav.Link>
+                            <Nav.Link  className={`navbar-icon ${isDarkMode ? 'text-white' : 'text-dark'}`} as={NavLink} to="/quienessomos" onClick={handleClick}>quienes somos</Nav.Link>
                             
                             <div className="mode-switch">
                                 <BsSun className={`mode-icon ${isDarkMode ? 'inactive' : 'active'}`}/>
@@ -102,8 +123,8 @@ const Header = () => {
                                 </div>
                             ) : (
                                 <>
-                                    <Nav.Link as={NavLink} to="/registro" activeClassName="active-link" onClick={handleClick}>Registro</Nav.Link>
-                                    <Nav.Link as={NavLink} to="/login" activeClassName="active-link" onClick={handleClick}>Login</Nav.Link>
+                                    <Nav.Link  className={`navbar-icon ${isDarkMode ? 'text-white' : 'text-dark'}`} as={NavLink} to="/registro" activeClassName="active-link" onClick={handleClick}>Registro</Nav.Link>
+                                    <Nav.Link  className={`navbar-icon ${isDarkMode ? 'text-white' : 'text-dark'}`} as={NavLink} to="/login" activeClassName="active-link" onClick={handleClick}>Login</Nav.Link>
                                 </>
                             )}
                         </Nav>
