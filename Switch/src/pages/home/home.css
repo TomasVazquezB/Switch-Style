@@ -160,3 +160,76 @@ hr {
         justify-content: center;
     }
 }
+
+
+.dark {
+    background-color: #121212;
+    color: #f0f0f0;
+  }
+  
+  .dark .card-home,
+  .dark .service-item,
+  .dark .download-section {
+    background-color: #1e1e1e;
+    color: #f0f0f0;
+  }
+  
+  .dark .service-title,
+  .dark .service-description,
+  .dark .download-text,
+  .dark .store-icon p {
+    color: #f0f0f0;
+  }
+  
+  .dark svg {
+    color: #f0f0f0 !important;
+  }
+  
+  .dark .mas-buscado {
+    color: #f0f0f0;
+  }
+  
+  .service-item svg {
+  margin-bottom: 1rem; /* separa verticalmente del h3 */
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.dark,
+.dark-mode {
+  background-color: #000000; /* NEGRO ABSOLUTO */
+  color: #f1f1f1;
+}
+
+.dark .card-home,
+.dark .service-item,
+.dark .download-section {
+  background-color: #0a0a0a;
+  color: #f1f1f1;
+  border: 1px solid #222; /* opcional: contorno tenue */
+}
+
+.dark .mas-buscado,
+.dark .service-title,
+.dark .service-description,
+.dark .store-icon p {
+  color: #f1f1f1;
+}
+
+.dark svg {
+    color: #f1f1f1 !important;
+  }
+
+/* Modo oscuro */
+.dark {
+    background-color: #000000;
+    color: #f1f1f1;
+  }
+  
+  /* Modo claro por si querés diferenciar */
+  .light {
+    background-color: #ffffff;
+    color: #121212;
+  }
+  
