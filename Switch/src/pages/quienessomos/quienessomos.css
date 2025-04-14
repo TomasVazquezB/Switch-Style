@@ -15,8 +15,8 @@
     font-size: 3em;
     font-weight: 700;
     letter-spacing: 1px;
-    margin-top: 10px;      /* Más arriba */
-    margin-bottom: 30px;   /* Menos separación con lo que sigue */
+    margin-top: 10px;      
+    margin-bottom: 30px;  
     transition: color 0.4s ease;
 }
 
@@ -34,7 +34,7 @@
     justify-content: center;
     gap: 30px;
     flex-wrap: wrap;
-    margin-top: 100px; /* Cards más abajo */
+    margin-top: 100px; 
 }
 
 .team-card {
@@ -59,7 +59,7 @@
     object-fit: cover;
     margin: -70px auto 15px;
     border: 4px solid white;
-    background-color: #ccc; /* Placeholder si no hay imagen */
+    background-color: #ccc; 
 }
 
 .team-name {
@@ -76,9 +76,8 @@
     transition: color 0.3s ease;
 }
 
-/* === MODO CLARO === */
 body.light-mode .container-quienessomos {
-    background-color: #121212; /* FONDO oscuro */
+    background-color: #121212; 
     color: #f5f5f5;
 }
 
@@ -99,9 +98,8 @@ body.light-mode .team-name {
     color: #ffffff;
 }
 
-/* === MODO OSCURO === */
 body.dark-mode .container-quienessomos {
-    background-color: #ffffff; /* FONDO claro */
+    background-color: #ffffff; 
     color: #1e1e1e;
 }
 

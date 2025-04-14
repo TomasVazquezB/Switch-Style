@@ -63,7 +63,6 @@ const AdminPage = () => {
         });
     };
 
-
     const handleSubmitPaquete = (e) => {e.preventDefault();
         const newPaquete = {
             id: paquetesList.length + 1, 

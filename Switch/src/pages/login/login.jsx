@@ -8,9 +8,7 @@ export function LoginPage() {
     const [error, setError] = useState(null);
     const navigate = useNavigate();
 
-    const handleChange = (e) => {
-        setFormData({ ...formData, [e.target.name]: e.target.value });
-    };
+    const handleChange = (e) => {setFormData({ ...formData, [e.target.name]: e.target.value });};
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -33,7 +31,6 @@ export function LoginPage() {
                 <img src="/login.jpg" alt="Imagen" className="login-image" />
             </div>
 
-            {/* Línea divisoria */}
             <div className="divider"></div>
 
             <div className="login-box">
@@ -48,8 +45,7 @@ export function LoginPage() {
                             required
                             placeholder="Email"
                             value={formData.identificador}
-                            onChange={handleChange}
-                        />
+                            onChange={handleChange}/>
                         <input
                             type="password"
                             name="contrasena"
@@ -57,8 +53,7 @@ export function LoginPage() {
                             required
                             placeholder="Contraseña"
                             value={formData.contrasena}
-                            onChange={handleChange}
-                        />
+                            onChange={handleChange}/>
                         {error && <div className="alert alert-danger">{error}</div>}
                         <button type="submit" className="button-login">Ingresar</button>
                     </form>

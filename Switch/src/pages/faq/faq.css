@@ -5,72 +5,68 @@
   min-height: 100vh;
 }
 
-/* Título de Preguntas Frecuentes */
 .titulo-faq {
   text-align: center;
-  margin-bottom: 2rem; /* Ajustamos el margen inferior */
+  margin-bottom: 2rem; 
   font-size: 2rem;
   font-weight: 600;
   transition: color 0.3s;
 }
 
-/* Modo claro */
 body.light-mode .faq-page {
-  background-color: #121212; /* Fondo oscuro en modo claro */
+  background-color: #121212; 
   color: #f1f1f1;
 }
 
 body.light-mode .titulo-faq {
-  color: #ffffff; /* Título blanco en modo claro */
+  color: #ffffff; 
 }
 
 body.light-mode .faq-item {
-  background-color: #333333; /* Fondo oscuro de las tarjetas */
-  border-color: #444444;     /* Borde oscuro de las tarjetas */
-  color: #f1f1f1;            /* Texto claro de las tarjetas */
+  background-color: #333333; 
+  border-color: #444444;     
+  color: #f1f1f1;            
 }
 
 body.light-mode .faq-icon {
-  color: #ffffff;  /* Iconos blancos en el modo claro */
+  color: #ffffff;  
 }
 
 body.light-mode .faq-pregunta {
-  color: #ffffff;  /* Preguntas en blanco en el modo claro */
+  color: #ffffff;  
 }
 
 body.light-mode .faq-respuesta {
-  color: #cccccc; /* Respuestas en gris claro en el modo claro */
+  color: #cccccc; 
 }
 
-/* Modo oscuro */
 body.dark-mode .faq-page {
-  background-color: #ffffff; /* Fondo blanco en modo oscuro */
+  background-color: #ffffff; 
   color: #222222;
 }
 
 body.dark-mode .titulo-faq {
-  color: #000000; /* Título negro en modo oscuro */
+  color: #000000; 
 }
 
 body.dark-mode .faq-item {
-  background-color: #2a2a2a; /* Fondo oscuro de las tarjetas */
-  border-color: #3a3a3a;     /* Borde oscuro de las tarjetas */
-  color: #f1f1f1;            /* Texto claro de las tarjetas */
+  background-color: #2a2a2a; 
+  border-color: #3a3a3a;     
+  color: #f1f1f1;           
 }
 
 body.dark-mode .faq-icon {
-  color: #ffffff;  /* Iconos blancos en el modo oscuro */
+  color: #ffffff; 
 }
 
 body.dark-mode .faq-pregunta {
-  color: #ffffff;  /* Preguntas en blanco en el modo oscuro */
+  color: #ffffff;  
 }
 
 body.dark-mode .faq-respuesta {
-  color: #c0c0c0; /* Respuestas en gris claro en el modo oscuro */
+  color: #c0c0c0; 
 }
 
-/* Efecto de hover para las tarjetas */
 .faq-item {
   display: flex;
   align-items: flex-start;
@@ -81,7 +77,7 @@ body.dark-mode .faq-respuesta {
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
   transition: background-color 0.3s, border-color 0.3s, color 0.3s;
   cursor: pointer;
-  margin-bottom: 1.5rem; /* Aumentamos el espacio entre las tarjetas */
+  margin-bottom: 1.5rem; 
 }
 
 .faq-item:hover {
@@ -90,7 +86,6 @@ body.dark-mode .faq-respuesta {
   transition: all 0.3s ease;
 }
 
-/* Icono de la pregunta */
 .faq-icon {
   font-size: 1.5rem;
   font-weight: bold;
@@ -98,7 +93,6 @@ body.dark-mode .faq-respuesta {
   margin-top: 0.2rem;
 }
 
-/* Estilo de las preguntas y respuestas */
 .faq-pregunta {
   margin: 0;
   font-size: 1.1rem;
@@ -110,11 +104,10 @@ body.dark-mode .faq-respuesta {
   font-size: 0.95rem;
 }
 
-/* Estilo adicional para transición de fondo */
 body.light-mode .faq-item:hover {
-  background-color: #444444; /* Fondo más claro en el hover del modo claro */
+  background-color: #444444; 
 }
 
 body.dark-mode .faq-item:hover {
-  background-color: #1a1a1a; /* Fondo más claro en el hover del modo oscuro */
+  background-color: #1a1a1a;
 }

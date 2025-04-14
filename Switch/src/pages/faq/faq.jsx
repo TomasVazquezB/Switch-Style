@@ -30,8 +30,7 @@ export function FAQPage() {
       <div className="faq-container">
         <br/>
         <h1 className="titulo-faq">Preguntas Frecuentes</h1>
-        <br
-        />
+        <br/>
         <div className="faq-list">
           {faqs.map((item, index) => (
             <div className="faq-item" key={index}>

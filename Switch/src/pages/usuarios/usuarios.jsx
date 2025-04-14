@@ -2,13 +2,11 @@ let usuarios = JSON.parse(localStorage.getItem('usuarios')) || [
     { id: 1, nombre: 'Tomas', apellido: 'Vazquez Brouver', email: 'tomas.vazquez@davinci.edu.ar', usuario: 'tomas', contrasena: '1234', rol: 'admin' },
 ];
 
-function guardarUsuarios(users) {
-    localStorage.setItem('usuarios', JSON.stringify(users));
+function guardarUsuarios(users) {localStorage.setItem('usuarios', JSON.stringify(users));
 }
 
 export function loginUsuario(identificador, contrasena) {
-    return new Promise((resolve, reject) => {
-        usuarios = JSON.parse(localStorage.getItem('usuarios')) || [];
+    return new Promise((resolve, reject) => {usuarios = JSON.parse(localStorage.getItem('usuarios')) || [];
 
         console.log('Intentando iniciar sesión con:', identificador, contrasena);
 
@@ -37,6 +35,5 @@ export function registrarUsuario(datosRegistro) {
     });
 }
 
-if (!localStorage.getItem('usuarios')) {
-    guardarUsuarios(usuarios);
+if (!localStorage.getItem('usuarios')) {guardarUsuarios(usuarios);
 }

@@ -12,22 +12,16 @@ export function RegistroPage() {
         aceptarTerminos: false,
     });
 
-    const handleChange = (e) => {
-        setFormData({...formData,[e.target.name]: e.target.value,});
-    };
+    const handleChange = (e) => {setFormData({...formData,[e.target.name]: e.target.value,});};
 
-    const handleCheckboxChange = (e) => {
-        setFormData({...formData,aceptarTerminos: e.target.checked,});
-    };
+    const handleCheckboxChange = (e) => {setFormData({...formData,aceptarTerminos: e.target.checked,});};
 
     const handleSubmit = (e) => {e.preventDefault();
-        if (!formData.aceptarTerminos) {
-            alert("Debes aceptar los términos y condiciones.");
+        if (!formData.aceptarTerminos) {alert("Debes aceptar los términos y condiciones.");
             return;
         }
         registrarUsuario(formData)
-            .then((usuario) => {
-                alert(`Usuario ${usuario.nombre} registrado con éxito`);
+            .then((usuario) => {alert(`Usuario ${usuario.nombre} registrado con éxito`);
                 setFormData({
                     nombre: '',
                     apellido: '',

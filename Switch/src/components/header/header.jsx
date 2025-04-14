@@ -14,15 +14,13 @@ const Header = ({ toggleTheme }) => {
     const [showProfileMenu, setShowProfileMenu] = useState(false);
     const navigate = useNavigate();
 
-    useEffect(() => {
-        document.body.classList.add(isDarkMode ? 'dark-mode' : 'light-mode');
+    useEffect(() => {document.body.classList.add(isDarkMode ? 'dark-mode' : 'light-mode');
         localStorage.setItem('darkMode', isDarkMode.toString());
         const loggedIn = localStorage.getItem('isLoggedIn');
         setIsLoggedIn(loggedIn === 'true');
     }, [isDarkMode]);
 
-    useEffect(() => {
-        const savedMode = localStorage.getItem('darkMode');
+    useEffect(() => {const savedMode = localStorage.getItem('darkMode');
         if (savedMode === 'true') {
             setIsDarkMode(true);
         } else {
@@ -32,8 +30,7 @@ const Header = ({ toggleTheme }) => {
 
     const toggleDarkMode = () => { setIsDarkMode(!isDarkMode); };
 
-    const handleClick = (e) => {
-        const links = document.querySelectorAll('.nav-link');
+    const handleClick = (e) => {const links = document.querySelectorAll('.nav-link');
         links.forEach(link => link.classList.remove('clicked'));
         e.target.classList.add('clicked');
         setTimeout(() => {
@@ -41,15 +38,14 @@ const Header = ({ toggleTheme }) => {
         }, 2000);
     };
 
-    const handleProfileClick = () => { etShowProfileMenu(!showProfileMenu); };
+    const handleProfileClick = () => {etShowProfileMenu(!showProfileMenu);};
 
-    const handleLogout = () => {
-        localStorage.removeItem('isLoggedIn');
+    const handleLogout = () => {localStorage.removeItem('isLoggedIn');
         setIsLoggedIn(false);
         navigate('/login');
     };
 
-    const goToCart = () => { navigate('/carrito'); };
+    const goToCart = () => {navigate('/carrito');};
 
     useEffect(() => {
         const body = document.body;
@@ -57,7 +53,7 @@ const Header = ({ toggleTheme }) => {
 
         body.classList.remove('dark-mode', 'light-mode');
         navbars.forEach(nav => nav.classList.remove('navbar-light-mode'));
-        
+
         if (isDarkMode) {
             body.classList.add('dark-mode');
         } else {
@@ -99,7 +95,7 @@ const Header = ({ toggleTheme }) => {
                         </Nav>
 
                         <div className="search-container">
-                            <input className="search-input" type="search" placeholder="Buscar por producto, categoría o marca" aria-label="Search" />
+                            <input className="search-input" type="search" placeholder="Buscar por producto, categoría o marca" aria-label="Search"/>
                             <button className="search-btn">
                                 <FaSearch />
                             </button>
