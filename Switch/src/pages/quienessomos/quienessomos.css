@@ -1,128 +1,138 @@
 .container-quienessomos {
-    position: relative;
-    min-height: 80vh; 
-    padding: 40px 20px;
-    background-color: #b7cab6;
-    color: #fff;
+    min-height: 100vh;
+    padding: 70px 20px 40px 20px;
     text-align: center;
-    margin-top: 100px; 
-    background-size: cover; 
-    background-position: center;
-    background-repeat: no-repeat;
-    border-radius: 20px;
-}
-
-.overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
-    z-index: 1;
-    pointer-events: none;
+    transition: background-color 0.4s ease, color 0.4s ease;
 }
 
 .content {
-    position: relative;
-    z-index: 2;
-    width: 100%;
-    max-width: 1200px;
+    max-width: 1100px;
     margin: 0 auto;
-    padding-bottom: 60px;
-}
-
-.header {
-    background-color: rgba(194, 217, 160, 0.8);
     padding: 20px;
-    border-radius: 10px;
-    margin-bottom: 30px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .quienessomos {
-    font-size: 2.5em;
-    margin: 0;
-    color: #333;
-}
-
-.info-container {
-    background: white;
-    border-radius: 10px;
-    padding: 30px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    max-width: 800px;
-    margin: 0 auto 40px auto;
-    animation: fadeIn 1.5s ease-in-out;
+    font-size: 3em;
+    font-weight: 700;
+    letter-spacing: 1px;
+    margin-top: 10px;      /* Más arriba */
+    margin-bottom: 30px;   /* Menos separación con lo que sigue */
+    transition: color 0.4s ease;
 }
 
 .info {
-    font-size: 1.1em;
-    line-height: 1.6;
-    color: #333;
-    margin: 0;
+    font-size: 1.2em;
+    margin-bottom: 40px;
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+    transition: color 0.4s ease;
 }
 
 .team-cards {
     display: flex;
-    justify-content: space-around;
+    justify-content: center;
+    gap: 30px;
     flex-wrap: wrap;
+    margin-top: 100px; /* Cards más abajo */
 }
 
 .team-card {
-    background: white;
-    border-radius: 10px;
-    padding: 20px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    margin: 10px;
-    width: 250px;
-    transition: transform 0.3s ease-in-out;
+    border-radius: 15px;
+    padding: 30px 20px 20px;
+    width: 280px;
+    position: relative;
+    text-align: center;
+    transition: background-color 0.4s ease, color 0.4s ease, transform 0.3s ease, box-shadow 0.4s ease;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
 }
 
 .team-card:hover {
     transform: translateY(-10px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
 }
 
 .team-img {
-    border-radius: 50%;
     width: 100px;
     height: 100px;
+    border-radius: 50%;
     object-fit: cover;
-    margin-bottom: 10px;
+    margin: -70px auto 15px;
+    border: 4px solid white;
+    background-color: #ccc; /* Placeholder si no hay imagen */
 }
 
 .team-name {
-    font-size: 1.2em;
+    font-size: 1.3em;
+    font-weight: 600;
     margin-bottom: 5px;
-    color: #333;
+    transition: color 0.3s ease;
 }
 
 .team-role {
     font-size: 1em;
-    color: #777;
+    color: inherit;
+    opacity: 0.7;
+    transition: color 0.3s ease;
 }
 
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(20px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+/* === MODO CLARO === */
+body.light-mode .container-quienessomos {
+    background-color: #121212; /* FONDO oscuro */
+    color: #f5f5f5;
+}
+
+body.light-mode .quienessomos {
+    color: #ffffff;
+}
+
+body.light-mode .info {
+    color: #dddddd;
+}
+
+body.light-mode .team-card {
+    background-color: #1e1e1e;
+    color: #f1f1f1;
+}
+
+body.light-mode .team-name {
+    color: #ffffff;
+}
+
+/* === MODO OSCURO === */
+body.dark-mode .container-quienessomos {
+    background-color: #ffffff; /* FONDO claro */
+    color: #1e1e1e;
+}
+
+body.dark-mode .quienessomos {
+    color: #000000;
+}
+
+body.dark-mode .info {
+    color: #444;
+}
+
+body.dark-mode .team-card {
+    background-color: #f3f3f3;
+    color: #1e1e1e;
+}
+
+body.dark-mode .team-name {
+    color: #222;
 }
 
 @media (max-width: 768px) {
-    .quienessomos {
-        font-size: 2em;
-    }
-
-    .info-container {
-        padding: 15px;
+    .team-cards {
+        flex-direction: column;
+        align-items: center;
     }
 
     .team-card {
         width: 90%;
+    }
+
+    .quienessomos {
+        font-size: 2.2em;
     }
 }

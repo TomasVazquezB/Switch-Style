@@ -2,33 +2,47 @@ import React from 'react';
 import './faq.css';
 
 export function FAQPage() {
+  const faqs = [
+    {
+      pregunta: "¿Cómo sé si una prenda está en buen estado?",
+      respuesta: "Cada artículo pasa por un control de calidad y en la descripción indicamos el estado real de la prenda.",
+      icono: "👕"
+    },
+    {
+      pregunta: "¿Puedo devolver una prenda si no me queda bien?",
+      respuesta: "Sí, aceptamos devoluciones dentro de los 7 días posteriores a la recepción del producto.",
+      icono: "🔁"
+    },
+    {
+      pregunta: "¿Switch Style vende ropa de marca?",
+      respuesta: "Sí, contamos con prendas de segunda mano de marcas reconocidas y también opciones más accesibles.",
+      icono: "💼"
+    },
+    {
+      pregunta: "¿Cómo puedo vender mi ropa en Switch Style?",
+      respuesta: "Crea una cuenta, subí tus prendas con buenas fotos y nosotros nos encargamos del resto.",
+      icono: "📸"
+    }
+  ];
+
   return (
     <div className="faq-page">
-      <h1 className="titulo-faq">FAQ - Sección de Preguntas Frecuentes</h1>
-      <br/>
-      <br />
-      <div className="rectangle-faqitem">
-        <p><strong>¿?</strong><br/>
-          Sí, puedes cambiar o cancelar tu vuelo, pero se pueden aplicar cargos.
-        </p>
-      </div>
-      <br/>
-      <div className="rectangle-faqitem">
-        <p><strong>¿?</strong><br/>
-          Si tu vuelo se cancela, te reubicaremos en el siguiente vuelo disponible o te daremos un reembolso completo.
-        </p>
-      </div>
-      <br/>
-      <div className="rectangle-faqitem">
-        <p><strong>¿?</strong><br/>
-          Los paquetes turísticos incluyen generalmente vuelo y algunas actividades.
-        </p>
-      </div>
-      <br/>
-      <div className="rectangle-faqitem">
-        <p><strong>¿?</strong><br/>
-          Si tienes un problema con un paquete turístico de Turismo POP, ponte en contacto con nuestro centro de atención al cliente.
-        </p>
+      <div className="faq-container">
+        <br/>
+        <h1 className="titulo-faq">Preguntas Frecuentes</h1>
+        <br
+        />
+        <div className="faq-list">
+          {faqs.map((item, index) => (
+            <div className="faq-item" key={index}>
+              <div className="faq-icon">{item.icono}</div>
+              <div>
+                <p className="faq-pregunta">{item.pregunta}</p>
+                <p className="faq-respuesta">{item.respuesta}</p>
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );

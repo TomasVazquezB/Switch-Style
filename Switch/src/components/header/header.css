@@ -1,15 +1,12 @@
 .offer-bar {
-    background-color: #17a2b8; 
     color: white;
     text-align: center;
     font-size: 1rem;
     padding: 10px 0;
     font-weight: bold;
-    z-index: 1001;  
-}
-
-.dark-mode .offer-bar {
-    background-color: #17a2b8; 
+    z-index: 1001;
+    margin-top: -10px;
+    padding-top: 15px; 
 }
 
 .light-mode .offer-bar {
@@ -330,9 +327,6 @@ section {
     background-color: rgba(0,0,0,0.05);
     border-radius: 4px;
   }
-  
-
-  /* Estilo para navbar superior e inferior en modo oscuro profundo */
 .dark-mode .navbar-top,
 .dark-mode .navbar-bottom {
   background-color: #000000 !important;
@@ -340,25 +334,21 @@ section {
   border-bottom: 1px solid #222;
 }
 
-/* Asegurar que los links se vean bien */
 .dark-mode .navbar-top .nav-link,
 .dark-mode .navbar-bottom .nav-link {
   color: #f1f1f1 !important;
 }
 
-/* Íconos en header */
 .dark-mode .navbar-icon {
   color: #f1f1f1 !important;
 }
 
-/* Oferta promocional */
 .dark-mode .offer-bar {
   background-color: #ffffff;
   color: #f1f1f1;
   border-bottom: 1px solid #222;
 }
 
-/* Switch modo claro/oscuro */
 .dark-mode .slider {
   background-color: #444;
 }

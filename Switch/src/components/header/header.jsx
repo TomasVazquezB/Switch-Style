@@ -55,11 +55,9 @@ const Header = ({ toggleTheme }) => {
         const body = document.body;
         const navbars = document.querySelectorAll('.navbar-top, .navbar-bottom');
 
-        // Elimina todas las clases previas
         body.classList.remove('dark-mode', 'light-mode');
         navbars.forEach(nav => nav.classList.remove('navbar-light-mode'));
-
-        // Aplica la clase correspondiente
+        
         if (isDarkMode) {
             body.classList.add('dark-mode');
         } else {
@@ -75,6 +73,7 @@ const Header = ({ toggleTheme }) => {
     return (
         <>
            <div className={`offer-bar ${isDarkMode ? 'bg-ultra-dark' : 'bg-ultra-light'} text-center py-2`}>
+            <br/>
                 <p className={isDarkMode ? 'text-dark' : 'text-white'}>¡Suscribite para obtener ofertas unicas y obten un 15% en tu primer compra!</p>
             </div>
 
@@ -88,8 +87,7 @@ const Header = ({ toggleTheme }) => {
                     <Navbar.Collapse id="navbarNav">
                         <Nav className="me-auto">
                             <Nav.Link className={`navbar-icon ${isDarkMode ? 'text-white' : 'text-dark'}`} as={NavLink} to="/faq" onClick={handleClick}>FAQ</Nav.Link>
-                            <Nav.Link className={`navbar-icon ${isDarkMode ? 'text-white' : 'text-dark'}`} as={NavLink} to="/quienessomos" onClick={handleClick}>quienes somos</Nav.Link>
-
+                    
                             <div className="mode-switch">
                                 <BsSun className={`mode-icon ${isDarkMode ? 'inactive' : 'active'}`} />
                                 <label className="switch">
