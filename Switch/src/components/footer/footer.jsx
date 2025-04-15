@@ -10,14 +10,11 @@ const Footer = () => {
       <div className="footer-container">
         <div className="footer-left">
           <div className="footer-left-content">
-            <Typography color="white" className="footer-text">
-              © 2024-2025 Switch Style | Todos los derechos reservados
-            </Typography>
+            <Typography color="white" className="footer-text"> © 2024-2025 Switch Style | Todos los derechos reservados</Typography>
             <div className="quienes-wrapper">
               <FaRegSmileWink className="smile-icon" />
-              <Link to="/quienessomos" className="quienes-link">
-                ¿Querés conocernos?
-              </Link>
+              <Link to="/quienessomos" className="quienes-link">¿Querés conocernos?
+</Link>
             </div>
           </div>
         </div>
@@ -32,18 +29,15 @@ const Footer = () => {
                 <Typography color="white" className="footer-link">Switch Style</Typography>
               </div>
             </div>
-          </div>
 
-          <div className="footer-contact">
-            <Typography color="white" className="contact-info">
-              <FaPhoneAlt /> 1162657008
-            </Typography>
-            <Typography color="white" className="contact-info">
-              <FaPhoneAlt /> 0800-222-1254
-            </Typography>
-            <Typography color="white" className="contact-info">
-              <FaEnvelope /> consultas@switchstyle.com
-            </Typography>
+            <div className="contact-info-container">
+              <Typography color="white" className="contact-info">
+                <FaPhoneAlt /> 0800-222-1254 | 1162657008
+              </Typography>
+              <Typography color="white" className="contact-info">
+                <FaEnvelope /> consultas@switchstyle.com
+              </Typography>
+            </div>
           </div>
         </div>
       </div>

@@ -5,8 +5,8 @@
     padding: 10px 0;
     font-weight: bold;
     z-index: 1001;
-    margin-top: -10px;
-    padding-top: 15px; 
+    margin-top: -14px;
+    padding-top: 20px; 
 }
 
 .light-mode .offer-bar {
@@ -111,7 +111,7 @@
 .mode-switch {
     display: inline-flex;
     align-items: center;
-    margin-left: 15px;
+    margin-left: 25px;
 }
 
 .switch {
@@ -204,11 +204,11 @@ input:checked + .slider:before {
 }
 
 .search-input {
-    width: 500px; 
+    width: 700px; 
     font-size: 1rem; 
-    padding: 12px 55px 12px 50px; 
+    padding: 12px 55px 12px 55px; 
     border-radius: 25px; 
-    border: 2px solid #9b9999; 
+    border: 3px solid #9b9999; 
     outline: none; 
 }
 
@@ -218,7 +218,7 @@ input:checked + .slider:before {
 
 .search-btn {
     position: absolute;
-    left: 12px; 
+    left: 14px; 
     top: 45%; 
     transform: translateY(-50%); 
     border: none;

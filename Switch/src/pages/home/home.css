@@ -50,24 +50,24 @@ body, html {
 }
 
 .service-section {
-    margin-top: 50px;
+    margin-top: px;
 }
 
 .service-box {
     display: flex;
     justify-content: space-between;
     background-color: #f1f1f1;
-    padding: 20px;
-    border-radius: 10px;
+    padding: 10px;
+    border-radius: 25px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     flex-wrap: wrap;
-    gap: 20px;
+    gap: 40px;
 }
 
 .service-item {
     text-align: center;
     flex: 1;
-    max-width: 230px;
+    max-width: 940px;
 }
 
 .service-item i {
@@ -79,7 +79,7 @@ body, html {
 .service-title {
     font-size: 16px;
     font-weight: bold;
-    margin-bottom: 10px;
+    margin-bottom: 15px;
 }
 
 .service-description {
@@ -88,14 +88,14 @@ body, html {
 }
 
 .download-section {
-    margin-top: 30px;
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-start;
     align-items: center;
-    font-size: 16px;
-    border-top: 2px solid black;
-    padding-top: 10px;
+    font-size: 1px;
+    border-top: 2px solid #000;
+    padding-top: 20px;
     padding-bottom: 10px;
+    height: auto;
 }
 
 .download-text {
@@ -103,12 +103,12 @@ body, html {
     font-weight: bold;
     margin-bottom: 0;
     text-align: left;
-    width: 50%;
+    width: 100%;
 }
 
 .download-icons {
     display: flex;
-    gap: 20px;
+    gap: 10px;
     justify-content: flex-end;
 }
 
@@ -118,7 +118,7 @@ body, html {
 
 .store-icon p {
     margin-top: 5px;
-    font-size: 14px;
+    font-size: 12px;
 }
 
 hr {
@@ -143,7 +143,7 @@ hr {
     .download-icons {
         flex-direction: column;
         justify-content: center;
-        gap: 10px;
+        gap: 20px;
     }
 
     .store-icon {
@@ -164,68 +164,31 @@ hr {
 .dark {
     background-color: #121212;
     color: #f0f0f0;
-  }
-  
-  .dark .card-home,
-  .dark .service-item,
-  .dark .download-section {
-    background-color: #1e1e1e;
-    color: #f0f0f0;
-  }
-  
-  .dark .service-title,
-  .dark .service-description,
-  .dark .download-text,
-  .dark .store-icon p {
-    color: #f0f0f0;
-  }
-  
-  .dark svg {
-    color: #f0f0f0 !important;
-  }
-  
-  .dark .mas-buscado {
-    color: #f0f0f0;
-  }
-  
-  .service-item svg {
-  margin-bottom: 1rem; 
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
-}
-
-.dark,
-.dark-mode {
-  background-color: #000000; 
-  color: #f1f1f1;
 }
 
 .dark .card-home,
 .dark .service-item,
 .dark .download-section {
-  background-color: #0a0a0a;
-  color: #f1f1f1;
-  border: 1px solid #222; 
+    background-color: #1e1e1e;
+    color: #f0f0f0;
 }
 
-.dark .mas-buscado,
 .dark .service-title,
 .dark .service-description,
+.dark .download-text,
 .dark .store-icon p {
-  color: #f1f1f1;
+    color: #f0f0f0;
 }
 
 .dark svg {
-    color: #f1f1f1 !important;
-  }
+    color: #f0f0f0 !important;
+}
 
-.dark {
-    background-color: #000000;
-    color: #f1f1f1;
-  }
-  
-  .light {
+.dark .mas-buscado {
+    color: #f0f0f0;
+}
+
+.light {
     background-color: #ffffff;
     color: #121212;
-  }
+}

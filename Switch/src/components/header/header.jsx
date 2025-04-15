@@ -30,7 +30,8 @@ const Header = ({ toggleTheme }) => {
 
     const toggleDarkMode = () => { setIsDarkMode(!isDarkMode); };
 
-    const handleClick = (e) => {const links = document.querySelectorAll('.nav-link');
+    const handleClick = (e) => {
+        const links = document.querySelectorAll('.nav-link');
         links.forEach(link => link.classList.remove('clicked'));
         e.target.classList.add('clicked');
         setTimeout(() => {
@@ -38,14 +39,15 @@ const Header = ({ toggleTheme }) => {
         }, 2000);
     };
 
-    const handleProfileClick = () => {etShowProfileMenu(!showProfileMenu);};
+    const handleProfileClick = () => { setShowProfileMenu(!showProfileMenu); };
 
-    const handleLogout = () => {localStorage.removeItem('isLoggedIn');
+    const handleLogout = () => {
+        localStorage.removeItem('isLoggedIn');
         setIsLoggedIn(false);
         navigate('/login');
     };
 
-    const goToCart = () => {navigate('/carrito');};
+    const goToCart = () => { navigate('/carrito'); };
 
     useEffect(() => {
         const body = document.body;
@@ -68,22 +70,21 @@ const Header = ({ toggleTheme }) => {
 
     return (
         <>
-           <div className={`offer-bar ${isDarkMode ? 'bg-ultra-dark' : 'bg-ultra-light'} text-center py-2`}>
-            <br/>
+            <div className={`offer-bar ${isDarkMode ? 'bg-ultra-dark' : 'bg-ultra-light'} text-center py-2`}>
+                <br/>
                 <p className={isDarkMode ? 'text-dark' : 'text-white'}>¡Suscribite para obtener ofertas unicas y obten un 15% en tu primer compra!</p>
             </div>
 
             <Navbar expand="lg" className={`navbar-top ${isDarkMode ? 'bg-dark' : 'bg-light'}`}>
                 <Container fluid style={{ maxWidth: "100%" }}>
                     <Navbar.Brand as={NavLink} to="/" onClick={() => navigate('/')}>
-                        <img src="" width="30" height="30" className="d-inline-block align-top" alt="" />
+                    <img src="/LOGO.png" width="90" height="50" className="d-inline-block align-top" alt="Logo"/>
                     </Navbar.Brand>
 
                     <Navbar.Toggle aria-controls="navbarNav" />
                     <Navbar.Collapse id="navbarNav">
                         <Nav className="me-auto">
-                            <Nav.Link className={`navbar-icon ${isDarkMode ? 'text-white' : 'text-dark'}`} as={NavLink} to="/faq" onClick={handleClick}>FAQ</Nav.Link>
-                    
+                        
                             <div className="mode-switch">
                                 <BsSun className={`mode-icon ${isDarkMode ? 'inactive' : 'active'}`} />
                                 <label className="switch">
@@ -97,7 +98,7 @@ const Header = ({ toggleTheme }) => {
                         <div className="search-container">
                             <input className="search-input" type="search" placeholder="Buscar por producto, categoría o marca" aria-label="Search"/>
                             <button className="search-btn">
-                                <FaSearch />
+                                <FaSearch/>
                             </button>
                             <Nav.Link as={NavLink} to="/favoritos" className="icon-separator">
                                 <FaHeart className={`navbar-icon ${isDarkMode ? 'text-white' : 'text-dark'}`} />
@@ -110,12 +111,13 @@ const Header = ({ toggleTheme }) => {
                         <Nav className="ms-auto">
                             {isLoggedIn ? (
                                 <div className="profile-container">
-                                    <FaUserCircle className="navbar-icon profile-icon" onClick={handleProfileClick} />
+                                    <FaUserCircle className="navbar-icon profile-icon" onClick={handleProfileClick}/>
                                     {showProfileMenu && (
                                         <div className="profile-menu">
                                             <NavLink to="/perfil">Mi Perfil</NavLink>
                                             <NavLink to="/pedidos">Mis Pedidos</NavLink>
                                             <NavLink to="/favoritos">Mis Favoritos</NavLink>
+                                            <NavLink to="/FAQ">Preguntas Frecuentes</NavLink>
                                             <button onClick={handleLogout}>Salir</button>
                                         </div>
                                     )}
@@ -133,7 +135,7 @@ const Header = ({ toggleTheme }) => {
 
             <Navbar expand="lg" className={`navbar-bottom ${isDarkMode ? 'bg-dark' : 'bg-light'}`}>
                 <Container fluid>
-                    <Nav className="me-auto" style={{ justifyContent: 'space-evenly', width: '100%' }}>
+                    <Nav className="me-auto" style={{justifyContent: 'space-evenly', width: '100%'}}>
                         <div className="nav-dropdown">
                             <span className="nav-link">Hombres</span>
                             <div className="dropdown-menu">
