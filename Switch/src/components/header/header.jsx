@@ -7,6 +7,7 @@ import Navbar from 'react-bootstrap/Navbar';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { FaSearch, FaHeart, FaShoppingCart, FaUserCircle } from 'react-icons/fa';
 import { BsMoon, BsSun } from 'react-icons/bs';
+import { assets } from '../../Clothing/assets/assets';
 
 const Header = ({ toggleTheme }) => {
     const [isDarkMode, setIsDarkMode] = useState(true);
@@ -14,13 +15,15 @@ const Header = ({ toggleTheme }) => {
     const [showProfileMenu, setShowProfileMenu] = useState(false);
     const navigate = useNavigate();
 
-    useEffect(() => {document.body.classList.add(isDarkMode ? 'dark-mode' : 'light-mode');
+    useEffect(() => {
+        document.body.classList.add(isDarkMode ? 'dark-mode' : 'light-mode');
         localStorage.setItem('darkMode', isDarkMode.toString());
         const loggedIn = localStorage.getItem('isLoggedIn');
         setIsLoggedIn(loggedIn === 'true');
     }, [isDarkMode]);
 
-    useEffect(() => {const savedMode = localStorage.getItem('darkMode');
+    useEffect(() => {
+        const savedMode = localStorage.getItem('darkMode');
         if (savedMode === 'true') {
             setIsDarkMode(true);
         } else {
@@ -30,7 +33,8 @@ const Header = ({ toggleTheme }) => {
 
     const toggleDarkMode = () => { setIsDarkMode(!isDarkMode); };
 
-    const handleClick = (e) => {const links = document.querySelectorAll('.nav-link');
+    const handleClick = (e) => {
+        const links = document.querySelectorAll('.nav-link');
         links.forEach(link => link.classList.remove('clicked'));
         e.target.classList.add('clicked');
         setTimeout(() => {
@@ -38,14 +42,15 @@ const Header = ({ toggleTheme }) => {
         }, 2000);
     };
 
-    const handleProfileClick = () => {etShowProfileMenu(!showProfileMenu);};
+    const handleProfileClick = () => { etShowProfileMenu(!showProfileMenu); };
 
-    const handleLogout = () => {localStorage.removeItem('isLoggedIn');
+    const handleLogout = () => {
+        localStorage.removeItem('isLoggedIn');
         setIsLoggedIn(false);
         navigate('/login');
     };
 
-    const goToCart = () => {navigate('/carrito');};
+    const goToCart = () => { navigate('/carrito'); };
 
     useEffect(() => {
         const body = document.body;
@@ -68,22 +73,22 @@ const Header = ({ toggleTheme }) => {
 
     return (
         <>
-           <div className={`offer-bar ${isDarkMode ? 'bg-ultra-dark' : 'bg-ultra-light'} text-center py-2`}>
-            <br/>
+            <div className={`offer-bar ${isDarkMode ? 'bg-ultra-dark' : 'bg-ultra-light'} text-center py-2`}>
+                <br />
                 <p className={isDarkMode ? 'text-dark' : 'text-white'}>¡Suscribite para obtener ofertas unicas y obten un 15% en tu primer compra!</p>
             </div>
 
             <Navbar expand="lg" className={`navbar-top ${isDarkMode ? 'bg-dark' : 'bg-light'}`}>
                 <Container fluid style={{ maxWidth: "100%" }}>
                     <Navbar.Brand as={NavLink} to="/" onClick={() => navigate('/')}>
-                        <img src="" width="30" height="30" className="d-inline-block align-top" alt="" />
+                        <img src={assets.logo} width="150" className="d-inline-block align-top" alt="" />
                     </Navbar.Brand>
 
                     <Navbar.Toggle aria-controls="navbarNav" />
                     <Navbar.Collapse id="navbarNav">
                         <Nav className="me-auto">
                             <Nav.Link className={`navbar-icon ${isDarkMode ? 'text-white' : 'text-dark'}`} as={NavLink} to="/faq" onClick={handleClick}>FAQ</Nav.Link>
-                    
+
                             <div className="mode-switch">
                                 <BsSun className={`mode-icon ${isDarkMode ? 'inactive' : 'active'}`} />
                                 <label className="switch">
@@ -95,7 +100,7 @@ const Header = ({ toggleTheme }) => {
                         </Nav>
 
                         <div className="search-container">
-                            <input className="search-input" type="search" placeholder="Buscar por producto, categoría o marca" aria-label="Search"/>
+                            <input className="search-input" type="search" placeholder="Buscar por producto, categoría o marca" aria-label="Search" />
                             <button className="search-btn">
                                 <FaSearch />
                             </button>
@@ -135,7 +140,17 @@ const Header = ({ toggleTheme }) => {
                 <Container fluid>
                     <Nav className="me-auto" style={{ justifyContent: 'space-evenly', width: '100%' }}>
                         <div className="nav-dropdown">
-                            <span className="nav-link">Hombres</span>
+                            <NavLink to='/MainHombres' className="nav-link">Hombres</NavLink>
+                            <div className="dropdown-menu">
+                                <NavLink to="/ropa/hombres/remeras">Remeras</NavLink>
+                                <NavLink to="/ropa/hombres/pantalones">Pantalones</NavLink>
+                                <NavLink to="/ropa/hombres/camperas">Camperas</NavLink>
+                            </div>
+                        </div>
+
+
+                        <div className="nav-dropdown">
+                            <NavLink to='/MainMujeres' className="nav-link">Mujeres</NavLink>
                             <div className="dropdown-menu">
                                 <NavLink to="/ropa/hombres/remeras">Remeras</NavLink>
                                 <NavLink to="/ropa/hombres/pantalones">Pantalones</NavLink>
@@ -144,16 +159,7 @@ const Header = ({ toggleTheme }) => {
                         </div>
 
                         <div className="nav-dropdown">
-                            <span className="nav-link">Mujeres</span>
-                            <div className="dropdown-menu">
-                                <NavLink to="/ropa/hombres/remeras">Remeras</NavLink>
-                                <NavLink to="/ropa/hombres/pantalones">Pantalones</NavLink>
-                                <NavLink to="/ropa/hombres/camperas">Camperas</NavLink>
-                            </div>
-                        </div>
-
-                        <div className="nav-dropdown">
-                            <span className="nav-link">Niños</span>
+                            <NavLink to='/MainKids' className="nav-link">Niños</NavLink>
                             <div className="dropdown-menu">
                                 <NavLink to="/ropa/hombres/remeras">Remeras</NavLink>
                                 <NavLink to="/ropa/hombres/pantalones">Pantalones</NavLink>

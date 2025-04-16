@@ -1,63 +1,64 @@
 .carrito-container {
-    margin: 80px;
-  }
-  
-  .tabla-carrito {
-    margin: 40px;
-  }
-  
-  .tabla-carrito table {
-    width: 100%;
-    background-color: #ddd3a9;
-    border-collapse: collapse;
-  }
-  
-  .tabla-carrito table td, .tabla-carrito table th {
-    padding: 10px;
-    text-align: left;
-    border: 1px solid #ddd3a9;
-  }
-  
-  .txt-heading {
-    color: #211a1a;
-    border-bottom: 1px solid #000000;
-    overflow: auto;
-  }
-  
-  .botonAgregarAccion {
-    padding: 5px 10px;
-    background-color: #efefef;
-    border: #E0E0E0 1px solid;
-    color: #211a1a;
-    border-radius: 3px;
-    cursor: pointer;
-    margin-right: 10px;
-  }
-  
-  .botonAgregarAccion:hover {
-    background-color: #dcdcdc;
-  }
-  
-  .cantidad-producto {
-    width: 50px;
-    padding: 5px;
-    border-radius: 3px;
-    border: #E0E0E0 1px solid;
-    text-align: center;
-  }
-  
-  .no-hay-nada {
-    text-align: center;
-    clear: both;
-    margin: 38px 0px;
-  }
-  
-  .cart-item-image {
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    border: #E0E0E0 1px solid;
-    padding: 5px;
-    vertical-align: middle;
-    margin-right: 15px;
-  }
+  margin: 80px;
+}
+
+.tabla-carrito {
+  margin: 40px;
+}
+
+.tabla-carrito table {
+  width: 100%;
+  background-color: #ddd3a9;
+  border-collapse: collapse;
+}
+
+.tabla-carrito table td,
+.tabla-carrito table th {
+  padding: 10px;
+  text-align: left;
+  border: 1px solid #ddd3a9;
+}
+
+.txt-heading {
+  color: #211a1a;
+  border-bottom: 1px solid #000000;
+  overflow: auto;
+}
+
+.botonAgregarAccion {
+  padding: 5px 10px;
+  background-color: #efefef;
+  border: #E0E0E0 1px solid;
+  color: #211a1a;
+  border-radius: 3px;
+  cursor: pointer;
+  margin-right: 10px;
+}
+
+.botonAgregarAccion:hover {
+  background-color: #dcdcdc;
+}
+
+.cantidad-producto {
+  width: 50px;
+  padding: 5px;
+  border-radius: 3px;
+  border: #E0E0E0 1px solid;
+  text-align: center;
+}
+
+.no-hay-nada {
+  text-align: center;
+  clear: both;
+  margin: 38px 0px;
+}
+
+.cart-item-image {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  border: #E0E0E0 1px solid;
+  padding: 5px;
+  vertical-align: middle;
+  margin-right: 15px;
+}

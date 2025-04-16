@@ -1,3 +1,4 @@
+
 import { useState } from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Header from './components/header/header';
@@ -9,6 +10,9 @@ import { RegistroPage } from './pages/registro/registro';
 import { LoginPage } from './pages/login/login';
 import AdminPage from './pages/admin/admin';
 import CarritoPage from './pages/carrito/carrito';
+import MainHombresPage from './Clothing/page/Hombre/MainHombres';
+import MainMujeresPage from './Clothing/page/Mujer/MainMujeres';
+import MainKidsPage from './Clothing/page/Kids/MainKids';
 
 function App() {
   const [darkMode, setDarkMode] = useState(false);
@@ -26,6 +30,9 @@ function App() {
           <Route path="/admin" element={<AdminPage />} />
           <Route path="/registro" element={<RegistroPage />} />
           <Route path="/carrito" element={<CarritoPage />} />
+          <Route path="/MainHombres" element={<MainHombresPage />} />
+          <Route path="/MainMujeres" element={<MainMujeresPage />} />
+          <Route path="/MainKids" element={<MainKidsPage />} />
         </Routes>
         <Footer />
       </Router>
