@@ -13,6 +13,29 @@ body, html {
     padding-bottom: 100px;
 }
 
+/* Modo claro */
+.home-index.light {
+    background-color: white;
+    color: black;
+  }
+  
+  /* Modo oscuro */
+  .home-index.dark {
+    background-color: #121212;
+    color: white;
+  }
+  
+  /* Ejemplo de herencia para hijos */
+  .home-index.dark .card-home {
+    background-color: #1e1e1e;
+    color: white;
+  }
+  
+  .home-index.light .card-home {
+    background-color: #f9f9f9;
+    color: black;
+  }
+
 .carousel-inner img {
     width: 100%;
     height: auto;

@@ -7,6 +7,7 @@ import Navbar from 'react-bootstrap/Navbar';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { FaSearch, FaHeart, FaShoppingCart, FaUserCircle } from 'react-icons/fa';
 import { BsMoon, BsSun } from 'react-icons/bs';
+import { assets } from '../../Clothing/assets/assets';
 
 const Header = ({ toggleTheme }) => {
     const [isDarkMode, setIsDarkMode] = useState(true);
@@ -84,14 +85,15 @@ const Header = ({ toggleTheme }) => {
                     <Navbar.Toggle aria-controls="navbarNav" />
                     <Navbar.Collapse id="navbarNav">
                         <Nav className="me-auto">
-                        
+
+                            
                             <div className="mode-switch">
-                                <BsSun className={`mode-icon ${isDarkMode ? 'inactive' : 'active'}`} />
+                                <BsMoon className={`mode-icon ${isDarkMode ? 'active' : 'inactive'}`} />
                                 <label className="switch">
                                     <input type="checkbox" onChange={toggleDarkMode} checked={isDarkMode} />
                                     <span className="slider" onClick={toggleTheme}></span>
                                 </label>
-                                <BsMoon className={`mode-icon ${isDarkMode ? 'active' : 'inactive'}`} />
+                                <BsSun className={`mode-icon ${isDarkMode ? 'inactive' : 'active'}`} />
                             </div>
                         </Nav>
 
