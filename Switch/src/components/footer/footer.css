@@ -10,88 +10,149 @@ html, body {
 }
 
 .footer {
-  background-color: #000000;
+  background-color: black; /* Fondo negro */
   color: white;
-  padding: 4px 25px; 
-  font-size: 0.85rem; 
+  padding: 0px 25px;
+  font-size: 1rem; /* Reducir el tamaño de la letra un poco */
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;
+  justify-content: center;
+  align-items: center;
   width: 100%;
   position: relative;
   bottom: 0;
+  border-radius: 12px; /* Bordes redondeados */
 }
 
-.footer-container {
+.footer-center {
   display: flex;
-  justify-content: flex-end;
-  width: 100%;
-  margin-bottom: 5px;
-}
-
-.footer-left {
-  flex: 1;
-  display: flex;
-  justify-content: flex-start;
+  flex-direction: column;
+  justify-content: center;
   align-items: center;
-  padding-left: 5px;
+  width: 100%;
 }
 
-.footer-right {
+footer nav {
   display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  padding-right: 5px;
-  text-align: right;
+  flex-direction: row; /* Alineación de los elementos en fila */
+  align-items: center;
+  justify-content: flex-start;
+  width: 100%;
+  gap: 4px; /* Espacio pequeño entre el ícono y el texto */
+  margin-top: 10px;
 }
 
-.switch-style-and-social {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
+
+.smile-icon {
+  margin-right: 5px; /* Reducir el espacio entre la carita y el texto */
+  color: white;
+}
+
+.quienes-link {
+  color: white;
+  font-size: 1.2rem;
 }
 
 .social-icons {
   display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  margin-top: 16px;
+  justify-content: flex-end; /* Redes sociales alineadas a la derecha */
+  align-items: center;
+  gap: 15px; /* Aumentar el espacio entre los iconos de redes sociales */
+  margin-top: 0px;
+  width: 100%;
 }
 
 .social-icon {
-  display: flex;
-  align-items: center;
-  margin-bottom: 4px;
-}
-
-.social-icon svg {
-  margin-right: 6px;
-}
-
-.footer-link {
-  font-size: 1em;
   color: white;
-  margin-left: 10px;
+  font-size: 1.5rem; /* Tamaño de los íconos */
 }
 
-.contact-info-container {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  margin-top: 5px;
+.social-text {
+  color: white;
+  font-size: 1.2rem;
+  margin-left: 10px;
 }
 
 .contact-info {
   display: flex;
-  align-items: center;
-  margin-bottom: 5px;
+  flex-direction: column;
+  align-items: flex-start;
+  margin-top: 15px; /* Reducir espacio entre "Quienes somos" y números de teléfono */
+  width: 100%;
 }
 
-.contact-info svg {
-  margin-right: 6px;
+.contact-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.contact-icon {
+  margin-right: 10px;
+  color: white;
+}
+
+.contact-text {
+  color: white;
+  font-size: 1rem;
 }
 
 .footer-text {
-  text-align: left;
-  font-size: 0.7em;
+  color: white;
+  font-size: 1rem;
+  text-align: center;
+  width: 100%;
+}
+
+/* Nueva sección: Título y los iconos de descarga */
+.app-download {
+  text-align: center;
+  margin-top: 10px;
+}
+
+.app-title {
+  color: white;
+  font-size: 1.5rem;
+  margin-bottom: 15px;
+  font-weight: bold;
+}
+
+.app-store-icons {
+  display: flex;
+  justify-content: center;
+  gap: 30px; /* Más espacio entre los íconos de Play Store y App Store */
+}
+
+.app-icon {
+  display: inline-block;
+}
+
+.play-store-icon, .app-store-icon {
+  width: 160px; /* Aumentar el tamaño de los íconos de la tienda */
+  height: auto;
+}
+
+/* Información de contacto */
+.contact-info {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin-top: -14px; /* Menos espacio entre las secciones */
+  width: 100%;
+}
+
+.contact-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.contact-icon {
+  margin-right: 10px;
+  color: white;
+}
+
+.contact-text {
+  color: white;
+  font-size: 1rem;
 }

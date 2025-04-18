@@ -1,6 +1,6 @@
 import React from 'react';
 import './home.css';
-import { FaApple, FaGooglePlay, FaSyncAlt, FaTruck, FaUndo } from 'react-icons/fa';
+import { FaSyncAlt, FaTruck, FaUndo } from 'react-icons/fa';
 
 const carouselImages = [
   'https://via.placeholder.com/800x300/FF0000/FFFFFF?text=Imagen+1',
@@ -12,6 +12,12 @@ const cardImages = [
   'https://via.placeholder.com/300x200/FF0000/FFFFFF?text=Card+1',
   'https://via.placeholder.com/300x200/00FF00/FFFFFF?text=Card+2',
   'https://via.placeholder.com/300x200/0000FF/FFFFFF?text=Card+3',
+];
+
+const lastAddedImages = [
+  'https://via.placeholder.com/400x300/FF5733/FFFFFF?text=Última+1',
+  'https://via.placeholder.com/400x300/33FF57/FFFFFF?text=Última+2',
+  'https://via.placeholder.com/400x300/5733FF/FFFFFF?text=Última+3',
 ];
 
 const Home = ({ darkMode }) => {
@@ -55,46 +61,43 @@ const Home = ({ darkMode }) => {
       <div className="service-section">
         <div className="service-box">
           <div className="service-item">
-            <br/>
             <FaSyncAlt size={40} />
-            <br/>
-            <br/>
             <h3 className="service-title">Nuevos productos cada día</h3>
             <p className="service-description">Todos los días publicamos miles de artículos nuevos.</p>
           </div>
 
           <div className="service-item">
-            <br/>
             <FaTruck size={40} />
-            <br/>
-            <br/>
             <h3 className="service-title">Entregas en 72 horas</h3>
             <p className="service-description">Tu pedido será entregado en el plazo máximo de 72 horas.</p>
           </div>
 
           <div className="service-item">
-            <br/>
             <FaUndo size={40} />
-            <br/>
-            <br/>
             <h3 className="service-title">14 días de devolución</h3>
             <p className="service-description">Si no estás satisfecho con tu compra, tienes 14 días para devolver tu pedido.</p>
           </div>
         </div>
       </div>
 
-      <div className="download-section" style={{ marginTop: '200px' }}>
-        <hr />
-        <p className="download-text">Descarga la aplicación y únete a la experiencia Switch Style</p>
-        <div className="download-icons" style={{ justifyContent: 'flex-end' }}>
-          <div className="store-icon">
-            <FaApple size={50} />
-            <p>App Store</p>
+      <div className="last-added-section">
+        <h2>Últimas Prendas Añadidas</h2>
+        <div id="lastAddedCarousel" className="carousel slide" data-bs-ride="carousel">
+          <div className="carousel-inner">
+            {lastAddedImages.map((image, index) => (
+              <div className={`carousel-item ${index === 0 ? 'active' : ''}`} key={index}>
+                <img src={image} className="d-block w-100" alt={`Última Prenda ${index + 1}`} />
+              </div>
+            ))}
           </div>
-          <div className="store-icon">
-            <FaGooglePlay size={50} />
-            <p>Play Store</p>
-          </div>
+          <button className="carousel-control-prev" type="button" data-bs-target="#lastAddedCarousel" data-bs-slide="prev">
+            <span className="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span className="visually-hidden">Previous</span>
+          </button>
+          <button className="carousel-control-next" type="button" data-bs-target="#lastAddedCarousel" data-bs-slide="next">
+            <span className="carousel-control-next-icon" aria-hidden="true"></span>
+            <span className="visually-hidden">Next</span>
+          </button>
         </div>
       </div>
     </div>

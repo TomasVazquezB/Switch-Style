@@ -6,41 +6,54 @@ import './footer.css';
 
 const Footer = () => {
   return (
-    <footer className="footer">
-      <div className="footer-container">
-        <div className="footer-left">
-          <div className="footer-left-content">
-            <Typography color="white" className="footer-text"> © 2024-2025 Switch Style | Todos los derechos reservados</Typography>
-            <div className="quienes-wrapper">
-              <FaRegSmileWink className="smile-icon" />
-              <Link to="/quienessomos" className="quienes-link">¿Querés conocernos?
-</Link>
-            </div>
-          </div>
-        </div>
+    <footer className="footer footer-center bg-base-200/60 rounded-sm p-4">
+      {/* Navegación de enlaces */}
+      <nav className="footer-nav">
+        <FaRegSmileWink className="smile-icon" />
+        <Link to="/quienessomos" className="quienes-link">¿Querés conocernos?</Link>
+      </nav>
 
-        <div className="footer-right">
-          <div className="switch-style-and-social">
-            <div className="social-icons">
-              <div className="social-icon">
-                <FaFacebookF />
-                <FaTwitter />
-                <FaInstagram />
-                <Typography color="white" className="footer-link">Switch Style</Typography>
-              </div>
-            </div>
-
-            <div className="contact-info-container">
-              <Typography color="white" className="contact-info">
-                <FaPhoneAlt /> 0800-222-1254 | 1162657008
-              </Typography>
-              <Typography color="white" className="contact-info">
-                <FaEnvelope /> consultas@switchstyle.com
-              </Typography>
-            </div>
-          </div>
+      {/* Título y iconos de la app */}
+      <div className="app-download">
+        <Typography color="white" className="app-title">Descarga la aplicación y únete a la experiencia Switch Style</Typography>
+        <div className="app-store-icons">
+          <a className="app-icon">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/66/Google_Play_Logo.svg/1024px-Google_Play_Logo.svg.png" alt="Google Play Store" className="play-store-icon" />
+          </a>
+          <a className="app-icon">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/a/a7/Apple_Logo.svg" alt="App Store" className="app-store-icon" />
+          </a>
         </div>
       </div>
+
+      {/* Redes sociales */}
+      <nav>
+        <div className="social-icons">
+          <a aria-label="Redes Link">
+            <FaFacebookF className="social-icon" />
+            <FaTwitter className="social-icon" />
+            <FaInstagram className="social-icon" />
+          </a>
+          <span className="social-text">Switch Style</span>
+        </div>
+      </nav>
+
+      {/* Información de contacto (teléfono y correo) */}
+      <nav className="contact-info">
+        <div className="contact-item">
+          <FaPhoneAlt className="contact-icon" />
+          <span className="contact-text">0800-222-1254 | 1162657008</span>
+        </div>
+        <div className="contact-item">
+          <FaEnvelope className="contact-icon" />
+          <span className="contact-text">consultas@switchstyle.com</span>
+        </div>
+      </nav>
+
+      {/* Copyright */}
+      <aside>
+        <Typography color="white" className="footer-text">© 2024-2025 Switch Style | Todos los derechos reservados</Typography>
+      </aside>
     </footer>
   );
 };
