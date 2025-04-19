@@ -15,15 +15,13 @@ const Header = ({ toggleTheme }) => {
     const [showProfileMenu, setShowProfileMenu] = useState(false);
     const navigate = useNavigate();
 
-    useEffect(() => {
-        document.body.classList.add(isDarkMode ? 'dark-mode' : 'light-mode');
+    useEffect(() => {document.body.classList.add(isDarkMode ? 'dark-mode' : 'light-mode');
         localStorage.setItem('darkMode', isDarkMode.toString());
         const loggedIn = localStorage.getItem('isLoggedIn');
         setIsLoggedIn(loggedIn === 'true');
     }, [isDarkMode]);
 
-    useEffect(() => {
-        const savedMode = localStorage.getItem('darkMode');
+    useEffect(() => {const savedMode = localStorage.getItem('darkMode');
         if (savedMode === 'true') {
             setIsDarkMode(true);
         } else {
@@ -42,7 +40,7 @@ const Header = ({ toggleTheme }) => {
         }, 2000);
     };
 
-    const handleProfileClick = () => { etShowProfileMenu(!showProfileMenu); };
+    const handleProfileClick = () => { setShowProfileMenu(!showProfileMenu); };
 
     const handleLogout = () => {
         localStorage.removeItem('isLoggedIn');
@@ -74,35 +72,35 @@ const Header = ({ toggleTheme }) => {
     return (
         <>
             <div className={`offer-bar ${isDarkMode ? 'bg-ultra-dark' : 'bg-ultra-light'} text-center py-2`}>
-                <br />
+                <br/>
                 <p className={isDarkMode ? 'text-dark' : 'text-white'}>¡Suscribite para obtener ofertas unicas y obten un 15% en tu primer compra!</p>
             </div>
 
             <Navbar expand="lg" className={`navbar-top ${isDarkMode ? 'bg-dark' : 'bg-light'}`}>
                 <Container fluid style={{ maxWidth: "100%" }}>
                     <Navbar.Brand as={NavLink} to="/" onClick={() => navigate('/')}>
-                        <img src={assets.logo} width="150" className="d-inline-block align-top" alt="" />
+                    <img src="img/LOGO.PNG" width="90" height="50" className="d-inline-block align-top" alt="Logo"/>
                     </Navbar.Brand>
 
                     <Navbar.Toggle aria-controls="navbarNav" />
                     <Navbar.Collapse id="navbarNav">
                         <Nav className="me-auto">
-                            <Nav.Link className={`navbar-icon ${isDarkMode ? 'text-white' : 'text-dark'}`} as={NavLink} to="/faq" onClick={handleClick}>FAQ</Nav.Link>
 
+                            
                             <div className="mode-switch">
-                                <BsSun className={`mode-icon ${isDarkMode ? 'inactive' : 'active'}`} />
+                                <BsMoon className={`mode-icon ${isDarkMode ? 'active' : 'inactive'}`} />
                                 <label className="switch">
                                     <input type="checkbox" onChange={toggleDarkMode} checked={isDarkMode} />
                                     <span className="slider" onClick={toggleTheme}></span>
                                 </label>
-                                <BsMoon className={`mode-icon ${isDarkMode ? 'active' : 'inactive'}`} />
+                                <BsSun className={`mode-icon ${isDarkMode ? 'inactive' : 'active'}`} />
                             </div>
                         </Nav>
 
                         <div className="search-container">
-                            <input className="search-input" type="search" placeholder="Buscar por producto, categoría o marca" aria-label="Search" />
+                            <input className="search-input" type="search" placeholder="Buscar por producto, categoría o marca" aria-label="Search"/>
                             <button className="search-btn">
-                                <FaSearch />
+                                <FaSearch/>
                             </button>
                             <Nav.Link as={NavLink} to="/favoritos" className="icon-separator">
                                 <FaHeart className={`navbar-icon ${isDarkMode ? 'text-white' : 'text-dark'}`} />
@@ -115,12 +113,13 @@ const Header = ({ toggleTheme }) => {
                         <Nav className="ms-auto">
                             {isLoggedIn ? (
                                 <div className="profile-container">
-                                    <FaUserCircle className="navbar-icon profile-icon" onClick={handleProfileClick} />
+                                    <FaUserCircle className="navbar-icon profile-icon" onClick={handleProfileClick}/>
                                     {showProfileMenu && (
                                         <div className="profile-menu">
                                             <NavLink to="/perfil">Mi Perfil</NavLink>
                                             <NavLink to="/pedidos">Mis Pedidos</NavLink>
                                             <NavLink to="/favoritos">Mis Favoritos</NavLink>
+                                            <NavLink to="/FAQ">Preguntas Frecuentes</NavLink>
                                             <button onClick={handleLogout}>Salir</button>
                                         </div>
                                     )}
@@ -138,19 +137,9 @@ const Header = ({ toggleTheme }) => {
 
             <Navbar expand="lg" className={`navbar-bottom ${isDarkMode ? 'bg-dark' : 'bg-light'}`}>
                 <Container fluid>
-                    <Nav className="me-auto" style={{ justifyContent: 'space-evenly', width: '100%' }}>
+                    <Nav className="me-auto" style={{justifyContent: 'space-evenly', width: '100%'}}>
                         <div className="nav-dropdown">
-                            <NavLink to='/MainHombres' className="nav-link">Hombres</NavLink>
-                            <div className="dropdown-menu">
-                                <NavLink to="/ropa/hombres/remeras">Remeras</NavLink>
-                                <NavLink to="/ropa/hombres/pantalones">Pantalones</NavLink>
-                                <NavLink to="/ropa/hombres/camperas">Camperas</NavLink>
-                            </div>
-                        </div>
-
-
-                        <div className="nav-dropdown">
-                            <NavLink to='/MainMujeres' className="nav-link">Mujeres</NavLink>
+                            <span className="nav-link">Hombres</span>
                             <div className="dropdown-menu">
                                 <NavLink to="/ropa/hombres/remeras">Remeras</NavLink>
                                 <NavLink to="/ropa/hombres/pantalones">Pantalones</NavLink>
@@ -159,7 +148,16 @@ const Header = ({ toggleTheme }) => {
                         </div>
 
                         <div className="nav-dropdown">
-                            <NavLink to='/MainKids' className="nav-link">Niños</NavLink>
+                            <span className="nav-link">Mujeres</span>
+                            <div className="dropdown-menu">
+                                <NavLink to="/ropa/hombres/remeras">Remeras</NavLink>
+                                <NavLink to="/ropa/hombres/pantalones">Pantalones</NavLink>
+                                <NavLink to="/ropa/hombres/camperas">Camperas</NavLink>
+                            </div>
+                        </div>
+
+                        <div className="nav-dropdown">
+                            <span className="nav-link">Niños</span>
                             <div className="dropdown-menu">
                                 <NavLink to="/ropa/hombres/remeras">Remeras</NavLink>
                                 <NavLink to="/ropa/hombres/pantalones">Pantalones</NavLink>
