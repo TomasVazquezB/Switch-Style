@@ -7,13 +7,11 @@ import './footer.css';
 const Footer = () => {
   return (
     <footer className="footer footer-center bg-base-200/60 rounded-sm p-4">
-      {/* Navegación de enlaces */}
       <nav className="footer-nav">
         <FaRegSmileWink className="smile-icon" />
         <Link to="/quienessomos" className="quienes-link">¿Querés conocernos?</Link>
       </nav>
 
-      {/* Título y iconos de la app */}
       <div className="app-download">
         <Typography color="white" className="app-title">Descarga la aplicación y únete a la experiencia Switch Style</Typography>
         <div className="app-store-icons">
@@ -26,7 +24,6 @@ const Footer = () => {
         </div>
       </div>
 
-      {/* Redes sociales */}
       <nav>
         <div className="social-icons">
           <a aria-label="Redes Link">
@@ -38,7 +35,6 @@ const Footer = () => {
         </div>
       </nav>
 
-      {/* Información de contacto (teléfono y correo) */}
       <nav className="contact-info">
         <div className="contact-item">
           <FaPhoneAlt className="contact-icon" />
@@ -50,7 +46,6 @@ const Footer = () => {
         </div>
       </nav>
 
-      {/* Copyright */}
       <aside>
         <Typography color="white" className="footer-text">© 2024-2025 Switch Style | Todos los derechos reservados</Typography>
       </aside>

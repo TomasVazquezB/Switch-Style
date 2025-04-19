@@ -37,7 +37,7 @@ export function RegistroPage() {
     return (
         <div className="registro-container">
             <div className="image-container">
-                <img src="/registro.jpg" alt="Imagen" className="registro-image" />
+                <img src="img/registro.jpg" alt="Imagen" className="registro-image" />
             </div>
             <div className="registro-box">
                 <div className="registro-form">

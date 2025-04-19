@@ -46,7 +46,7 @@ const Home = ({ darkMode }) => {
         </button>
       </div>
 
-      <h2 className="mas-buscado">Productos Destacados</h2>
+      <h2 className="mas-buscado">Descubre los mas buscado</h2>
       <div className="card-container">
         {cardImages.map((image, index) => (
           <div className="card-home" key={index}>

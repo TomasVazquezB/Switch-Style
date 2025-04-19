@@ -1,4 +1,3 @@
-/* Estilos generales */
 body, html {
     margin: 0;
     padding: 0;
@@ -7,26 +6,23 @@ body, html {
 
 .home-index {
     font-family: Arial, sans-serif;
-    padding: 20px;
+    padding: 25px;
     display: flex;
     flex-direction: column;
-    min-height: 100vh;
+    min-height: 50vh;
     padding-bottom: 100px;
 }
 
-/* Modo claro */
 .home-index.light {
     background-color: white;
     color: black;
 }
 
-/* Modo oscuro */
 .home-index.dark {
     background-color: #121212;
     color: white;
 }
 
-/* Estilos de las imágenes del carrusel */
 .carousel-inner img {
     width: 100%;
     height: auto;
@@ -36,44 +32,39 @@ body, html {
     margin-bottom: 20px;
 }
 
-/* Título de productos destacados */
 .mas-buscado {
     text-align: center;
-    margin-top: 30px;
-    font-size: 26px;
+    margin-top: 14px;
+    font-size: 24px;
     font-weight: bold;
-    color: #333;
+    color: #000000;
 }
 
-/* Sección de últimas prendas añadidas */
 .last-added-section {
-    margin-top: 50px; /* Ajuste para mover la sección hacia abajo */
+    margin-top: 20px; 
     padding: 20px 0;
 }
 
 .last-added-section h2 {
-    margin-top: 30px; /* Subir el título un poco y separarlo de la sección de devolución */
+    margin-top: 30px; 
     text-align: center;
     font-size: 24px;
     font-weight: bold;
-    color: #333;
+    color: #000000;
 }
 
-/* Estilo para las imágenes dentro del carrusel de "Últimas Prendas Añadidas" */
 .last-added-section .carousel-item {
-    margin-right: 15px; /* Espacio entre las imágenes del carrusel */
+    margin-right: 15px; 
     transition: transform 0.3s ease-in-out;
 }
 
-/* Espacio entre las imágenes del carrusel */
 .last-added-section .carousel-item img {
     width: 100%;
     height: auto;
     object-fit: cover;
-    border-radius: 8px; /* Bordes redondeados para las imágenes */
+    border-radius: 8px; 
 }
 
-/* Estilos de los controles del carrusel */
 .carousel-control-prev, .carousel-control-next {
     background-color: rgba(0, 0, 0, 0.5);
     border-radius: 50%;
@@ -85,7 +76,6 @@ body, html {
     background-color: rgba(0, 0, 0, 0.7);
 }
 
-/* Estilo de los botones del carrusel */
 .carousel-caption button {
     background-color: #ff5733;
     color: white;
@@ -98,13 +88,11 @@ body, html {
     background-color: #c13d28;
 }
 
-/* Separar la sección de productos destacados de la de últimas prendas */
 .featured-products-section {
-    margin-top: 60px; /* Asegura que la sección de productos destacados esté separada */
+    margin-top: 60px; 
     padding: 20px 0;
 }
 
-/* Título de productos destacados */
 .featured-products-section h2 {
     text-align: center;
     font-size: 24px;
@@ -112,7 +100,6 @@ body, html {
     color: #333;
 }
 
-/* Estilo para las cards de productos destacados */
 .featured-products-container {
     display: flex;
     justify-content: space-around;
@@ -132,7 +119,6 @@ body, html {
     transition: 0.3s;
 }
 
-/* Sección de servicios */
 .service-section {
     margin-top: 30px;
 }
@@ -171,44 +157,8 @@ body, html {
     color: #555;
 }
 
-/* Sección de últimas prendas añadidas (carrousel) */
 .last-added-section .carousel-inner {
-    margin-top: 20px; /* Añadir un pequeño margen arriba del carrusel */
-}
-
-/* Estilos para la sección de descarga de la app */
-.download-section {
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
-    font-size: 1px;
-    border-top: 2px solid #000;
-    padding-top: 20px;
-    padding-bottom: 10px;
-    height: auto;
-}
-
-.download-text {
-    font-size: 16px;
-    font-weight: bold;
-    margin-bottom: 0;
-    text-align: left;
-    width: 100%;
-}
-
-.download-icons {
-    display: flex;
-    gap: 10px;
-    justify-content: flex-end;
-}
-
-.store-icon {
-    text-align: center;
-}
-
-.store-icon p {
-    margin-top: 5px;
-    font-size: 12px;
+    margin-top: 20px; 
 }
 
 hr {
@@ -216,7 +166,6 @@ hr {
     border: 1px solid #000;
 }
 
-/* Media Queries para dispositivos móviles */
 @media (max-width: 768px) {
     .card-container {
         justify-content: center;
@@ -230,29 +179,8 @@ hr {
     .service-item {
         max-width: 100%;
     }
-
-    .download-icons {
-        flex-direction: column;
-        justify-content: center;
-        gap: 20px;
-    }
-
-    .store-icon {
-        margin-bottom: 20px;
-    }
-
-    .download-text {
-        text-align: center;
-        width: 100%;
-        margin-bottom: 10px;
-    }
-
-    .download-icons {
-        justify-content: center;
-    }
 }
 
-/* Estilo para el modo oscuro */
 .dark {
     background-color: #121212;
     color: #f0f0f0;
@@ -280,7 +208,6 @@ hr {
     color: #f0f0f0;
 }
 
-/* Estilo para el modo claro */
 .light {
     background-color: #ffffff;
     color: #121212;
