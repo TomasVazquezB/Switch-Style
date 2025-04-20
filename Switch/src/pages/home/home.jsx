@@ -24,27 +24,51 @@ const Home = ({ darkMode }) => {
   return (
     <div className={`home-index ${darkMode ? 'dark' : 'light'}`}>
       <div id="carouselExampleIndicators" className="carousel slide" data-bs-ride="carousel" style={{ marginTop: '50px' }}>
-        <div className="carousel-indicators">
-          <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" className="active" aria-current="true" aria-label="Slide 1"></button>
-          <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
-          <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
+  <div className="carousel-indicators">
+    {carouselImages.map((_, index) => (
+      <button
+        key={index}
+        type="button"
+        data-bs-target="#carouselExampleIndicators"
+        data-bs-slide-to={index}
+        className={index === 0 ? 'active' : ''}
+        aria-current={index === 0 ? 'true' : undefined}
+        aria-label={`Slide ${index + 1}`}
+      ></button>
+    ))}
+  </div>
+
+  <div className="carousel-inner">
+    {carouselImages.map((image, index) => (
+      <div className={`carousel-item ${index === 0 ? 'active' : ''}`} key={index}>
+        <div className="hero-carousel-zara">
+          <div className="hero-text-zara">
+            <p className="subtitle">OUR ALL-TIME FAVOURITES</p>
+            <h1 className="title">Blouses & Tops</h1>
+            <p className="description">
+              Discover our best-loved pieces – timeless styles you'll want to wear again and again.
+            </p>
+            <button className="btn-discover">DISCOVER MORE</button>
+          </div>
+          <div className="hero-image-zara">
+            <img src={image} alt={`Slide ${index + 1}`} />
+          </div>
         </div>
-        <div className="carousel-inner">
-          {carouselImages.map((image, index) => (
-            <div className={`carousel-item ${index === 0 ? 'active' : ''}`} key={index}>
-              <img src={image} className="d-block w-100" alt={`Slide ${index + 1}`} />
-            </div>
-          ))}
-        </div>
-        <button className="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
-          <span className="carousel-control-prev-icon" aria-hidden="true"></span>
-          <span className="visually-hidden">Previous</span>
-        </button>
-        <button className="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
-          <span className="carousel-control-next-icon" aria-hidden="true"></span>
-          <span className="visually-hidden">Next</span>
-        </button>
       </div>
+    ))}
+  </div>
+
+  <button className="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+    <span className="carousel-control-prev-icon" aria-hidden="true"></span>
+    <span className="visually-hidden">Previous</span>
+  </button>
+  <button className="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+    <span className="carousel-control-next-icon" aria-hidden="true"></span>
+    <span className="visually-hidden">Next</span>
+  </button>
+</div>
+
+
 
       <h2 className="mas-buscado">Descubre los mas buscado</h2>
       <div className="card-container">
@@ -81,7 +105,7 @@ const Home = ({ darkMode }) => {
       </div>
 
       <div className="last-added-section">
-        <h2>Últimas Prendas Añadidas</h2>
+        <h2 className='mas-buscado'>Últimas Prendas Añadidas</h2>
         <div id="lastAddedCarousel" className="carousel slide" data-bs-ride="carousel">
           <div className="carousel-inner">
             {lastAddedImages.map((image, index) => (
