@@ -79,7 +79,7 @@ const Header = ({ toggleTheme }) => {
             <Navbar expand="lg" className={`navbar-top ${isDarkMode ? 'bg-dark' : 'bg-light'}`}>
                 <Container fluid style={{ maxWidth: "100%" }}>
                     <Navbar.Brand as={NavLink} to="/" onClick={() => navigate('/')}>
-                    <img src="assets/LOGO.PNG" width="90" height="50" className="d-inline-block align-top" alt="Logo"/>
+                    <img src="../src/Clothing/assets/LOGO.png" width="90" height="50" className="d-inline-block align-top" alt="Logo"/>
                     </Navbar.Brand>
 
                     <Navbar.Toggle aria-controls="navbarNav" />
