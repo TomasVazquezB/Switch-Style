@@ -11,19 +11,6 @@ const Footer = () => {
         <FaRegSmileWink className="smile-icon" />
         <Link to="/quienessomos" className="quienes-link">¿Querés conocernos?</Link>
       </nav>
-
-      <div className="app-download">
-        <Typography color="white" className="app-title">Descarga la aplicación y únete a la experiencia Switch Style</Typography>
-        <div className="app-store-icons">
-          <a className="app-icon">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/66/Google_Play_Logo.svg/1024px-Google_Play_Logo.svg.png" alt="Google Play Store" className="play-store-icon" />
-          </a>
-          <a className="app-icon">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/a/a7/Apple_Logo.svg" alt="App Store" className="app-store-icon" />
-          </a>
-        </div>
-      </div>
-
       <nav>
         <div className="social-icons">
           <a aria-label="Redes Link">

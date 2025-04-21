@@ -1,4 +1,3 @@
-
 body, html {
     margin: 0;
     padding: 0;
@@ -29,25 +28,125 @@ body, html {
     height: auto;
 }
 
+/* Subimos el carousel más cerca de la navbar */
 .carousel {
-    margin-bottom: 20px;
+    margin-bottom: 30px;
+    margin-top: -100px; /* Subir el carrusel más cerca de la navbar */
 }
 
 .mas-buscado {
     text-align: center;
-    margin-top: 14px;
-    font-size: 24px;
+    margin-top: 12px;
+    font-size: 26px;
     font-weight: bold;
     color: #000000;
 }
 
-.last-added-section {
-    margin-top: 20px; 
+.card-container {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 200px;
+}
+
+.card-home {
+    width: 300px;
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+}
+
+.card-home img {
+    width: 100%;
+    border-radius: 8px;
+}
+
+.card-body {
+    padding: 40px;
+    text-align: center;
+}
+
+.btn-primary {
+    background-color: #000000;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+}
+
+.btn-primary:hover {
+    background-color: #222222;
+}
+
+.featured-products-section {
+    margin-top: 60px;
     padding: 20px 0;
 }
 
+.featured-products-section h2 {
+    text-align: center;
+    font-size: 24px;
+    font-weight: bold;
+    color: #333;
+}
+
+.featured-products-container {
+    display: flex;
+    justify-content: space-around;
+    gap: 20px;
+    margin-top: 30px;
+    flex-wrap: wrap;
+}
+
+.featured-product-card {
+    width: 300px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+}
+
+.featured-product-card:hover {
+    transform: scale(1.05);
+    transition: 0.3s;
+}
+
+.service-section {
+    margin-top: 88px;
+}
+
+.service-box {
+    display: flex;
+    justify-content: space-between;
+    background-color: #f1f1f1;
+    padding: 25px;
+    border-radius: 25px;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+    flex-wrap: wrap;
+    gap: 90px;
+}
+
+.service-item {
+    text-align: center;
+    flex: 1;
+    max-width: 940px;
+}
+
+.service-title {
+    font-size: 16px;
+    font-weight: bold;
+    margin-bottom: 15px;
+}
+
+.service-description {
+    font-size: 14px;
+    color: #555;
+}
+
+.last-added-section {
+    margin-top: 60px; /* Separar la sección de "Últimas prendas" de la sección de devolución */
+    padding: 40px 0; /* Espaciado superior de la sección */
+}
+
 .last-added-section h2 {
-    margin-top: 30px; 
+    margin-top: 30px; /* Separación del título de "Últimas prendas" */
     text-align: center;
     font-size: 24px;
     font-weight: bold;
@@ -55,7 +154,7 @@ body, html {
 }
 
 .last-added-section .carousel-item {
-    margin-right: 15px; 
+    margin-right: 15px;
     transition: transform 0.3s ease-in-out;
 }
 
@@ -63,7 +162,13 @@ body, html {
     width: 100%;
     height: auto;
     object-fit: cover;
-    border-radius: 8px; 
+    border-radius: 8px;
+}
+
+/* Sección de Devolución y otras configuraciones */
+.devolucion-section {
+    margin-top: 60px; /* Asegura que la sección de devoluciones esté después de "descubre lo más buscado" */
+    margin-bottom: 50px; /* Para que la sección de devoluciones no quede pegada a la sección de "últimas prendas" */
 }
 
 .carousel-control-prev,
@@ -111,96 +216,69 @@ body, html {
     background-color: #c13d28;
 }
 
-.featured-products-section {
-    margin-top: 60px; 
-    padding: 20px 0;
-}
-
-.featured-products-section h2 {
-    text-align: center;
-    font-size: 24px;
-    font-weight: bold;
-    color: #333;
-}
-
-.featured-products-container {
-    display: flex;
-    justify-content: space-around;
-    gap: 20px;
-    margin-top: 30px;
-    flex-wrap: wrap;
-}
-
-.featured-product-card {
-    width: 300px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    border-radius: 8px;
-}
-
-.featured-product-card:hover {
-    transform: scale(1.05);
-    transition: 0.3s;
-}
-
-.service-section {
-    margin-top: 30px;
-}
-
-.service-box {
+/* Modificaciones de la Sección de Descarga */
+.download-section {
+    margin-top: 20px; /* Separar la sección de descarga de últimas prendas */
+    margin-bottom: 10px; /* Reducción de espacio */
     display: flex;
     justify-content: space-between;
-    background-color: #f1f1f1;
-    padding: 10px;
-    border-radius: 25px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    flex-wrap: wrap;
-    gap: 40px;
+    align-items: center;
+    font-size: 14px; /* Más pequeño */
+    border-top: 1px solid black; /* Borde más fino */
+    padding-top: 5px; /* Menos padding arriba */
+    padding-bottom: 5px; /* Menos padding abajo */
 }
 
-.service-item {
-    text-align: center;
-    flex: 1;
-    max-width: 940px;
-}
-
-.service-item i {
-    font-size: 40px;
-    margin-bottom: 10px;
-    color: #4d4d4d;
-}
-
-.service-title {
-    font-size: 16px;
+.download-text {
+    font-size: 14px; /* Texto más pequeño */
     font-weight: bold;
-    margin-bottom: 15px;
+    margin-bottom: -10px;
+    text-align: left;
+    width: 90%;
 }
 
-.service-description {
-    font-size: 14px;
-    color: #555;
+.download-icons {
+    display: flex;
+    gap: 15px; /* Menos espacio entre los íconos */
+    justify-content: flex-end;
 }
 
-.last-added-section .carousel-inner {
-    margin-top: 20px; 
-}
-
-hr {
-    margin-top: 20px;
-    border: 1px solid #000;
-}
-
+/* Ajustes en pantallas pequeñas */
 @media (max-width: 768px) {
-    .card-container {
+    /* Carrusel en pantallas pequeñas */
+    .carousel-inner {
+        padding-left: 5px;
+        padding-right: 5px;
+    }
+
+    .download-icons {
+        flex-direction: column;
+        justify-content: center;
+        gap: 10px;
+    }
+
+    .store-icon {
+        margin-bottom: 20px;
+    }
+
+    .download-text {
+        text-align: center;
+        width: 100%;
+        margin-bottom: 10px;
+    }
+
+    .download-icons {
         justify-content: center;
     }
 
-    .service-box {
-        flex-direction: column;
-        gap: 20px;
+    /* Ajuste para las tarjetas */
+    .card-container {
+        gap: 30px; /* Menos espacio entre las tarjetas */
+        justify-content: center;
     }
 
-    .service-item {
-        max-width: 100%;
+    .card-home {
+        width: 90%; /* Ajusta el tamaño de las tarjetas en pantallas pequeñas */
     }
 }
 
@@ -241,7 +319,7 @@ hr {
     align-items: center;
     justify-content: space-between;
     background-color: #f5f5f5;
-    padding: 4rem;
+    padding: 8rem;
     height: 100%;
 }
 
@@ -296,8 +374,8 @@ hr {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 0 8vw;
-    height: 100vh;
+    padding: 0 6vw;
+    height: 50vh;
     background-color: #fcf8ef;
 }
 

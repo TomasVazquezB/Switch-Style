@@ -69,7 +69,6 @@
 .input_user,
 .input_pass,
 .input_confirm_pass { /* Añado confirmación de contraseña */
-  background-color: #ffffff;
   color: #000000;
   border: 1px solid #000000; /* Se ajusta el borde a negro */
   padding: 10px;
@@ -134,9 +133,9 @@
 }
 
 .aceptar-terminos input:checked {
-  background-color: #007bff; 
-  border-color: #007bff; 
-  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5); 
+  background-color: #000000; 
+  border-color: #000000; 
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.5); 
 }
 
 .aceptar-terminos span {

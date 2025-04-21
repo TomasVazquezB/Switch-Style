@@ -168,9 +168,9 @@ const Header = ({ toggleTheme }) => {
                         <div className="nav-dropdown">
                             <span className="nav-link">Accesorios</span>
                             <div className="dropdown-menu">
-                                <NavLink to="/ropa/hombres/remeras">cadenas</NavLink>
-                                <NavLink to="/ropa/hombres/pantalones">anillos</NavLink>
-                                <NavLink to="/ropa/hombres/camperas">brazaletes</NavLink>
+                                <NavLink to="/ropa/hombres/remeras">Cadenas</NavLink>
+                                <NavLink to="/ropa/hombres/pantalones">Anillos</NavLink>
+                                <NavLink to="/ropa/hombres/camperas">Brazaletes</NavLink>
                             </div>
                         </div>
 

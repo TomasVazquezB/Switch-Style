@@ -10,7 +10,7 @@ html, body {
 }
 
 .footer {
-  background-color: #111; /* Negro más fuerte */
+  background-color: #111; 
   padding: 20px 30px;
   color: white;
   font-family: 'Segoe UI', sans-serif;
@@ -105,34 +105,6 @@ footer nav {
   width: 100%;
 }
 
-
-.app-download {
-  text-align: center;
-  margin-top: 4px;
-}
-
-.app-title {
-  color: white;
-  font-size: 1.5rem;
-  margin-bottom: 15px;
-  font-weight: bold;
-}
-
-.app-store-icons {
-  display: flex;
-  justify-content: center;
-  gap: 35px; 
-}
-
-.app-icon {
-  display: inline-block;
-}
-
-.play-store-icon, .app-store-icon {
-  width: 160px; 
-  height: auto;
-}
-
 .contact-info {
   display: flex;
   flex-direction: column;
@@ -203,4 +175,3 @@ footer nav {
   background-color: white;
   color: black;
 }
-
