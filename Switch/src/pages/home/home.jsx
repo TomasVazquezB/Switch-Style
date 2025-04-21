@@ -25,19 +25,7 @@ const Home = ({ darkMode }) => {
   return (
     <div className={`home-index ${darkMode ? 'dark' : 'light'}`}>
       <div id="carouselExampleIndicators" className="carousel slide" data-bs-ride="carousel" style={{ marginTop: '50px' }}>
-        <div className="carousel-indicators">
-          {carouselImages.map((_, index) => (
-            <button
-              key={index}
-              type="button"
-              data-bs-target="#carouselExampleIndicators"
-              data-bs-slide-to={index}
-              className={index === 0 ? 'active' : ''}
-              aria-current={index === 0 ? 'true' : undefined}
-              aria-label={`Slide ${index + 1}`}
-            ></button>
-          ))}
-        </div>
+        
 
         <div className="carousel-inner">
           {carouselImages.map((image, index) => (
