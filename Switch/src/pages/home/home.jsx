@@ -15,7 +15,6 @@ const cardImages = [
   'https://via.placeholder.com/300x200/0000FF/FFFFFF?text=Card+3',
 ];
 
-// Con 6 imágenes, para hacer 2 por slide
 const lastAddedImages = [
   'https://picsum.photos/400/300?random=1',
   'https://picsum.photos/400/300?random=2',
@@ -24,7 +23,6 @@ const lastAddedImages = [
   'https://picsum.photos/400/300?random=5',
   'https://picsum.photos/400/300?random=6',
 ];
-
 
 const Home = ({ darkMode }) => {
   return (
@@ -122,10 +120,8 @@ const Home = ({ darkMode }) => {
         </Carousel>
       </div>
 
-
-
       <div className="download-section">
-        <hr />
+        <hr/>
         <p className="download-text">Descarga la aplicación y únete a la experiencia Switch Style</p>
         <div className="download-icons">
           <div className="store-icon">

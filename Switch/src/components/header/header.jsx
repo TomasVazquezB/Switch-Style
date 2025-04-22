@@ -88,7 +88,6 @@ const Header = ({ toggleTheme }) => {
                     <Navbar.Collapse id="navbarNav">
                         <Nav className="me-auto">
 
-                            
                             <div className="mode-switch">
                                 <BsMoon className={`mode-icon ${isDarkMode ? 'active' : 'inactive'}`} />
                                 <label className="switch">
@@ -148,7 +147,6 @@ const Header = ({ toggleTheme }) => {
                                 <NavLink to="/ropa/hombres/camperas">Camperas</NavLink>
                             </div>
                         </div>
-
                         <div className="nav-dropdown">
                             <span className="nav-link">Mujeres</span>
                             <div className="dropdown-menu">
@@ -157,7 +155,6 @@ const Header = ({ toggleTheme }) => {
                                 <NavLink to="/ropa/hombres/camperas">Camperas</NavLink>
                             </div>
                         </div>
-
                         <div className="nav-dropdown">
                             <span className="nav-link">Niños</span>
                             <div className="dropdown-menu">
@@ -166,7 +163,6 @@ const Header = ({ toggleTheme }) => {
                                 <NavLink to="/ropa/hombres/camperas">Camperas</NavLink>
                             </div>
                         </div>
-
                         <div className="nav-dropdown">
                             <span className="nav-link">Accesorios</span>
                             <div className="dropdown-menu">
