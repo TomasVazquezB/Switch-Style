@@ -1,54 +1,48 @@
-/* Contenedor principal */
 .login-container {
   display: flex;
   flex-wrap: wrap;
-  min-height: calc(100vh - 160px); /* espacio seguro */
-  margin-top: 4px;  /* espacio desde el header */
-  margin-bottom: 4px; /* espacio desde el footer */
-  padding: 0 6px; /* margen horizontal general */
-  justify-content: space-between; /* Asegura que haya espacio entre la imagen y el formulario */
+  min-height: calc(100vh - 160px); 
+  margin-top: 4px;  
+  margin-bottom: 4px; 
+  padding: 0 6px; 
+  justify-content: space-between; 
 }
 
-/* Contenedor de la imagen */
 .image-container {
-  flex: 0.4; /* Reducido de 0.35 a 0.4 para hacer la imagen un poco más grande */
+  flex: 0.4; 
   display: flex;
   justify-content: flex-start;
   align-items: center;
   padding-left: 0px;
 }
 
-/* Imagen */
 .login-image {
-  width: 100%; /* La imagen ocupará todo el ancho de su contenedor */
-  max-width: none; /* No hay límite en el tamaño máximo */
-  height: 100%; /* La imagen se estirará para llenar su contenedor */
-  object-fit: cover; /* La imagen se ajusta cubriendo el área del contenedor */
+  width: 100%; 
+  max-width: none; 
+  height: 100%; 
+  object-fit: cover; 
   border-radius: 10px;
 }
 
-/* Contenedor del formulario */
 .login-box {
-  flex: 0.6; /* Aumentado de 0.7 a 0.6 para que la imagen ocupe más espacio */
+  flex: 0.6; 
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 20px 40px; /* Espacio horizontal y vertical */
+  padding: 20px 40px; 
   border-radius: 10px;
-  min-height: calc(100vh - 160px); /* Hace que el formulario ocupe toda la altura disponible */
+  min-height: calc(100vh - 160px); 
 }
 
-/* Formulario */
 .login-form {
   width: 100%;
-  max-width: 600px; /* Aumentado el max-width para que el formulario ocupe más espacio */
+  max-width: 600px; 
   padding: 20px;
   border-radius: 10px;
   text-align: center;
   transition: background-color 0.4s ease, color 0.4s ease, border 0.4s ease;
 }
 
-/* Títulos */
 .bienvenida {
   font-size: 1.5em;
   margin-bottom: 20px;
@@ -61,7 +55,6 @@
   text-align: center;
 }
 
-/* Campos de entrada */
 .input_user,
 .input_pass {
   padding: 10px;
@@ -70,7 +63,6 @@
   margin-bottom: 15px;
 }
 
-/* Botón de login */
 .button-login {
   padding: 10px 20px;
   font-size: 16px;
@@ -86,13 +78,11 @@
   color: #ffffff;
 }
 
-/* Alerta de error */
 .alert-danger {
   color: #ff0000;
   font-weight: bold;
 }
 
-/* MODO CLARO */
 .login-container:not(.dark-mode) .login-form {
   background-color: #000000;
   color: #ffffff;
@@ -125,7 +115,6 @@
   color: #000000;
 }
 
-/* MODO OSCURO */
 .dark-mode .login-form {
   background-color: #ffffff;
   color: #000000;
@@ -158,7 +147,6 @@
   color: #ffffff;
 }
 
-/* Responsive */
 @media (max-width: 768px) {
   .login-container {
     flex-direction: column;

@@ -21,7 +21,6 @@ const Footer = () => {
           <span className="social-text">Switch Style</span>
         </div>
       </nav>
-
       <nav className="contact-info">
         <div className="contact-item">
           <FaPhoneAlt className="contact-icon" />
@@ -32,7 +31,6 @@ const Footer = () => {
           <span className="contact-text">consultas@switchstyle.com</span>
         </div>
       </nav>
-
       <aside>
         <Typography color="white" className="footer-text">© 2024-2025 Switch Style | Todos los derechos reservados</Typography>
       </aside>
