@@ -7,9 +7,7 @@ function guardarUsuarios(users) {localStorage.setItem('usuarios', JSON.stringify
 
 export function loginUsuario(identificador, contrasena) {
     return new Promise((resolve, reject) => {usuarios = JSON.parse(localStorage.getItem('usuarios')) || [];
-
         console.log('Intentando iniciar sesión con:', identificador, contrasena);
-
         const encontrado = usuarios.find(u => (u.usuario === identificador || u.email === identificador) && u.contrasena === contrasena);
 
         if (encontrado) {

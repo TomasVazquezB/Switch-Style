@@ -80,7 +80,7 @@ const Header = ({ toggleTheme }) => {
                 <Container fluid style={{ maxWidth: "100%" }}>
                     <Navbar.Brand as={NavLink} to="/" onClick={() => navigate('/')}>
 
-                    <img src="../../assets/LOGO.png" width="90" height="50" className="d-inline-block align-top" alt="Logo"/>
+                    <img src="../src/assets/LOGO.png" width="90" height="50" className="d-inline-block align-top" alt="Logo"/>
 
                     </Navbar.Brand>
 

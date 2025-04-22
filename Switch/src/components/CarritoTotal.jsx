@@ -2,7 +2,6 @@ import React, { useContext } from 'react'
 import { ShopContext } from '../context/ShopContext'
 
 const CarritoTotal = () => {
-
     const { moneda, delivery_fee, getCarritoAmount } = useContext(ShopContext);
 
     return (

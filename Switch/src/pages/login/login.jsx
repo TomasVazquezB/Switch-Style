@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { loginUsuario } from '../usuarios/usuarios';
 import './login.css';
+import { assets } from '../../assets/assets';
+
 
 export function LoginPage() {
     const [formData, setFormData] = useState({ identificador: '', contrasena: '' });
@@ -52,7 +54,7 @@ export function LoginPage() {
     return (
         <div className={`login-container ${isDarkMode ? 'dark-mode' : ''}`}>
             <div className="image-container">
-                <img src="/img/login.jpg" alt="Imagen" className="login-image" />
+                <img src="../src/assets/login.jpg" alt="Imagen" className="login-image"/>
             </div>
 
             <div className="login-box">

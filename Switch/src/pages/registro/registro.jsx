@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { registrarUsuario } from '../usuarios/usuarios';
 import './registro.css';
+import { assets } from '../../assets/assets';
 
 export function RegistroPage() {
     const [formData, setFormData] = useState({
@@ -37,7 +38,7 @@ export function RegistroPage() {
     return (
         <div className="registro-container">
             <div className="image-container">
-                <img src="img/registro.jpg" alt="Imagen" className="registro-image" />
+                <img src="../src/assets/registro.jpg" alt="Imagen" className="registro-image" />
             </div>
             <div className="registro-box">
                 <div className="registro-form">
