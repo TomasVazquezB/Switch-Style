@@ -140,18 +140,7 @@ body, html {
     color: #555;
 }
 
-.last-added-section {
-    margin-top: 60px; /* Separar la sección de "Últimas prendas" de la sección de devolución */
-    padding: 40px 0; /* Espaciado superior de la sección */
-}
 
-.last-added-section h2 {
-    margin-top: 30px; /* Separación del título de "Últimas prendas" */
-    text-align: center;
-    font-size: 24px;
-    font-weight: bold;
-    color: #000000;
-}
 
 .last-added-section .carousel-item {
     margin-right: 15px;
@@ -468,5 +457,92 @@ body, html {
   
   .carousel-indicators {
     display: none !important;
+  }
+  
+
+  .card-home {
+    width: 300px;
+    background-color: #fff;
+    border: 1px solid #eee;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  }
+  
+  .card-img-top {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+  }
+  
+  .card-body {
+    padding: 15px;
+  }
+  
+  .carousel .carousel-item {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .cards-carousel-wrapper {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    padding: 30px 10px;
+    flex-wrap: wrap;
+  }
+  
+  .card-home {
+    width: 280px;
+    background-color: #1a1a1a;
+    border: 1px solid #333;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 0 10px rgba(0,0,0,0.3);
+  }
+  
+  .card-img-top {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+  }
+  
+  .card-body {
+    padding: 15px;
+  }
+  
+  .btn-primary {
+    background-color: #000;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    font-weight: bold;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    width: 100%;
+  }
+  
+  .btn-primary:hover {
+    background-color: #444;
+  }
+
+  .last-added-section {
+    padding: 60px 0 40px; /* más espacio arriba y abajo */
+    text-align: center;
+    position: relative;
+    z-index: 2;
+  }
+  
+  .last-added-section h2.mas-buscado {
+    margin-bottom: 110px; /* espacio entre el título y las cartas */
+    font-size: 28px;
+    font-weight: bold;
+    text-align: center;
+    color: #fff; /* o #000 si es light mode */
+    position: relative;
+    z-index: 3;
   }
   
