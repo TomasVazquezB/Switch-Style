@@ -7,7 +7,7 @@ import Navbar from 'react-bootstrap/Navbar';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { FaSearch, FaHeart, FaShoppingCart, FaUserCircle } from 'react-icons/fa';
 import { BsMoon, BsSun } from 'react-icons/bs';
-import { assets } from '../../Clothing/assets/assets';
+import { assets } from '../../assets/assets';
 
 const Header = ({ toggleTheme }) => {
     const [isDarkMode, setIsDarkMode] = useState(true);
@@ -79,7 +79,9 @@ const Header = ({ toggleTheme }) => {
             <Navbar expand="lg" className={`navbar-top ${isDarkMode ? 'bg-dark' : 'bg-light'}`}>
                 <Container fluid style={{ maxWidth: "100%" }}>
                     <Navbar.Brand as={NavLink} to="/" onClick={() => navigate('/')}>
-                    <img src="../src/Clothing/assets/LOGO.png" width="90" height="50" className="d-inline-block align-top" alt="Logo"/>
+
+                    <img src="../../assets/LOGO.png" width="90" height="50" className="d-inline-block align-top" alt="Logo"/>
+
                     </Navbar.Brand>
 
                     <Navbar.Toggle aria-controls="navbarNav" />
@@ -139,7 +141,7 @@ const Header = ({ toggleTheme }) => {
                 <Container fluid>
                     <Nav className="me-auto" style={{justifyContent: 'space-evenly', width: '100%'}}>
                         <div className="nav-dropdown">
-                            <span className="nav-link">Hombres</span>
+                            <Nav.Link as={NavLink} to="/MainHombres">Hombres</Nav.Link>
                             <div className="dropdown-menu">
                                 <NavLink to="/ropa/hombres/remeras">Remeras</NavLink>
                                 <NavLink to="/ropa/hombres/pantalones">Pantalones</NavLink>

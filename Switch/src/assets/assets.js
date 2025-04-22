@@ -1,15 +1,41 @@
-import logo from '../../Clothing/assets/LOGO.png'
-import COAT from '../../Clothing/assets/COAT.png'
-import DRESS from '../../Clothing/assets/DRESS.png'
-import NECKLACE from '../../Clothing/assets/NECKLACE.png'
-import PANTS from '../../Clothing/assets/PANTS.png'
-import RING from '../../Clothing/assets/RING.png'
-import SANDALS from '../../Clothing/assets/SANDALS.png'
-import SHIRT from '../../Clothing/assets/SHIRT.png'
-import TSHIRT from '../../Clothing/assets/TSHIRT.png'
+import logo from './LOGO.png'
+import COAT from './COAT.png'
+import DRESS from './DRESS.png'
+import NECKLACE from './NECKLACE.png'
+import PANTS from './PANTS.png'
+import RING from './RING.png'
+import SANDALS from './SANDALS.png'
+import SHIRT from './SHIRT.png'
+import TSHIRT from './TSHIRT.png'
+import cart_icon from './cart_icon.png'
+import bin_icon from './bin_icon.png'
+import dropdown_icon from './dropdown_icon.png'
+import exchange_icon from './exchange_icon.png'
+import profile_icon from './profile_icon.png'
+import quality_icon from './quality_icon.png'
+import search_icon from './search_icon.png'
+import star_dull_icon from './star_dull_icon.png'
+import star_icon from './star_icon.png'
+import support_img from './support_img.png'
+import menu_icon from './menu_icon.png'
+import contact_img from './contact_img.png'
+import cross_icon from './cross_icon.png'
 
 export const assets = {
     logo,
+    cart_icon,
+    dropdown_icon,
+    exchange_icon,
+    profile_icon,
+    quality_icon,
+    search_icon,
+    star_dull_icon,
+    star_icon,
+    bin_icon,
+    support_img,
+    menu_icon,
+    contact_img,
+    cross_icon
 
 }
 
@@ -25,7 +51,7 @@ export const productos = [
         img: [COAT],
         categoria: "Mujer",
         subCategoria: "Vestido",
-        talle: ["S", "M", "L"],
+        talla: ["S", "M", "L"],
         bestseller: true
     },
     {
@@ -36,7 +62,7 @@ export const productos = [
         img: [DRESS],
         categoria: "Mujer",
         subCategoria: "Saco",
-        talle: ["S", "M", "L"],
+        talla: ["S", "M", "L"],
         bestseller: true
     },
     {
@@ -47,7 +73,7 @@ export const productos = [
         img: [NECKLACE],
         categoria: "Mujer",
         subCategoria: "Accesorios",
-        talle: ["S", "M", "L"],
+        talla: ["S", "M", "L"],
         bestseller: true
     },
     {
@@ -58,7 +84,7 @@ export const productos = [
         img: [PANTS],
         categoria: "Hombre",
         subCategoria: "Pantalon",
-        talle: ["S", "M", "L"],
+        talla: ["S", "M", "L"],
         bestseller: true
     },
     {
@@ -69,7 +95,7 @@ export const productos = [
         img: [RING],
         categoria: "Mujer",
         subCategoria: "Accesorio",
-        talle: ["S", "M", "L"],
+        talla: ["S", "M", "L"],
         bestseller: true
     },
     {
@@ -80,7 +106,7 @@ export const productos = [
         img: [SANDALS],
         categoria: "Chicos",
         subCategoria: "Calzado",
-        talle: ["S", "M", "L"],
+        talla: ["S", "M", "L"],
         bestseller: true
     },
     {
@@ -91,7 +117,7 @@ export const productos = [
         img: [SHIRT],
         categoria: "Hombre",
         subCategoria: "Remera",
-        talle: ["S", "M", "L"],
+        talla: ["S", "M", "L"],
         bestseller: true
     },
     {
@@ -102,7 +128,7 @@ export const productos = [
         img: [TSHIRT],
         categoria: "Chicos",
         subCategoria: "Remera",
-        talle: ["S", "M", "L"],
+        talla: ["S", "M", "L"],
         bestseller: true
     },
 
