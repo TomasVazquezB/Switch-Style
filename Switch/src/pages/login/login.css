@@ -1,51 +1,62 @@
 .login-container {
   display: flex;
-  height: 100vh;
+  flex-wrap: wrap;
+  min-height: calc(100vh - 160px); 
+  margin-top: 4px;  
+  margin-bottom: 4px; 
+  padding: 0 6px; 
+  justify-content: space-between; 
 }
 
 .image-container {
-  flex: 1;
-  background-color: #f4f4f4;
+  flex: 0.4; 
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
+  padding-left: 0px;
 }
 
 .login-image {
-  max-width: 100%;
-  height: auto;
+  width: 100%; 
+  max-width: none; 
+  height: 100%; 
+  object-fit: cover; 
   border-radius: 10px;
 }
 
 .login-box {
-  flex: 1;
+  flex: 0.6; 
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 20px;
+  padding: 20px 40px; 
   border-radius: 10px;
+  min-height: calc(100vh - 160px); 
 }
 
 .login-form {
-  width: 80%;
-  max-width: 400px;
+  width: 100%;
+  max-width: 600px; 
   padding: 20px;
-  background-color: white;
   border-radius: 10px;
-  text-align: center; 
+  text-align: center;
+  transition: background-color 0.4s ease, color 0.4s ease, border 0.4s ease;
 }
 
 .bienvenida {
-  color: #000000; 
   font-size: 1.5em;
   margin-bottom: 20px;
   font-weight: bold;
 }
 
-.input_user, .input_pass {
-  background-color: #ffffff; 
-  color: #000000; 
-  border: 1px solid #000000; 
+.bienvenido {
+  font-size: 1.2em;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.input_user,
+.input_pass {
   padding: 10px;
   border-radius: 5px;
   width: 100%;
@@ -53,21 +64,18 @@
 }
 
 .button-login {
-  background-color: #000000; 
-  color: #ffffff; 
-  border: 1px solid #000000; 
   padding: 10px 20px;
   font-size: 16px;
   cursor: pointer;
   border-radius: 5px;
-  width: 100%; 
+  width: 100%;
   margin-top: 20px;
   transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 .button-login:hover {
-  background-color: #333333; 
-  color: #ffffff; 
+  background-color: #333333;
+  color: #ffffff;
 }
 
 .alert-danger {
@@ -75,9 +83,84 @@
   font-weight: bold;
 }
 
-.bienvenido {
-  color: #6c757d; 
-  font-size: 1.2em; 
-  margin-bottom: 20px; 
-  text-align: center; 
+.login-container:not(.dark-mode) .login-form {
+  background-color: #000000;
+  color: #ffffff;
+  border: 2px solid #ffffff;
+}
+
+.login-container:not(.dark-mode) .bienvenida {
+  color: #ffffff;
+}
+
+.login-container:not(.dark-mode) .bienvenido {
+  color: #dddddd;
+}
+
+.login-container:not(.dark-mode) .input_user,
+.login-container:not(.dark-mode) .input_pass {
+  background-color: #222222;
+  color: #ffffff;
+  border: 1px solid #444444;
+}
+
+.login-container:not(.dark-mode) .button-login {
+  background-color: #ffffff;
+  color: #000000;
+  border: 1px solid #ffffff;
+}
+
+.login-container:not(.dark-mode) .button-login:hover {
+  background-color: #cccccc;
+  color: #000000;
+}
+
+.dark-mode .login-form {
+  background-color: #ffffff;
+  color: #000000;
+  border: 2px solid #000000;
+}
+
+.dark-mode .bienvenida {
+  color: #000000;
+}
+
+.dark-mode .bienvenido {
+  color: #6c757d;
+}
+
+.dark-mode .input_user,
+.dark-mode .input_pass {
+  background-color: #eeeeee;
+  color: #000000;
+  border: 1px solid #aaaaaa;
+}
+
+.dark-mode .button-login {
+  background-color: #000000;
+  color: #ffffff;
+  border: 1px solid #000000;
+}
+
+.dark-mode .button-login:hover {
+  background-color: #333333;
+  color: #ffffff;
+}
+
+@media (max-width: 768px) {
+  .login-container {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .image-container {
+    justify-content: center;
+    margin-right: 0;
+    margin-bottom: 20px;
+  }
+
+  .login-box {
+    padding: 20px;
+    max-width: 90%;
+  }
 }

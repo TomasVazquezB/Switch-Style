@@ -1,4 +1,3 @@
-/* Estilos generales */
 body, html {
     margin: 0;
     padding: 0;
@@ -7,104 +6,82 @@ body, html {
 
 .home-index {
     font-family: Arial, sans-serif;
-    padding: 20px;
+    padding: 25px;
     display: flex;
     flex-direction: column;
-    min-height: 100vh;
+    min-height: 50vh;
     padding-bottom: 100px;
 }
 
-/* Modo claro */
 .home-index.light {
     background-color: white;
     color: black;
 }
 
-/* Modo oscuro */
 .home-index.dark {
     background-color: #121212;
     color: white;
 }
 
-/* Estilos de las imágenes del carrusel */
 .carousel-inner img {
     width: 100%;
     height: auto;
 }
 
+/* Subimos el carousel más cerca de la navbar */
 .carousel {
-    margin-bottom: 20px;
+    margin-bottom: 30px;
+    margin-top: -100px; /* Subir el carrusel más cerca de la navbar */
 }
 
-/* Título de productos destacados */
 .mas-buscado {
     text-align: center;
-    margin-top: 30px;
+    margin-top: 12px;
     font-size: 26px;
     font-weight: bold;
-    color: #333;
+    color: #000000;
 }
 
-/* Sección de últimas prendas añadidas */
-.last-added-section {
-    margin-top: 50px; /* Ajuste para mover la sección hacia abajo */
-    padding: 20px 0;
+.card-container {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 200px;
 }
 
-.last-added-section h2 {
-    margin-top: 30px; /* Subir el título un poco y separarlo de la sección de devolución */
-    text-align: center;
-    font-size: 24px;
-    font-weight: bold;
-    color: #333;
+.card-home {
+    width: 300px;
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
 }
 
-/* Estilo para las imágenes dentro del carrusel de "Últimas Prendas Añadidas" */
-.last-added-section .carousel-item {
-    margin-right: 15px; /* Espacio entre las imágenes del carrusel */
-    transition: transform 0.3s ease-in-out;
-}
-
-/* Espacio entre las imágenes del carrusel */
-.last-added-section .carousel-item img {
+.card-home img {
     width: 100%;
-    height: auto;
-    object-fit: cover;
-    border-radius: 8px; /* Bordes redondeados para las imágenes */
+    border-radius: 8px;
 }
 
-/* Estilos de los controles del carrusel */
-.carousel-control-prev, .carousel-control-next {
-    background-color: rgba(0, 0, 0, 0.5);
-    border-radius: 50%;
-    padding: 10px;
-    z-index: 10;
+.card-body {
+    padding: 40px;
+    text-align: center;
 }
 
-.carousel-control-prev:hover, .carousel-control-next:hover {
-    background-color: rgba(0, 0, 0, 0.7);
-}
-
-/* Estilo de los botones del carrusel */
-.carousel-caption button {
-    background-color: #ff5733;
+.btn-primary {
+    background-color: #000000;
     color: white;
     border: none;
     padding: 10px 20px;
     cursor: pointer;
 }
 
-.carousel-caption button:hover {
-    background-color: #c13d28;
+.btn-primary:hover {
+    background-color: #222222;
 }
 
-/* Separar la sección de productos destacados de la de últimas prendas */
 .featured-products-section {
-    margin-top: 60px; /* Asegura que la sección de productos destacados esté separada */
+    margin-top: 60px;
     padding: 20px 0;
 }
 
-/* Título de productos destacados */
 .featured-products-section h2 {
     text-align: center;
     font-size: 24px;
@@ -112,7 +89,6 @@ body, html {
     color: #333;
 }
 
-/* Estilo para las cards de productos destacados */
 .featured-products-container {
     display: flex;
     justify-content: space-around;
@@ -132,32 +108,25 @@ body, html {
     transition: 0.3s;
 }
 
-/* Sección de servicios */
 .service-section {
-    margin-top: 30px;
+    margin-top: 88px;
 }
 
 .service-box {
     display: flex;
     justify-content: space-between;
     background-color: #f1f1f1;
-    padding: 10px;
+    padding: 25px;
     border-radius: 25px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
     flex-wrap: wrap;
-    gap: 40px;
+    gap: 90px;
 }
 
 .service-item {
     text-align: center;
     flex: 1;
     max-width: 940px;
-}
-
-.service-item i {
-    font-size: 40px;
-    margin-bottom: 10px;
-    color: #4d4d4d;
 }
 
 .service-title {
@@ -171,70 +140,110 @@ body, html {
     color: #555;
 }
 
-/* Sección de últimas prendas añadidas (carrousel) */
-.last-added-section .carousel-inner {
-    margin-top: 20px; /* Añadir un pequeño margen arriba del carrusel */
+
+
+.last-added-section .carousel-item {
+    margin-right: 15px;
+    transition: transform 0.3s ease-in-out;
 }
 
-/* Estilos para la sección de descarga de la app */
-.download-section {
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
-    font-size: 1px;
-    border-top: 2px solid #000;
-    padding-top: 20px;
-    padding-bottom: 10px;
+.last-added-section .carousel-item img {
+    width: 100%;
     height: auto;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+/* Sección de Devolución y otras configuraciones */
+.devolucion-section {
+    margin-top: 60px; /* Asegura que la sección de devoluciones esté después de "descubre lo más buscado" */
+    margin-bottom: 50px; /* Para que la sección de devoluciones no quede pegada a la sección de "últimas prendas" */
+}
+
+.carousel-control-prev,
+.carousel-control-next {
+    width: 60px;
+    height: 60px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border-radius: 50%;
+    z-index: 10;
+}
+
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+    background-size: 100% 100%;
+    width: 30px;
+    height: 30px;
+    filter: invert(1);
+}
+
+.carousel-control-prev-icon {
+    background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%23fff' viewBox='0 0 8 8'%3E%3Cpath d='M5.25 0L4.5.75 1.25 4l3.25 3.25.75.75L0 4z'/%3E%3C/svg%3E");
+}
+
+.carousel-control-next-icon {
+    background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%23fff' viewBox='0 0 8 8'%3E%3Cpath d='M2.75 0L3.5.75 6.75 4l-3.25 3.25-.75.75L8 4z'/%3E%3C/svg%3E");
+}
+
+.carousel-control-prev:hover,
+.carousel-control-next:hover {
+    background: none;
+    opacity: 1;
+}
+
+.carousel-caption button {
+    background-color: #ff5733;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+}
+
+.carousel-caption button:hover {
+    background-color: #c13d28;
+}
+
+/* Modificaciones de la Sección de Descarga */
+.download-section {
+    margin-top: 20px; /* Separar la sección de descarga de últimas prendas */
+    margin-bottom: 10px; /* Reducción de espacio */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 14px; /* Más pequeño */
+    border-top: 1px solid black; /* Borde más fino */
+    padding-top: 5px; /* Menos padding arriba */
+    padding-bottom: 5px; /* Menos padding abajo */
 }
 
 .download-text {
-    font-size: 16px;
+    font-size: 14px; /* Texto más pequeño */
     font-weight: bold;
-    margin-bottom: 0;
+    margin-bottom: -10px;
     text-align: left;
-    width: 100%;
+    width: 90%;
 }
 
 .download-icons {
     display: flex;
-    gap: 10px;
+    gap: 15px; /* Menos espacio entre los íconos */
     justify-content: flex-end;
 }
 
-.store-icon {
-    text-align: center;
-}
-
-.store-icon p {
-    margin-top: 5px;
-    font-size: 12px;
-}
-
-hr {
-    margin-top: 20px;
-    border: 1px solid #000;
-}
-
-/* Media Queries para dispositivos móviles */
+/* Ajustes en pantallas pequeñas */
 @media (max-width: 768px) {
-    .card-container {
-        justify-content: center;
-    }
-
-    .service-box {
-        flex-direction: column;
-        gap: 20px;
-    }
-
-    .service-item {
-        max-width: 100%;
+    /* Carrusel en pantallas pequeñas */
+    .carousel-inner {
+        padding-left: 5px;
+        padding-right: 5px;
     }
 
     .download-icons {
         flex-direction: column;
         justify-content: center;
-        gap: 20px;
+        gap: 10px;
     }
 
     .store-icon {
@@ -250,9 +259,18 @@ hr {
     .download-icons {
         justify-content: center;
     }
+
+    /* Ajuste para las tarjetas */
+    .card-container {
+        gap: 30px; /* Menos espacio entre las tarjetas */
+        justify-content: center;
+    }
+
+    .card-home {
+        width: 90%; /* Ajusta el tamaño de las tarjetas en pantallas pequeñas */
+    }
 }
 
-/* Estilo para el modo oscuro */
 .dark {
     background-color: #121212;
     color: #f0f0f0;
@@ -280,8 +298,251 @@ hr {
     color: #f0f0f0;
 }
 
-/* Estilo para el modo claro */
 .light {
     background-color: #ffffff;
     color: #121212;
 }
+
+.hero-carousel {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #f5f5f5;
+    padding: 8rem;
+    height: 100%;
+}
+
+.hero-text {
+    max-width: 50%;
+}
+
+.hero-text .carousel-subtitle {
+    font-size: 14px;
+    letter-spacing: 2px;
+    color: #555;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.hero-text .carousel-title {
+    font-size: 48px;
+    color: #222;
+    font-weight: 600;
+    margin-bottom: 20px;
+}
+
+.hero-text .carousel-description {
+    font-size: 16px;
+    color: #666;
+    margin-bottom: 30px;
+    max-width: 400px;
+}
+
+.discover-btn {
+    background-color: #000;
+    color: #fff;
+    border: none;
+    padding: 12px 24px;
+    font-weight: bold;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    transition: background-color 0.3s ease;
+    cursor: pointer;
+}
+
+.discover-btn:hover {
+    background-color: #333;
+}
+
+.hero-image img {
+    max-height: 500px;
+    width: auto;
+}
+
+.hero-carousel-zara {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 6vw;
+    height: 50vh;
+    background-color: #fcf8ef;
+}
+
+.hero-text-zara {
+    max-width: 45%;
+    color: #111;
+}
+
+.hero-text-zara .subtitle {
+    text-transform: uppercase;
+    font-size: 14px;
+    letter-spacing: 2px;
+    font-weight: 600;
+    margin-bottom: 12px;
+}
+
+.hero-text-zara .title {
+    font-size: 64px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    line-height: 1.2;
+}
+
+.hero-text-zara .description {
+    font-size: 16px;
+    color: #666;
+    margin-bottom: 30px;
+    max-width: 400px;
+}
+
+.btn-discover {
+    padding: 12px 24px;
+    background-color: #000;
+    color: #fff;
+    border: none;
+    font-weight: bold;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.btn-discover:hover {
+    background-color: #333;
+}
+
+.hero-image-zara img {
+    max-height: 600px;
+    width: auto;
+    object-fit: contain;
+}
+
+.download-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 30px 0;
+    background-color: #1a1a1a;
+    color: white;
+  }
+  
+  .download-text {
+    font-size: 1.1rem;
+    margin-bottom: 20px;
+    text-align: center;
+    max-width: 90%;
+  }
+  
+  .download-icons {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+  }
+  
+  .store-icon {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .store-icon svg {
+    font-size: 36px;
+    margin-bottom: 5px;
+  }
+  
+  .store-icon p {
+    margin: 0;
+    font-size: 0.9rem;
+  }
+  
+  .carousel-indicators {
+    display: none !important;
+  }
+  
+
+  .card-home {
+    width: 300px;
+    background-color: #fff;
+    border: 1px solid #eee;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  }
+  
+  .card-img-top {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+  }
+  
+  .card-body {
+    padding: 15px;
+  }
+  
+  .carousel .carousel-item {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .cards-carousel-wrapper {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    padding: 30px 10px;
+    flex-wrap: wrap;
+  }
+  
+  .card-home {
+    width: 280px;
+    background-color: #1a1a1a;
+    border: 1px solid #333;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 0 10px rgba(0,0,0,0.3);
+  }
+  
+  .card-img-top {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+  }
+  
+  .card-body {
+    padding: 15px;
+  }
+  
+  .btn-primary {
+    background-color: #000;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    font-weight: bold;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    width: 100%;
+  }
+  
+  .btn-primary:hover {
+    background-color: #444;
+  }
+
+  .last-added-section {
+    padding: 60px 0 40px; /* más espacio arriba y abajo */
+    text-align: center;
+    position: relative;
+    z-index: 2;
+  }
+  
+  .last-added-section h2.mas-buscado {
+    margin-bottom: 110px; /* espacio entre el título y las cartas */
+    font-size: 28px;
+    font-weight: bold;
+    text-align: center;
+    color: #fff; /* o #000 si es light mode */
+    position: relative;
+    z-index: 3;
+  }
+  

@@ -79,7 +79,9 @@ const Header = ({ toggleTheme }) => {
             <Navbar expand="lg" className={`navbar-top ${isDarkMode ? 'bg-dark' : 'bg-light'}`}>
                 <Container fluid style={{ maxWidth: "100%" }}>
                     <Navbar.Brand as={NavLink} to="/" onClick={() => navigate('/')}>
+
                     <img src="../../assets/LOGO.png" width="90" height="50" className="d-inline-block align-top" alt="Logo"/>
+
                     </Navbar.Brand>
 
                     <Navbar.Toggle aria-controls="navbarNav" />
@@ -168,9 +170,9 @@ const Header = ({ toggleTheme }) => {
                         <div className="nav-dropdown">
                             <span className="nav-link">Accesorios</span>
                             <div className="dropdown-menu">
-                                <NavLink to="/ropa/hombres/remeras">cadenas</NavLink>
-                                <NavLink to="/ropa/hombres/pantalones">anillos</NavLink>
-                                <NavLink to="/ropa/hombres/camperas">brazaletes</NavLink>
+                                <NavLink to="/ropa/hombres/remeras">Cadenas</NavLink>
+                                <NavLink to="/ropa/hombres/pantalones">Anillos</NavLink>
+                                <NavLink to="/ropa/hombres/camperas">Brazaletes</NavLink>
                             </div>
                         </div>
 

@@ -10,18 +10,12 @@ html, body {
 }
 
 .footer {
-  background-color: black; /* Fondo negro */
+  background-color: #111; 
+  padding: 20px 30px;
   color: white;
-  padding: 0px 25px;
-  font-size: 1rem; /* Reducir el tamaño de la letra un poco */
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
+  font-family: 'Segoe UI', sans-serif;
   width: 100%;
-  position: relative;
-  bottom: 0;
-  border-radius: 12px; /* Bordes redondeados */
+  border-radius: 0px;
 }
 
 .footer-center {
@@ -34,17 +28,16 @@ html, body {
 
 footer nav {
   display: flex;
-  flex-direction: row; /* Alineación de los elementos en fila */
+  flex-direction: row; 
   align-items: center;
   justify-content: flex-start;
   width: 100%;
-  gap: 4px; /* Espacio pequeño entre el ícono y el texto */
-  margin-top: 10px;
+  gap: 6px; 
+  margin-top: 22px;
 }
 
-
 .smile-icon {
-  margin-right: 5px; /* Reducir el espacio entre la carita y el texto */
+  margin-right: 5px; 
   color: white;
 }
 
@@ -55,89 +48,63 @@ footer nav {
 
 .social-icons {
   display: flex;
-  justify-content: flex-end; /* Redes sociales alineadas a la derecha */
+  justify-content: flex-end;
   align-items: center;
-  gap: 15px; /* Aumentar el espacio entre los iconos de redes sociales */
+  gap: 5px; 
   margin-top: 0px;
   width: 100%;
 }
 
 .social-icon {
   color: white;
-  font-size: 1.5rem; /* Tamaño de los íconos */
+  font-size: 1.5rem; 
 }
 
 .social-text {
   color: white;
   font-size: 1.2rem;
-  margin-left: 10px;
+  margin-left: 8px;
 }
 
 .contact-info {
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
-  margin-top: 15px; /* Reducir espacio entre "Quienes somos" y números de teléfono */
+  gap: 4px;
+  margin-top: 20px;
   width: 100%;
 }
 
 .contact-item {
   display: flex;
   align-items: center;
-  margin-bottom: 10px;
+  gap: 10px;
+  color: white;
 }
 
 .contact-icon {
-  margin-right: 10px;
+  font-size: 1.2rem;
   color: white;
 }
 
 .contact-text {
+  font-size: 0.95rem;
   color: white;
-  font-size: 1rem;
 }
 
 .footer-text {
-  color: white;
-  font-size: 1rem;
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: #ffffff;
+  margin: 0;
   text-align: center;
   width: 100%;
 }
 
-/* Nueva sección: Título y los iconos de descarga */
-.app-download {
-  text-align: center;
-  margin-top: 10px;
-}
-
-.app-title {
-  color: white;
-  font-size: 1.5rem;
-  margin-bottom: 15px;
-  font-weight: bold;
-}
-
-.app-store-icons {
-  display: flex;
-  justify-content: center;
-  gap: 30px; /* Más espacio entre los íconos de Play Store y App Store */
-}
-
-.app-icon {
-  display: inline-block;
-}
-
-.play-store-icon, .app-store-icon {
-  width: 160px; /* Aumentar el tamaño de los íconos de la tienda */
-  height: auto;
-}
-
-/* Información de contacto */
 .contact-info {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  margin-top: -14px; /* Menos espacio entre las secciones */
+  margin-top: -14px; 
   width: 100%;
 }
 
@@ -155,4 +122,50 @@ footer nav {
 .contact-text {
   color: white;
   font-size: 1rem;
+}
+
+.footer {
+  background-color: #151515;
+  padding: 15px 30px;
+  color: white;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.footer-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.footer-text {
+  font-weight: 700;
+  font-size: 14px;
+  color: #ffffff;
+  margin: 0;
+  white-space: nowrap;
+}
+
+.footer-icons a {
+  border-radius: 8px;
+  padding: 8px;
+  font-size: 20px;
+}
+
+.footer-icons a {
+  color: white;
+  background-color: transparent;
+  border: 2px solid white;
+  border-radius: 6px;
+  padding: 6px;
+  font-size: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.3s ease;
+}
+
+.footer-icons a:hover {
+  background-color: white;
+  color: black;
 }
