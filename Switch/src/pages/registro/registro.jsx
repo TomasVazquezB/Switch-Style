@@ -14,7 +14,6 @@ export function RegistroPage() {
     });
 
     const handleChange = (e) => {setFormData({...formData,[e.target.name]: e.target.value,});};
-
     const handleCheckboxChange = (e) => {setFormData({...formData,aceptarTerminos: e.target.checked,});};
 
     const handleSubmit = (e) => {e.preventDefault();
