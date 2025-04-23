@@ -17,7 +17,6 @@ import MainKidsPage from './pages/Kids/MainKids.jsx';
 import Productos from './pages/Productos/Productos.jsx';
 import '/index.css';
 
-
 function App() {
   const [darkMode, setDarkMode] = useState(false);
   const toggleTheme = () => setDarkMode(prev => !prev);
@@ -27,7 +26,7 @@ function App() {
 
       <Header toggleTheme={toggleTheme} />
       <Routes>
-        <Route path="/" element={<PageTitle title="Switch Style"><Home darkMode={darkMode} /></PageTitle>} />
+       <Route path="/" element={<PageTitle title="Switch Style"><Home darkMode={darkMode} /></PageTitle>} />
         <Route path="/FAQ" element={<PageTitle title="Preguntas Frecuentes"><FAQPage /></PageTitle>} />
         <Route path="/quienessomos" element={<PageTitle title="Quiénes Somos"><QuienesSomosPage /></PageTitle>} />
         <Route path="/login" element={<PageTitle title="Login"><LoginPage /></PageTitle>} />

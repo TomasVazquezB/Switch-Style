@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { loginUsuario } from '../usuarios/usuarios';
 import './login.css';
+import { assets } from '../../assets/assets';
+
 
 export function LoginPage() {
     const [formData, setFormData] = useState({ identificador: '', contrasena: '' });
@@ -9,17 +11,14 @@ export function LoginPage() {
     const [isDarkMode, setIsDarkMode] = useState(false);
     const navigate = useNavigate();
 
-    useEffect(() => {
-        const checkDarkMode = () => {
+    useEffect(() => {const checkDarkMode = () => {
             const bodyDark = document.body.classList.contains('dark');
             const htmlDark = document.documentElement.classList.contains('dark');
             const systemDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
             return bodyDark || htmlDark || systemDark;
         };
 
-        const updateMode = () => {
-            setIsDarkMode(checkDarkMode());
-        };
+        const updateMode = () => {setIsDarkMode(checkDarkMode());};
 
         updateMode();
 
@@ -36,12 +35,9 @@ export function LoginPage() {
         };
     }, []);
 
-    const handleChange = (e) => {
-        setFormData({ ...formData, [e.target.name]: e.target.value });
-    };
+    const handleChange = (e) => {setFormData({ ...formData, [e.target.name]: e.target.value });};
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
+    const handleSubmit = (e) => {e.preventDefault();
         loginUsuario(formData.identificador, formData.contrasena)
             .then(usuario => {
                 if (usuario.rol === 'admin') {
@@ -58,7 +54,7 @@ export function LoginPage() {
     return (
         <div className={`login-container ${isDarkMode ? 'dark-mode' : ''}`}>
             <div className="image-container">
-                <img src="/img/login.jpg" alt="Imagen" className="login-image" />
+                <img src="../src/assets/login.jpg" alt="Imagen" className="login-image"/>
             </div>
 
             <div className="login-box">

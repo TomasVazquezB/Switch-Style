@@ -39,7 +39,6 @@ const ShopContextProvider = (props) => {
     }
 
     const updateCantidad = async (itemId, talla, cantidad) => {
-
         let carritoData = structuredClone(carritotItems);
         carritoData[itemId][talla] = cantidad;
         setCarritoItems(carritoData);
@@ -94,8 +93,6 @@ const ShopContextProvider = (props) => {
             {props.children}
         </ShopContext.Provider>
     )
-
-
 }
 
 export default ShopContextProvider;

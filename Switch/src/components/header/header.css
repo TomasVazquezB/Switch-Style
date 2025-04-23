@@ -2,7 +2,6 @@
   color: white;
   text-align: center;
   font-size: 1rem;
-  padding: 10px 0;
   font-weight: bold;
   z-index: 1001;
   margin-top: -14px;
@@ -88,6 +87,8 @@
   color: #ccc;
   display: inline-block;
 }
+
+
 
 .dark-mode .navbar-bottom .nav-link::after {
   color: #fff; 

@@ -9,20 +9,14 @@ import SANDALS from '../../assets/SANDALS.png';
 import SHIRT from '../../assets/SHIRT.png';
 import TSHIRT from '../../assets/TSHIRT.png';
 
-
-
 const MainMujeresPage = () => {
 
     return (
         <div className="content">
-
-            {/* filtros */}
-            <section className="sidebar">
+        <section className="sidebar">
                 <div class="sidebar-content">
 
                     <h2 class="border-bottom filter-title">TALLA</h2>
-
-
                     <input type="checkbox" class="custom-control-input" id="Small" />
                     <label class="custom-control-label" for="Small">SMALL</label>
                     <br></br>
@@ -45,7 +39,7 @@ const MainMujeresPage = () => {
 
                     <h2 class="font-xbold body-font border-bottom filter-title">PRECIO</h2>
                     <div class="range">
-                        <input type="range" />
+                    <input type="range"/>
                     </div>
                     <hr></hr>
 
@@ -67,16 +61,12 @@ const MainMujeresPage = () => {
                     <hr></hr>
 
                     <h2 class="border-bottom filter-title">COLOR</h2>
-
                     <hr></hr>
 
                     <h2 class="border-bottom filter-title">MATERIAL</h2>
-
                 </div>
 
             </section>
-
-
             <div class="main">
                 <div class="row">
                     <div class="column">
@@ -95,7 +85,6 @@ const MainMujeresPage = () => {
                                         <h4><del>$50000</del> 34000</h4>
                                     </div>
                                     <br></br>
-
                                 </section>
                             </section>
                         </section>
@@ -117,7 +106,6 @@ const MainMujeresPage = () => {
                                         <h4><del>$50000</del> 34000</h4>
                                     </div>
                                     <br></br>
-
                                 </section>
                             </section>
                         </section>
@@ -136,10 +124,9 @@ const MainMujeresPage = () => {
                                 <hr></hr>
                                 <section className="card-price">
                                     <div className="precio">
-                                        <h4><del>$50000</del> 34000</h4>
+                                    <h4><del>$50000</del> 34000</h4>
                                     </div>
                                     <br></br>
-
                                 </section>
                             </section>
                         </section>
@@ -161,7 +148,6 @@ const MainMujeresPage = () => {
                                         <h4><del>$50000</del> 34000</h4>
                                     </div>
                                     <br></br>
-
                                 </section>
                             </section>
                         </section>
@@ -183,7 +169,6 @@ const MainMujeresPage = () => {
                                         <h4><del>$50000</del> 34000</h4>
                                     </div>
                                     <br></br>
-
                                 </section>
                             </section>
                         </section>
@@ -205,7 +190,6 @@ const MainMujeresPage = () => {
                                         <h4><del>$50000</del> 34000</h4>
                                     </div>
                                     <br></br>
-
                                 </section>
                             </section>
                         </section>
@@ -227,7 +211,6 @@ const MainMujeresPage = () => {
                                         <h4><del>$50000</del> 34000</h4>
                                     </div>
                                     <br></br>
-
                                 </section>
                             </section>
                         </section>
@@ -249,7 +232,6 @@ const MainMujeresPage = () => {
                                         <h4><del>$50000</del> 34000</h4>
                                     </div>
                                     <br></br>
-
                                 </section>
                             </section>
                         </section>
@@ -258,8 +240,6 @@ const MainMujeresPage = () => {
             </div>
 
         </div>
-
-
 
     )
 }

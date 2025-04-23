@@ -164,3 +164,17 @@
     max-width: 90%;
   }
 }
+
+/* Estilos para el fondo de los inputs en modo claro */
+.input_user,
+.input_pass {
+  background-color: white; /* Establece el color de fondo a blanco */
+  /* Mantén otros estilos que ya tengas para estos elementos (bordes, padding, etc.) */
+}
+
+/* Opcional: Si tienes estilos específicos para el modo oscuro, asegúrate de que el fondo también sea blanco */
+.dark-mode .input_user,
+.dark-mode .input_pass {
+  background-color: white; /* Establece el color de fondo a blanco en modo oscuro también */
+  /* Mantén otros estilos que ya tengas para estos elementos en modo oscuro */
+}

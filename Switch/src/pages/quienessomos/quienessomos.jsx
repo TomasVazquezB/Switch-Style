@@ -7,10 +7,9 @@ export function QuienesSomosPage() {
             <div className="content">
                 <h1 className="quienessomos">¿Quiénes Somos?</h1>
                 <p className="info">Un equipo apasionado por innovar y crear soluciones que mejoren el mundo. Descubre al equipo que está detrás de esta visión.</p>
-                
                 <div className="team-cards">
                     <div className="team-card">
-                        <div className="team-img" />
+                        <div className="team-img"/>
                         <h3 className="team-name">Tomas Vazquez Brouver</h3>
                         <p className="team-role">Fundador</p>
                     </div>

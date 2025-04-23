@@ -9,20 +9,15 @@ import SANDALS from '../../assets/SANDALS.png';
 import SHIRT from '../../assets/SHIRT.png';
 import TSHIRT from '../../assets/TSHIRT.png';
 
-
-
 const MainKidsPage = () => {
 
     return (
         <div className="content">
 
-            {/* filtros */}
             <section className="sidebar">
                 <div class="sidebar-content">
 
                     <h2 class="border-bottom filter-title">TALLA</h2>
-
-
                     <input type="checkbox" class="custom-control-input" id="Small" />
                     <label class="custom-control-label" for="Small">SMALL</label>
                     <br></br>
@@ -37,15 +32,14 @@ const MainKidsPage = () => {
 
                     <input type="checkbox" class="custom-control-input" id="XLarge" />
                     <label class="custom-control-label" for="XLarge">XLARGE</label>
-
                     <hr></hr>
-                    <h2 class="border-bottom filter-title">CATEGORIA</h2>
 
+                    <h2 class="border-bottom filter-title">CATEGORIA</h2>
                     <hr></hr>
 
                     <h2 class="font-xbold body-font border-bottom filter-title">PRECIO</h2>
                     <div class="range">
-                        <input type="range" />
+                    <input type="range" />
                     </div>
                     <hr></hr>
 
@@ -67,13 +61,10 @@ const MainKidsPage = () => {
                     <hr></hr>
 
                     <h2 class="border-bottom filter-title">COLOR</h2>
-
                     <hr></hr>
 
                     <h2 class="border-bottom filter-title">MATERIAL</h2>
-
                 </div>
-
             </section>
 
 
@@ -95,7 +86,6 @@ const MainKidsPage = () => {
                                         <h4><del>$50000</del> 34000</h4>
                                     </div>
                                     <br></br>
-
                                 </section>
                             </section>
                         </section>
@@ -117,7 +107,6 @@ const MainKidsPage = () => {
                                         <h4><del>$50000</del> 34000</h4>
                                     </div>
                                     <br></br>
-
                                 </section>
                             </section>
                         </section>
@@ -139,7 +128,6 @@ const MainKidsPage = () => {
                                         <h4><del>$50000</del> 34000</h4>
                                     </div>
                                     <br></br>
-
                                 </section>
                             </section>
                         </section>
@@ -161,7 +149,6 @@ const MainKidsPage = () => {
                                         <h4><del>$50000</del> 34000</h4>
                                     </div>
                                     <br></br>
-
                                 </section>
                             </section>
                         </section>
@@ -183,7 +170,6 @@ const MainKidsPage = () => {
                                         <h4><del>$50000</del> 34000</h4>
                                     </div>
                                     <br></br>
-
                                 </section>
                             </section>
                         </section>
@@ -205,7 +191,6 @@ const MainKidsPage = () => {
                                         <h4><del>$50000</del> 34000</h4>
                                     </div>
                                     <br></br>
-
                                 </section>
                             </section>
                         </section>
@@ -227,7 +212,6 @@ const MainKidsPage = () => {
                                         <h4><del>$50000</del> 34000</h4>
                                     </div>
                                     <br></br>
-
                                 </section>
                             </section>
                         </section>
@@ -249,18 +233,13 @@ const MainKidsPage = () => {
                                         <h4><del>$50000</del> 34000</h4>
                                     </div>
                                     <br></br>
-
                                 </section>
                             </section>
                         </section>
                     </div>
                 </div>
             </div>
-
         </div>
-
-
-
     )
 }
 

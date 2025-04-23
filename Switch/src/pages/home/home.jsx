@@ -15,7 +15,6 @@ const cardImages = [
   'https://via.placeholder.com/300x200/0000FF/FFFFFF?text=Card+3',
 ];
 
-// Con 6 imágenes, para hacer 2 por slide
 const lastAddedImages = [
   'https://picsum.photos/400/300?random=1',
   'https://picsum.photos/400/300?random=2',
@@ -25,13 +24,10 @@ const lastAddedImages = [
   'https://picsum.photos/400/300?random=6',
 ];
 
-
 const Home = ({ darkMode }) => {
   return (
     <div className={`home-index ${darkMode ? 'dark' : 'light'}`}>
-      <div id="carouselExampleIndicators" className="carousel slide" data-bs-ride="carousel" style={{ marginTop: '50px' }}>
-
-
+      <div id="varkalaCarousel" className="carousel slide" data-bs-ride="carousel" style={{ marginTop: '50px' }}>
         <div className="carousel-inner">
           {carouselImages.map((image, index) => (
             <div className={`carousel-item ${index === 0 ? 'active' : ''}`} key={index}>
@@ -52,11 +48,11 @@ const Home = ({ darkMode }) => {
           ))}
         </div>
 
-        <button className="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+        <button className="carousel-control-prev" type="button" data-bs-target="#varkalaCarousel" data-bs-slide="prev">
           <span className="carousel-control-prev-icon" aria-hidden="true"></span>
           <span className="visually-hidden">Previous</span>
         </button>
-        <button className="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+        <button className="carousel-control-next" type="button" data-bs-target="#varkalaCarousel" data-bs-slide="next">
           <span className="carousel-control-next-icon" aria-hidden="true"></span>
           <span className="visually-hidden">Next</span>
         </button>
@@ -104,10 +100,10 @@ const Home = ({ darkMode }) => {
 
       <div className="last-added-section">
         <h2 className="mas-buscado">Últimas Prendas Añadidas</h2>
-        <Carousel indicators={false} interval={4000}>
+        <Carousel id="custom-last-added-carousel" indicators={false} interval={null}>
           {[0, 3].map((startIndex) => (
             <Carousel.Item key={startIndex}>
-              <div className="cards-carousel-wrapper">
+              <div className="cards-carousel-fullwidth">
                 {lastAddedImages.slice(startIndex, startIndex + 3).map((img, idx) => (
                   <div className="card-home" key={idx}>
                     <img src={img} className="card-img-top" alt={`Última Prenda ${startIndex + idx + 1}`} />
@@ -120,12 +116,11 @@ const Home = ({ darkMode }) => {
             </Carousel.Item>
           ))}
         </Carousel>
+
       </div>
 
-
-
       <div className="download-section">
-        <hr />
+        <hr/>
         <p className="download-text">Descarga la aplicación y únete a la experiencia Switch Style</p>
         <div className="download-icons">
           <div className="store-icon">

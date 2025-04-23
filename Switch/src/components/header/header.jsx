@@ -71,7 +71,7 @@ const Header = ({ toggleTheme }) => {
 
     return (
         <>
-            <div className={`offer-bar ${isDarkMode ? 'bg-ultra-dark' : 'bg-ultra-light'} text-center py-2`}>
+            <div className={`offer-bar ${isDarkMode ? 'bg-ultra-dark' : 'bg-ultra-light'} text-center pt-4 pb-2`}>
                 <br/>
                 <p className={isDarkMode ? 'text-dark' : 'text-white'}>¡Suscribite para obtener ofertas unicas y obten un 15% en tu primer compra!</p>
             </div>
@@ -80,7 +80,7 @@ const Header = ({ toggleTheme }) => {
                 <Container fluid style={{ maxWidth: "100%" }}>
                     <Navbar.Brand as={NavLink} to="/" onClick={() => navigate('/')}>
 
-                    <img src="../../assets/LOGO.png" width="90" height="50" className="d-inline-block align-top" alt="Logo"/>
+                    <img src="../src/assets/LOGO.png" width="90" height="50" className="d-inline-block align-top" alt="Logo"/>
 
                     </Navbar.Brand>
 
@@ -88,7 +88,6 @@ const Header = ({ toggleTheme }) => {
                     <Navbar.Collapse id="navbarNav">
                         <Nav className="me-auto">
 
-                            
                             <div className="mode-switch">
                                 <BsMoon className={`mode-icon ${isDarkMode ? 'active' : 'inactive'}`} />
                                 <label className="switch">
@@ -148,7 +147,6 @@ const Header = ({ toggleTheme }) => {
                                 <NavLink to="/ropa/hombres/camperas">Camperas</NavLink>
                             </div>
                         </div>
-
                         <div className="nav-dropdown">
                             <span className="nav-link">Mujeres</span>
                             <div className="dropdown-menu">
@@ -157,7 +155,6 @@ const Header = ({ toggleTheme }) => {
                                 <NavLink to="/ropa/hombres/camperas">Camperas</NavLink>
                             </div>
                         </div>
-
                         <div className="nav-dropdown">
                             <span className="nav-link">Niños</span>
                             <div className="dropdown-menu">
@@ -166,7 +163,6 @@ const Header = ({ toggleTheme }) => {
                                 <NavLink to="/ropa/hombres/camperas">Camperas</NavLink>
                             </div>
                         </div>
-
                         <div className="nav-dropdown">
                             <span className="nav-link">Accesorios</span>
                             <div className="dropdown-menu">

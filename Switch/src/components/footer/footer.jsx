@@ -3,13 +3,20 @@ import { Link } from 'react-router-dom';
 import Typography from '@mui/material/Typography';
 import { FaPhoneAlt, FaEnvelope, FaFacebookF, FaTwitter, FaInstagram, FaRegSmileWink } from 'react-icons/fa';
 import './footer.css';
+import { useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 
 const Footer = () => {
   return (
     <footer className="footer footer-center bg-base-200/60 rounded-sm p-4">
       <nav className="footer-nav">
         <FaRegSmileWink className="smile-icon" />
-        <Link to="/quienessomos" className="quienes-link">¿Querés conocernos?</Link>
+        <Link
+          to="/quienessomos"
+          className="quienes-link"
+          onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
+          ¿Querés conocernos?
+        </Link>
       </nav>
       <nav>
         <div className="social-icons">
@@ -36,6 +43,8 @@ const Footer = () => {
       </aside>
     </footer>
   );
+
 };
+
 
 export default Footer;

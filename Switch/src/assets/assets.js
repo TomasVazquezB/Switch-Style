@@ -41,8 +41,6 @@ export const assets = {
 
 export const productos = [
 
-    /* productos */
-
     {
         _id: "0000",
         nombre: "",

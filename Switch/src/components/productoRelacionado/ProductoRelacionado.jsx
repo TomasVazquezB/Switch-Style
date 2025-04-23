@@ -3,9 +3,7 @@ import { ShopContext } from '../../context/ShopContext.jsx';
 import ProductoItem from '../Productoitem/ProductoItem';
 
 const ProductoRelacionado = ({ categoria, subCategoria }) => {
-
     const [relacionado, setRelacionado] = useState([])
-
     const { productos } = useContext(ShopContext)
 
     useEffect(() => {
@@ -20,7 +18,6 @@ const ProductoRelacionado = ({ categoria, subCategoria }) => {
 
     return (
         <div className='my-24'>
-
             <div className='grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 gap-y-6'>
                 {
                     related.map((item, index) => (
