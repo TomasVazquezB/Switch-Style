@@ -28,8 +28,6 @@ const Home = ({ darkMode }) => {
   return (
     <div className={`home-index ${darkMode ? 'dark' : 'light'}`}>
       <div id="varkalaCarousel" className="carousel slide" data-bs-ride="carousel" style={{ marginTop: '50px' }}>
-
-
         <div className="carousel-inner">
           {carouselImages.map((image, index) => (
             <div className={`carousel-item ${index === 0 ? 'active' : ''}`} key={index}>

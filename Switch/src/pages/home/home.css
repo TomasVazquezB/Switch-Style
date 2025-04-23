@@ -6,7 +6,7 @@ body, html {
 
 .home-index {
     font-family: Arial, sans-serif;
-    padding: 0px 0px 0px 0px;
+    padding: 0px 0px 5px 0px;
     display: flex;
     flex-direction: column;
     min-height: 50vh;
@@ -557,6 +557,76 @@ body, html {
 }
 
 #varkalaCarousel {
-    margin-top: 0 !important;
-  }
-  
+    width: 100%;
+    margin-top: 0 !important; /* Elimina cualquier margen superior que pueda estar afectando su posición */
+}
+
+/* Asegura que el contenedor interno de las slides también ocupe todo el ancho */
+#varkalaCarousel .carousel-inner {
+    width: 100%;
+}
+
+/* Cada slide debe ocupar el 100% del ancho del carousel */
+#varkalaCarousel .carousel-item {
+    width: 100%;
+    display: flex; /* Para alinear el contenido (texto e imagen) */
+    align-items: center; /* Centra verticalmente el contenido */
+    justify-content: space-between; /* Espacio entre texto e imagen */
+    padding: 20px 6vw; /* Añade un poco de padding horizontal */
+    box-sizing: border-box; /* Incluye el padding en el cálculo del ancho */
+    min-height: 50vh; /* Asegura una altura mínima visible */
+    background-color: #fcf8ef; /* Mantiene el color de fondo */
+}
+
+/* Ajusta el contenedor del texto para ocupar espacio y alinearse */
+#varkalaCarousel .hero-text-zara {
+    max-width: 45%;
+    color: #111;
+}
+
+/* Ajusta el contenedor de la imagen para ocupar espacio y alinearse */
+#varkalaCarousel .hero-image-zara {
+    max-width: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: auto;
+}
+
+#varkalaCarousel .hero-image-zara img {
+    max-height: 600px;
+    width: auto;
+    object-fit: contain;
+    display: block;
+}
+
+/* Estilos para los controles (flechas) del carousel - asegúrate de que sean visibles */
+#varkalaCarousel .carousel-control-prev,
+#varkalaCarousel .carousel-control-next {
+    width: 60px;
+    height: 60px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border-radius: 50%;
+    z-index: 10;
+}
+
+#varkalaCarousel .carousel-control-prev-icon,
+#varkalaCarousel .carousel-control-next-icon {
+    background-size: 100% 100%;
+    width: 30px;
+    height: 30px;
+    filter: invert(1); /* Para que sean blancos en el fondo claro */
+}
+
+.dark #varkalaCarousel .carousel-control-prev-icon,
+.dark #varkalaCarousel .carousel-control-next-icon {
+    filter: invert(0); /* Para que sean negros/oscuros en el fondo oscuro */
+}
+
+#varkalaCarousel .carousel-control-prev:hover,
+#varkalaCarousel .carousel-control-next:hover {
+    background: none;
+    opacity: 1;
+}
