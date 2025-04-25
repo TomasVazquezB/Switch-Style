@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import { FaSyncAlt, FaTruck, FaUndo, FaApple, FaGooglePlay, FaChevronLeft, FaChevronRight } from 'react-icons/fa';
 import './home.css';
-import { FaSyncAlt, FaTruck, FaUndo, FaApple, FaGooglePlay } from 'react-icons/fa';
 import { Carousel } from 'react-bootstrap';
 
 const carouselImages = [
@@ -24,7 +24,32 @@ const lastAddedImages = [
   'https://picsum.photos/400/300?random=6',
 ];
 
+const cardsPerSlide = 3;
+
 const Home = ({ darkMode }) => {
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      handleNext();
+    }, 5000); 
+    return () => clearInterval(interval); 
+  }, [currentIndex]);
+
+  const handlePrev = () => {
+    setCurrentIndex((prevIndex) =>
+      prevIndex - cardsPerSlide < 0 ? lastAddedImages.length - cardsPerSlide : prevIndex - cardsPerSlide
+    );
+  };
+
+  const handleNext = () => {
+    setCurrentIndex((prevIndex) =>
+      prevIndex + cardsPerSlide >= lastAddedImages.length
+        ? 0
+        : prevIndex + cardsPerSlide
+    );
+  };
+
   return (
     <div className={`home-index ${darkMode ? 'dark' : 'light'}`}>
       <div id="varkalaCarousel" className="carousel slide" data-bs-ride="carousel" style={{ marginTop: '50px' }}>
@@ -59,7 +84,6 @@ const Home = ({ darkMode }) => {
       </div>
 
       <h2 className="mas-buscado">Descubre los más buscado</h2>
-      <br />
       <br />
       <div className="card-container">
         {cardImages.map((image, index) => (
@@ -100,34 +124,35 @@ const Home = ({ darkMode }) => {
 
       <div className="last-added-section">
         <h2 className="mas-buscado">Últimas Prendas Añadidas</h2>
-        <Carousel id="custom-last-added-carousel" indicators={false} interval={null}>
-          {[0, 3].map((startIndex) => (
-            <Carousel.Item key={startIndex}>
-              <div className="cards-carousel-fullwidth">
-                {lastAddedImages.slice(startIndex, startIndex + 3).map((img, idx) => (
-                  <div className="card-home" key={idx}>
-                    <img src={img} className="card-img-top" alt={`Última Prenda ${startIndex + idx + 1}`} />
-                    <div className="card-body text-center">
-                      <button className="btn-primary">Ver más</button>
-                    </div>
-                  </div>
-                ))}
+        <div className="carousel-cards-wrapper">
+          <button className="carousel-cards-btn" onClick={handlePrev}>
+            <FaChevronLeft />
+          </button>
+          <div className="carousel-cards-track" style={{ transform: `translateX(-${(currentIndex / cardsPerSlide) * 100}%)` }}>
+            {lastAddedImages.map((img, idx) => (
+              <div className="carousel-card-home" key={idx}>
+                <img src={img} alt={`Prenda ${idx + 1}`} />
               </div>
-            </Carousel.Item>
-          ))}
-        </Carousel>
-
+            ))}
+          </div>
+          <button className="carousel-cards-btn" onClick={handleNext}>
+            <FaChevronRight />
+          </button>
+        </div>
       </div>
 
       <div className="download-section">
         <hr/>
+        <br/>
         <p className="download-text">Descarga la aplicación y únete a la experiencia Switch Style</p>
         <div className="download-icons">
           <div className="store-icon">
+            <br/>
             <FaApple size={50} />
             <p>App Store</p>
           </div>
           <div className="store-icon">
+            <br/>
             <FaGooglePlay size={50} />
             <p>Play Store</p>
           </div>

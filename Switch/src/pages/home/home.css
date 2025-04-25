@@ -10,7 +10,6 @@ body, html {
     display: flex;
     flex-direction: column;
     min-height: 50vh;
-    
 }
 
 .home-index.light {
@@ -28,15 +27,14 @@ body, html {
     height: auto;
 }
 
-/* Subimos el carousel más cerca de la navbar */
 .carousel {
     margin-bottom: 30px;
-    margin-top: -100px; /* Subir el carrusel más cerca de la navbar */
+    margin-top: -100px; 
 }
 
 .mas-buscado {
     text-align: center;
-    margin-top: 12px;
+    margin-top: 20px;
     font-size: 26px;
     font-weight: bold;
     color: #000000;
@@ -63,16 +61,257 @@ body, html {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-  }
-  
-  
+}
 
 .card-home img {
     width: 100%;
     border-radius: 8px;
 }
 
+.btn-primary {
+    background-color: #000000;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+}
 
+.btn-primary:hover {
+    background-color: #222222;
+}
+
+.last-added-section .carousel-item {
+    margin-right: 15px;
+    transition: transform 0.3s ease-in-out;
+}
+
+.last-added-section .carousel-item img {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+.service-section {
+ margin-top: 88px;
+ display: flex;
+ justify-content: center;
+}
+
+.service-box {
+    display: flex;
+    justify-content: space-between;
+    background-color: #f1f1f1;
+    padding: 25px;
+    border-radius: 25px;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+    flex-wrap: wrap;
+    gap: 90px;
+}
+
+.service-item {
+    text-align: center;
+    flex: 1;
+    max-width: 940px;
+}
+
+.service-title {
+    font-size: 16px;
+    font-weight: bold;
+    margin-bottom: 15px;
+}
+
+.service-description {
+    font-size: 14px;
+    color: #555;
+}
+
+.download-section {
+    text-align: center;
+    margin-top: 40px;
+    margin-bottom: 30px;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 14px; 
+    padding-top: 5px; 
+    padding-bottom: 15px; 
+    width: 100%;
+}
+
+.home-index.light .download-section {
+    background-color: #f7f7f7;
+    color: #0e0d0d;
+}
+
+.home-index.dark .download-section {
+    background-color: #000000;
+    color: white;
+}
+
+.download-text {
+    font-size: 14px; 
+    margin-bottom: 20px;
+    font-weight: bold;
+  }
+
+.download-icons {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+}
+
+.store-icon {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.store-icon svg {
+    font-size: 36px;
+    margin-bottom: 5px;
+}
+
+.store-icon p {
+    margin: 0;
+    font-size: 0.9rem;
+}
+
+.carousel-indicators {
+    display: none !important;
+}
+
+.card-img-top {
+    width: 100%;
+    height: 240px;
+    object-fit: cover;
+}
+
+.card-body {
+    padding: 20px;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+}
+
+.carousel .carousel-item {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.cards-carousel-wrapper {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    padding: 30px 10px;
+    flex-wrap: wrap;
+}
+
+.last-added-section h2.mas-buscado {
+    margin-bottom: 110px;
+    font-size: 28px;
+    font-weight: bold;
+    text-align: center;
+    color: #fff;
+}
+
+.cards-carousel-fullwidth {
+    display: flex;
+    justify-content: space-between;
+    align-items: stretch;
+    flex-wrap: wrap;
+    width: 100%;
+    padding: 0 40px;
+    gap: 30px 20px;
+    box-sizing: border-box;
+}
+
+#custom-last-added-carousel .carousel-item {
+    transition: transform 0.6s ease-in-out !important;
+}
+
+#varkalaCarousel {
+    width: 100%;
+    margin-top: 15px !important;
+    margin-bottom: 30px;
+    background-color: rgb(116, 83, 83) !important;
+}
+
+#varkalaCarousel .carousel-inner {
+    display: flex !important;
+    transition: transform 0.6s ease-in-out !important;
+}
+
+#varkalaCarousel .carousel-item {
+    width: 100%;
+    flex-shrink: 0 !important;
+    position: relative !important;
+    opacity: 0;
+    transition: opacity 0.6s ease-in-out !important;
+    transform: translateX(0);
+}
+
+#varkalaCarousel .carousel-item.active {
+    opacity: 1 !important;
+}
+
+#varkalaCarousel .carousel-control-prev,
+#varkalaCarousel .carousel-control-next {
+    width: 60px;
+    height: 60px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border-radius: 50%;
+    z-index: 10;
+}
+
+#varkalaCarousel .carousel-control-prev-icon,
+#varkalaCarousel .carousel-control-next-icon {
+    background-size: 100% 100%;
+    width: 30px;
+    height: 30px;
+    filter: invert(1);
+}
+
+.dark #varkalaCarousel .carousel-control-prev-icon,
+.dark #varkalaCarousel .carousel-control-next-icon {
+    filter: invert(0);
+}
+
+#varkalaCarousel .carousel-control-prev:hover,
+#varkalaCarousel .carousel-control-next:hover {
+    background: none;
+    opacity: 1;
+}
+
+.dark .mas-buscado {
+    color: #f0f0f0;
+}
+
+.dark .card-home,
+.dark .service-item,
+.dark .download-section {
+    background-color: #1e1e1e;
+    color: #f0f0f0;
+}
+
+.dark .service-title,
+.dark .service-description,
+.dark .download-text,
+.dark .store-icon p {
+    color: #f0f0f0;
+}
+
+.dark svg {
+    color: #f0f0f0 !important;
+}
+
+.light {
+    background-color: #ffffff;
+    color: #121212;
+}
 
 .btn-primary {
     background-color: #000000;
@@ -117,133 +356,188 @@ body, html {
     transition: 0.3s;
 }
 
-.service-section {
-    margin-top: 88px;
-}
-
-.service-box {
+  .hero-carousel-zara {
     display: flex;
-    justify-content: space-between;
-    background-color: #f1f1f1;
-    padding: 25px;
-    border-radius: 25px;
-    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
-    flex-wrap: wrap;
-    gap: 90px;
-}
-
-.service-item {
+    justify-content: center;
+    align-items: center;
+    height: 65vh;
+  }
+  
+  .hero-text-zara {
+    position: absolute;
+    color: white;
     text-align: center;
-    flex: 1;
-    max-width: 940px;
-}
-
-.service-title {
-    font-size: 16px;
+    z-index: 2;
+  }
+  
+  .subtitle {
+    font-size: 1.2rem;
+    margin-bottom: 10px;
+  }
+  
+  .title {
+    font-size: 3rem;
     font-weight: bold;
-    margin-bottom: 15px;
-}
-
-.service-description {
-    font-size: 14px;
-    color: #555;
-}
-
-
-
-.last-added-section .carousel-item {
-    margin-right: 15px;
-    transition: transform 0.3s ease-in-out;
-}
-
-.last-added-section .carousel-item img {
-    width: 100%;
-    height: auto;
-    object-fit: cover;
-    border-radius: 8px;
-}
-
-/* Sección de Devolución y otras configuraciones */
-.devolucion-section {
-    margin-top: 60px; /* Asegura que la sección de devoluciones esté después de "descubre lo más buscado" */
-    margin-bottom: 50px; /* Para que la sección de devoluciones no quede pegada a la sección de "últimas prendas" */
-}
-
-.carousel-control-prev,
-.carousel-control-next {
-    width: 60px;
-    height: 60px;
-    top: 50%;
-    transform: translateY(-50%);
-    background: none;
-    border-radius: 50%;
-    z-index: 10;
-}
-
-.carousel-control-prev-icon,
-.carousel-control-next-icon {
-    background-size: 100% 100%;
-    width: 30px;
-    height: 30px;
-    filter: invert(1);
-}
-
-.carousel-control-prev-icon {
-    background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%23fff' viewBox='0 0 8 8'%3E%3Cpath d='M5.25 0L4.5.75 1.25 4l3.25 3.25.75.75L0 4z'/%3E%3C/svg%3E");
-}
-
-.carousel-control-next-icon {
-    background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%23fff' viewBox='0 0 8 8'%3E%3Cpath d='M2.75 0L3.5.75 6.75 4l-3.25 3.25-.75.75L8 4z'/%3E%3C/svg%3E");
-}
-
-.carousel-control-prev:hover,
-.carousel-control-next:hover {
-    background: none;
-    opacity: 1;
-}
-
-.carousel-caption button {
-    background-color: #ff5733;
+    margin-bottom: 20px;
+  }
+  
+  .description {
+    font-size: 1.2rem;
+    margin-bottom: 20px;
+  }
+  
+  .btn-discover {
+    background-color: #000000;
     color: white;
     border: none;
     padding: 10px 20px;
     cursor: pointer;
-}
-
-.carousel-caption button:hover {
-    background-color: #c13d28;
-}
-
-/* Modificaciones de la Sección de Descarga */
-.download-section {
-    margin-top: 20px; /* Separar la sección de descarga de últimas prendas */
-    margin-bottom: 0px; /* Reducción de espacio */
+  }
+  
+  .hero-image-zara img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  
+  .last-added-section {
+    margin-top: 60px;
+    position: relative;
+  }
+  
+  .carousel-cards-wrapper {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
-    font-size: 14px; /* Más pequeño */
-    border-top: 1px solid black; /* Borde más fino */
-    padding-top: 5px; /* Menos padding arriba */
-    padding-bottom: 5px; /* Menos padding abajo */
-}
-
-.download-text {
-    font-size: 14px; /* Texto más pequeño */
-    font-weight: bold;
-    margin-bottom: -10px;
-    text-align: left;
-    width: 90%;
-}
-
-.download-icons {
+    overflow: hidden;
+    position: relative;
+  }
+  
+  .carousel-cards-track {
     display: flex;
-    gap: 15px; /* Menos espacio entre los íconos */
-    justify-content: flex-end;
-}
-
-/* Ajustes en pantallas pequeñas */
-@media (max-width: 768px) {
-    /* Carrusel en pantallas pequeñas */
+    transition: transform 0.5s ease-in-out;
+  }
+  
+  .carousel-card-home {
+    width: 33.333%; 
+    padding: 10px;
+    box-sizing: border-box;
+  }
+  
+  .carousel-card-home img {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+  }
+  
+  .carousel-cards-btn {
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+    padding: 10px;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 1;
+  }
+  
+  .carousel-cards-btn:hover {
+    background-color: rgba(0, 0, 0, 0.8);
+  }
+  
+  .carousel-cards-btn:first-of-type {
+    left: 0;
+  }
+  
+  .carousel-cards-btn:last-of-type {
+    right: 0;
+  }
+  
+  .mas-buscado {
+    text-align: center;
+    font-size: 2rem;
+    margin-bottom: 30px;
+  }
+  
+  .carousel-cards-wrapper {
+    animation: autoSlide 10s infinite;
+  }
+  
+  .home-index.dark {
+    background-color: #121212;
+    color: white;
+  }
+  
+  .home-index.dark .hero-text-zara {
+    color: white;
+  }
+  
+  .home-index.dark .btn-discover {
+    background-color: #000000;
+    color: white;
+  }
+  
+  .home-index.dark .carousel-cards-btn {
+    background-color: rgba(255, 255, 255, 0.5);
+  }
+  
+  .home-index.dark .carousel-cards-btn:hover {
+    background-color: rgba(255, 255, 255, 0.8);
+  }
+  
+  .home-index.dark .mas-buscado {
+    color: white;
+  }
+  
+  .home-index.dark .service-description,
+  .home-index.dark .service-title,
+  .home-index.dark .download-text {
+    color: white;
+  }
+  
+  .home-index.light {
+    background-color: white;
+    color: black;
+  }
+  
+  .home-index.light .hero-text-zara {
+    color: black;
+  }
+  
+  .home-index.light .btn-discover {
+    background-color: #000000;
+    color: white;
+  }
+  
+  .home-index.light .carousel-cards-btn {
+    background-color: rgba(0, 0, 0, 0.5);
+  }
+  
+  .home-index.light .carousel-cards-btn:hover {
+    background-color: rgba(0, 0, 0, 0.8);
+  }
+  
+  .home-index.light .mas-buscado {
+    color: black;
+  }
+  
+  .home-index.light .service-description,
+  .home-index.light .service-title,
+  .home-index.light .download-text {
+    color: black;
+  }
+  
+  
+  @media (max-width: 768px) {
+    .carousel-card-home {
+      width: 100%; 
+    }
+  
+    .service-section {
+      flex-direction: column;
+      align-items: center;
+    }
+    
     .carousel-inner {
         padding-left: 5px;
         padding-right: 5px;
@@ -269,429 +563,12 @@ body, html {
         justify-content: center;
     }
 
-    /* Ajuste para las tarjetas */
     .card-container {
-        gap: 30px; /* Menos espacio entre las tarjetas */
+        gap: 30px;
         justify-content: center;
     }
 
     .card-home {
-        width: 90%; /* Ajusta el tamaño de las tarjetas en pantallas pequeñas */
+        width: 90%;
     }
-}
-
-.dark {
-    background-color: #121212;
-    color: #f0f0f0;
-}
-
-.dark .card-home,
-.dark .service-item,
-.dark .download-section {
-    background-color: #1e1e1e;
-    color: #f0f0f0;
-}
-
-.dark .service-title,
-.dark .service-description,
-.dark .download-text,
-.dark .store-icon p {
-    color: #f0f0f0;
-}
-
-.dark svg {
-    color: #f0f0f0 !important;
-}
-
-.dark .mas-buscado {
-    color: #f0f0f0;
-}
-
-.light {
-    background-color: #ffffff;
-    color: #121212;
-}
-
-.hero-carousel {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    background-color: #f5f5f5;
-    padding: 8rem;
-    height: 100%;
-}
-
-.hero-text {
-    max-width: 50%;
-}
-
-.hero-text .carousel-subtitle {
-    font-size: 14px;
-    letter-spacing: 2px;
-    color: #555;
-    font-weight: bold;
-    margin-bottom: 10px;
-}
-
-.hero-text .carousel-title {
-    font-size: 48px;
-    color: #222;
-    font-weight: 600;
-    margin-bottom: 20px;
-}
-
-.hero-text .carousel-description {
-    font-size: 16px;
-    color: #666;
-    margin-bottom: 30px;
-    max-width: 400px;
-}
-
-.discover-btn {
-    background-color: #000;
-    color: #fff;
-    border: none;
-    padding: 12px 24px;
-    font-weight: bold;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    transition: background-color 0.3s ease;
-    cursor: pointer;
-}
-
-.discover-btn:hover {
-    background-color: #333;
-}
-
-.hero-image img {
-    max-height: 500px;
-    width: auto;
-}
-
-.hero-carousel-zara {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0 6vw;
-    height: 50vh;
-}
-
-.hero-text-zara {
-    max-width: 45%;
-    color: #111;
-}
-
-.hero-text-zara .subtitle {
-    text-transform: uppercase;
-    font-size: 14px;
-    letter-spacing: 2px;
-    font-weight: 600;
-    margin-bottom: 12px;
-}
-
-.hero-text-zara .title {
-    font-size: 64px;
-    font-weight: bold;
-    margin-bottom: 20px;
-    line-height: 1.2;
-}
-
-.hero-text-zara .description {
-    font-size: 16px;
-    color: #666;
-    margin-bottom: 30px;
-    max-width: 400px;
-}
-
-.btn-discover {
-    padding: 12px 24px;
-    background-color: #000;
-    color: #fff;
-    border: none;
-    font-weight: bold;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    transition: all 0.3s ease;
-    cursor: pointer;
-}
-
-.btn-discover:hover {
-    background-color: #333;
-}
-
-.hero-image-zara img {
-    max-height: 600px;
-    width: auto;
-    object-fit: contain;
-}
-
-.download-section {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 30px 0;
-    background-color: #1a1a1a;
-    color: white;
-  }
-  
-  .download-text {
-    font-size: 1.1rem;
-    margin-bottom: 20px;
-    text-align: center;
-    max-width: 90%;
-  }
-  
-  .download-icons {
-    display: flex;
-    justify-content: center;
-    gap: 40px;
-  }
-  
-  .store-icon {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-  
-  .store-icon svg {
-    font-size: 36px;
-    margin-bottom: 5px;
-  }
-  
-  .store-icon p {
-    margin: 0;
-    font-size: 0.9rem;
-  }
-  
-  .carousel-indicators {
-    display: none !important;
-  }
-  
-
-  
-  
-  .card-img-top {
-    width: 100%;
-    height: 240px;
-    object-fit: cover;
-  }
-  
-  .card-body {
-    padding: 20px;
-    flex-grow: 1;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-end;
-  }
-  
-  
-  .carousel .carousel-item {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-  
-  .cards-carousel-wrapper {
-    display: flex;
-    justify-content: center;
-    gap: 30px;
-    padding: 30px 10px;
-    flex-wrap: wrap;
-  }
-  
-  .btn-primary {
-    background-color: #000;
-    color: #fff;
-    border: none;
-    padding: 10px 20px;
-    font-weight: bold;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    transition: all 0.3s ease;
-    cursor: pointer;
-    width: 100%;
-  }
-  
-  .btn-primary:hover {
-    background-color: #444;
-  }
-
-  .last-added-section {
-    padding: 60px 0 40px; /* más espacio arriba y abajo */
-    text-align: center;
-    position: relative;
-    z-index: 2;
-  }
-  
-  .last-added-section h2.mas-buscado {
-    margin-bottom: 110px; /* espacio entre el título y las cartas */
-    font-size: 28px;
-    font-weight: bold;
-    text-align: center;
-    color: #fff; /* o #000 si es light mode */
-    position: relative;
-    z-index: 3;
-  }
-
-  .cards-carousel-fullwidth {
-    display: flex;
-    justify-content: space-between;
-    align-items: stretch;
-    flex-wrap: wrap;
-    width: 100%;
-    padding: 0 40px;
-    gap: 30px 20px; 
-    box-sizing: border-box;
-  }
-  
-  
-  #custom-last-added-carousel .carousel-item {
-  transition: transform 0.6s ease-in-out !important;
-}
-
-#varkalaCarousel {
-    width: 100%;
-    margin-top: 0 !important;
-    margin-bottom: 30px;
-    background-color: white !important; /* Fondo blanco */
-}
-
-#varkalaCarousel .carousel-inner {
-    display: flex !important; /* Asegura que los items estén en fila */
-    transition: transform 0.6s ease-in-out !important; /* Transición para el desplazamiento */
-}
-
-#varkalaCarousel .carousel-item {
-    width: 100%;
-    flex-shrink: 0 !important;
-    position: relative !important; /* Necesario para posicionar los controles */
-    opacity: 0; /* Inicialmente oculto */
-    transition: opacity 0.6s ease-in-out !important; /* Transición de opacidad */
-    transform: translateX(0); /* Asegura que no haya transformaciones iniciales que interfieran */
-}
-
-#varkalaCarousel .carousel-item.active {
-    opacity: 1 !important; /* El slide activo es visible */
-}
-
-/* Posicionamiento para la animación de los slides */
-#varkalaCarousel .carousel-item-next,
-#varkalaCarousel .carousel-item-prev {
-    position: absolute !important;
-    top: 0;
-}
-
-#varkalaCarousel .carousel-item-next {
-    transform: translateX(100%);
-}
-
-#varkalaCarousel .carousel-item-prev {
-    transform: translateX(-100%);
-}
-
-/* Animaciones al cambiar de slide */
-.carousel.slide .carousel-item.active.carousel-item-left,
-.carousel.slide .carousel-item.active.carousel-item-right {
-    transform: translateX(0);
-    opacity: 0;
-}
-
-.carousel.slide .carousel-item.carousel-item-prev.carousel-item-left,
-.carousel.slide .carousel-item.carousel-item-next.carousel-item-right {
-    transform: translateX(0);
-    opacity: 1;
-}
-
-/* Estilos del contenido de cada slide */
-#varkalaCarousel .hero-carousel-zara {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 20px 6vw;
-    box-sizing: border-box;
-    min-height: 50vh;
-}
-
-#varkalaCarousel .hero-text-zara {
-    max-width: 45%;
-    color: #111 !important;
-}
-
-#varkalaCarousel .hero-text-zara .subtitle {
-    color: #555 !important;
-}
-
-#varkalaCarousel .hero-text-zara .title {
-    font-size: 64px;
-    font-weight: bold;
-    margin-bottom: 20px;
-    line-height: 1.2;
-}
-
-#varkalaCarousel .hero-text-zara .description {
-    color: #666 !important;
-    margin-bottom: 30px;
-    max-width: 400px;
-}
-
-#varkalaCarousel .btn-discover {
-    padding: 12px 24px;
-    background-color: #000;
-    color: #fff;
-    border: none;
-    font-weight: bold;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    transition: all 0.3s ease;
-    cursor: pointer;
-}
-
-#varkalaCarousel .btn-discover:hover {
-    background-color: #333;
-}
-
-#varkalaCarousel .hero-image-zara {
-    max-width: 50%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: auto;
-}
-
-#varkalaCarousel .hero-image-zara img {
-    max-height: 600px;
-    width: auto;
-    object-fit: contain;
-    display: block;
-}
-
-/* Estilos de los controles */
-#varkalaCarousel .carousel-control-prev,
-#varkalaCarousel .carousel-control-next {
-    width: 60px;
-    height: 60px;
-    top: 50%;
-    transform: translateY(-50%);
-    background: none;
-    border-radius: 50%;
-    z-index: 10;
-}
-
-#varkalaCarousel .carousel-control-prev-icon,
-#varkalaCarousel .carousel-control-next-icon {
-    background-size: 100% 100%;
-    width: 30px;
-    height: 30px;
-    filter: invert(1);
-}
-
-.dark #varkalaCarousel .carousel-control-prev-icon,
-.dark #varkalaCarousel .carousel-control-next-icon {
-    filter: invert(0);
-}
-
-#varkalaCarousel .carousel-control-prev:hover,
-#varkalaCarousel .carousel-control-next:hover {
-    background: none;
-    opacity: 1;
 }
