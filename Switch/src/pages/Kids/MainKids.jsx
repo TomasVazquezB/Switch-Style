@@ -13,7 +13,6 @@ const MainKidsPage = () => {
 
     return (
         <div className="content">
-
             <section className="sidebar">
                 <div class="sidebar-content">
 
@@ -66,7 +65,6 @@ const MainKidsPage = () => {
                     <h2 class="border-bottom filter-title">MATERIAL</h2>
                 </div>
             </section>
-
 
             <div class="main">
                 <div class="row">

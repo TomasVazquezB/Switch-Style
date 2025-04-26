@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { registrarUsuario } from '../usuarios/usuarios';
 import './registro.css';
-import { assets } from '../../assets/assets';
 
 export function RegistroPage() {
     const [formData, setFormData] = useState({
@@ -15,7 +14,6 @@ export function RegistroPage() {
 
     const handleChange = (e) => {setFormData({...formData,[e.target.name]: e.target.value,});};
     const handleCheckboxChange = (e) => {setFormData({...formData,aceptarTerminos: e.target.checked,});};
-
     const handleSubmit = (e) => {e.preventDefault();
         if (!formData.aceptarTerminos) {alert("Debes aceptar los términos y condiciones.");
             return;

@@ -7,7 +7,6 @@ import Navbar from 'react-bootstrap/Navbar';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { FaSearch, FaHeart, FaShoppingCart, FaUserCircle } from 'react-icons/fa';
 import { BsMoon, BsSun } from 'react-icons/bs';
-import { assets } from '../../assets/assets';
 
 const Header = ({ toggleTheme }) => {
     const [isDarkMode, setIsDarkMode] = useState(true);

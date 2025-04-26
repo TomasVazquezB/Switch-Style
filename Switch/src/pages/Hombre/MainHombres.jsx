@@ -6,7 +6,6 @@ import { assets } from '../../assets/assets'
 const MainHombres = () => {
 
   const { productos, search, showSearch } = useContext(ShopContext);
-
   const [filtroProductos, setFiltroProductos] = useState([]);
   const [categoria, setCategoria] = useState([]);
   const [subCategoria, setSubCategoria] = useState([]);
@@ -74,14 +73,9 @@ const MainHombres = () => {
 
   }
 
-  useEffect(() => {
-    applyFiltro()
-  }, [categoria, subCategoria, search, showSearch])
+  useEffect(() => {applyFiltro() }, [categoria, subCategoria, search, showSearch])
 
-  useEffect(() => {
-    sortProducto();
-  }, [sortTipo])
-
+  useEffect(() => {sortProducto();}, [sortTipo])
 
   return (
     <div className="content">
@@ -89,7 +83,6 @@ const MainHombres = () => {
         <div class="sidebar-content">
           <p onClick={() => setShowFiltro(!showFiltro)} className='my-2 text-xl flex items-center cursor-pointer gap-2'>FILTROS<img className={`h-3 sm:hidden ${showFiltro ? ' rotate-90' : ''}`} src={assets.dropdown_icon} alt="" /></p>
 
-          {/* FILTROS DE CATEGORIA */}
           <div className={`border border-gray-300 pl-5 py-3 mt-6 ${showFiltro ? '' : 'hidden'} sm:block`}>
             <p className='mb-3 text-sm font-medium'>CATEGORIAS</p>
             <div className='flex flex-col gap-2 text-sm font-light text-gray-800'>
@@ -99,7 +92,6 @@ const MainHombres = () => {
             </div>
           </div>
 
-          {/* FILTROS DE SUBCATEGORIA */}
           <div className={`border border-gray-300 pl-5 py-3 my-5 ${showFiltro ? '' : 'hidden'} sm:block`}>
             <p className='mb-3 text-sm font-medium'>TIPO</p>
             <div className='flex flex-col gap-2 text-sm font-light text-gray-700'>
@@ -107,18 +99,14 @@ const MainHombres = () => {
               <p className='flex gap-2'><input className='w-3' value={"Bottomwear"} onChange={toggleSubCategoria} type="checkbox" /> Bottomwear </p>
               <p className='flex gap-2'><input className='w-3' value={"Winterwear"} onChange={toggleSubCategoria} type="checkbox" /> Winterwear </p>
             </div>
-
           </div>
         </div>
       </section>
 
-      {/* Right Side */}
       <div class="main">
         <div class="row">
           <div class="column">
 
-
-            {/* Product Sort */}
             <select onChange={(e) => setSortTipo(e.target.value)} className='border-2 border-gray-300 text-sm px-2' name="" id="">
               <option value="relavente">Sort by: Relavente</option>
               <option value="low-high">Sort by: Low to High</option>
@@ -126,13 +114,10 @@ const MainHombres = () => {
             </select>
           </div>
 
-          {/* Map Products */}
           <div style={{ display: "flex", flexWrap: "wrap" }}>
             {
               filtroProductos.map((item, index) => (
-                <div style={{ padding: "20px", margin: "20px", border: "2px solid black" }} key={index}>
-                  <ProductoItem id={item._id} img={item.img} name={item.nombre} price={item.precio} />
-                </div>
+                <div style={{ padding: "20px", margin: "20px", border: "2px solid black" }} key={index}><ProductoItem id={item._id} img={item.img} name={item.nombre} price={item.precio} /></div>
               ))
             }
 

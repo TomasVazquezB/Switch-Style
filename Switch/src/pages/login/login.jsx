@@ -2,8 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { loginUsuario } from '../usuarios/usuarios';
 import './login.css';
-import { assets } from '../../assets/assets';
-
 
 export function LoginPage() {
     const [formData, setFormData] = useState({ identificador: '', contrasena: '' });
@@ -29,11 +27,7 @@ export function LoginPage() {
         const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
         mediaQuery.addEventListener('change', updateMode);
 
-        return () => {
-            observer.disconnect();
-            mediaQuery.removeEventListener('change', updateMode);
-        };
-    }, []);
+        return () => {observer.disconnect(); mediaQuery.removeEventListener('change', updateMode);};}, []);
 
     const handleChange = (e) => {setFormData({ ...formData, [e.target.name]: e.target.value });};
 

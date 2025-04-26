@@ -23,7 +23,6 @@ function App() {
 
   return (
     <div>
-
       <Header toggleTheme={toggleTheme} />
       <Routes>
        <Route path="/" element={<PageTitle title="Switch Style"><Home darkMode={darkMode} /></PageTitle>} />
@@ -39,16 +38,12 @@ function App() {
         <Route path="/producto/:productoId" element={<Productos />} />
       </Routes>
       <Footer />
-
     </div>
   );
 }
 
-function PageTitle({ title, children }) {
-  const location = useLocation();
-
-  useEffect(() => { document.title = title; }, [location, title]);
-
+function PageTitle({ title, children }) {const location = useLocation(); 
+useEffect(() => { document.title = title; }, [location, title]);
   return <>{children}</>;
 }
 

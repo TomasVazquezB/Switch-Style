@@ -33,34 +33,51 @@ body, html {
 }
 
 .mas-buscado {
-    text-align: center;
-    margin-top: 20px;
-    font-size: 26px;
-    font-weight: bold;
-    color: #000000;
+  text-align: center;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  font-size: 2rem;
+  font-weight: bold;
+  color: #000000;
 }
+
 
 .card-container {
     display: flex;
     justify-content: center;
     flex-wrap: wrap;
-    gap: 200px;
+    gap: 50px;
 }
 
 .card-home {
-    flex: 1 1 30%;
-    max-width: 32%;
-    min-width: 300px;
-    margin: 15px 10px;
-    height: auto;
-    background-color: #1a1a1a;
-    border: 1px solid #333;
-    border-radius: 8px;
-    overflow: hidden;
-    box-shadow: 0 0 10px rgba(0,0,0,0.3);
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
+  flex: 1 1 200px;
+  max-width: 200px;
+  margin: 10px;
+  background-color: #1a1a1a;
+  border: 2px solid #333;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(0,0,0,0.3);
+  display: flex;
+  flex-direction: column;
+}
+
+.card-img-top {
+  width: 200%;
+  height: 200px; 
+  object-fit: contain;
+  display: flex;
+  background-color: #fff;
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;  
+}
+
+.card-body {
+  padding: 20px;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
 }
 
 .card-home img {
@@ -93,7 +110,7 @@ body, html {
 }
 
 .service-section {
- margin-top: 88px;
+ margin-top: 50px;
  display: flex;
  justify-content: center;
 }
@@ -106,7 +123,7 @@ body, html {
     border-radius: 25px;
     box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
     flex-wrap: wrap;
-    gap: 90px;
+    gap: 120px;
 }
 
 .service-item {
@@ -128,13 +145,12 @@ body, html {
 
 .download-section {
     text-align: center;
-    margin-top: 40px;
-    margin-bottom: 30px;
+    margin-top: 10px;
+    margin-bottom: 10px;
     justify-content: space-between;
     align-items: center;
-    font-size: 14px; 
-    padding-top: 5px; 
-    padding-bottom: 15px; 
+    padding-top: 20px; 
+    padding-bottom: 10px; 
     width: 100%;
 }
 
@@ -149,7 +165,7 @@ body, html {
 }
 
 .download-text {
-    font-size: 14px; 
+    font-size: 16px; 
     margin-bottom: 20px;
     font-weight: bold;
   }
@@ -172,8 +188,8 @@ body, html {
 }
 
 .store-icon p {
-    margin: 0;
-    font-size: 0.9rem;
+    margin: 8px;
+    font-size: 1.02rem;
 }
 
 .carousel-indicators {
@@ -209,7 +225,7 @@ body, html {
 }
 
 .last-added-section h2.mas-buscado {
-    margin-bottom: 110px;
+    margin-bottom: 25px;
     font-size: 28px;
     font-weight: bold;
     text-align: center;
@@ -233,8 +249,8 @@ body, html {
 
 #varkalaCarousel {
     width: 100%;
-    margin-top: 15px !important;
-    margin-bottom: 30px;
+    margin-top: 0px !important;
+    margin-bottom: 15px;
     background-color: rgb(116, 83, 83) !important;
 }
 
@@ -360,7 +376,7 @@ body, html {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 65vh;
+    height: 50vh;
   }
   
   .hero-text-zara {
@@ -527,7 +543,6 @@ body, html {
     color: black;
   }
   
-  
   @media (max-width: 768px) {
     .carousel-card-home {
       width: 100%; 
@@ -564,11 +579,22 @@ body, html {
     }
 
     .card-container {
-        gap: 30px;
+        gap: 20px;
         justify-content: center;
     }
 
     .card-home {
         width: 90%;
     }
+
+
+    .card-home {
+      width: 90%;
+      max-width: 100%;
+  }
+
+  .card-img-top {
+      height: 180px;
+  }
+
 }

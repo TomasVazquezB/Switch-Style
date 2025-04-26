@@ -12,7 +12,6 @@ const ProductoItem = ({ id, img, nombre, precio }) => {
             </div>
             <p className='pt-3 pb-1 text-sm'>{nombre}</p>
             <p className='text-sm font-medium'>{moneda}{precio}</p>
-
         </Link>
     )
 }

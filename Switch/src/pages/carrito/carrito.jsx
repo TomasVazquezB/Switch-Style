@@ -4,9 +4,7 @@ import { assets } from '../../assets/assets.js';
 import CarritoTotal from '../../components/CarritoTotal.jsx';
 
 const Carrito = () => {
-
     const { productos, moneda, navigate, carritoItems, updateCantidad } = useContext(ShopContext);
-
     const [carritoData, setCarritoData] = useState([]);
 
     useEffect(() => {
@@ -28,11 +26,8 @@ const Carrito = () => {
 
     return (
         <div className='border-t pt-14'>
-
             <div>
-                {carritoData.map((item, index) => {
-
-                    const productoData = productos.find((producto) => producto._id === item._id);
+                {carritoData.map((item, index) => {const productoData = productos.find((producto) => producto._id === item._id);
 
                     return (
 
@@ -51,20 +46,16 @@ const Carrito = () => {
                             <img onClick={() => updateCantidad(item._id, item.talla, 0)} className='w-4 mr-4 sm:w-5 cursor-pointer' src={assets.bin_icon} alt="" />
                         </div>
                     )
-
                 })}
             </div>
 
             <div className='flex justify-end my-20'>
-                <div className='w-full sm:w-[450px]'>
-                    <CarritoTotal />
+                <div className='w-full sm:w-[450px]'><CarritoTotal/>
                     <div className='w-full text-end'>
-                        <button onClick={() => navigate('/place-order')} className='bg-black text-white text-sm my-8 px-8 py-3'>PROCEED TO CHECKOUT</button>
+                    <button onClick={() => navigate('/place-order')} className='bg-black text-white text-sm my-8 px-8 py-3'>PROCEED TO CHECKOUT</button>
                     </div>
                 </div>
-
             </div>
-
         </div>
     )
 }
