@@ -44,20 +44,31 @@ footer nav {
 .quienes-link {
   color: white;
   font-size: 1.2rem;
+  text-decoration: none; /* 👈 Esto saca el subrayado */
+  color: inherit; /* 👈 Esto mantiene el color del texto igual al resto */
+  font-weight: bold; /* 👈 (Opcional) Para que se vea un poquito más fuerte si querés */
+  cursor: pointer; /* 👈 Para que siga pareciendo un link */
 }
 
 .social-icons {
   display: flex;
   justify-content: flex-end;
   align-items: center;
-  gap: 5px; 
+  gap: 25px; /* Aumentamos el espacio entre iconos */
   margin-top: 0px;
   width: 100%;
 }
 
 .social-icon {
   color: white;
-  font-size: 1.5rem; 
+  font-size: 28px; /* Aumentamos el tamaño de los iconos */
+  transition: transform 0.3s; /* Animación suave */
+  cursor: pointer; /* Para que aparezca la manito al pasar encima */
+  margin-right: 13.5px;
+}
+
+.social-icon:hover {
+  transform: scale(1.2); /* Pequeño efecto zoom al pasar el mouse */
 }
 
 .social-text {
