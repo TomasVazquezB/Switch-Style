@@ -5,7 +5,7 @@ import './home.css';
 const carouselImages = [
   'src/assets/CP 1.JPEG',
   'src/assets/CP 2.JPEG',
-  'https://via.placeholder.com/800x300/0000FF/FFFFFF?text=Imagen+3',
+
 ];
 
 const cardImages = [
@@ -30,30 +30,31 @@ const lastAddedImages = [
 
 const cardsPerSlide = 3;
 
-const Home = ({ darkMode }) => {const [currentIndex, setCurrentIndex] = useState(0);
+const Home = ({ darkMode }) => {
+  const [currentIndex, setCurrentIndex] = useState(0);
 
-  useEffect(() => {const interval = setInterval(() => {handleNext();}, 5000); 
-    return () => clearInterval(interval); }, [currentIndex]);
+  useEffect(() => {
+    const interval = setInterval(() => { handleNext(); }, 5000);
+    return () => clearInterval(interval);
+  }, [currentIndex]);
 
-  const handlePrev = () => {setCurrentIndex((prevIndex) => prevIndex - cardsPerSlide < 0 ? lastAddedImages.length - cardsPerSlide : prevIndex - cardsPerSlide);};
+  const handlePrev = () => { setCurrentIndex((prevIndex) => prevIndex - cardsPerSlide < 0 ? lastAddedImages.length - cardsPerSlide : prevIndex - cardsPerSlide); };
 
-  const handleNext = () => {setCurrentIndex((prevIndex) => prevIndex + cardsPerSlide >= lastAddedImages.length? 0: prevIndex + cardsPerSlide);};
+  const handleNext = () => { setCurrentIndex((prevIndex) => prevIndex + cardsPerSlide >= lastAddedImages.length ? 0 : prevIndex + cardsPerSlide); };
 
   return (
     <div className={`home-index ${darkMode ? 'dark' : 'light'}`}>
-      <div id="varkalaCarousel" className="carousel slide" data-bs-ride="carousel" style={{ marginTop: '50px' }}>
-        <div className="carousel-inner"> {carouselImages.map((image, index) => (
+      <div id="varkalaCarousel" className="carousel slide carousel-fade varkala-carousel" data-bs-ride="carousel" data-bs-interval="5000">
+        <div className="carousel-inner">
+          {carouselImages.map((image, index) => (
             <div className={`carousel-item ${index === 0 ? 'active' : ''}`} key={index}>
-              <div className="hero-carousel-zara">
-                <div className="hero-text-zara">
-                  <h1 className="title">Ultimas novededas</h1>
-                  <p className="subtitle"></p>
-                  <p className="description">Descubre las nuevas tendencias del momento con super ofertas de lanzamiento</p>
-                  <button className="btn-discover">Descubre lo nuevo</button>
-                </div>
-                <div className="hero-image-zara">
-                <img src={image} alt={`Slide ${index + 1}`} />
-                </div>
+              <img src={image} className="d-block w-100" alt={`Slide ${index + 1}`} />
+              <div className="hero-text-zara">
+                <h1 className="title">Ultimas novedades</h1>
+                <p className="description">
+                  Descubre las nuevas tendencias del momento con super ofertas de lanzamiento
+                </p>
+                <button className="btn-discover">Descubre lo nuevo</button>
               </div>
             </div>
           ))}
@@ -69,18 +70,19 @@ const Home = ({ darkMode }) => {const [currentIndex, setCurrentIndex] = useState
         </button>
       </div>
 
-  <div>
-  <h2 className="mas-buscado">Lo más buscado</h2>
-  <div className="card-container">{cardImages.map((image, index) => (
-      <div className="card-home" key={index}>
-        <img src={image} className="card-img-top" alt={`Card ${index + 1}`} />
-        <div className="card-body">
-          <button className="btn-primary">Ver más</button>
+
+      <div>
+        <h2 className="mas-buscado">Lo más buscado</h2>
+        <div className="card-container">{cardImages.map((image, index) => (
+          <div className="card-home" key={index}>
+            <img src={image} className="card-img-top" alt={`Card ${index + 1}`} />
+            <div className="card-body">
+              <button className="btn-primary">Ver más</button>
+            </div>
+          </div>
+        ))}
         </div>
       </div>
-    ))}
-  </div>
-</div>
 
       <div className="service-section">
         <div className="service-box">
@@ -111,7 +113,7 @@ const Home = ({ darkMode }) => {const [currentIndex, setCurrentIndex] = useState
       <div className="last-added-section">
         <h2 className="mas-buscado">Últimas Prendas Añadidas</h2>
         <div className="carousel-cards-wrapper">
-          <button className="carousel-cards-btn" onClick={handlePrev}><FaChevronLeft/></button>
+          <button className="carousel-cards-btn" onClick={handlePrev}><FaChevronLeft /></button>
           <div className="carousel-cards-track" style={{ transform: `translateX(-${(currentIndex / cardsPerSlide) * 100}%)` }}>
             {lastAddedImages.map((img, idx) => (
               <div className="carousel-card-home" key={idx}>
@@ -124,11 +126,11 @@ const Home = ({ darkMode }) => {const [currentIndex, setCurrentIndex] = useState
       </div>
 
       <div className="download-section">
-        <hr/>
+        <hr />
         <p className="download-text">Descarga la aplicación y únete a la experiencia Switch Style</p>
         <div className="download-icons">
-          <div className="store-icon"><FaApple size={40}/><p>App Store</p></div>
-          <div className="store-icon"><FaGooglePlay size={40}/><p>Play Store</p>
+          <div className="store-icon"><FaApple size={40} /><p>App Store</p></div>
+          <div className="store-icon"><FaGooglePlay size={40} /><p>Play Store</p>
           </div>
         </div>
       </div>

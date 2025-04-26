@@ -32,6 +32,73 @@ body, html {
     margin-top: -100px; 
 }
 
+
+
+.varkala-carousel {
+  background: transparent;
+  width: 100%;
+  margin-top: 0;
+  margin-bottom: 30px;
+}
+
+.varkala-carousel .carousel-inner {
+  width: 100%;
+  height: 480px;
+}
+
+.varkala-carousel .carousel-item {
+  height: 480px;
+  position: relative;
+  transition: opacity 1s ease-in-out;
+}
+
+.varkala-carousel .carousel-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+/* Texto encima de las imágenes */
+.hero-text-zara {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: rgba(0, 0, 0, 0.5);
+  padding: 20px;
+  border-radius: 10px;
+  text-align: center;
+  color: white;
+  z-index: 10;
+}
+
+.hero-text-zara .title,
+.hero-text-zara .description {
+  color: white;
+}
+
+.btn-discover {
+  margin-top: 15px;
+  background-color: black;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  font-weight: bold;
+  text-transform: uppercase;
+  transition: background-color 0.3s ease;
+}
+
+.btn-discover:hover {
+  background-color: #333;
+}
+
+.varkala-carousel .carousel-control-prev-icon,
+.varkala-carousel .carousel-control-next-icon {
+  filter: invert(1); /* ¡Invertir apagado! */
+}
+
+
 .mas-buscado {
   text-align: center;
   margin-top: 20px;
@@ -247,60 +314,6 @@ body, html {
     transition: transform 0.6s ease-in-out !important;
 }
 
-#varkalaCarousel {
-    width: 100%;
-    margin-top: 0px !important;
-    margin-bottom: 15px;
-    background-color: rgb(116, 83, 83) !important;
-}
-
-#varkalaCarousel .carousel-inner {
-    display: flex !important;
-    transition: transform 0.6s ease-in-out !important;
-}
-
-#varkalaCarousel .carousel-item {
-    width: 100%;
-    flex-shrink: 0 !important;
-    position: relative !important;
-    opacity: 0;
-    transition: opacity 0.6s ease-in-out !important;
-    transform: translateX(0);
-}
-
-#varkalaCarousel .carousel-item.active {
-    opacity: 1 !important;
-}
-
-#varkalaCarousel .carousel-control-prev,
-#varkalaCarousel .carousel-control-next {
-    width: 60px;
-    height: 60px;
-    top: 50%;
-    transform: translateY(-50%);
-    background: none;
-    border-radius: 50%;
-    z-index: 10;
-}
-
-#varkalaCarousel .carousel-control-prev-icon,
-#varkalaCarousel .carousel-control-next-icon {
-    background-size: 100% 100%;
-    width: 30px;
-    height: 30px;
-    filter: invert(1);
-}
-
-.dark #varkalaCarousel .carousel-control-prev-icon,
-.dark #varkalaCarousel .carousel-control-next-icon {
-    filter: invert(0);
-}
-
-#varkalaCarousel .carousel-control-prev:hover,
-#varkalaCarousel .carousel-control-next:hover {
-    background: none;
-    opacity: 1;
-}
 
 .dark .mas-buscado {
     color: #f0f0f0;
@@ -410,11 +423,21 @@ body, html {
     cursor: pointer;
   }
   
+  .hero-image-zara {
+    width: 100vw;
+    height: 480px;
+    position: relative;
+  }
+  
   .hero-image-zara img {
     width: 100%;
     height: 100%;
     object-fit: cover;
+    object-position: center;
+    display: block;
+    image-rendering: auto;
   }
+  
   
   .last-added-section {
     margin-top: 60px;
