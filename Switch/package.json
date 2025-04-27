@@ -36,7 +36,8 @@
     "send": "^1.2.0",
     "tailwind": "^2.3.1",
     "tailwindcss": "^4.1.4",
-    "ws": "^8.18.1"
+    "ws": "^8.18.1",
+    "react-responsive-carousel": "^3.2.23"
   },
   "devDependencies": {
     "@eslint/js": "^9.21.0",
