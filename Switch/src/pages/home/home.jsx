@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { FaSyncAlt, FaTruck, FaUndo, FaApple, FaGooglePlay, FaChevronLeft, FaChevronRight } from 'react-icons/fa';
 import './home.css';
+import { Carousel } from 'react-responsive-carousel';
+import 'react-responsive-carousel/lib/styles/carousel.min.css'; // <-- Importante, trae los estilos
+
 
 const carouselImages = [
   'src/assets/CP 1.JPEG',
@@ -44,20 +47,31 @@ const Home = ({ darkMode }) => {
 
   return (
     <div className={`home-index ${darkMode ? 'dark' : 'light'}`}>
-      <div id="varkalaCarousel" className="carousel slide carousel-fade varkala-carousel" data-bs-ride="carousel" data-bs-interval="5000">
-        <div className="carousel-inner">
-          {carouselImages.map((image, index) => (
-            <div className={`carousel-item ${index === 0 ? 'active' : ''}`} key={index}>
-              <img src={image} className="d-block w-100" alt={`Slide ${index + 1}`} />
-              <div className="hero-text-zara">
-                <h1 className="title">Ultimas novedades</h1>
-                <p className="description">
-                  Descubre las nuevas tendencias del momento con super ofertas de lanzamiento
-                </p>
-                <button className="btn-discover">Descubre lo nuevo</button>
+      <div id="varkalaCarousel" className="carousel slide varkala-carousel" data-bs-ride="carousel" data-bs-interval="5000">
+        <div className="carousel-wrapper">
+          <Carousel
+            autoPlay
+            infiniteLoop
+            interval={5000}
+            showThumbs={false}
+            showStatus={false}
+            showIndicators={true}
+            swipeable
+            emulateTouch
+            stopOnHover
+            dynamicHeight={false}
+          >
+            {carouselImages.map((image, index) => (
+              <div key={index}>
+                <img src={image} alt={`Slide ${index + 1}`} />
+                <div className="hero-text-zara">
+                  <h1 className="title">Últimas novedades</h1>
+                  <p className="description">Descubre las nuevas tendencias del momento con súper ofertas de lanzamiento</p>
+                  <button className="btn-discover">Descubre lo nuevo</button>
+                </div>
               </div>
-            </div>
-          ))}
+            ))}
+          </Carousel>
         </div>
 
         <button className="carousel-control-prev" type="button" data-bs-target="#varkalaCarousel" data-bs-slide="prev">

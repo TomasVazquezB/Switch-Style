@@ -43,21 +43,60 @@ body, html {
 
 .varkala-carousel .carousel-inner {
   width: 100%;
-  height: 480px;
+  height: 350px;
 }
 
 .varkala-carousel .carousel-item {
-  height: 480px;
-  position: relative;
-  transition: opacity 1s ease-in-out;
+  height: 350px;
+}
+
+
+.varkala-carousel .carousel-item {
+  display: flex;
+  justify-content: center; /* Centra la imagen verticalmente */
+  align-items: flex-start; /* Alinea la imagen en la parte superior */
 }
 
 .varkala-carousel .carousel-item img {
   width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: center;
+  max-height: 300px; /* Ajusta este valor a la altura deseada */
+  object-fit: contain; /* o 'cover' si prefieres que la imagen llene el espacio recortándose si es necesario */
+  object-position: top center; /* O ajusta la posición según necesites */
+
 }
+
+.carousel-img {
+  width: 100%;
+  height: 480px;
+  object-fit: cover;
+}
+
+.carousel-caption {
+  background: rgba(0, 0, 0, 0.5);
+  padding: 20px;
+  border-radius: 10px;
+}
+
+.carousel-caption h1,
+.carousel-caption p {
+  color: white;
+}
+
+.btn-discover {
+  margin-top: 15px;
+  background-color: black;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  font-weight: bold;
+  text-transform: uppercase;
+  transition: background-color 0.3s ease;
+}
+
+.btn-discover:hover {
+  background-color: #333;
+}
+
 
 /* Texto encima de las imágenes */
 .hero-text-zara {
@@ -93,10 +132,26 @@ body, html {
   background-color: #333;
 }
 
-.varkala-carousel .carousel-control-prev-icon,
-.varkala-carousel .carousel-control-next-icon {
-  filter: invert(1); /* ¡Invertir apagado! */
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+  background-color: black; /* Fondo negro para que se vean sobre cualquier imagen */
+  border-radius: 50%;
+  background-size: 100% 100%;
+  width: 40px;
+  height: 40px;
+  opacity: 0.7;
 }
+
+.carousel-control-prev-icon:hover,
+.carousel-control-next-icon:hover {
+  opacity: 1;
+}
+
+.carousel-control-prev span,
+.carousel-control-next span {
+  display: none;
+}
+
 
 
 .mas-buscado {
@@ -313,6 +368,8 @@ body, html {
 #custom-last-added-carousel .carousel-item {
     transition: transform 0.6s ease-in-out !important;
 }
+
+
 
 
 .dark .mas-buscado {
