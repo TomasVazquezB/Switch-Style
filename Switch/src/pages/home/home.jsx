@@ -28,10 +28,17 @@ const lastAddedImages = [
   'https://picsum.photos/400/300?random=4',
   'https://picsum.photos/400/300?random=5',
   'https://picsum.photos/400/300?random=6',
-  '',
+  'https://picsum.photos/400/300?random=7',
+  'https://picsum.photos/400/300?random=8',
+  'https://picsum.photos/400/300?random=9',
+  'https://picsum.photos/400/300?random=10',
+  'https://picsum.photos/400/300?random=11',
+  'https://picsum.photos/400/300?random=12',
+  'https://picsum.photos/400/300?random=13',
+  'https://picsum.photos/400/300?random=14',
 ];
 
-const cardsPerSlide = 3;
+const cardsPerSlide = 7;
 
 const Home = ({ darkMode }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -41,9 +48,13 @@ const Home = ({ darkMode }) => {
     return () => clearInterval(interval);
   }, [currentIndex]);
 
-  const handlePrev = () => { setCurrentIndex((prevIndex) => prevIndex - cardsPerSlide < 0 ? lastAddedImages.length - cardsPerSlide : prevIndex - cardsPerSlide); };
+  const handlePrev = () => {
+    setCurrentIndex((prevIndex) => (prevIndex - cardsPerSlide + lastAddedImages.length) % lastAddedImages.length);
+  };
 
-  const handleNext = () => { setCurrentIndex((prevIndex) => prevIndex + cardsPerSlide >= lastAddedImages.length ? 0 : prevIndex + cardsPerSlide); };
+  const handleNext = () => {
+    setCurrentIndex((prevIndex) => (prevIndex + cardsPerSlide) % lastAddedImages.length);
+  };
 
   return (
     <div className={`home-index ${darkMode ? 'dark' : 'light'}`}>
@@ -119,16 +130,16 @@ const Home = ({ darkMode }) => {
       <div className="last-added-section">
         <h2 className="mas-buscado">Últimas Prendas Añadidas</h2>
         <div className="carousel-cards-wrapper">
-          <button className="carousel-cards-btn" onClick={handlePrev}><FaChevronLeft /></button>
-          <div className="carousel-cards-track" style={{ transform: `translateX(-${(currentIndex / cardsPerSlide) * 100}%)` }}>
-            {lastAddedImages.map((img, idx) => (
-              <div className="carousel-card-home" key={idx}>
-                <img src={img} alt={`Prenda ${idx + 1}`} />
-              </div>
-            ))}
-          </div>
-          <button className="carousel-cards-btn" onClick={handleNext}><FaChevronRight /></button>
-        </div>
+  <button className="carousel-cards-btn" onClick={handlePrev}><FaChevronLeft /></button>
+  <div className="carousel-cards-track" style={{ transform: `translateX(-${(currentIndex / lastAddedImages.length) * 100}%)` }}>
+    {lastAddedImages.map((img, idx) => (
+      <div className="carousel-card-home" key={idx} style={{ flex: `0 0 calc(100% / ${cardsPerSlide})` }}>
+        <img src={img} alt={`Prenda ${idx + 1}`} />
+      </div>
+    ))}
+  </div>
+  <button className="carousel-cards-btn" onClick={handleNext}><FaChevronRight /></button>
+</div>
       </div>
 
       <div className="download-section">
