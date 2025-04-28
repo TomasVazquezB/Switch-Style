@@ -11,7 +11,7 @@ html, body {
 
 .footer {
   background-color: #111; 
-  padding: 20px 30px;
+  padding: 15px 30px;
   color: white;
   font-family: 'Segoe UI', sans-serif;
   width: 100%;
@@ -33,7 +33,7 @@ footer nav {
   justify-content: flex-start;
   width: 100%;
   gap: 6px; 
-  margin-top: 22px;
+  margin-top: 10px;
 }
 
 .smile-icon {
@@ -43,32 +43,32 @@ footer nav {
 
 .quienes-link {
   color: white;
-  font-size: 1.2rem;
-  text-decoration: none; /* 👈 Esto saca el subrayado */
-  color: inherit; /* 👈 Esto mantiene el color del texto igual al resto */
-  font-weight: bold; /* 👈 (Opcional) Para que se vea un poquito más fuerte si querés */
-  cursor: pointer; /* 👈 Para que siga pareciendo un link */
+  font-size: 1.0rem;
+  text-decoration: none; 
+  color: inherit; 
+  font-weight: bold; 
+  cursor: pointer; 
 }
 
 .social-icons {
   display: flex;
   justify-content: flex-end;
   align-items: center;
-  gap: 25px; /* Aumentamos el espacio entre iconos */
+  gap: 5px; 
   margin-top: 0px;
   width: 100%;
 }
 
 .social-icon {
   color: white;
-  font-size: 28px; /* Aumentamos el tamaño de los iconos */
-  transition: transform 0.3s; /* Animación suave */
-  cursor: pointer; /* Para que aparezca la manito al pasar encima */
-  margin-right: 13.5px;
+  font-size: 28px; 
+  transition: transform 0.3s; 
+  cursor: pointer; 
+  margin-right: 10px;
 }
 
 .social-icon:hover {
-  transform: scale(1.2); /* Pequeño efecto zoom al pasar el mouse */
+  transform: scale(1.2); 
 }
 
 .social-text {
@@ -80,8 +80,9 @@ footer nav {
 .contact-info {
   display: flex;
   flex-direction: column;
+  align-items: flex-start;
   gap: 4px;
-  margin-top: 20px;
+  margin-top: -14px;
   width: 100%;
 }
 
@@ -89,57 +90,29 @@ footer nav {
   display: flex;
   align-items: center;
   gap: 10px;
+  margin-bottom: 8px;
   color: white;
 }
 
 .contact-icon {
   font-size: 1.2rem;
-  color: white;
-}
-
-.contact-text {
-  font-size: 0.95rem;
+  margin-right: 10px;
   color: white;
 }
 
 .footer-text {
   font-weight: 600;
-  font-size: 0.9rem;
+  font-size: 14rem;
   color: #ffffff;
-  margin: 0;
+  margin: 0px;
   text-align: center;
   width: 100%;
-}
-
-.contact-info {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  margin-top: -14px; 
-  width: 100%;
-}
-
-.contact-item {
-  display: flex;
-  align-items: center;
-  margin-bottom: 8px;
-}
-
-.contact-icon {
-  margin-right: 10px;
-  color: white;
+  white-space: nowrap;
 }
 
 .contact-text {
   color: white;
-  font-size: 1rem;
-}
-
-.footer {
-  background-color: #151515;
-  padding: 15px 30px;
-  color: white;
-  font-family: 'Segoe UI', sans-serif;
+  font-size: 0.95rem;
 }
 
 .footer-content {
@@ -147,20 +120,6 @@ footer nav {
   justify-content: space-between;
   align-items: center;
   flex-wrap: wrap;
-}
-
-.footer-text {
-  font-weight: 700;
-  font-size: 14px;
-  color: #ffffff;
-  margin: 0;
-  white-space: nowrap;
-}
-
-.footer-icons a {
-  border-radius: 8px;
-  padding: 8px;
-  font-size: 20px;
 }
 
 .footer-icons a {

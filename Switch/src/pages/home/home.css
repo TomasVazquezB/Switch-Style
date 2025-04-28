@@ -32,8 +32,6 @@ body, html {
     margin-top: -100px; 
 }
 
-
-
 .varkala-carousel {
   background: transparent;
   width: 100%;
@@ -57,54 +55,47 @@ body, html {
   object-position: center;
 }
 
-
-
 .carousel-wrapper .control-arrow {
-  background: rgb(0, 0, 0); /* fondo oscuro */
+  background: rgb(0, 0, 0); 
   border-radius: 50%;
   width: 50px;
   height: 50px;
   opacity: 1;
   top: 50%;
-  transform: translateY(375%); /* tu ajuste perfecto */
+  transform: translateY(375%); 
   z-index: 10;
 }
-
-
 
 .carousel-wrapper .control-arrow::before {
   font-size: 30px;
   color: rgb(255, 255, 255);
-  filter: brightness(5) invert(1); /* 🎯 hace las flechas BLANCAS y brillantes */
+  filter: brightness(5) invert(1); 
 }
 
-
-/* Opcional: mejorar el hover */
 .carousel-wrapper .control-arrow:hover {
-    background: rgba(0, 0, 0, 0.8); /* Más oscuro al pasar el mouse */
+    background: rgba(0, 0, 0, 0.8); 
     transition: background 0.3s ease;
 }
 
 .carousel-wrapper .control-prev {
-  left: 25px; /* Separado del borde */
+  left: 25px; 
 }
 
 .carousel-wrapper .control-next {
   right: 25px;
 }
 
-
 .varkala-carousel .carousel-item {
   display: flex;
-  justify-content: center; /* Centra la imagen verticalmente */
-  align-items: flex-start; /* Alinea la imagen en la parte superior */
+  justify-content: center; 
+  align-items: flex-start; 
 }
 
 .varkala-carousel .carousel-item img {
   width: 100%;
-  max-height: 300px; /* Ajusta este valor a la altura deseada */
-  object-fit: contain; /* o 'cover' si prefieres que la imagen llene el espacio recortándose si es necesario */
-  object-position: top center; /* O ajusta la posición según necesites */
+  max-height: 300px; 
+  object-fit: contain; 
+  object-position: top center; 
 
 }
 
@@ -140,8 +131,6 @@ body, html {
   background-color: #333;
 }
 
-
-/* Texto encima de las imágenes */
 .hero-text-zara {
   position: absolute;
   top: 50%;
@@ -177,7 +166,7 @@ body, html {
 
 .carousel-control-prev-icon,
 .carousel-control-next-icon {
-  background-color: black; /* Fondo negro para que se vean sobre cualquier imagen */
+  background-color: black; 
   border-radius: 50%;
   background-size: 100% 100%;
   width: 40px;
@@ -195,8 +184,6 @@ body, html {
   display: none;
 }
 
-
-
 .mas-buscado {
   text-align: center;
   margin-top: 20px;
@@ -205,7 +192,6 @@ body, html {
   font-weight: bold;
   color: #000000;
 }
-
 
 .card-container {
     display: flex;
@@ -225,6 +211,11 @@ body, html {
   box-shadow: 0 0 10px rgba(0,0,0,0.3);
   display: flex;
   flex-direction: column;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  cursor: pointer;
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeInUp 0.6s ease forwards;
 }
 
 .card-img-top {
@@ -248,6 +239,56 @@ body, html {
 .card-home img {
     width: 100%;
     border-radius: 8px;
+}
+
+.card-home .btn-primary {
+  background-color: transparent;
+  color: #dfdfdf;
+  border: 1.5px solid #000;
+  padding: 10px 22px;
+  border-radius: 50px;
+  font-weight: 500;
+  text-transform: uppercase;
+  font-size: 0.85rem;
+  letter-spacing: 1px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  align-self: center;
+  margin-top: auto;
+}
+
+.card-home .btn-primary:hover {
+  background-color: #000;
+  color: #fff;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+  transform: scale(1.03);
+}
+
+.card-home:hover {
+  transform: scale(1.05);
+  box-shadow: 0 12px 25px rgba(0, 0, 0, 0.4);
+}
+
+.card-home:nth-child(1) {
+  animation-delay: 0.1s;
+}
+.card-home:nth-child(2) {
+  animation-delay: 0.2s;
+}
+.card-home:nth-child(3) {
+  animation-delay: 0.3s;
+}
+.card-home:nth-child(4) {
+  animation-delay: 0.4s;
+}
+.card-home:nth-child(5) {
+  animation-delay: 0.5s;
+}
+.card-home:nth-child(6) {
+  animation-delay: 0.6s;
+}
+.card-home:nth-child(7) {
+  animation-delay: 0.7s;
 }
 
 .btn-primary {
@@ -309,13 +350,12 @@ body, html {
 }
 
 .download-section {
-    text-align: center;
-    margin-top: 10px;
-    margin-bottom: 10px;
+    margin-top: 5px;
+    margin-bottom: 5px;
     justify-content: space-between;
     align-items: center;
-    padding-top: 20px; 
-    padding-bottom: 10px; 
+    padding-top: 15px; 
+    padding-bottom: 0px; 
     width: 100%;
 }
 
@@ -330,14 +370,21 @@ body, html {
 }
 
 .download-text {
-    font-size: 16px; 
-    margin-bottom: 20px;
-    font-weight: bold;
-  }
+  font-size: 16px; 
+  margin-bottom: 20px;
+  margin-top: 5px;
+  font-weight: bold;
+  justify-content: left;
+  display: flex;
+  flex-direction: column; 
+  padding: 10px; 
+  margin-left: 10px; 
+  margin-right: 10px; 
+}
 
 .download-icons {
     display: flex;
-    justify-content: center;
+    justify-content: right;
     gap: 40px;
 }
 
@@ -391,6 +438,7 @@ body, html {
 
 .last-added-section h2.mas-buscado {
     margin-bottom: 25px;
+    padding: 0px;
     font-size: 28px;
     font-weight: bold;
     text-align: center;
@@ -411,9 +459,6 @@ body, html {
 #custom-last-added-carousel .carousel-item {
     transition: transform 0.6s ease-in-out !important;
 }
-
-
-
 
 .dark .mas-buscado {
     color: #f0f0f0;
@@ -538,9 +583,8 @@ body, html {
     image-rendering: auto;
   }
   
-  
   .last-added-section {
-    margin-top: 60px;
+    margin-top: 40px;
     position: relative;
   }
   
@@ -665,6 +709,13 @@ body, html {
   .home-index.light .download-text {
     color: black;
   }
+
+  @keyframes fadeInUp {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }  
   
   @media (max-width: 768px) {
     .carousel-card-home {
@@ -697,10 +748,6 @@ body, html {
         margin-bottom: 10px;
     }
 
-    .download-icons {
-        justify-content: center;
-    }
-
     .card-container {
         gap: 20px;
         justify-content: center;
@@ -708,16 +755,10 @@ body, html {
 
     .card-home {
         width: 90%;
+        max-width: 100%;
     }
-
-
-    .card-home {
-      width: 90%;
-      max-width: 100%;
-  }
 
   .card-img-top {
       height: 180px;
   }
-
 }

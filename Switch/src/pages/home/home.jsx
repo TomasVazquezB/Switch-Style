@@ -2,23 +2,21 @@ import React, { useState, useEffect } from 'react';
 import { FaSyncAlt, FaTruck, FaUndo, FaApple, FaGooglePlay, FaChevronLeft, FaChevronRight } from 'react-icons/fa';
 import './home.css';
 import { Carousel } from 'react-responsive-carousel';
-import 'react-responsive-carousel/lib/styles/carousel.min.css'; // <-- Importante, trae los estilos
-
+import 'react-responsive-carousel/lib/styles/carousel.min.css';
 
 const carouselImages = [
   'src/assets/CP 1.JPEG',
   'src/assets/CP 2.JPEG',
-
 ];
 
 const cardImages = [
-  'src/assets/DB 1.JPG',
-  'src/assets/DB 2.JPG',
-  'src/assets/DB 3.JPG',
-  'src/assets/DB 4.JPG',
-  'src/assets/DB 5.JPG',
-  'src/assets/DB 6.JPG',
-  'src/assets/DB 7.PNG',
+  'src/assets/DB1.JPG',
+  'src/assets/DB2.JPG',
+  'src/assets/DB3.JPG',
+  'src/assets/DB4.JPG',
+  'src/assets/DB5.JPG',
+  'src/assets/DB6.JPG',
+  'src/assets/DB7.PNG',
 ];
 
 const lastAddedImages = [
@@ -40,21 +38,13 @@ const lastAddedImages = [
 
 const cardsPerSlide = 7;
 
-const Home = ({ darkMode }) => {
-  const [currentIndex, setCurrentIndex] = useState(0);
-
-  useEffect(() => {
-    const interval = setInterval(() => { handleNext(); }, 5000);
+const Home = ({ darkMode }) => {const [currentIndex, setCurrentIndex] = useState(0);
+  useEffect(() => {const interval = setInterval(() => { handleNext(); }, 5000);
     return () => clearInterval(interval);
   }, [currentIndex]);
 
-  const handlePrev = () => {
-    setCurrentIndex((prevIndex) => (prevIndex - cardsPerSlide + lastAddedImages.length) % lastAddedImages.length);
-  };
-
-  const handleNext = () => {
-    setCurrentIndex((prevIndex) => (prevIndex + cardsPerSlide) % lastAddedImages.length);
-  };
+  const handlePrev = () => {setCurrentIndex((prevIndex) => (prevIndex - cardsPerSlide + lastAddedImages.length) % lastAddedImages.length)};
+  const handleNext = () => {setCurrentIndex((prevIndex) => (prevIndex + cardsPerSlide) % lastAddedImages.length);};
 
   return (
     <div className={`home-index ${darkMode ? 'dark' : 'light'}`}>
@@ -70,8 +60,8 @@ const Home = ({ darkMode }) => {
             swipeable
             emulateTouch
             stopOnHover
-            dynamicHeight={false}
-          >
+            dynamicHeight={false}>
+
             {carouselImages.map((image, index) => (
               <div key={index}>
                 <img src={image} alt={`Slide ${index + 1}`} />
@@ -84,9 +74,7 @@ const Home = ({ darkMode }) => {
             ))}
           </Carousel>
         </div>
-
       </div>
-
 
       <div>
         <h2 className="mas-buscado">Lo más buscado</h2>
@@ -130,20 +118,19 @@ const Home = ({ darkMode }) => {
       <div className="last-added-section">
         <h2 className="mas-buscado">Últimas Prendas Añadidas</h2>
         <div className="carousel-cards-wrapper">
-  <button className="carousel-cards-btn" onClick={handlePrev}><FaChevronLeft /></button>
+  <button className="carousel-cards-btn" onClick={handlePrev}><FaChevronLeft/></button>
   <div className="carousel-cards-track" style={{ transform: `translateX(-${(currentIndex / lastAddedImages.length) * 100}%)` }}>
-    {lastAddedImages.map((img, idx) => (
-      <div className="carousel-card-home" key={idx} style={{ flex: `0 0 calc(100% / ${cardsPerSlide})` }}>
+    {lastAddedImages.map((img, idx) => (<div className="carousel-card-home" key={idx} style={{ flex: `0 0 calc(100% / ${cardsPerSlide})` }}>
         <img src={img} alt={`Prenda ${idx + 1}`} />
       </div>
     ))}
   </div>
-  <button className="carousel-cards-btn" onClick={handleNext}><FaChevronRight /></button>
+  <button className="carousel-cards-btn" onClick={handleNext}><FaChevronRight/></button>
 </div>
       </div>
 
       <div className="download-section">
-        <hr />
+        <hr/>
         <p className="download-text">Descarga la aplicación y únete a la experiencia Switch Style</p>
         <div className="download-icons">
           <div className="store-icon"><FaApple size={40} /><p>App Store</p></div>
