@@ -355,11 +355,11 @@ body, html {
 }
 
 .download-section {
-    margin-top: 5px;
+    margin-top: 0px;
     margin-bottom: 5px;
     justify-content: space-between;
     align-items: center;
-    padding-top: 15px; 
+    padding-top: 4px; 
     padding-bottom: 0px; 
     width: 100%;
 }
