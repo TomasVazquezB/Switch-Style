@@ -5,9 +5,10 @@ import { Carousel } from 'react-responsive-carousel';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
 
 const carouselImages = [
-  'src/assets/CP 1.JPEG',
-  'src/assets/CP 2.JPEG',
+  "https://picsum.photos/id/1005/1200/500",
+  "https://picsum.photos/id/1011/1200/500"
 ];
+
 
 const cardImages = [
   'src/assets/DB1.JPG',
