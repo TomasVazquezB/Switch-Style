@@ -3,7 +3,7 @@ import { ShopContext } from '../../context/ShopContext'
 import { Link } from 'react-router-dom';
 
 const ProductoItem = ({ id, img, nombre, precio }) => {
-    const { moneda } = useContext(ShopContext);
+const { moneda } = useContext(ShopContext);
 
     return (
         <Link to={`/producto/${id}`} onClick={() => window.scrollTo(0, 0)} className='text-gray-700 cursor-pointer'>

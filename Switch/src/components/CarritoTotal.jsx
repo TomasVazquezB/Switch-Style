@@ -2,7 +2,7 @@ import React, { useContext } from 'react'
 import { ShopContext } from '../context/ShopContext'
 
 const CarritoTotal = () => {
-    const { moneda, delivery_fee, getCarritoCantidad } = useContext(ShopContext);
+const { moneda, delivery_fee, getCarritoCantidad } = useContext(ShopContext);
 
     return (
         <div className='w-full'>
@@ -11,7 +11,7 @@ const CarritoTotal = () => {
                     <p>Subtotal</p>
                     <p>{moneda} {getCarritoCantidad()}.00</p>
                 </div>
-                <hr />
+                <hr/>
                 <div className='flex justify-between'>
                     <p>Envio gratis</p>
                     <p>{moneda} {delivery_fee}</p>
