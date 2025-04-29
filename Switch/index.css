@@ -20,3 +20,20 @@
     color: #333;
     background-color: #f8f8f8;
   }
+
+  html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+  }
+  
+  .app-wrapper {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+  }
+  
+  .app-content {
+    flex-grow: 1;
+  }
+  
