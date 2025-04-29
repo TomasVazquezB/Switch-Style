@@ -81,6 +81,11 @@ body, html {
   left: 25px; 
 }
 
+.carousel .control-dots {
+  display: none !important;
+}
+
+
 .carousel-wrapper .control-next {
   right: 25px;
 }
@@ -761,4 +766,33 @@ body, html {
   .card-img-top {
       height: 180px;
   }
+}
+
+.black-line {
+  border: none;
+  height: 2.5px;
+  background-color: #000000;
+  opacity: 1;
+  margin: 40px 0 20px;
+}
+
+
+
+.download-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.download-text {
+  font-size: 16px;
+  font-weight: bold;
+  margin: 0;
+}
+
+.download-section .download-icons {
+  display: flex;
+  gap: 40px;
 }
