@@ -13,54 +13,41 @@ const MainHombres = () => {
   const [precioMax, setPrecioMax] = useState(350);
   const [precioMin, setPrecioMin] = useState(100);
 
-  // Cálculo del precio máximo de los productos
   const maxPrice = Math.max(...productos.map((item) => item.precio), 350);
 
   const toggleSubCategoria = (e) => {
-    if (subCategoria.includes(e.target.value)) {
-      setSubCategoria((prev) => prev.filter((a) => a !== e.target.value));
+    if (subCategoria.includes(e.target.value)) {setSubCategoria((prev) => prev.filter((a) => a !== e.target.value));
     } else {
       setSubCategoria((prev) => [...prev, e.target.value]);
     }
   };
 
   const toggleTalla = (e) => {
-    const tallaSeleccionada = e.target.value;
+  const tallaSeleccionada = e.target.value;
 
-    if (tallas.includes(tallaSeleccionada)) {
-      setTallas((prev) => prev.filter((t) => t !== tallaSeleccionada));
+    if (tallas.includes(tallaSeleccionada)) {setTallas((prev) => prev.filter((t) => t !== tallaSeleccionada));
     } else {
       setTallas((prev) => [...prev, tallaSeleccionada]);
     }
   };
 
   const toggleTallaManual = (size) => {
-    if (tallas.includes(size)) {
-      setTallas((prev) => prev.filter((s) => s !== size));
+    if (tallas.includes(size)) {setTallas((prev) => prev.filter((s) => s !== size));
     } else {
       setTallas((prev) => [...prev, size]);
     }
   };
 
   const applyFiltro = () => {
-    let productosCopy = productos.slice();
+  let productosCopy = productos.slice();
 
-    if (showSearch && search) {
-      productosCopy = productosCopy.filter((item) =>
-        item.nombre.toLowerCase().includes(search.toLowerCase())
-      );
-    }
+    if (showSearch && search) {productosCopy = productosCopy.filter((item) => item.nombre.toLowerCase().includes(search.toLowerCase()));}
 
-    if (categoria.length > 0) {
-      productosCopy = productosCopy.filter((item) => categoria.includes(item.categoria));
-    }
+    if (categoria.length > 0) {productosCopy = productosCopy.filter((item) => categoria.includes(item.categoria));}
 
-    if (subCategoria.length > 0) {
-      productosCopy = productosCopy.filter((item) => subCategoria.includes(item.subCategoria));
-    }
+    if (subCategoria.length > 0) {productosCopy = productosCopy.filter((item) => subCategoria.includes(item.subCategoria));}
 
-    if (tallas.length > 0) {
-      productosCopy = productosCopy.filter((item) => {
+    if (tallas.length > 0) {productosCopy = productosCopy.filter((item) => {
         if (Array.isArray(item.talla)) {
           return item.talla.some((t) => tallas.includes(t));
         }
@@ -68,16 +55,12 @@ const MainHombres = () => {
       });
     }
 
-    // Filtro de precio
-    productosCopy = productosCopy.filter(
-      (item) => item.precio >= precioMin && item.precio <= precioMax
-    );
-
+    productosCopy = productosCopy.filter((item) => item.precio >= precioMin && item.precio <= precioMax);
     setFiltroProductos(productosCopy);
   };
 
   const sortProducto = async () => {
-    let fpCopy = filtroProductos.slice();
+  let fpCopy = filtroProductos.slice();
 
     switch (sortTipo) {
       case 'low-high':
@@ -94,36 +77,26 @@ const MainHombres = () => {
     }
   };
 
-  useEffect(() => {
-    applyFiltro();
-  }, [categoria, subCategoria, search, showSearch, tallas, precioMin, precioMax]);
-
-  useEffect(() => {
-    sortProducto();
-  }, [sortTipo]);
+  useEffect(() => {applyFiltro();}, [categoria, subCategoria, search, showSearch, tallas, precioMin, precioMax]);
+  useEffect(() => {sortProducto();}, [sortTipo]);
 
   return (
     <div className="content">
       <section className="sidebar">
         <div className="sidebar-content">
           <div className="mb-4">
-            <h4 className="mb-3">CATEGORIA</h4> {/* <<< Add margin-bottom here instead of <br /> */}
+            <h4 className="mb-3">CATEGORIA</h4> 
             <div className="flex flex-col gap-2 text-sm font-light text-gray-700">
               <p className="flex gap-2">
-                <input className="w-3" value={"Remeras"} onChange={toggleSubCategoria} type="checkbox" /> Remeras
-              </p>
+                <input className="w-3" value={"Remeras"} onChange={toggleSubCategoria} type="checkbox"/>Remeras</p>
               <p className="flex gap-2">
-                <input className="w-3" value={"Pantalones"} onChange={toggleSubCategoria} type="checkbox" /> Pantalones
-              </p>
+                <input className="w-3" value={"Pantalones"} onChange={toggleSubCategoria} type="checkbox"/>Pantalones</p>
               <p className="flex gap-2">
-                <input className="w-3" value={"Camperas"} onChange={toggleSubCategoria} type="checkbox" /> Camperas
-              </p>
+                <input className="w-3" value={"Camperas"} onChange={toggleSubCategoria} type="checkbox"/>Camperas</p>
             </div>
           </div>
 
-
-          <hr />
-
+          <hr/>
           <div className="mb-4">
             <h4 className="mb-3">TALLA</h4>
             <div className="flex flex-wrap gap-3 text-sm font-light text-gray-700">
@@ -135,23 +108,19 @@ const MainHombres = () => {
                   className={`px-4 py-2 border rounded-full text-sm transition-colors duration-200 ${tallas.includes(size)
                     ? 'bg-black text-white border-black hover:bg-gray-800'
                     : 'bg-white text-black border-gray-400 hover:bg-gray-100'
-                    }`}
-                >
+                    }`}>
                   {size}
                 </button>
               ))}
             </div>
           </div>
 
-
-          <hr />
-
+          <hr/>
           <div className="mb-4">
-            <h4 >PRECIO</h4>
+            <h4>PRECIO</h4>
             <div className="range">
               <div className="range-labels">
                 <span>${precioMin}&nbsp;</span>
-
               </div>
               <input
                 type="range"
@@ -160,13 +129,12 @@ const MainHombres = () => {
                 max={maxPrice}
                 step="10"
                 value={precioMax}
-                onChange={(e) => setPrecioMax(e.target.value)}
-              />
+                onChange={(e) => setPrecioMax(e.target.value)}/>
               <span>&nbsp;${precioMax}</span>
             </div>
           </div>
 
-          <br />
+          <br/>
 
         </div>
       </section>

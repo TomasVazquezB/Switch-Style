@@ -9,7 +9,6 @@ const carouselImages = [
   "https://picsum.photos/id/1011/1200/500"
 ];
 
-
 const cardImages = [
   'src/assets/DB1.JPG',
   'src/assets/DB2.JPG',
@@ -41,8 +40,7 @@ const cardsPerSlide = 7;
 
 const Home = ({ darkMode }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
-  useEffect(() => {
-    const interval = setInterval(() => { handleNext(); }, 5000);
+  useEffect(() => {const interval = setInterval(() => { handleNext(); }, 5000);
     return () => clearInterval(interval);
   }, [currentIndex]);
 
@@ -96,22 +94,22 @@ const Home = ({ darkMode }) => {
         <div className="service-box">
           <div className="service-item">
             <FaSyncAlt size={40}/>
-            <br />
-            <br />
+            <br/>
+            <br/>
             <h3 className="service-title">Nuevos productos cada día</h3>
             <p className="service-description">Todos los días publicamos miles de artículos nuevos</p>
           </div>
           <div className="service-item">
             <FaTruck size={40}/>
-            <br />
-            <br />
+            <br/>
+            <br/>
             <h3 className="service-title">Entregas en 72 horas</h3>
             <p className="service-description">Tu pedido será entregado un plazo máximo de 72 horas</p>
           </div>
           <div className="service-item">
             <FaUndo size={40}/>
-            <br />
-            <br />
+            <br/>
+            <br/>
             <h3 className="service-title">14 días de devolución</h3>
             <p className="service-description">Si no estás satisfecho con tu compra, tienes 14 días para devolver tu pedido</p>
           </div>
@@ -124,11 +122,11 @@ const Home = ({ darkMode }) => {
           <button className="carousel-cards-btn" onClick={handlePrev}><FaChevronLeft/></button>
           <div className="carousel-cards-track" style={{ transform: `translateX(-${(currentIndex / lastAddedImages.length) * 100}%)`}}>
             {lastAddedImages.map((img, idx) => (<div className="carousel-card-home" key={idx} style={{ flex: `0 0 calc(100% / ${cardsPerSlide})`}}>
-              <img src={img} alt={`Prenda ${idx + 1}`} />
+              <img src={img} alt={`Prenda ${idx + 1}`}/>
             </div>
             ))}
           </div>
-          <button className="carousel-cards-btn" onClick={handleNext}><FaChevronRight /></button>
+          <button className="carousel-cards-btn" onClick={handleNext}><FaChevronRight/></button>
         </div>
       </div>
 
@@ -142,7 +140,6 @@ const Home = ({ darkMode }) => {
           </div>
         </div>
       </div>
-
     </div>
   );
 };

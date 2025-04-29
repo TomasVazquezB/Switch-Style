@@ -11,44 +11,30 @@ const Productos = () => {
     const [img, setImg] = useState("");
     const [activeTab, setActiveTab] = useState('descripcion');
 
-    // 🚀 Nuevo estado para reviews simulados
     const [reviews, setReviews] = useState([
         { id: 1, autor: "Juan P.", comentario: "Excelente producto!", puntuacion: 5, fecha: "2024-04-10" },
         { id: 2, autor: "Maria G.", comentario: "Muy bueno pero la entrega tardó.", puntuacion: 4, fecha: "2024-04-15" },
         { id: 3, autor: "Lucas R.", comentario: "No me convenció el material.", puntuacion: 2, fecha: "2024-04-05" },
     ]);
-    const [sortReviews, setSortReviews] = useState('recientes'); // 🚀 Nuevo estado de orden
+    const [sortReviews, setSortReviews] = useState('recientes'); 
 
-    useEffect(() => {
-        const found = productos.find((item) => item._id === productoId);
-        if (found) {
-            setProductoData(found);
-            setImg(found.img[0]);
-        }
-    }, [productoId, productos]);
+    useEffect(() => {const found = productos.find((item) => item._id === productoId);
+        if (found) {setProductoData(found);setImg(found.img[0]);}}, [productoId, productos]);
 
     const sortReviewsFunction = (tipo) => {
         let reviewsOrdenadas = [...reviews];
-        if (tipo === "recientes") {
-            reviewsOrdenadas.sort((a, b) => new Date(b.fecha) - new Date(a.fecha));
-        } else if (tipo === "mejor") {
-            reviewsOrdenadas.sort((a, b) => b.puntuacion - a.puntuacion);
-        } else if (tipo === "peor") {
-            reviewsOrdenadas.sort((a, b) => a.puntuacion - b.puntuacion);
+        if (tipo === "recientes") {reviewsOrdenadas.sort((a, b) => new Date(b.fecha) - new Date(a.fecha));
+        } else if (tipo === "mejor") {reviewsOrdenadas.sort((a, b) => b.puntuacion - a.puntuacion);
+        } else if (tipo === "peor") {reviewsOrdenadas.sort((a, b) => a.puntuacion - b.puntuacion);
         }
         setReviews(reviewsOrdenadas);
     };
 
-    useEffect(() => {
-        sortReviewsFunction(sortReviews);
-    }, [sortReviews]);
+    useEffect(() => {sortReviewsFunction(sortReviews);}, [sortReviews]);
 
     return productoData ? (
         <div className='border-t-2 pt-10 transition-opacity ease-in duration-500 opacity-100'>
-
-            <div className='flex gap-12 sm:gap-12 flex-col sm:flex-row'>  {/* -------- Product Row ---------- */}
-
-                {/* -------- Product Images ---------- */}
+            <div className='flex gap-12 sm:gap-12 flex-col sm:flex-row'>  
 
                 <div className='flex-1 flex flex-col-reverse gap-3 sm:flex-row'>
                     <div className='flex sm:flex-col overflow-x-auto sm:overflow-y-scroll justify-between sm:justify-normal sm:w-[18.7%] w-full'>
@@ -59,7 +45,6 @@ const Productos = () => {
                     </div>
                 </div>
 
-                {/* Info */}
                 <div className="flex-1">
                     <h1 className="text-3xl font-bold">{productoData.nombre}</h1>
                     <div className="flex items-center gap-1 mt-3">
@@ -74,7 +59,6 @@ const Productos = () => {
 
                     <p className="text-gray-600 mt-5 leading-relaxed">{productoData.descripcion}</p>
 
-                    {/* Tallas */}
                     <div className="mt-8">
                         <h3 className="font-semibold mb-2">Seleccione talla:</h3>
                         <div className="flex gap-3">
@@ -85,69 +69,40 @@ const Productos = () => {
                                     className={`border px-4 py-2 rounded-full ${talla === size
                                         ? "border-black bg-black text-white"
                                         : "border-gray-300 text-black hover:bg-gray-100"
-                                        }`}
-                                >
+                                        }`}>
                                     {size}
                                 </button>
                             ))}
                         </div>
                     </div>
 
-                    {/* Botón Agregar al Carrito */}
-                    <button
-                        onClick={() => agregarAlCarrito(productoData._id, talla)}
-                        className="mt-8 bg-black text-white hover:bg-gray-800 px-8 py-3 rounded-full transition"
-                    >
-                        AGREGAR AL CARRITO
+                    <button onClick={() => agregarAlCarrito(productoData._id, talla)} className="mt-8 bg-black text-white hover:bg-gray-800 px-8 py-3 rounded-full transition">AGREGAR AL CARRITO
                     </button>
                 </div>
-
             </div>
 
-            {/* Tabs abajo */}
             <div className="mt-20">
                 <div className="flex border-b">
-                    <button
-                        onClick={() => setActiveTab('descripcion')}
-                        className={`px-6 py-3 text-sm font-semibold transition ${activeTab === 'descripcion'
-                            ? "border-b-2 border-black text-black"
-                            : "text-gray-500 hover:text-black"
-                            }`}
-                    >
-                        Descripción
-                    </button>
-                    <button
-                        onClick={() => setActiveTab('reviews')}
-                        className={`px-6 py-3 text-sm font-semibold transition ${activeTab === 'reviews'
-                            ? "border-b-2 border-black text-black"
-                            : "text-gray-500 hover:text-black"
-                            }`}
-                    >
-                        Reviews ({reviews.length})
-                    </button>
+                    <button onClick={() => setActiveTab('descripcion')} className={`px-6 py-3 text-sm font-semibold transition ${activeTab === 'descripcion' ? "border-b-2 border-black text-black" : "text-gray-500 hover:text-black"}`}>Descripción</button>
+                    <button onClick={() => setActiveTab('reviews')} className={`px-6 py-3 text-sm font-semibold transition ${activeTab === 'reviews' ? "border-b-2 border-black text-black" : "text-gray-500 hover:text-black"}`}>Reviews({reviews.length})</button>
                 </div>
 
                 <div className="py-6 text-gray-700 leading-relaxed text-sm">
                     {activeTab === 'descripcion' ? (
-                        <p>
-                            Lorem Ipsum es simplemente el texto de relleno de las imprentas y archivos de texto. Lorem Ipsum ha sido el texto de relleno estándar de las industrias desde el año 1500...
-                        </p>
+                        <p>Lorem Ipsum es simplemente el texto de relleno de las imprentas y archivos de texto. Lorem Ipsum ha sido el texto de relleno estándar de las industrias desde el año 1500...</p>
                     ) : (
                         <div className="flex flex-col gap-4">
-                            {/* Dropdown para ordenar reviews */}
                             <div className="mb-4">
                                 <select
                                     value={sortReviews}
                                     onChange={(e) => setSortReviews(e.target.value)}
-                                    className="border px-3 py-2 rounded-md text-gray-700"
-                                >
+                                    className="border px-3 py-2 rounded-md text-gray-700">
                                     <option value="recientes">Más recientes</option>
                                     <option value="mejor">Mejor puntuados</option>
                                     <option value="peor">Peor puntuados</option>
                                 </select>
                             </div>
 
-                            {/* Reviews list */}
                             {reviews.map((review) => (
                                 <div key={review.id} className="border p-4 rounded-md">
                                     <div className="flex items-center justify-between">
@@ -162,7 +117,6 @@ const Productos = () => {
                     )}
                 </div>
             </div>
-
         </div>
     ) : (
         <div className="opacity-0">Cargando...</div>
