@@ -9,7 +9,7 @@
   flex-wrap: wrap;
 }
 
-.cardContainer.productoCard {
+.card {
   margin: 20px;
   border: 2px solid rgb(148, 148, 148);
   padding: 20px;
@@ -116,9 +116,6 @@ input[type="range"]::-moz-range-thumb {
   box-shadow: -407px 0 0 400px #f50;
 }
 
-body {
-  font-family: system-ui;
-}
 
 h1 {
   color: #4b4949;

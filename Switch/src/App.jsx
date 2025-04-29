@@ -11,7 +11,7 @@ import { RegistroPage } from './pages/registro/registro';
 import { LoginPage } from './pages/login/login';
 import AdminPage from './pages/admin/admin';
 import CarritoPage from './pages/carrito/carrito.jsx';
-import MainHombresPage from './pages/Hombre/MainHombres';
+import MainHombresPage from './pages/Hombre/MainHombres.jsx';
 import MainMujeresPage from './pages/Mujer/MainMujeres';
 import MainKidsPage from './pages/Kids/MainKids.jsx';
 import Productos from './pages/Productos/Productos.jsx';
@@ -25,7 +25,7 @@ function App() {
     <div>
       <Header toggleTheme={toggleTheme} />
       <Routes>
-       <Route path="/" element={<PageTitle title="Switch Style"><Home darkMode={darkMode} /></PageTitle>} />
+        <Route path="/" element={<PageTitle title="Switch Style"><Home darkMode={darkMode} /></PageTitle>} />
         <Route path="/FAQ" element={<PageTitle title="Preguntas Frecuentes"><FAQPage /></PageTitle>} />
         <Route path="/quienessomos" element={<PageTitle title="Quiénes Somos"><QuienesSomosPage /></PageTitle>} />
         <Route path="/login" element={<PageTitle title="Login"><LoginPage /></PageTitle>} />
@@ -42,8 +42,9 @@ function App() {
   );
 }
 
-function PageTitle({ title, children }) {const location = useLocation(); 
-useEffect(() => { document.title = title; }, [location, title]);
+function PageTitle({ title, children }) {
+  const location = useLocation();
+  useEffect(() => { document.title = title; }, [location, title]);
   return <>{children}</>;
 }
 

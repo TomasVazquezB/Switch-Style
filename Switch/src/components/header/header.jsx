@@ -14,13 +14,15 @@ const Header = ({ toggleTheme }) => {
     const [showProfileMenu, setShowProfileMenu] = useState(false);
     const navigate = useNavigate();
 
-    useEffect(() => {document.body.classList.add(isDarkMode ? 'dark-mode' : 'light-mode');
+    useEffect(() => {
+        document.body.classList.add(isDarkMode ? 'dark-mode' : 'light-mode');
         localStorage.setItem('darkMode', isDarkMode.toString());
         const loggedIn = localStorage.getItem('isLoggedIn');
         setIsLoggedIn(loggedIn === 'true');
     }, [isDarkMode]);
 
-    useEffect(() => {const savedMode = localStorage.getItem('darkMode');
+    useEffect(() => {
+        const savedMode = localStorage.getItem('darkMode');
         if (savedMode === 'true') {
             setIsDarkMode(true);
         } else {
@@ -71,14 +73,14 @@ const Header = ({ toggleTheme }) => {
     return (
         <>
             <div className={`offer-bar ${isDarkMode ? 'bg-ultra-dark' : 'bg-ultra-light'} text-center pt-4 pb-2`}>
-                <br/>
+                <br />
                 <p className={isDarkMode ? 'text-dark' : 'text-white'}>¡Suscribite para obtener ofertas unicas y obten un 15% en tu primer compra!</p>
             </div>
 
             <Navbar expand="lg" className={`navbar-top ${isDarkMode ? 'bg-dark' : 'bg-light'}`}>
                 <Container fluid style={{ maxWidth: "100%" }}>
                     <Navbar.Brand as={NavLink} to="/" onClick={() => navigate('/')}>
-                    <img src="../src/assets/LOGO.png" width="90" height="50" className="d-inline-block align-top" alt="Logo"/>
+                        <img src="../src/assets/LOGO.png" width="90" height="50" className="d-inline-block align-top" alt="Logo" />
                     </Navbar.Brand>
 
                     <Navbar.Toggle aria-controls="navbarNav" />
@@ -95,9 +97,9 @@ const Header = ({ toggleTheme }) => {
                         </Nav>
 
                         <div className="search-container">
-                            <input className="search-input" type="search" placeholder="Buscar por producto, categoría o marca" aria-label="Search"/>
+                            <input className="search-input" type="search" placeholder="Buscar por producto, categoría o marca" aria-label="Search" />
                             <button className="search-btn">
-                                <FaSearch/>
+                                <FaSearch />
                             </button>
                             <Nav.Link as={NavLink} to="/favoritos" className="icon-separator">
                                 <FaHeart className={`navbar-icon ${isDarkMode ? 'text-white' : 'text-dark'}`} />
@@ -110,7 +112,7 @@ const Header = ({ toggleTheme }) => {
                         <Nav className="ms-auto">
                             {isLoggedIn ? (
                                 <div className="profile-container">
-                                    <FaUserCircle className="navbar-icon profile-icon" onClick={handleProfileClick}/>
+                                    <FaUserCircle className="navbar-icon profile-icon" onClick={handleProfileClick} />
                                     {showProfileMenu && (
                                         <div className="profile-menu">
                                             <NavLink to="/perfil">Mi Perfil</NavLink>
@@ -134,7 +136,7 @@ const Header = ({ toggleTheme }) => {
 
             <Navbar expand="lg" className={`navbar-bottom ${isDarkMode ? 'bg-dark' : 'bg-light'}`}>
                 <Container fluid>
-                    <Nav className="me-auto" style={{justifyContent: 'space-evenly', width: '100%'}}>
+                    <Nav className="me-auto" style={{ justifyContent: 'space-evenly', width: '100%' }}>
                         <div className="nav-dropdown">
                             <Nav.Link as={NavLink} to="/MainHombres">Hombres</Nav.Link>
                             <div className="dropdown-menu">
@@ -144,7 +146,7 @@ const Header = ({ toggleTheme }) => {
                             </div>
                         </div>
                         <div className="nav-dropdown">
-                            <span className="nav-link">Mujeres</span>
+                            <Nav.Link as={NavLink} to="/MainMujeres">Mujeres</Nav.Link>
                             <div className="dropdown-menu">
                                 <NavLink to="/ropa/hombres/remeras">Remeras</NavLink>
                                 <NavLink to="/ropa/hombres/pantalones">Pantalones</NavLink>
@@ -152,7 +154,7 @@ const Header = ({ toggleTheme }) => {
                             </div>
                         </div>
                         <div className="nav-dropdown">
-                            <span className="nav-link">Niños</span>
+                            <Nav.Link as={NavLink} to="/MainKids">Chicos</Nav.Link>
                             <div className="dropdown-menu">
                                 <NavLink to="/ropa/hombres/remeras">Remeras</NavLink>
                                 <NavLink to="/ropa/hombres/pantalones">Pantalones</NavLink>

@@ -1,131 +1,198 @@
-import React, { useContext, useEffect, useState } from 'react'
-import ProductoItem from '../../components/Productoitem/ProductoItem'
-import { ShopContext } from '../../context/ShopContext'
-import { assets } from '../../assets/assets'
+import React, { useContext, useEffect, useState } from 'react';
+import ProductoItem from '../../components/Productoitem/ProductoItem';
+import { ShopContext } from '../../context/ShopContext';
+import './MainHombres.css'
 
 const MainHombres = () => {
-
   const { productos, search, showSearch } = useContext(ShopContext);
   const [filtroProductos, setFiltroProductos] = useState([]);
-  const [categoria, setCategoria] = useState([]);
+  const [categoria] = useState(['Hombres']);
   const [subCategoria, setSubCategoria] = useState([]);
-  const [showFiltro, setShowFiltro] = useState(false);
-  const [sortTipo, setSortTipo] = useState('relavent')
+  const [sortTipo, setSortTipo] = useState('relavent');
+  const [tallas, setTallas] = useState([]);
+  const [precioMax, setPrecioMax] = useState(350);
+  const [precioMin, setPrecioMin] = useState(100);
 
-  const toggleCategoria = (e) => {
-
-    if (categoria.includes(e.target.value)) {
-      setCategoria(prev => prev.filter(a => a !== e.target.value))
-    }
-    else {
-      setCategoria(prev => [...prev, e.target.value])
-    }
-  }
+  // Cálculo del precio máximo de los productos
+  const maxPrice = Math.max(...productos.map((item) => item.precio), 350);
 
   const toggleSubCategoria = (e) => {
-
     if (subCategoria.includes(e.target.value)) {
-      setSubCategoria(prev => prev.filter(a => a !== e.target.value))
+      setSubCategoria((prev) => prev.filter((a) => a !== e.target.value));
+    } else {
+      setSubCategoria((prev) => [...prev, e.target.value]);
     }
-    else {
-      setSubCategoria(prev => [...prev, e.target.value])
-    }
+  };
 
-  }
+  const toggleTalla = (e) => {
+    const tallaSeleccionada = e.target.value;
+
+    if (tallas.includes(tallaSeleccionada)) {
+      setTallas((prev) => prev.filter((t) => t !== tallaSeleccionada));
+    } else {
+      setTallas((prev) => [...prev, tallaSeleccionada]);
+    }
+  };
+
+  const toggleTallaManual = (size) => {
+    if (tallas.includes(size)) {
+      setTallas((prev) => prev.filter((s) => s !== size));
+    } else {
+      setTallas((prev) => [...prev, size]);
+    }
+  };
 
   const applyFiltro = () => {
-
-    let productosCopy = productos.slice()
+    let productosCopy = productos.slice();
 
     if (showSearch && search) {
-      productosCopy = productosCopy.filter(item => item.nombre.toLowerCase().includes(search.toLowerCase()))
+      productosCopy = productosCopy.filter((item) =>
+        item.nombre.toLowerCase().includes(search.toLowerCase())
+      );
     }
 
     if (categoria.length > 0) {
-      productosCopy = productosCopy.filter(item => categoria.includes(item.categoria));
+      productosCopy = productosCopy.filter((item) => categoria.includes(item.categoria));
     }
 
     if (subCategoria.length > 0) {
-      productosCopy = productosCopy.filter(item => subCategoria.includes(item.subCategoria));
+      productosCopy = productosCopy.filter((item) => subCategoria.includes(item.subCategoria));
     }
 
-    setFiltroProductos(productosCopy)
+    if (tallas.length > 0) {
+      productosCopy = productosCopy.filter((item) => {
+        if (Array.isArray(item.talla)) {
+          return item.talla.some((t) => tallas.includes(t));
+        }
+        return tallas.includes(item.talla);
+      });
+    }
 
-  }
+    // Filtro de precio
+    productosCopy = productosCopy.filter(
+      (item) => item.precio >= precioMin && item.precio <= precioMax
+    );
+
+    setFiltroProductos(productosCopy);
+  };
 
   const sortProducto = async () => {
-
     let fpCopy = filtroProductos.slice();
 
     switch (sortTipo) {
       case 'low-high':
-        setFiltroProductos(fpCopy.sort((a, b) => (a.price - b.price)));
+        setFiltroProductos(fpCopy.sort((a, b) => a.precio - b.precio));
         break;
 
       case 'high-low':
-        setFiltroProductos(fpCopy.sort((a, b) => (b.price - a.price)));
+        setFiltroProductos(fpCopy.sort((a, b) => b.precio - a.precio));
         break;
 
       default:
         applyFiltro();
         break;
     }
+  };
 
-  }
+  useEffect(() => {
+    applyFiltro();
+  }, [categoria, subCategoria, search, showSearch, tallas, precioMin, precioMax]);
 
-  useEffect(() => {applyFiltro() }, [categoria, subCategoria, search, showSearch])
-
-  useEffect(() => {sortProducto();}, [sortTipo])
+  useEffect(() => {
+    sortProducto();
+  }, [sortTipo]);
 
   return (
     <div className="content">
       <section className="sidebar">
-        <div class="sidebar-content">
-          <p onClick={() => setShowFiltro(!showFiltro)} className='my-2 text-xl flex items-center cursor-pointer gap-2'>FILTROS<img className={`h-3 sm:hidden ${showFiltro ? ' rotate-90' : ''}`} src={assets.dropdown_icon} alt="" /></p>
-
-          <div className={`border border-gray-300 pl-5 py-3 mt-6 ${showFiltro ? '' : 'hidden'} sm:block`}>
-            <p className='mb-3 text-sm font-medium'>CATEGORIAS</p>
-            <div className='flex flex-col gap-2 text-sm font-light text-gray-800'>
-              <p className='flex gap-2'><input className='w-3' value={"Men"} onChange={toggleCategoria} type="checkbox" /> HOMBRES </p>
-              <p className='flex gap-2'><input className='w-3' value={"Women"} onChange={toggleCategoria} type="checkbox" /> MUJERES </p>
-              <p className='flex gap-2'><input className='w-3' value={"Kids"} onChange={toggleCategoria} type="checkbox" /> NIÑOS </p>
+        <div className="sidebar-content">
+          <div className="mb-4">
+            <h4 className="mb-3">CATEGORIA</h4> {/* <<< Add margin-bottom here instead of <br /> */}
+            <div className="flex flex-col gap-2 text-sm font-light text-gray-700">
+              <p className="flex gap-2">
+                <input className="w-3" value={"Remeras"} onChange={toggleSubCategoria} type="checkbox" /> Remeras
+              </p>
+              <p className="flex gap-2">
+                <input className="w-3" value={"Pantalones"} onChange={toggleSubCategoria} type="checkbox" /> Pantalones
+              </p>
+              <p className="flex gap-2">
+                <input className="w-3" value={"Camperas"} onChange={toggleSubCategoria} type="checkbox" /> Camperas
+              </p>
             </div>
           </div>
 
-          <div className={`border border-gray-300 pl-5 py-3 my-5 ${showFiltro ? '' : 'hidden'} sm:block`}>
-            <p className='mb-3 text-sm font-medium'>TIPO</p>
-            <div className='flex flex-col gap-2 text-sm font-light text-gray-700'>
-              <p className='flex gap-2'><input className='w-3' value={"Topwear"} onChange={toggleSubCategoria} type="checkbox" /> Topwear </p>
-              <p className='flex gap-2'><input className='w-3' value={"Bottomwear"} onChange={toggleSubCategoria} type="checkbox" /> Bottomwear </p>
-              <p className='flex gap-2'><input className='w-3' value={"Winterwear"} onChange={toggleSubCategoria} type="checkbox" /> Winterwear </p>
+
+          <hr />
+
+          <div className="mb-4">
+            <h4 className="mb-3">TALLA</h4>
+            <div className="flex flex-wrap gap-3 text-sm font-light text-gray-700">
+              {["S", "M", "L", "XL"].map((size) => (
+                <button
+                  key={size}
+                  type="button"
+                  onClick={() => toggleTallaManual(size)}
+                  className={`px-4 py-2 border rounded-full text-sm transition-colors duration-200 ${tallas.includes(size)
+                    ? 'bg-black text-white border-black hover:bg-gray-800'
+                    : 'bg-white text-black border-gray-400 hover:bg-gray-100'
+                    }`}
+                >
+                  {size}
+                </button>
+              ))}
             </div>
           </div>
+
+
+          <hr />
+
+          <div className="mb-4">
+            <h4 >PRECIO</h4>
+            <div className="range">
+              <div className="range-labels">
+                <span>${precioMin}&nbsp;</span>
+
+              </div>
+              <input
+                type="range"
+                id="priceRange"
+                min={precioMin}
+                max={maxPrice}
+                step="10"
+                value={precioMax}
+                onChange={(e) => setPrecioMax(e.target.value)}
+              />
+              <span>&nbsp;${precioMax}</span>
+            </div>
+          </div>
+
+          <br />
+
         </div>
       </section>
 
-      <div class="main">
-        <div class="row">
-          <div class="column">
-
-            <select onChange={(e) => setSortTipo(e.target.value)} className='border-2 border-gray-300 text-sm px-2' name="" id="">
+      <div className="main">
+        <div className="row">
+          <div className="column">
+            <select onChange={(e) => setSortTipo(e.target.value)} className="border-2 border-gray-300 text-sm px-2">
               <option value="relavente">Sort by: Relavente</option>
               <option value="low-high">Sort by: Low to High</option>
               <option value="high-low">Sort by: High to Low</option>
             </select>
           </div>
 
-          <div style={{ display: "flex", flexWrap: "wrap" }}>
-            {
-              filtroProductos.map((item, index) => (
-                <div style={{ padding: "20px", margin: "20px", border: "2px solid black" }} key={index}><ProductoItem id={item._id} img={item.img} name={item.nombre} price={item.precio} /></div>
-              ))
-            }
-
+          <div style={{ display: 'flex', flexWrap: 'wrap' }}>
+            {filtroProductos.map((item, index) => (
+              <div style={{ padding: '20px', margin: '20px', border: '2px solid grey' }} key={index}>
+                <ProductoItem id={item._id} img={item.img} name={item.nombre} precio={item.precio} />
+              </div>
+            ))}
           </div>
         </div>
       </div>
     </div>
-  )
-}
 
-export default MainHombres
+  );
+};
+
+export default MainHombres;
