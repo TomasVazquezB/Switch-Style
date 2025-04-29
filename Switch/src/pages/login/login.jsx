@@ -74,7 +74,9 @@ export function LoginPage() {
                         {error && <div className="alert alert-danger">{error}</div>}
                         <button type="submit" className="button-login">Ingresar</button>
 
-                        <p className="registro-link">¿Todavía no estás registrado?<Link to="/registro">Regístrate aquí</Link></p>
+                        <p className="registro-link">
+  ¿Todavía no estás registrado? <Link to="/registro">Regístrate aquí</Link>
+</p>
                     </form>
                 </div>
             </div>
