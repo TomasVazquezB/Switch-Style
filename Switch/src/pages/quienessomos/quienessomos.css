@@ -1,6 +1,6 @@
 .container-quienessomos {
-    min-height: 100vh;
-    padding: 70px 20px 40px 20px;
+    min-height: 60vh;
+    padding: 40px 20px 40px 20px;
     text-align: center;
     transition: background-color 0.4s ease, color 0.4s ease;
 }
@@ -8,14 +8,14 @@
 .content {
     max-width: 1100px;
     margin: 0 auto;
-    padding: 20px;
+    padding: 30px;
 }
 
 .quienessomos {
     font-size: 3em;
     font-weight: 700;
     letter-spacing: 1px;
-    margin-top: 10px;      
+    margin-top: -20px;      
     margin-bottom: 30px;  
     transition: color 0.4s ease;
 }
@@ -45,7 +45,19 @@
     text-align: center;
     transition: background-color 0.4s ease, color 0.4s ease, transform 0.3s ease, box-shadow 0.4s ease;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    opacity: 0;
+    animation: fadeInUp 0.6s ease forwards;
 }
+
+.team-card:nth-child(1) {
+    animation-delay: 0.2s;
+  }
+  .team-card:nth-child(2) {
+    animation-delay: 0.4s;
+  }
+  .team-card:nth-child(3) {
+    animation-delay: 0.6s;
+  }  
 
 .team-card:hover {
     transform: translateY(-10px);
@@ -53,8 +65,8 @@
 }
 
 .team-img {
-    width: 100px;
-    height: 100px;
+    width: 190px;
+    height: 190px;
     border-radius: 50%;
     object-fit: cover;
     margin: -70px auto 15px;
@@ -119,6 +131,17 @@ body.dark-mode .team-card {
 body.dark-mode .team-name {
     color: #222;
 }
+
+@keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(40px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }  
 
 @media (max-width: 768px) {
     .team-cards {

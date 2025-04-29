@@ -1,88 +1,63 @@
-import React, { useState } from 'react';
-import './carrito.css';
+import React, { useContext, useEffect, useState } from 'react'
+import { ShopContext } from '../../context/ShopContext.jsx'
+import { assets } from '../../assets/assets.js';
+import CarritoTotal from '../../components/CarritoTotal.jsx';
 
-const CarritoPage = () => {
-  const [productosCarrito, setProductosCarrito] = useState([]);
+const Carrito = () => {
+    const { productos, moneda, navigate, carritoItems, updateCantidad } = useContext(ShopContext);
+    const [carritoData, setCarritoData] = useState([]);
 
-  const agregarProducto = (producto) => {
-    const existente = productosCarrito.find(item => item.id === producto.id);
-    if (existente) {
-      const newProductos = productosCarrito.map(item => item.id === producto.id ? { ...item, cantidad: item.cantidad + 1 } : item);
-      setProductosCarrito(newProductos);
-    } else {
-      setProductosCarrito([...productosCarrito, { ...producto, cantidad: 1 }]);
-    }
-  };
+    useEffect(() => {
+        const tempData = []
+        for (const items in carritoItems) {
+            for (const item in carritoItems[items]) {
+                if (carritoItems[items][item] > 0) {
+                    tempData.push({
+                        _id: items,
+                        talla: item,
+                        cantidad: carritoItems[items][item]
+                    })
+                }
+            }
+        }
+        console.log(tempData);
+        setCarritoData(tempData)
+    }, [carritoItems])
 
-  const eliminarProducto = (idProducto) => {
-    const newProductos = productosCarrito.filter(item => item.id !== idProducto);
-    setProductosCarrito(newProductos);
-  };
+    return (
+        <div className='border-t pt-14'>
+            <div>
+                {carritoData.map((item, index) => {const productoData = productos.find((producto) => producto._id === item._id);
 
-  const actualizarCantidad = (idProducto, cantidad) => {
-    const newProductos = productosCarrito.map(item => item.id === idProducto ? { ...item, cantidad: cantidad } : item);
-    setProductosCarrito(newProductos);
-  };
+                    return (
 
-  const vaciarCarrito = () => {setProductosCarrito([]);};
+                        <div key={index} className='py-4 border-t border-b text-gray-700 grid grid-cols-[4fr_0.5fr_0.5fr] sm:grid-cols-[4fr_2fr_0.5fr] items-center gap-4'>
+                            <div className='flex items-start gap-6'>
+                                <img className='w-16 sm:w-20' src={productoData.image[0]} alt="" />
+                                <div>
+                                    <p className='text-xs sm:text-lg font-medium'>{productoData.nombre}</p>
+                                    <div className='flex items-center gap-5 mt-2'>
+                                        <p>{moneda}{productoData.precio}</p>
+                                        <p className='px-2 sm:px-3 sm:py-1 border bg-slate-50'>{item.talla}</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <input onChange={(e) => e.target.value === '' || e.target.value === '0' ? null : updateCantidad(item._id, item.talla, Number(e.target.value))} className='border max-w-10 sm:max-w-20 px-1 sm:px-2 py-1' type="number" min={1} defaultValue={item.cantidad} />
+                            <img onClick={() => updateCantidad(item._id, item.talla, 0)} className='w-4 mr-4 sm:w-5 cursor-pointer' src={assets.bin_icon} alt="" />
+                        </div>
+                    )
+                })}
+            </div>
 
-  const calcularTotal = () => {return productosCarrito.reduce((total, producto) => total + (producto.precio * producto.cantidad), 0).toFixed(2);};
+            <div className='flex justify-end my-20'>
+                <div className='w-full sm:w-[450px]'><CarritoTotal/>
+                    <div className='w-full text-end'>
+                    <button onClick={() => navigate('/place-order')} className='bg-black text-white text-sm my-8 px-8 py-3'>PROCEED TO CHECKOUT</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    )
+}
 
-  return (
-    <div className="carrito-container">
-      <h1>Carrito de Compras</h1>
-      {productosCarrito.length === 0 ? (
-        <p className="no-hay-nada">No hay productos en el carrito</p>
-      ) : (
-        <>
-          <div className="tabla-carrito">
-            <table>
-              <thead>
-                <tr className="txt-heading">
-                  <th>Imagen</th>
-                  <th>Nombre</th>
-                  <th>Precio</th>
-                  <th>Cantidad</th>
-                  <th>Total</th>
-                  <th>Acciones</th>
-                </tr>
-              </thead>
-              <tbody>
-                {productosCarrito.map((producto, index) => (
-                  <tr key={index}>
-                    <td><img src={producto.imagen} alt={producto.nombre} className="cart-item-image"/></td>
-                    <td>{producto.nombre}</td>
-                    <td>${producto.precio.toFixed(2)}</td>
-                    <td>
-                      <input
-                        className="cantidad-producto"
-                        type="number"
-                        value={producto.cantidad}
-                        onChange={(e) => actualizarCantidad(producto.id, parseInt(e.target.value))}
-                        min="1"
-                      />
-                    </td>
-                    <td>${(producto.precio * producto.cantidad).toFixed(2)}</td>
-                    <td><button className="botonAgregarAccion" onClick={() => eliminarProducto(producto.id)}>Eliminar</button></td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-          <div className="product-title">
-            <h2>Total:</h2>
-          </div>
-          <div className="product-price">
-            <p>${calcularTotal()}</p>
-          </div>
-          <div className="cart-action">
-            <button className="botonAgregarAccion" onClick={vaciarCarrito}>Vaciar carrito</button>
-            <button className="botonAgregarAccion">Ir al Pago</button>
-          </div>
-        </>
-      )}
-    </div>
-  );
-};
-
-export default CarritoPage;
+export default Carrito
