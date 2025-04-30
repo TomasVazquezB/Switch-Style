@@ -1,0 +1,7 @@
+@import "tailwindcss";
+
+.content {
+    max-width: 100%;
+    margin: 0 auto;
+    background-color: white;
+}

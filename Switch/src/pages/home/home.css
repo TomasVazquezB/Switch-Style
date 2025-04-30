@@ -1,35 +1,36 @@
-body, html {
-    margin: 0;
-    padding: 0;
-    height: 100%;
+body,
+html {
+  margin: 0;
+  padding: 0;
+  height: 100%;
 }
 
 .home-index {
-    font-family: Arial, sans-serif;
-    padding: 0px 0px 5px 0px;
-    display: flex;
-    flex-direction: column;
-    min-height: 50vh;
+  font-family: Arial, sans-serif;
+  padding: 0px 0px 5px 0px;
+  display: flex;
+  flex-direction: column;
+  min-height: 50vh;
 }
 
 .home-index.light {
-    background-color: white;
-    color: black;
+  background-color: white;
+  color: black;
 }
 
 .home-index.dark {
-    background-color: #121212;
-    color: white;
+  background-color: #121212;
+  color: white;
 }
 
 .carousel-inner img {
-    width: 100%;
-    height: auto;
+  width: 100%;
+  height: auto;
 }
 
 .carousel {
-    margin-bottom: 30px;
-    margin-top: -100px; 
+  margin-bottom: 30px;
+  margin-top: -100px;
 }
 
 .varkala-carousel {
@@ -56,29 +57,29 @@ body, html {
 }
 
 .carousel-wrapper .control-arrow {
-  background: rgb(0, 0, 0); 
+  background: rgb(0, 0, 0);
   border-radius: 50%;
   width: 50px;
   height: 50px;
   opacity: 1;
   top: 50%;
-  transform: translateY(375%); 
+  transform: translateY(375%);
   z-index: 10;
 }
 
 .carousel-wrapper .control-arrow::before {
   font-size: 30px;
   color: rgb(255, 255, 255);
-  filter: brightness(5) invert(1); 
+  filter: brightness(5) invert(1);
 }
 
 .carousel-wrapper .control-arrow:hover {
-    background: rgba(0, 0, 0, 0.8); 
-    transition: background 0.3s ease;
+  background: rgba(0, 0, 0, 0.8);
+  transition: background 0.3s ease;
 }
 
 .carousel-wrapper .control-prev {
-  left: 25px; 
+  left: 25px;
 }
 
 .carousel .control-dots {
@@ -92,15 +93,15 @@ body, html {
 
 .varkala-carousel .carousel-item {
   display: flex;
-  justify-content: center; 
-  align-items: flex-start; 
+  justify-content: center;
+  align-items: flex-start;
 }
 
 .varkala-carousel .carousel-item img {
   width: 100%;
-  max-height: 300px; 
-  object-fit: contain; 
-  object-position: top center; 
+  max-height: 300px;
+  object-fit: contain;
+  object-position: top center;
 
 }
 
@@ -171,7 +172,7 @@ body, html {
 
 .carousel-control-prev-icon,
 .carousel-control-next-icon {
-  background-color: black; 
+  background-color: black;
   border-radius: 50%;
   background-size: 100% 100%;
   width: 40px;
@@ -199,10 +200,10 @@ body, html {
 }
 
 .card-container {
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
-    gap: 50px;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 50px;
 }
 
 .card-home {
@@ -213,7 +214,7 @@ body, html {
   border: 2px solid #333;
   border-radius: 10px;
   overflow: hidden;
-  box-shadow: 0 0 10px rgba(0,0,0,0.3);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
   display: flex;
   flex-direction: column;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
@@ -225,12 +226,12 @@ body, html {
 
 .card-img-top {
   width: 200%;
-  height: 200px; 
+  height: 200px;
   object-fit: contain;
   display: flex;
   background-color: #fff;
   border-top-left-radius: 8px;
-  border-top-right-radius: 8px;  
+  border-top-right-radius: 8px;
 }
 
 .card-body {
@@ -242,8 +243,8 @@ body, html {
 }
 
 .card-home img {
-    width: 100%;
-    border-radius: 8px;
+  width: 100%;
+  border-radius: 8px;
 }
 
 .card-home .btn-primary {
@@ -277,494 +278,503 @@ body, html {
 .card-home:nth-child(1) {
   animation-delay: 0.1s;
 }
+
 .card-home:nth-child(2) {
   animation-delay: 0.2s;
 }
+
 .card-home:nth-child(3) {
   animation-delay: 0.3s;
 }
+
 .card-home:nth-child(4) {
   animation-delay: 0.4s;
 }
+
 .card-home:nth-child(5) {
   animation-delay: 0.5s;
 }
+
 .card-home:nth-child(6) {
   animation-delay: 0.6s;
 }
+
 .card-home:nth-child(7) {
   animation-delay: 0.7s;
 }
 
 .btn-primary {
-    background-color: #000000;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    cursor: pointer;
+  background-color: #000000;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
 }
 
 .btn-primary:hover {
-    background-color: #222222;
+  background-color: #222222;
 }
 
 .last-added-section .carousel-item {
-    margin-right: 15px;
-    transition: transform 0.3s ease-in-out;
+  margin-right: 15px;
+  transition: transform 0.3s ease-in-out;
 }
 
 .last-added-section .carousel-item img {
-    width: 100%;
-    height: auto;
-    object-fit: cover;
-    border-radius: 8px;
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  border-radius: 8px;
 }
 
 .service-section {
- margin-top: 50px;
- display: flex;
- justify-content: center;
+  margin-top: 50px;
+  display: flex;
+  justify-content: center;
 }
 
 .service-box {
-    display: flex;
-    justify-content: space-between;
-    background-color: #f1f1f1;
-    padding: 25px;
-    border-radius: 25px;
-    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
-    flex-wrap: wrap;
-    gap: 120px;
+  display: flex;
+  justify-content: space-between;
+  background-color: #f1f1f1;
+  padding: 25px;
+  border-radius: 25px;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+  flex-wrap: wrap;
+  gap: 120px;
 }
 
 .service-item {
-    text-align: center;
-    flex: 1;
-    max-width: 940px;
+  text-align: center;
+  flex: 1;
+  max-width: 940px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .service-title {
-    font-size: 16px;
-    font-weight: bold;
-    margin-bottom: 15px;
+  font-size: 16px;
+  font-weight: bold;
+  margin-bottom: 15px;
 }
 
 .service-description {
-    font-size: 14px;
-    color: #555;
+  font-size: 14px;
+  color: #555;
 }
 
 .download-section {
-    margin-top: 0px;
-    margin-bottom: 5px;
-    justify-content: space-between;
-    align-items: center;
-    padding-top: 4px; 
-    padding-bottom: 0px; 
-    width: 100%;
+  margin-top: 0px;
+  margin-bottom: 5px;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 4px;
+  padding-bottom: 0px;
+  width: 100%;
 }
 
 .home-index.light .download-section {
-    background-color: #f7f7f7;
-    color: #0e0d0d;
+  background-color: #f7f7f7;
+  color: #0e0d0d;
 }
 
 .home-index.dark .download-section {
-    background-color: #000000;
-    color: white;
+  background-color: #000000;
+  color: white;
 }
 
 .download-text {
-  font-size: 16px; 
+  font-size: 16px;
   margin-bottom: 20px;
   margin-top: 5px;
   font-weight: bold;
   justify-content: left;
   display: flex;
-  flex-direction: column; 
-  padding: 10px; 
-  margin-left: 10px; 
-  margin-right: 10px; 
+  flex-direction: column;
+  padding: 10px;
+  margin-left: 10px;
+  margin-right: 10px;
 }
 
 .download-icons {
-    display: flex;
-    justify-content: right;
-    gap: 40px;
+  display: flex;
+  justify-content: right;
+  gap: 40px;
 }
 
 .store-icon {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .store-icon svg {
-    font-size: 36px;
-    margin-bottom: 5px;
+  font-size: 36px;
+  margin-bottom: 5px;
 }
 
 .store-icon p {
-    margin: 8px;
-    font-size: 1.02rem;
+  margin: 8px;
+  font-size: 1.02rem;
 }
 
 .carousel-indicators {
-    display: none !important;
+  display: none !important;
 }
 
 .card-img-top {
-    width: 100%;
-    height: 240px;
-    object-fit: cover;
+  width: 100%;
+  height: 240px;
+  object-fit: cover;
 }
 
 .card-body {
-    padding: 20px;
-    flex-grow: 1;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-end;
+  padding: 20px;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
 }
 
 .carousel .carousel-item {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .cards-carousel-wrapper {
-    display: flex;
-    justify-content: center;
-    gap: 30px;
-    padding: 30px 10px;
-    flex-wrap: wrap;
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+  padding: 30px 10px;
+  flex-wrap: wrap;
 }
 
 .last-added-section h2.mas-buscado {
-    margin-bottom: 25px;
-    padding: 0px;
-    font-size: 28px;
-    font-weight: bold;
-    text-align: center;
-    color: #fff;
+  margin-bottom: 25px;
+  padding: 0px;
+  font-size: 28px;
+  font-weight: bold;
+  text-align: center;
+  color: #fff;
 }
 
 .cards-carousel-fullwidth {
-    display: flex;
-    justify-content: space-between;
-    align-items: stretch;
-    flex-wrap: wrap;
-    width: 100%;
-    padding: 0 40px;
-    gap: 30px 20px;
-    box-sizing: border-box;
+  display: flex;
+  justify-content: space-between;
+  align-items: stretch;
+  flex-wrap: wrap;
+  width: 100%;
+  padding: 0 40px;
+  gap: 30px 20px;
+  box-sizing: border-box;
 }
 
 #custom-last-added-carousel .carousel-item {
-    transition: transform 0.6s ease-in-out !important;
+  transition: transform 0.6s ease-in-out !important;
 }
 
 .dark .mas-buscado {
-    color: #f0f0f0;
+  color: #f0f0f0;
 }
 
 .dark .card-home,
 .dark .service-item,
 .dark .download-section {
-    background-color: #1e1e1e;
-    color: #f0f0f0;
+  background-color: #1e1e1e;
+  color: #f0f0f0;
 }
 
 .dark .service-title,
 .dark .service-description,
 .dark .download-text,
 .dark .store-icon p {
-    color: #f0f0f0;
+  color: #f0f0f0;
 }
 
 .dark svg {
-    color: #f0f0f0 !important;
+  color: #f0f0f0 !important;
 }
 
 .light {
-    background-color: #ffffff;
-    color: #121212;
+  background-color: #ffffff;
+  color: #121212;
 }
 
 .btn-primary {
-    background-color: #000000;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    cursor: pointer;
+  background-color: #000000;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
 }
 
 .btn-primary:hover {
-    background-color: #222222;
+  background-color: #222222;
 }
 
 .featured-products-section {
-    margin-top: 60px;
-    padding: 20px 0;
+  margin-top: 60px;
+  padding: 20px 0;
 }
 
 .featured-products-section h2 {
-    text-align: center;
-    font-size: 24px;
-    font-weight: bold;
-    color: #333;
+  text-align: center;
+  font-size: 24px;
+  font-weight: bold;
+  color: #333;
 }
 
 .featured-products-container {
-    display: flex;
-    justify-content: space-around;
-    gap: 20px;
-    margin-top: 30px;
-    flex-wrap: wrap;
+  display: flex;
+  justify-content: space-around;
+  gap: 20px;
+  margin-top: 30px;
+  flex-wrap: wrap;
 }
 
 .featured-product-card {
-    width: 300px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    border-radius: 8px;
+  width: 300px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
 }
 
 .featured-product-card:hover {
-    transform: scale(1.05);
-    transition: 0.3s;
+  transform: scale(1.05);
+  transition: 0.3s;
 }
 
-  .hero-carousel-zara {
-    display: flex;
-    justify-content: center;
+.hero-carousel-zara {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 50vh;
+}
+
+.hero-text-zara {
+  position: absolute;
+  color: white;
+  text-align: center;
+  z-index: 2;
+}
+
+.subtitle {
+  font-size: 1.2rem;
+  margin-bottom: 10px;
+}
+
+.title {
+  font-size: 3rem;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+.description {
+  font-size: 1.2rem;
+  margin-bottom: 20px;
+}
+
+.btn-discover {
+  background-color: #000000;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+}
+
+.hero-image-zara {
+  width: 100vw;
+  height: 480px;
+  position: relative;
+}
+
+.hero-image-zara img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+  image-rendering: auto;
+}
+
+.last-added-section {
+  margin-top: 40px;
+  position: relative;
+}
+
+.carousel-cards-wrapper {
+  display: flex;
+  overflow: hidden;
+  position: relative;
+}
+
+.carousel-cards-track {
+  display: flex;
+  transition: transform 0.5s ease-in-out;
+}
+
+.carousel-card-home {
+  width: 33.333%;
+  padding: 10px;
+  box-sizing: border-box;
+}
+
+.carousel-card-home img {
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+}
+
+.carousel-cards-btn {
+  background-color: rgba(0, 0, 0, 0.5);
+  color: white;
+  padding: 10px;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 1;
+}
+
+.carousel-cards-btn:hover {
+  background-color: rgba(0, 0, 0, 0.8);
+}
+
+.carousel-cards-btn:first-of-type {
+  left: 0;
+}
+
+.carousel-cards-btn:last-of-type {
+  right: 0;
+}
+
+.mas-buscado {
+  text-align: center;
+  font-size: 2rem;
+  margin-bottom: 30px;
+}
+
+.carousel-cards-wrapper {
+  animation: autoSlide 10s infinite;
+}
+
+.home-index.dark {
+  background-color: #121212;
+  color: white;
+}
+
+.home-index.dark .hero-text-zara {
+  color: white;
+}
+
+.home-index.dark .btn-discover {
+  background-color: #000000;
+  color: white;
+}
+
+.home-index.dark .carousel-cards-btn {
+  background-color: rgba(255, 255, 255, 0.5);
+}
+
+.home-index.dark .carousel-cards-btn:hover {
+  background-color: rgba(255, 255, 255, 0.8);
+}
+
+.home-index.dark .mas-buscado {
+  color: white;
+}
+
+.home-index.dark .service-description,
+.home-index.dark .service-title,
+.home-index.dark .download-text {
+  color: white;
+}
+
+.home-index.light {
+  background-color: white;
+  color: black;
+}
+
+.home-index.light .hero-text-zara {
+  color: black;
+}
+
+.home-index.light .btn-discover {
+  background-color: #000000;
+  color: white;
+}
+
+.home-index.light .carousel-cards-btn {
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.home-index.light .carousel-cards-btn:hover {
+  background-color: rgba(0, 0, 0, 0.8);
+}
+
+.home-index.light .mas-buscado {
+  color: black;
+}
+
+.home-index.light .service-description,
+.home-index.light .service-title,
+.home-index.light .download-text {
+  color: black;
+}
+
+@keyframes fadeInUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 768px) {
+  .carousel-card-home {
+    width: 100%;
+  }
+
+  .service-section {
+    flex-direction: column;
     align-items: center;
-    height: 50vh;
   }
-  
-  .hero-text-zara {
-    position: absolute;
-    color: white;
+
+  .carousel-inner {
+    padding-left: 5px;
+    padding-right: 5px;
+  }
+
+  .download-icons {
+    flex-direction: column;
+    justify-content: center;
+    gap: 10px;
+  }
+
+  .store-icon {
+    margin-bottom: 20px;
+  }
+
+  .download-text {
     text-align: center;
-    z-index: 2;
-  }
-  
-  .subtitle {
-    font-size: 1.2rem;
+    width: 100%;
     margin-bottom: 10px;
   }
-  
-  .title {
-    font-size: 3rem;
-    font-weight: bold;
-    margin-bottom: 20px;
-  }
-  
-  .description {
-    font-size: 1.2rem;
-    margin-bottom: 20px;
-  }
-  
-  .btn-discover {
-    background-color: #000000;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    cursor: pointer;
-  }
-  
-  .hero-image-zara {
-    width: 100vw;
-    height: 480px;
-    position: relative;
-  }
-  
-  .hero-image-zara img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    object-position: center;
-    display: block;
-    image-rendering: auto;
-  }
-  
-  .last-added-section {
-    margin-top: 40px;
-    position: relative;
-  }
-  
-  .carousel-cards-wrapper {
-    display: flex;
-    overflow: hidden;
-    position: relative;
-  }
-  
-  .carousel-cards-track {
-    display: flex;
-    transition: transform 0.5s ease-in-out;
-  }
-  
-  .carousel-card-home {
-    width: 33.333%; 
-    padding: 10px;
-    box-sizing: border-box;
-  }
-  
-  .carousel-card-home img {
-    width: 100%;
-    height: auto;
-    border-radius: 8px;
-  }
-  
-  .carousel-cards-btn {
-    background-color: rgba(0, 0, 0, 0.5);
-    color: white;
-    padding: 10px;
-    border: none;
-    font-size: 20px;
-    cursor: pointer;
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    z-index: 1;
-  }
-  
-  .carousel-cards-btn:hover {
-    background-color: rgba(0, 0, 0, 0.8);
-  }
-  
-  .carousel-cards-btn:first-of-type {
-    left: 0;
-  }
-  
-  .carousel-cards-btn:last-of-type {
-    right: 0;
-  }
-  
-  .mas-buscado {
-    text-align: center;
-    font-size: 2rem;
-    margin-bottom: 30px;
-  }
-  
-  .carousel-cards-wrapper {
-    animation: autoSlide 10s infinite;
-  }
-  
-  .home-index.dark {
-    background-color: #121212;
-    color: white;
-  }
-  
-  .home-index.dark .hero-text-zara {
-    color: white;
-  }
-  
-  .home-index.dark .btn-discover {
-    background-color: #000000;
-    color: white;
-  }
-  
-  .home-index.dark .carousel-cards-btn {
-    background-color: rgba(255, 255, 255, 0.5);
-  }
-  
-  .home-index.dark .carousel-cards-btn:hover {
-    background-color: rgba(255, 255, 255, 0.8);
-  }
-  
-  .home-index.dark .mas-buscado {
-    color: white;
-  }
-  
-  .home-index.dark .service-description,
-  .home-index.dark .service-title,
-  .home-index.dark .download-text {
-    color: white;
-  }
-  
-  .home-index.light {
-    background-color: white;
-    color: black;
-  }
-  
-  .home-index.light .hero-text-zara {
-    color: black;
-  }
-  
-  .home-index.light .btn-discover {
-    background-color: #000000;
-    color: white;
-  }
-  
-  .home-index.light .carousel-cards-btn {
-    background-color: rgba(0, 0, 0, 0.5);
-  }
-  
-  .home-index.light .carousel-cards-btn:hover {
-    background-color: rgba(0, 0, 0, 0.8);
-  }
-  
-  .home-index.light .mas-buscado {
-    color: black;
-  }
-  
-  .home-index.light .service-description,
-  .home-index.light .service-title,
-  .home-index.light .download-text {
-    color: black;
+
+  .card-container {
+    gap: 20px;
+    justify-content: center;
   }
 
-  @keyframes fadeInUp {
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }  
-  
-  @media (max-width: 768px) {
-    .carousel-card-home {
-      width: 100%; 
-    }
-  
-    .service-section {
-      flex-direction: column;
-      align-items: center;
-    }
-    
-    .carousel-inner {
-        padding-left: 5px;
-        padding-right: 5px;
-    }
-
-    .download-icons {
-        flex-direction: column;
-        justify-content: center;
-        gap: 10px;
-    }
-
-    .store-icon {
-        margin-bottom: 20px;
-    }
-
-    .download-text {
-        text-align: center;
-        width: 100%;
-        margin-bottom: 10px;
-    }
-
-    .card-container {
-        gap: 20px;
-        justify-content: center;
-    }
-
-    .card-home {
-        width: 90%;
-        max-width: 100%;
-    }
+  .card-home {
+    width: 90%;
+    max-width: 100%;
+  }
 
   .card-img-top {
-      height: 180px;
+    height: 180px;
   }
 }
 

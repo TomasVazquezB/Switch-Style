@@ -52,12 +52,21 @@ footer nav {
 
 .social-icons {
   display: flex;
-  justify-content: flex-end;
   align-items: center;
-  gap: 5px; 
-  margin-top: 0px;
-  width: 100%;
+  gap: 10px;
+  justify-content: flex-end;
 }
+
+.icons-inline {
+  display: flex;
+  gap: 10px;
+}
+
+.social-text {
+  font-weight: bold;
+  color: white;
+}
+
 
 .social-icon {
   color: white;
@@ -138,4 +147,30 @@ footer nav {
 .footer-icons a:hover {
   background-color: white;
   color: black;
+}
+
+.footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  padding: 20px;
+  position: relative;
+}
+
+.footer .footer-nav,
+.footer .contact-info,
+.footer .social-icons {
+  flex: 1;
+}
+
+.footer-text {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  top: 50%;
+  transform: translate(-50%, -50%);
+  margin: 0;
+  color: white;
+  font-size: 0.9rem;
 }

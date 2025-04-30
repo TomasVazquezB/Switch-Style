@@ -5,8 +5,8 @@ import { FaPhoneAlt, FaEnvelope, FaFacebookF, FaTwitter, FaInstagram, FaRegSmile
 import './footer.css';
 
 const Footer = () => {
-  const quienesSomosRef = useRef(null); 
-  const scrollToQuienesSomos = () => {quienesSomosRef.current?.scrollIntoView({ behavior: 'smooth' });};
+  const quienesSomosRef = useRef(null);
+  const scrollToQuienesSomos = () => { quienesSomosRef.current?.scrollIntoView({ behavior: 'smooth' }); };
 
   return (
     <footer className="footer footer-center bg-base-200/60 rounded-sm p-4">
@@ -16,14 +16,16 @@ const Footer = () => {
       </nav>
       <nav>
         <div className="social-icons">
-          <a aria-label="Redes Link">
+          
+          <div className="icons-inline">
             <FaFacebookF className="social-icon" />
             <FaTwitter className="social-icon" />
             <FaInstagram className="social-icon" />
-          </a>
+          </div>
           <span className="social-text">Switch Style</span>
         </div>
       </nav>
+
       <nav className="contact-info">
         <div className="contact-item">
           <FaPhoneAlt className="contact-icon" />
@@ -35,7 +37,7 @@ const Footer = () => {
         </div>
       </nav>
       <aside>
-        <Typography color="white" className="footer-text"> © 2024-2025 Switch Style | Todos los derechos reservados</Typography>
+        <span color="white" className="footer-text"> © 2024-2025 Switch Style | Todos los derechos reservados</span>
       </aside>
     </footer>
   );
