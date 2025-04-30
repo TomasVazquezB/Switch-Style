@@ -52,12 +52,21 @@ footer nav {
 
 .social-icons {
   display: flex;
-  justify-content: flex-end;
   align-items: center;
-  gap: 5px; 
-  margin-top: 0px;
-  width: 100%;
+  gap: 10px;
+  justify-content: flex-end;
 }
+
+.icons-inline {
+  display: flex;
+  gap: 10px;
+}
+
+.social-text {
+  font-weight: bold;
+  color: white;
+}
+
 
 .social-icon {
   color: white;
