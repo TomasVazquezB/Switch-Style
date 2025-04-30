@@ -1,5 +1,6 @@
 import React, { useContext } from 'react';
-import { ShopContext } from '../context/ShopContext.jsx';
+import { ShopContext } from '../../context/ShopContext.jsx';
+import './CarritoTotal.css'
 
 const CarritoTotal = () => {
     const { carritoItems, productos, moneda } = useContext(ShopContext);
