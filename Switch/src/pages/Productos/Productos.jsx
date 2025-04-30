@@ -53,7 +53,6 @@ const Productos = () => {
 
         agregarAlCarrito(productoData._id, talla);
 
-
         // Redirige después de 1 segundo
         setTimeout(() => {
             navigate('/carrito');

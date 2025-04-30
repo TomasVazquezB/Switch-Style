@@ -139,3 +139,29 @@ footer nav {
   background-color: white;
   color: black;
 }
+
+.footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  padding: 20px;
+  position: relative;
+}
+
+.footer .footer-nav,
+.footer .contact-info,
+.footer .social-icons {
+  flex: 1;
+}
+
+.footer-text {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  top: 50%;
+  transform: translate(-50%, -50%);
+  margin: 0;
+  color: white;
+  font-size: 0.9rem;
+}

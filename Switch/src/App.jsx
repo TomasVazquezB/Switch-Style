@@ -24,8 +24,9 @@ function App() {
   const toggleTheme = () => setDarkMode(prev => !prev);
 
   return (
-    <div>
+    <div className="app-wrapper">
       <Header toggleTheme={toggleTheme} />
+
       <Routes>
         <Route path="/" element={<PageTitle title="Switch Style"><Home darkMode={darkMode} /></PageTitle>} />
         <Route path="/FAQ" element={<PageTitle title="Preguntas Frecuentes"><FAQPage /></PageTitle>} />
@@ -41,6 +42,25 @@ function App() {
       </Routes>
 
       <ToastContainer position="top-right" autoClose={2000} />
+
+
+
+      {/* Contenedor principal para que el contenido empuje el footer */}
+      <main className="app-content">
+        <Routes>
+          <Route path="/" element={<PageTitle title="Switch Style"><Home darkMode={darkMode} /></PageTitle>} />
+          <Route path="/FAQ" element={<PageTitle title="Preguntas Frecuentes"><FAQPage /></PageTitle>} />
+          <Route path="/quienessomos" element={<PageTitle title="Quiénes Somos"><QuienesSomosPage /></PageTitle>} />
+          <Route path="/login" element={<PageTitle title="Login"><LoginPage /></PageTitle>} />
+          <Route path="/admin" element={<PageTitle title="Admin"><AdminPage /></PageTitle>} />
+          <Route path="/registro" element={<PageTitle title="Registro"><RegistroPage /></PageTitle>} />
+          <Route path="/carrito" element={<PageTitle title="Carrito"><CarritoPage /></PageTitle>} />
+          <Route path="/MainHombres" element={<PageTitle title="Hombres"><MainHombresPage /></PageTitle>} />
+          <Route path="/MainMujeres" element={<PageTitle title="Mujeres"><MainMujeresPage /></PageTitle>} />
+          <Route path="/MainKids" element={<PageTitle title="Kids"><MainKidsPage /></PageTitle>} />
+          <Route path="/producto/:productoId" element={<Productos />} />
+        </Routes>
+      </main>
 
 
       <Footer />

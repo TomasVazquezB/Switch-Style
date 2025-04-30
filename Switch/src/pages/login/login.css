@@ -61,6 +61,7 @@
   border-radius: 5px;
   width: 100%;
   margin-bottom: 15px;
+  background-color: white; 
 }
 
 .button-login {
@@ -131,7 +132,7 @@
 
 .dark-mode .input_user,
 .dark-mode .input_pass {
-  background-color: #eeeeee;
+  background-color: white;
   color: #000000;
   border: 1px solid #aaaaaa;
 }
@@ -165,16 +166,19 @@
   }
 }
 
-/* Estilos para el fondo de los inputs en modo claro */
-.input_user,
-.input_pass {
-  background-color: white; /* Establece el color de fondo a blanco */
-  /* Mantén otros estilos que ya tengas para estos elementos (bordes, padding, etc.) */
+.registro-link {
+  margin-top: 30px; 
+  font-size: 0.95rem;
+  text-align: center;
+  color: inherit;
 }
 
-/* Opcional: Si tienes estilos específicos para el modo oscuro, asegúrate de que el fondo también sea blanco */
-.dark-mode .input_user,
-.dark-mode .input_pass {
-  background-color: white; /* Establece el color de fondo a blanco en modo oscuro también */
-  /* Mantén otros estilos que ya tengas para estos elementos en modo oscuro */
+.registro-link a {
+  color: #007bff;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.registro-link a:hover {
+  text-decoration: underline;
 }

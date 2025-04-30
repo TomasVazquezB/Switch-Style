@@ -36,9 +36,7 @@ const Header = ({ toggleTheme }) => {
         const links = document.querySelectorAll('.nav-link');
         links.forEach(link => link.classList.remove('clicked'));
         e.target.classList.add('clicked');
-        setTimeout(() => {
-            e.target.classList.remove('clicked');
-        }, 2000);
+        setTimeout(() => {e.target.classList.remove('clicked');}, 2000);
     };
 
     const handleProfileClick = () => { setShowProfileMenu(!showProfileMenu); };

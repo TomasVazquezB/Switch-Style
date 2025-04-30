@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { loginUsuario } from '../usuarios/usuarios';
 import './login.css';
 
@@ -9,7 +9,8 @@ export function LoginPage() {
     const [isDarkMode, setIsDarkMode] = useState(false);
     const navigate = useNavigate();
 
-    useEffect(() => {const checkDarkMode = () => {
+    useEffect(() => {
+        const checkDarkMode = () => {
             const bodyDark = document.body.classList.contains('dark');
             const htmlDark = document.documentElement.classList.contains('dark');
             const systemDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
@@ -17,12 +18,11 @@ export function LoginPage() {
         };
 
         const updateMode = () => {setIsDarkMode(checkDarkMode());};
-
         updateMode();
 
         const observer = new MutationObserver(updateMode);
-        observer.observe(document.body, { attributes: true, attributeFilter: ['class'] });
-        observer.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
+        observer.observe(document.body, { attributes: true, attributeFilter: ['class']});
+        observer.observe(document.documentElement, { attributes: true, attributeFilter: ['class']});
 
         const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
         mediaQuery.addEventListener('change', updateMode);
@@ -47,9 +47,7 @@ export function LoginPage() {
 
     return (
         <div className={`login-container ${isDarkMode ? 'dark-mode' : ''}`}>
-            <div className="image-container">
-                <img src="../src/assets/login.jpg" alt="Imagen" className="login-image"/>
-            </div>
+            <div className="image-container"><img src="../src/assets/login.jpg" alt="Imagen" className="login-image"/></div>
 
             <div className="login-box">
                 <div className="login-form">
@@ -63,8 +61,8 @@ export function LoginPage() {
                             required
                             placeholder="Email"
                             value={formData.identificador}
-                            onChange={handleChange}
-                        />
+                            onChange={handleChange}/>
+
                         <input
                             type="password"
                             name="contrasena"
@@ -72,10 +70,13 @@ export function LoginPage() {
                             required
                             placeholder="Contraseña"
                             value={formData.contrasena}
-                            onChange={handleChange}
-                        />
+                            onChange={handleChange}/>
                         {error && <div className="alert alert-danger">{error}</div>}
                         <button type="submit" className="button-login">Ingresar</button>
+
+                        <p className="registro-link">
+  ¿Todavía no estás registrado? <Link to="/registro">Regístrate aquí</Link>
+</p>
                     </form>
                 </div>
             </div>

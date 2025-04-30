@@ -35,7 +35,7 @@ const Footer = () => {
         </div>
       </nav>
       <aside>
-        <Typography color="white" className="footer-text"> © 2024-2025 Switch Style | Todos los derechos reservados</Typography>
+        <span color="white" className="footer-text"> © 2024-2025 Switch Style | Todos los derechos reservados</span>
       </aside>
     </footer>
   );

@@ -6,7 +6,6 @@ import { toast } from 'react-toastify';
 export const ShopContext = createContext();
 
 const ShopContextProvider = (props) => {
-
     const moneda = '$';
     const delivery_fee = 10;
     const navigate = useNavigate();
@@ -128,9 +127,7 @@ const ShopContextProvider = (props) => {
 
     }
 
-    return (
-        <ShopContext.Provider value={value}>{props.children}</ShopContext.Provider>
-    )
+    return (<ShopContext.Provider value={value}>{props.children}</ShopContext.Provider>)
 }
 
 export default ShopContextProvider;
