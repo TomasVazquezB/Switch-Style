@@ -1,6 +1,7 @@
 import { createContext, useEffect, useState } from "react";
 import { productos } from "../assets/assets";
 import { useNavigate } from "react-router-dom";
+import { toast } from 'react-toastify';
 
 export const ShopContext = createContext();
 
@@ -14,7 +15,6 @@ const ShopContextProvider = (props) => {
     const [carritoItems, setCarritoItems] = useState({});
 
     const agregarAlCarrito = async (itemId, talla) => {
-
         if (!talla) {
             toast.error('Seleccione talla del producto');
             return;
@@ -25,24 +25,62 @@ const ShopContextProvider = (props) => {
         if (carritoData[itemId]) {
             if (carritoData[itemId][talla]) {
                 carritoData[itemId][talla] += 1;
-            }
-            else {
+            } else {
                 carritoData[itemId][talla] = 1;
             }
-        }
-        else {
+        } else {
             carritoData[itemId] = {};
-            carritoData[itemId][talla] = 1
+            carritoData[itemId][talla] = 1;
         }
-        setCarritoItems(carritoData)
 
-    }
-
-    const updateCantidad = async (itemId, talla, cantidad) => {
-        let carritoData = structuredClone(carritotItems);
-        carritoData[itemId][talla] = cantidad;
         setCarritoItems(carritoData);
-    }
+
+        // ✅ Show success toast after adding
+        toast.success('Producto agregado al carrito');
+    };
+
+    const quitarDelCarrito = (itemId, talla) => {
+        let carritoData = structuredClone(carritoItems);
+
+        if (carritoData[itemId] && carritoData[itemId][talla]) {
+            carritoData[itemId][talla] -= 1;
+
+            // Eliminar talla si queda en 0
+            if (carritoData[itemId][talla] <= 0) {
+                delete carritoData[itemId][talla];
+            }
+
+            // Eliminar item si no tiene tallas
+            if (Object.keys(carritoData[itemId]).length === 0) {
+                delete carritoData[itemId];
+            }
+
+            setCarritoItems(carritoData);
+        }
+    };
+
+
+    const updateCantidad = (itemId, talla, cantidad) => {
+        let carritoData = structuredClone(carritoItems);
+
+        if (!carritoData[itemId]) return;
+
+        if (cantidad <= 0) {
+            delete carritoData[itemId][talla];
+
+            // Si no quedan tallas, eliminar el producto completo
+            if (Object.keys(carritoData[itemId]).length === 0) {
+                delete carritoData[itemId];
+            }
+
+            toast.info('Producto eliminado del carrito');
+        } else {
+            carritoData[itemId][talla] = cantidad;
+            toast.success('Cantidad actualizada');
+        }
+
+        setCarritoItems(carritoData);
+    };
 
     const getCarritoCount = () => {
         let totalCount = 0;
@@ -61,29 +99,32 @@ const ShopContextProvider = (props) => {
 
     const getCarritoCantidad = () => {
         let totalCantidad = 0;
-        for (const items in carritoItems) {
-            let itemInfo = products.find((producto) => producto._id === items);
-            for (const item in carritoItems[items]) {
-                try {
-                    if (carritoItems[items][item] > 0) {
-                        totalCantidad += itemInfo.price * carritoItems[items][item];
-                    }
-                } catch (error) {
-                }
+        for (const id in carritoItems) {
+            const producto = productos.find(p => p._id === id);
+            if (!producto) continue;
+
+            for (const talla in carritoItems[id]) {
+                const cantidad = carritoItems[id][talla];
+                totalCantidad += producto.precio * cantidad;
             }
         }
         return totalCantidad;
-    }
+    };
+
 
     const value = {
-        moneda, delivery_fee,
+        moneda,
+        delivery_fee,
         productos,
         navigate,
         search, setSearch,
         showSearch, setShowSearch,
-        agregarAlCarrito, updateCantidad,
+        agregarAlCarrito,
+        quitarDelCarrito,   // ✅ Add this
+        updateCantidad,
         carritoItems,
-        getCarritoCount, getCarritoCantidad
+        getCarritoCount,
+        getCarritoCantidad
 
     }
 

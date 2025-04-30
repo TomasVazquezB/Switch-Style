@@ -16,6 +16,8 @@ import MainMujeresPage from './pages/Mujer/MainMujeres';
 import MainKidsPage from './pages/Kids/MainKids.jsx';
 import Productos from './pages/Productos/Productos.jsx';
 import '/index.css';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function App() {
   const [darkMode, setDarkMode] = useState(false);
@@ -37,6 +39,10 @@ function App() {
         <Route path="/MainKids" element={<PageTitle title="Kids"><MainKidsPage /></PageTitle>} />
         <Route path="/producto/:productoId" element={<Productos />} />
       </Routes>
+
+      <ToastContainer position="top-right" autoClose={2000} />
+
+
       <Footer />
     </div>
   );
