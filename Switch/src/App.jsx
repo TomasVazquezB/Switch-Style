@@ -27,7 +27,7 @@ function App() {
     <div className="app-wrapper">
       <Header toggleTheme={toggleTheme} />
 
-      
+
       <main className="app-content">
         <Routes>
           <Route path="/" element={<PageTitle title="Switch Style"><Home darkMode={darkMode} /></PageTitle>} />
@@ -43,6 +43,8 @@ function App() {
           <Route path="/producto/:productoId" element={<Productos />} />
         </Routes>
       </main>
+
+      <ToastContainer position='top-right' />
 
       <Footer />
     </div>

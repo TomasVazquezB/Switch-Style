@@ -136,12 +136,16 @@ const Productos = () => {
                     </div>
                 </div>
 
+                <br></br>
+                <br></br>
+                <br></br>
+
                 {/* Tabs abajo */}
                 <div className="mt-20">
                     <div className="flex border-b">
                         <button
                             onClick={() => setActiveTab('descripcion')}
-                            className={`px-6 py-3 text-sm font-semibold transition ${activeTab === 'descripcion'
+                            className={`px-3 py-3 text-sm font-semibold transition ${activeTab === 'descripcion'
                                 ? 'border-b-2 border-black text-black'
                                 : 'text-gray-500 hover:text-black'
                                 }`}
@@ -150,7 +154,7 @@ const Productos = () => {
                         </button>
                         <button
                             onClick={() => setActiveTab('reviews')}
-                            className={`px-6 py-3 text-sm font-semibold transition ${activeTab === 'reviews'
+                            className={`px-3 py-3 text-sm font-semibold transition ${activeTab === 'reviews'
                                 ? 'border-b-2 border-black text-black'
                                 : 'text-gray-500 hover:text-black'
                                 }`}
@@ -159,10 +163,14 @@ const Productos = () => {
                         </button>
                     </div>
 
+                    <br></br>
+                    <br></br>
+
                     <div className="py-6 text-gray-700 leading-relaxed text-sm">
                         {activeTab === 'descripcion' ? (
                             <p>
-                                Lorem Ipsum es simplemente el texto de relleno de las imprentas y archivos de texto. Lorem Ipsum ha sido el texto de relleno estándar de las industrias desde el año 1500...
+                                Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+
                             </p>
                         ) : (
                             <div className="flex flex-col gap-4">
