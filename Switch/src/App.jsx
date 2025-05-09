@@ -18,23 +18,9 @@ import Productos from './pages/Productos/Productos.jsx';
 import '/index.css';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
+import ErrorBoundary from './components/Error/ErrorBoundary'; 
 import TestLaravel from './pages/TestLaravel.jsx';
 
-=======
-=======
->>>>>>> Stashed changes
-<<<<<<< HEAD
-import ErrorBoundary from './components/Error/ErrorBoundary'; // Importa el ErrorBoundary
-=======
-import TestLaravel from './pages/TestLaravel.jsx';
-
->>>>>>> 0000cbd2d30fc4890dda66e8065cc6a81d30ea49
-<<<<<<< Updated upstream
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
 
 function App() {
   const [darkMode, setDarkMode] = useState(false);
@@ -44,14 +30,14 @@ function App() {
     <div className="app-wrapper">
       <Header toggleTheme={toggleTheme} />
       <main className="app-content">
-<<<<<<< HEAD
-        <ErrorBoundary> {/* Envuelve las rutas con el ErrorBoundary */}
+        <ErrorBoundary> 
           <Routes>
             <Route path="/" element={<PageTitle title="Switch Style"><Home darkMode={darkMode} /></PageTitle>} />
             <Route path="/FAQ" element={<PageTitle title="Preguntas Frecuentes"><FAQPage /></PageTitle>} />
             <Route path="/quienessomos" element={<PageTitle title="Quiénes Somos"><QuienesSomosPage /></PageTitle>} />
             <Route path="/login" element={<PageTitle title="Login"><LoginPage /></PageTitle>} />
             <Route path="/admin" element={<PageTitle title="Admin"><AdminPage /></PageTitle>} />
+          <Route path="/test-backend" element={<TestLaravel />} />
             <Route path="/registro" element={<PageTitle title="Registro"><RegistroPage /></PageTitle>} />
             <Route path="/carrito" element={<PageTitle title="Carrito"><CarritoPage /></PageTitle>} />
             <Route path="/MainHombres" element={<PageTitle title="Hombres"><MainHombresPage /></PageTitle>} />
@@ -59,26 +45,9 @@ function App() {
             <Route path="/MainKids" element={<PageTitle title="Kids"><MainKidsPage /></PageTitle>} />
             <Route path="/producto/:productoId" element={<Productos />} />
           </Routes>
-        </ErrorBoundary> {/* Fin del envolvimiento */}
-=======
-        <Routes>
-          <Route path="/" element={<PageTitle title="Switch Style"><Home darkMode={darkMode} /></PageTitle>} />
-          <Route path="/FAQ" element={<PageTitle title="Preguntas Frecuentes"><FAQPage /></PageTitle>} />
-          <Route path="/quienessomos" element={<PageTitle title="Quiénes Somos"><QuienesSomosPage /></PageTitle>} />
-          <Route path="/login" element={<PageTitle title="Login"><LoginPage /></PageTitle>} />
-          <Route path="/admin" element={<PageTitle title="Admin"><AdminPage /></PageTitle>} />
-          <Route path="/test-backend" element={<TestLaravel />} />
-          <Route path="/registro" element={<PageTitle title="Registro"><RegistroPage /></PageTitle>} />
-          <Route path="/carrito" element={<PageTitle title="Carrito"><CarritoPage /></PageTitle>} />
-          <Route path="/MainHombres" element={<PageTitle title="Hombres"><MainHombresPage /></PageTitle>} />
-          <Route path="/MainMujeres" element={<PageTitle title="Mujeres"><MainMujeresPage /></PageTitle>} />
-          <Route path="/MainKids" element={<PageTitle title="Kids"><MainKidsPage /></PageTitle>} />
-          <Route path="/producto/:productoId" element={<Productos />} />
-        </Routes>
->>>>>>> 0000cbd2d30fc4890dda66e8065cc6a81d30ea49
+        </ErrorBoundary> 
       </main>
-
-      <ToastContainer position='top-right' />
+      <ToastContainer position='top-right'/>
       <Footer />
     </div>
   );

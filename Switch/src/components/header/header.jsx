@@ -86,12 +86,12 @@ const Header = ({ toggleTheme }) => {
                     <Navbar.Collapse id="navbarNav">
                         <Nav className="me-auto">
                             <div className="mode-switch">
-                                <BsMoon className={`mode-icon ${isDarkMode ? 'active' : 'inactive'}`} />
+                                <BsSun className={`mode-icon ${isDarkMode ? 'inactive' : 'active'}`} />
                                 <label className="switch">
                                     <input type="checkbox" onChange={toggleDarkMode} checked={isDarkMode} />
                                     <span className="slider" onClick={toggleTheme}></span>
                                 </label>
-                                <BsSun className={`mode-icon ${isDarkMode ? 'inactive' : 'active'}`} />
+                                <BsMoon className={`mode-icon ${isDarkMode ? 'active' : 'inactive'}`} />
                             </div>
                         </Nav>
 

@@ -20,7 +20,7 @@ const DataProvider = ({ children }) => {
 
   const fetchUsuarios = async () => {
     try {
-      const response = await axios.get('http://localhost:3001/usuario'); // Debe coincidir con la ruta en el backend
+      const response = await axios.get('http://localhost:3001/usuario'); 
       setUsuarios(response.data);
     } catch (err) {
       setError('Hubo un error al obtener los usuarios');

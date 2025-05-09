@@ -33,7 +33,7 @@ class ErrorBoundary extends Component {
           <i className="fas fa-exclamation-triangle error-icon"></i> 
           <div>
             <h2>Algo salió mal</h2>
-            <p>Por favor, intenta más tarde o recarga la página</p>
+            <p>Por favor, vuelva a intertarlo más tarde o recarga la página</p>
             <button className="retry-button" onClick={this.handleReload}>Recargar</button>
           </div>
         </div>

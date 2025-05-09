@@ -88,8 +88,6 @@
   display: inline-block;
 }
 
-
-
 .dark-mode .navbar-bottom .nav-link::after {
   color: #fff; 
 }
@@ -125,9 +123,9 @@
 .switch {
   position: relative;
   display: inline-block;
-  width: 34px;
-  height: 20px;
-  margin: 0 10px;
+  width: 40px;
+  height: 24px;
+  margin: 0 6px;
 }
 
 .switch input {
@@ -136,36 +134,42 @@
   height: 0;
 }
 
-.slider {
+.switch .slider {
   position: absolute;
   cursor: pointer;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
+  top: 0px;
+  left: 0px;
+  right: 0px;
+  bottom: 0px;
   background-color: #ccc;
   transition: 0.4s;
   border-radius: 50px;
+  border: 2px solid #fff; /* borde blanco para modo oscuro */
 }
 
-.slider:before {
+/* Borde gris en modo oscuro */
+.dark-mode .switch .slider {
+  border-color: #5a5f64;
+}
+
+.switch .slider:before {
   position: absolute;
   content: "";
-  height: 12px;
-  width: 12px;
+  height: 14px;
+  width: 14px;
   border-radius: 50%;
-  left: 4px;
-  bottom: 4px;
+  left: 3px;
+  top: 3px; /* centrado vertical */
   background-color: white;
   transition: 0.4s;
 }
 
-input:checked + .slider {
-  background-color: #000000;
+.switch input:checked + .slider {
+  background-color: #4e4e4e; /* fondo más oscuro */
 }
 
-input:checked + .slider:before {
-  transform: translateX(14px);
+.switch input:checked + .slider:before {
+  transform: translateX(18px);
 }
 
 .dark-mode .mode-icon {
@@ -212,7 +216,7 @@ input:checked + .slider:before {
 }
 
 .search-input {
-  width: 750px; 
+  width: 700px; 
   font-size: 1rem; 
   padding: 14px 55px 14px 40px; 
   border-radius: 25px; 
@@ -228,11 +232,10 @@ input:checked + .slider:before {
 .search-btn {
   position: absolute;
   left: 22px; 
-  top: 46%; 
+  top: 48%; 
   transform: translateY(-50%); 
   border: none;
   background-color: transparent;
-  color: black; 
   font-size: 1.5rem; 
   cursor: pointer;
 }
@@ -240,6 +243,35 @@ input:checked + .slider:before {
 .search-btn:focus {
   outline: none;
   box-shadow: none; 
+}
+
+/* Modo claro - input search */
+.light-mode .search-input {
+  background-color: #ffffff;
+  color: #000000;
+}
+
+.light-mode .search-input::placeholder {
+  color: #666666;
+}
+
+.light-mode .search-btn {
+  color: #000000;
+}
+
+/* Modo oscuro - input search */
+.dark-mode .search-input {
+  background-color: #2a2a2a;
+  color: #ffffff;
+  border: 4px solid #555555;
+}
+
+.dark-mode .search-input::placeholder {
+  color: #bbbbbb;
+}
+
+.dark-mode .search-btn {
+  color: #ffffff;
 }
 
 .navbar-bottom .nav-link.faq {
@@ -261,7 +293,7 @@ input:checked + .slider:before {
 
 @media (max-width: 768px) {
   .search-input {
-      width: 350px; 
+    width: 350px; 
   }
 }
 
