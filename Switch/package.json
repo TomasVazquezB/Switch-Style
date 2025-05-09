@@ -18,12 +18,18 @@
     "@vercel/speed-insights": "^1.2.0",
     "amqplib": "^0.10.7",
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
     "axion": "^0.1.0",
 =======
+=======
+>>>>>>> Stashed changes
 <<<<<<< HEAD
 =======
     "axion": "^0.1.0",
 >>>>>>> 0000cbd2d30fc4890dda66e8065cc6a81d30ea49
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
     "axios": "^1.9.0",
     "bootstrap": "^5.3.5",

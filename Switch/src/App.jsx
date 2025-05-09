@@ -19,15 +19,21 @@ import '/index.css';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 import TestLaravel from './pages/TestLaravel.jsx';
 
 =======
+=======
+>>>>>>> Stashed changes
 <<<<<<< HEAD
 import ErrorBoundary from './components/Error/ErrorBoundary'; // Importa el ErrorBoundary
 =======
 import TestLaravel from './pages/TestLaravel.jsx';
 
 >>>>>>> 0000cbd2d30fc4890dda66e8065cc6a81d30ea49
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 
 function App() {

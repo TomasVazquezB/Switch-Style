@@ -42,6 +42,7 @@ const cardsPerSlide = 7;
 const Home = ({ darkMode }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
   useEffect(() => {
     const interval = setInterval(() => { handleNext(); }, 5000);
     return () => clearInterval(interval);
@@ -58,6 +59,18 @@ const Home = ({ darkMode }) => {
     return () => clearInterval(interval);
   }, [currentIndex]);
 
+=======
+<<<<<<< HEAD
+  const { producto, loading } = useContext(DataContext);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      handleNext();
+    }, 5000);
+    return () => clearInterval(interval);
+  }, [currentIndex]);
+
+>>>>>>> Stashed changes
   const handlePrev = () => {
     setCurrentIndex((prevIndex) => (prevIndex - cardsPerSlide + lastAddedImages.length) % lastAddedImages.length);
   };
@@ -75,6 +88,9 @@ const Home = ({ darkMode }) => {
     return () => clearInterval(interval);
   }, [currentIndex]);
 
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
   useEffect(() => {
     fetch('http://127.0.0.1:8000/api/prueba')
@@ -201,6 +217,7 @@ const Home = ({ darkMode }) => {
             {lastAddedImages.map((img, idx) => (<div className="carousel-card-home" key={idx} style={{ flex: `0 0 calc(100% / ${cardsPerSlide})` }}>
               <img src={img} alt={`Prenda ${idx + 1}`} />
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 =======
 >>>>>>> 0000cbd2d30fc4890dda66e8065cc6a81d30ea49
 >>>>>>> Stashed changes
@@ -210,10 +227,19 @@ const Home = ({ darkMode }) => {
 <<<<<<< Updated upstream
           <button className="carousel-cards-btn" onClick={handleNext}><FaChevronRight /></button>
 =======
+=======
+>>>>>>> 0000cbd2d30fc4890dda66e8065cc6a81d30ea49
+            </div>
+            <button className="carousel-cards-btn" onClick={handleNext}><FaChevronRight /></button>
+          </div>
+>>>>>>> Stashed changes
 <<<<<<< HEAD
 =======
           <button className="carousel-cards-btn" onClick={handleNext}><FaChevronRight /></button>
 >>>>>>> 0000cbd2d30fc4890dda66e8065cc6a81d30ea49
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
         </div>
 
@@ -251,6 +277,10 @@ const Home = ({ darkMode }) => {
             <div className="store-icon"><FaApple size={40} /><p>App Store</p></div>
             <div className="store-icon"><FaGooglePlay size={40} /><p>Play Store</p></div>
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
+=======
+>>>>>>> 0000cbd2d30fc4890dda66e8065cc6a81d30ea49
+>>>>>>> Stashed changes
 =======
 >>>>>>> 0000cbd2d30fc4890dda66e8065cc6a81d30ea49
 >>>>>>> Stashed changes
