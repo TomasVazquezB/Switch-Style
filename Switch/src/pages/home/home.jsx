@@ -1,25 +1,26 @@
-import React, { useState, useEffect } from 'react';
-import { FaSyncAlt, FaTruck, FaUndo, FaApple, FaGooglePlay, FaChevronLeft, FaChevronRight } from 'react-icons/fa';
+import React, { useState, useEffect, useContext } from 'react';
+import { FaChevronLeft, FaChevronRight, FaApple, FaGooglePlay, FaSyncAlt, FaTruck, FaUndo } from 'react-icons/fa';
 import './home.css';
 import { Carousel } from 'react-responsive-carousel';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
+import { DataContext } from '../../context/DataContext';
+import ErrorBoundary from '../../components/Error/ErrorBoundary'; 
 
-const carouselImages = [
-  'src/assets/banner1.jpg',
-  'src/assets/banner2.jpg',
-  'src/assets/banner3.jpg'
-];
+import banner1 from '../../assets/banner1.jpg';
+import banner2 from '../../assets/banner2.jpg';
+import banner3 from '../../assets/banner3.jpg';
 
-const cardImages = [
-  'src/assets/DB1.JPG',
-  'src/assets/DB2.JPG',
-  'src/assets/DB3.JPG',
-  'src/assets/DB4.JPG',
-  'src/assets/DB5.JPG',
-  'src/assets/DB6.JPG',
-  'src/assets/DB7.PNG',
-];
+import DB1 from '../../assets/DB1.JPG';
+import DB2 from '../../assets/DB2.JPG';
+import DB3 from '../../assets/DB3.JPG';
+import DB4 from '../../assets/DB4.JPG';
+import DB5 from '../../assets/DB5.JPG';
+import DB6 from '../../assets/DB6.JPG';
+import DB7 from '../../assets/DB7.PNG';
 
+
+const carouselImages = [banner1, banner2, banner3];
+const cardImages = [DB1, DB2, DB3, DB4, DB5, DB6, DB7];
 const lastAddedImages = [
   'https://picsum.photos/400/300?random=1',
   'https://picsum.photos/400/300?random=2',
@@ -36,16 +37,45 @@ const lastAddedImages = [
   'https://picsum.photos/400/300?random=13',
   'https://picsum.photos/400/300?random=14',
 ];
-
 const cardsPerSlide = 7;
 
 const Home = ({ darkMode }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
+<<<<<<< Updated upstream
   useEffect(() => {
     const interval = setInterval(() => { handleNext(); }, 5000);
     return () => clearInterval(interval);
   }, [currentIndex]);
 
+=======
+<<<<<<< HEAD
+  const { producto, loading } = useContext(DataContext);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      handleNext();
+    }, 5000);
+    return () => clearInterval(interval);
+  }, [currentIndex]);
+
+  const handlePrev = () => {
+    setCurrentIndex((prevIndex) => (prevIndex - cardsPerSlide + lastAddedImages.length) % lastAddedImages.length);
+  };
+
+  const handleNext = () => {
+    setCurrentIndex((prevIndex) => (prevIndex + cardsPerSlide) % lastAddedImages.length);
+  };
+
+  if (loading) {
+    return <div>Cargando...</div>;
+  }
+=======
+  useEffect(() => {
+    const interval = setInterval(() => { handleNext(); }, 5000);
+    return () => clearInterval(interval);
+  }, [currentIndex]);
+
+>>>>>>> Stashed changes
   useEffect(() => {
     fetch('http://127.0.0.1:8000/api/prueba')
       .then(res => res.json())
@@ -56,50 +86,87 @@ const Home = ({ darkMode }) => {
 
   const handlePrev = () => { setCurrentIndex((prevIndex) => (prevIndex - cardsPerSlide + lastAddedImages.length) % lastAddedImages.length) };
   const handleNext = () => { setCurrentIndex((prevIndex) => (prevIndex + cardsPerSlide) % lastAddedImages.length); };
+>>>>>>> 0000cbd2d30fc4890dda66e8065cc6a81d30ea49
 
   return (
-    <div className={`home-index ${darkMode ? 'dark' : 'light'}`}>
-      <div id="varkalaCarousel" className="carousel slide varkala-carousel" data-bs-ride="carousel" data-bs-interval="5000">
-        <div className="carousel-wrapper">
-          <Carousel
-            autoPlay
-            infiniteLoop
-            interval={5000}
-            showThumbs={false}
-            showStatus={false}
-            showIndicators={true}
-            swipeable
-            emulateTouch
-            stopOnHover
-            dynamicHeight={false}>
+    <ErrorBoundary>
+      <div className={`home-index ${darkMode ? 'dark' : 'light'}`}>
+        <div id="varkalaCarousel" className="carousel slide varkala-carousel" data-bs-ride="carousel" data-bs-interval="5000">
+          <div className="carousel-wrapper">
+            <Carousel
+              autoPlay
+              infiniteLoop
+              interval={5000}
+              showThumbs={false}
+              showStatus={false}
+              showIndicators={true}
+              swipeable
+              emulateTouch
+              stopOnHover
+              dynamicHeight={false}>
+              {carouselImages.map((image, index) => (
+                <div key={index}>
+                  <img src={image} alt={`Slide ${index + 1}`} />
+                  <div className="hero-text-zara">
+                    <h1 className="title">Últimas novedades</h1>
+                    <p className="description">Descubre las nuevas tendencias del momento con súper ofertas de lanzamiento</p>
+                    <button className="btn-discover">Descubre lo nuevo</button>
+                  </div>
+                </div>
+              ))}
+            </Carousel>
+          </div>
+        </div>
 
-            {carouselImages.map((image, index) => (
-              <div key={index}>
-                <img src={image} alt={`Slide ${index + 1}`} />
-                <div className="hero-text-zara">
-                  <h1 className="title">Últimas novedades</h1>
-                  <p className="description">Descubre las nuevas tendencias del momento con súper ofertas de lanzamiento</p>
-                  <button className="btn-discover">Descubre lo nuevo</button>
+        <div>
+          <h2 className="mas-buscado">Lo más buscado</h2>
+          <div className="card-container">
+            {cardImages.map((image, index) => (
+              <div className="card-home" key={index}>
+                <img src={image} className="card-img-top" alt={`Card ${index + 1}`} />
+                <div className="card-body">
+                  <button className="btn-primary">Ver más</button>
                 </div>
               </div>
             ))}
-          </Carousel>
+          </div>
         </div>
-      </div>
 
-      <div>
-        <h2 className="mas-buscado">Lo más buscado</h2>
-        <div className="card-container">{cardImages.map((image, index) => (
-          <div className="card-home" key={index}>
-            <img src={image} className="card-img-top" alt={`Card ${index + 1}`} />
-            <div className="card-body">
-              <button className="btn-primary">Ver más</button>
+        <div className="service-section">
+          <div className="service-box">
+            <div className="service-item">
+              <FaSyncAlt size={40} />
+              <br/>
+              <h3 className="service-title">Nuevos productos cada día</h3>
+              <p className="service-description">Todos los días publicamos miles de artículos nuevos</p>
+            </div>
+            <div className="service-item">
+              <FaTruck size={40} />
+              <br/>
+              <h3 className="service-title">Entregas en 72 horas</h3>
+              <p className="service-description">Tu pedido será entregado un plazo máximo de 72 horas</p>
+            </div>
+            <div className="service-item">
+              <FaUndo size={40} />
+              <br/>
+              <h3 className="service-title">14 días de devolución</h3>
+              <p className="service-description">Si no estás satisfecho con tu compra, tienes 14 días para devolver tu pedido</p>
             </div>
           </div>
-        ))}
         </div>
-      </div>
 
+<<<<<<< HEAD
+        <div className="last-added-section">
+          <h2 className="mas-buscado">Últimas Prendas Añadidas</h2>
+          <div className="carousel-cards-wrapper">
+            <button className="carousel-cards-btn" onClick={handlePrev}><FaChevronLeft /></button>
+            <div className="carousel-cards-track" style={{ transform: `translateX(-${(currentIndex / lastAddedImages.length) * 100}%)` }}>
+              {lastAddedImages.map((img, idx) => (
+                <div className="carousel-card-home" key={idx} style={{ flex: `0 0 calc(100% / ${cardsPerSlide})` }}>
+                  <img src={img} alt={`Prenda ${idx + 1}`} />
+                </div>
+              ))}
+=======
       <div className="service-section">
         <div className="service-box">
           <div className="service-item">
@@ -133,13 +200,49 @@ const Home = ({ darkMode }) => {
           <div className="carousel-cards-track" style={{ transform: `translateX(-${(currentIndex / lastAddedImages.length) * 100}%)` }}>
             {lastAddedImages.map((img, idx) => (<div className="carousel-card-home" key={idx} style={{ flex: `0 0 calc(100% / ${cardsPerSlide})` }}>
               <img src={img} alt={`Prenda ${idx + 1}`} />
+<<<<<<< Updated upstream
+=======
+>>>>>>> 0000cbd2d30fc4890dda66e8065cc6a81d30ea49
+>>>>>>> Stashed changes
             </div>
-            ))}
+            <button className="carousel-cards-btn" onClick={handleNext}><FaChevronRight /></button>
           </div>
+<<<<<<< Updated upstream
           <button className="carousel-cards-btn" onClick={handleNext}><FaChevronRight /></button>
+=======
+<<<<<<< HEAD
+=======
+          <button className="carousel-cards-btn" onClick={handleNext}><FaChevronRight /></button>
+>>>>>>> 0000cbd2d30fc4890dda66e8065cc6a81d30ea49
+>>>>>>> Stashed changes
         </div>
-      </div>
 
+<<<<<<< HEAD
+        {producto && producto.length > 0 && (
+          <div className="productos-section">
+            <h2>Productos Recientes</h2>
+            <div className="productos-container">
+              {producto.map((item) => (
+                <div className="producto-card" key={item.id}>
+                  <img src={item.imagen} alt={item.nombre} className="producto-img"/>
+                  <h3>{item.nombre}</h3>
+                  <p>{item.descripcion}</p>
+                  <p>${item.precio}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        <div className="download-section">
+          <hr className="black-line" />
+          <div className="download-row">
+            <p className="download-text">Descarga la aplicación y únete a la experiencia Switch Style</p>
+            <div className="download-icons">
+              <div className="store-icon"><FaApple size={40} /><p>App Store</p></div>
+              <div className="store-icon"><FaGooglePlay size={40} /><p>Play Store</p></div>
+            </div>
+=======
       <div className="download-section">
         <hr className="black-line" />
         <div className="download-row">
@@ -147,10 +250,14 @@ const Home = ({ darkMode }) => {
           <div className="download-icons">
             <div className="store-icon"><FaApple size={40} /><p>App Store</p></div>
             <div className="store-icon"><FaGooglePlay size={40} /><p>Play Store</p></div>
+<<<<<<< Updated upstream
+=======
+>>>>>>> 0000cbd2d30fc4890dda66e8065cc6a81d30ea49
+>>>>>>> Stashed changes
           </div>
         </div>
       </div>
-    </div>
+    </ErrorBoundary>
   );
 };
 

@@ -23,23 +23,21 @@ const Header = ({ toggleTheme }) => {
 
     useEffect(() => {
         const savedMode = localStorage.getItem('darkMode');
-        if (savedMode === 'true') {
-            setIsDarkMode(true);
-        } else {
-            setIsDarkMode(false);
-        }
+        setIsDarkMode(savedMode === 'true');
     }, []);
 
-    const toggleDarkMode = () => { setIsDarkMode(!isDarkMode); };
+    const toggleDarkMode = () => setIsDarkMode(!isDarkMode);
 
     const handleClick = (e) => {
         const links = document.querySelectorAll('.nav-link');
         links.forEach(link => link.classList.remove('clicked'));
         e.target.classList.add('clicked');
-        setTimeout(() => {e.target.classList.remove('clicked');}, 2000);
+        setTimeout(() => {
+            e.target.classList.remove('clicked');
+        }, 2000);
     };
 
-    const handleProfileClick = () => { setShowProfileMenu(!showProfileMenu); };
+    const handleProfileClick = () => setShowProfileMenu(!showProfileMenu);
 
     const handleLogout = () => {
         localStorage.removeItem('isLoggedIn');
@@ -47,7 +45,7 @@ const Header = ({ toggleTheme }) => {
         navigate('/login');
     };
 
-    const goToCart = () => { navigate('/carrito'); };
+    const goToCart = () => navigate('/carrito');
 
     useEffect(() => {
         const body = document.body;
@@ -68,6 +66,9 @@ const Header = ({ toggleTheme }) => {
         setIsLoggedIn(loggedIn === 'true');
     }, [isDarkMode]);
 
+    const getLinkClass = (isActive) =>
+        `nav-link ${isDarkMode ? 'text-white' : 'text-dark'} ${isActive ? 'active-link' : ''}`;
+
     return (
         <>
             <div className={`offer-bar ${isDarkMode ? 'bg-ultra-dark' : 'bg-ultra-light'} text-center pt-4 pb-2`}>
@@ -76,7 +77,7 @@ const Header = ({ toggleTheme }) => {
             </div>
 
             <Navbar expand="lg" className={`navbar-top ${isDarkMode ? 'bg-dark' : 'bg-light'}`}>
-                <Container fluid style={{ maxWidth: "100%" }}>
+                <Container fluid>
                     <Navbar.Brand as={NavLink} to="/" onClick={() => navigate('/')}>
                         <img src="../src/assets/LOGO.png" width="90" height="50" className="d-inline-block align-top" alt="Logo" />
                     </Navbar.Brand>
@@ -113,18 +114,32 @@ const Header = ({ toggleTheme }) => {
                                     <FaUserCircle className="navbar-icon profile-icon" onClick={handleProfileClick} />
                                     {showProfileMenu && (
                                         <div className="profile-menu">
-                                            <NavLink to="/perfil">Mi Perfil</NavLink>
-                                            <NavLink to="/pedidos">Mis Pedidos</NavLink>
-                                            <NavLink to="/favoritos">Mis Favoritos</NavLink>
-                                            <NavLink to="/FAQ">Preguntas Frecuentes</NavLink>
+                                            <NavLink to="/perfil" className={({ isActive }) => getLinkClass(isActive)}>Mi Perfil</NavLink>
+                                            <NavLink to="/pedidos" className={({ isActive }) => getLinkClass(isActive)}>Mis Pedidos</NavLink>
+                                            <NavLink to="/favoritos" className={({ isActive }) => getLinkClass(isActive)}>Mis Favoritos</NavLink>
+                                            <NavLink to="/FAQ" className={({ isActive }) => getLinkClass(isActive)}>Preguntas Frecuentes</NavLink>
                                             <button onClick={handleLogout}>Salir</button>
                                         </div>
                                     )}
                                 </div>
                             ) : (
                                 <>
-                                    <Nav.Link className={`navbar-icon ${isDarkMode ? 'text-white' : 'text-dark'}`} as={NavLink} to="/registro" activeClassName="active-link" onClick={handleClick}>Registro</Nav.Link>
-                                    <Nav.Link className={`navbar-icon ${isDarkMode ? 'text-white' : 'text-dark'}`} as={NavLink} to="/login" activeClassName="active-link" onClick={handleClick}>Login</Nav.Link>
+                                    <Nav.Link
+                                        as={NavLink}
+                                        to="/registro"
+                                        onClick={handleClick}
+                                        className={({ isActive }) => getLinkClass(isActive)}
+                                    >
+                                        Registro
+                                    </Nav.Link>
+                                    <Nav.Link
+                                        as={NavLink}
+                                        to="/login"
+                                        onClick={handleClick}
+                                        className={({ isActive }) => getLinkClass(isActive)}
+                                    >
+                                        Login
+                                    </Nav.Link>
                                 </>
                             )}
                         </Nav>
@@ -136,43 +151,60 @@ const Header = ({ toggleTheme }) => {
                 <Container fluid>
                     <Nav className="me-auto" style={{ justifyContent: 'space-evenly', width: '100%' }}>
                         <div className="nav-dropdown">
-                            <Nav.Link as={NavLink} to="/MainHombres">Hombres</Nav.Link>
+                            <Nav.Link
+                                as={NavLink}
+                                to="/MainHombres"
+                                className={({ isActive }) => getLinkClass(isActive)}
+                            >
+                                Hombres
+                            </Nav.Link>
                             <div className="dropdown-menu">
-                                <NavLink to="/ropa/hombres/remeras">Remeras</NavLink>
-                                <NavLink to="/ropa/hombres/pantalones">Pantalones</NavLink>
-                                <NavLink to="/ropa/hombres/camperas">Camperas</NavLink>
+                                <NavLink to="/ropa/hombres/remeras" className={({ isActive }) => getLinkClass(isActive)}>Remeras</NavLink>
+                                <NavLink to="/ropa/hombres/pantalones" className={({ isActive }) => getLinkClass(isActive)}>Pantalones</NavLink>
+                                <NavLink to="/ropa/hombres/camperas" className={({ isActive }) => getLinkClass(isActive)}>Camperas</NavLink>
                             </div>
                         </div>
                         <div className="nav-dropdown">
-                            <Nav.Link as={NavLink} to="/MainMujeres">Mujeres</Nav.Link>
+                            <Nav.Link
+                                as={NavLink}
+                                to="/MainMujeres"
+                                className={({ isActive }) => getLinkClass(isActive)}
+                            >
+                                Mujeres
+                            </Nav.Link>
                             <div className="dropdown-menu">
-                                <NavLink to="/ropa/hombres/remeras">Remeras</NavLink>
-                                <NavLink to="/ropa/hombres/pantalones">Pantalones</NavLink>
-                                <NavLink to="/ropa/hombres/camperas">Camperas</NavLink>
+                                <NavLink to="/ropa/mujeres/remeras" className={({ isActive }) => getLinkClass(isActive)}>Remeras</NavLink>
+                                <NavLink to="/ropa/mujeres/pantalones" className={({ isActive }) => getLinkClass(isActive)}>Pantalones</NavLink>
+                                <NavLink to="/ropa/mujeres/camperas" className={({ isActive }) => getLinkClass(isActive)}>Camperas</NavLink>
                             </div>
                         </div>
                         <div className="nav-dropdown">
-                            <Nav.Link as={NavLink} to="/MainKids">Chicos</Nav.Link>
+                            <Nav.Link
+                                as={NavLink}
+                                to="/MainKids"
+                                className={({ isActive }) => getLinkClass(isActive)}
+                            >
+                                Chicos
+                            </Nav.Link>
                             <div className="dropdown-menu">
-                                <NavLink to="/ropa/hombres/remeras">Remeras</NavLink>
-                                <NavLink to="/ropa/hombres/pantalones">Pantalones</NavLink>
-                                <NavLink to="/ropa/hombres/camperas">Camperas</NavLink>
+                                <NavLink to="/ropa/kids/remeras" className={({ isActive }) => getLinkClass(isActive)}>Remeras</NavLink>
+                                <NavLink to="/ropa/kids/pantalones" className={({ isActive }) => getLinkClass(isActive)}>Pantalones</NavLink>
+                                <NavLink to="/ropa/kids/camperas" className={({ isActive }) => getLinkClass(isActive)}>Camperas</NavLink>
                             </div>
                         </div>
                         <div className="nav-dropdown">
                             <span className="nav-link">Accesorios</span>
                             <div className="dropdown-menu">
-                                <NavLink to="/ropa/hombres/remeras">Cadenas</NavLink>
-                                <NavLink to="/ropa/hombres/pantalones">Anillos</NavLink>
-                                <NavLink to="/ropa/hombres/camperas">Brazaletes</NavLink>
+                                <NavLink to="/accesorios/cadenas" className={({ isActive }) => getLinkClass(isActive)}>Cadenas</NavLink>
+                                <NavLink to="/accesorios/anillos" className={({ isActive }) => getLinkClass(isActive)}>Anillos</NavLink>
+                                <NavLink to="/accesorios/brazaletes" className={({ isActive }) => getLinkClass(isActive)}>Brazaletes</NavLink>
                             </div>
                         </div>
-
                     </Nav>
                 </Container>
             </Navbar>
         </>
     );
-}
+};
 
 export default Header;

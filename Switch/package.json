@@ -17,7 +17,14 @@
     "@tailwindcss/vite": "^4.1.4",
     "@vercel/speed-insights": "^1.2.0",
     "amqplib": "^0.10.7",
+<<<<<<< Updated upstream
     "axion": "^0.1.0",
+=======
+<<<<<<< HEAD
+=======
+    "axion": "^0.1.0",
+>>>>>>> 0000cbd2d30fc4890dda66e8065cc6a81d30ea49
+>>>>>>> Stashed changes
     "axios": "^1.9.0",
     "bootstrap": "^5.3.5",
     "express-jwt": "^8.5.1",
@@ -28,6 +35,7 @@
     "lodash": "^4.17.21",
     "lodash.set": "^4.3.2",
     "moment": "^2.30.1",
+    "mysql": "^2.18.1",
     "path-to-regexp": "^8.2.0",
     "qs": "^6.14.0",
     "react": "^19.1.0",

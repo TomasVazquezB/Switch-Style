@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { loginUsuario } from '../usuarios/usuarios';
 import './login.css';
 
 export function LoginPage() {
@@ -17,37 +16,68 @@ export function LoginPage() {
             return bodyDark || htmlDark || systemDark;
         };
 
-        const updateMode = () => {setIsDarkMode(checkDarkMode());};
+        const updateMode = () => setIsDarkMode(checkDarkMode());
+
         updateMode();
 
         const observer = new MutationObserver(updateMode);
-        observer.observe(document.body, { attributes: true, attributeFilter: ['class']});
-        observer.observe(document.documentElement, { attributes: true, attributeFilter: ['class']});
+        observer.observe(document.body, { attributes: true, attributeFilter: ['class'] });
+        observer.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
 
         const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
         mediaQuery.addEventListener('change', updateMode);
 
-        return () => {observer.disconnect(); mediaQuery.removeEventListener('change', updateMode);};}, []);
+        return () => {
+            observer.disconnect();
+            mediaQuery.removeEventListener('change', updateMode);
+        };
+    }, []);
 
-    const handleChange = (e) => {setFormData({ ...formData, [e.target.name]: e.target.value });};
+    const handleChange = (e) => {
+        setFormData({ ...formData, [e.target.name]: e.target.value });
+    };
 
-    const handleSubmit = (e) => {e.preventDefault();
-        loginUsuario(formData.identificador, formData.contrasena)
-            .then(usuario => {
-                if (usuario.rol === 'admin') {
-                    alert(`Bienvenido Administrador ${usuario.nombre}`);
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        setError(null); // Reinicia error si hay uno previo
+
+        try {
+            const response = await fetch('http://localhost:3001/api/login', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(formData),
+            });
+
+            const data = await response.json();
+
+            if (response.ok) {
+                // Guardar usuario completo
+                localStorage.setItem('usuario', JSON.stringify(data));
+
+                const rol = data.rol?.toLowerCase();
+                const nombre = data.nombre || 'Usuario';
+
+                if (rol === 'admin') {
+                    alert(`Bienvenido Administrador ${nombre}`);
                     navigate('/admin');
                 } else {
-                    alert(`Bienvenido Usuario ${usuario.nombre}`);
+                    alert(`Bienvenido ${nombre}`);
                     navigate('/');
                 }
-            })
-            .catch(error => setError(error.message));
+            } else {
+                setError(data.message || 'Credenciales inválidas');
+            }
+        } catch (err) {
+            console.error(err);
+            setError('Error de conexión al servidor.');
+        }
     };
 
     return (
         <div className={`login-container ${isDarkMode ? 'dark-mode' : ''}`}>
-            <div className="image-container"><img src="../src/assets/login.jpg" alt="Imagen" className="login-image"/></div>
+            <div className="image-container">
+                <img src="../src/assets/login.jpg" alt="Imagen" className="login-image" />
+            </div>
 
             <div className="login-box">
                 <div className="login-form">
@@ -61,8 +91,8 @@ export function LoginPage() {
                             required
                             placeholder="Email"
                             value={formData.identificador}
-                            onChange={handleChange}/>
-
+                            onChange={handleChange}
+                        />
                         <input
                             type="password"
                             name="contrasena"
@@ -70,13 +100,16 @@ export function LoginPage() {
                             required
                             placeholder="Contraseña"
                             value={formData.contrasena}
-                            onChange={handleChange}/>
+                            onChange={handleChange}
+                        />
+
                         {error && <div className="alert alert-danger">{error}</div>}
+
                         <button type="submit" className="button-login">Ingresar</button>
 
                         <p className="registro-link">
-  ¿Todavía no estás registrado? <Link to="/registro">Regístrate aquí</Link>
-</p>
+                            ¿Todavía no estás registrado? <Link to="/registro">Regístrate aquí</Link>
+                        </p>
                     </form>
                 </div>
             </div>
