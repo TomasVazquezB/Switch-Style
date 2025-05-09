@@ -18,6 +18,8 @@ import Productos from './pages/Productos/Productos.jsx';
 import '/index.css';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import TestLaravel from './pages/TestLaravel.jsx';
+
 
 function App() {
   const [darkMode, setDarkMode] = useState(false);
@@ -35,6 +37,7 @@ function App() {
           <Route path="/quienessomos" element={<PageTitle title="Quiénes Somos"><QuienesSomosPage /></PageTitle>} />
           <Route path="/login" element={<PageTitle title="Login"><LoginPage /></PageTitle>} />
           <Route path="/admin" element={<PageTitle title="Admin"><AdminPage /></PageTitle>} />
+          <Route path="/test-backend" element={<TestLaravel />} />
           <Route path="/registro" element={<PageTitle title="Registro"><RegistroPage /></PageTitle>} />
           <Route path="/carrito" element={<PageTitle title="Carrito"><CarritoPage /></PageTitle>} />
           <Route path="/MainHombres" element={<PageTitle title="Hombres"><MainHombresPage /></PageTitle>} />
