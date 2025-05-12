@@ -1,204 +1,322 @@
+/* Reset de estilos por defecto en botones e inputs */
+button,
+input,
+select,
+textarea {
+    font-family: inherit;
+    outline: none;
+    border: none;
+    background: none;
+    -webkit-tap-highlight-color: transparent; /* Elimina el highlight azul en mobile */
+}
+
+/* Contenedor principal */
 .admin-container {
-    margin-top: 1700px; 
-    padding-top: 40px;
-    padding-bottom: 50px;
     display: flex;
-    justify-content: center;
+    justify-content: center; /* Centrado horizontal */
+    align-items: center;     /* Centrado vertical */
+    padding: 30px 5%;
+    min-height: 100vh;
+    background-color: #f6f7f9;
+    box-sizing: border-box;
 }
 
+/* Contenido interno */
 .admin-content {
-    background-color: #fff;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background-color: #ffffff;
+    padding: 40px 80px;
+    border-radius: 18px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
     width: 100%;
-    max-width: 900px;
-    margin-bottom: 50px;
+    max-width: 1280px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /* Añadimos márgenes automáticos para asegurar el centrado */
+    margin: auto;
 }
 
+/* Título */
 .admin-title {
     font-size: 2.5rem;
     text-align: center;
-    color: #333;
+    color: #000;
+    margin-bottom: 20px;
+    width: 100%;
+}
+
+/* Texto de bienvenida */
+.admin-text {
+    font-size: 1.1rem;
+    color: #616161;
+    text-align: center;
+    margin-bottom: 30px;
+    width: 100%;
+}
+
+/* Formularios */
+.form-registro-usuario,
+.form-productos {
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 15px;
+    margin-bottom: 50px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+    width: 100%;
+    max-width: 600px;
+    border: 1px solid #e0e0e0;
+}
+
+/* Fila de formulario */
+.form-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
     margin-bottom: 20px;
 }
 
-.admin-text {
-    font-size: 1.2rem;
-    line-height: 1.6;
-    color: #666;
-    text-align: justify;
+/* Inputs, selects, textareas */
+.form-row input,
+.form-row select,
+.form-row textarea {
+    flex: 1;
+    padding: 12px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    font-size: 1rem;
+    transition: border 0.3s ease, box-shadow 0.2s ease;
+    background-color: #fff;
+    color: #333;
 }
 
+.form-row input:focus,
+.form-row select:focus,
+.form-row textarea:focus {
+    border-color: #888;
+    box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.1);
+    background-color: #fafafa;
+}
+
+textarea {
+    resize: vertical;
+    min-height: 80px;
+}
+
+/* Botones principales */
+button.btn,
+.form-row button {
+    background-color: #000;
+    color: #fff;
+    padding: 10px 22px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+    appearance: none;
+}
+
+/* Botón de registrar usuario sin efecto azul */
+button.btn:active,
+.form-row button:active {
+    background-color: #333;
+}
+
+/* Eliminar efecto azul de botones activos estilo Bootstrap */
+.btn-check:checked + .btn,
+.btn.active,
+.btn.show,
+.btn:first-child:active,
+:not(.btn-check) + .btn:active {
+    color: #fff !important;
+    background-color: #333 !important;
+    border-color: #333 !important;
+    box-shadow: none !important;
+    outline: none !important;
+}
+
+/* Botones de acción */
+.boton-editar {
+    background-color: #000;
+    color: white;
+    padding: 8px 14px;
+    border-radius: 6px;
+    margin-right: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.boton-editar:hover {
+    background-color: #333;
+}
+
+.boton-eliminar {
+    background-color: #e74c3c;
+    color: white;
+    padding: 8px 14px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.boton-eliminar:hover {
+    background-color: #c0392b;
+}
+
+/* Botones de agregar usuario y productos */
+.btn-agregar {
+    background-color: #000;
+    color: #fff;
+    padding: 12px 24px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+}
+
+.btn-agregar:active {
+    background-color: #333;
+}
+
+/* Secciones */
+.usuarios-section,
+.productos-section,
+.favoritos-section {
+    background-color: #ffffff;
+    padding: 25px;
+    border-radius: 16px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+    margin-bottom: 50px;
+    width: 100%;
+    max-width: 1100px;
+    border: 1px solid #e0e0e0;
+}
+
+/* Títulos de sección */
+.usuarios-section h3,
+.productos-section h3,
+.favoritos-section h3 {
+    margin-bottom: 20px;
+    font-size: 1.6rem;
+    color: #2d3436;
+}
+
+/* Tablas */
 .table {
     width: 100%;
     border-collapse: collapse;
-    margin-top: 20px;
-    border-radius: 10px;
-    overflow: hidden;
+    overflow-x: auto;
 }
 
 .table th,
 .table td {
-    padding: 10px;
-    text-align: left;
+    padding: 12px;
     border-bottom: 1px solid #ddd;
+    text-align: left;
+    font-size: 0.95rem;
 }
 
 .table th {
-    background-color: #f2f2f2;
+    background-color: #ecf0f1;
+    color: #2c3e50;
 }
 
 .table td {
     background-color: #fff;
 }
 
-.table td button {
-    margin-right: 15px;
-    cursor: pointer;
+/* Modal de confirmación */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
 }
 
-.form-registro-usuario {
-    background-color: #f5f5f5;
-    padding: 15px;
-    border-radius: 20px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    margin-top: 10px;
+.modal-content {
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    text-align: center;
+    width: 300px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
-.form-registro-usuario input,
-.form-registro-usuario select {
-    width: 100%;
-    padding: 10px;
-    margin-bottom: 15px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    box-sizing: border-box;
+.modal-content h2 {
+    font-size: 1.5rem;
+    color: #000;
+    margin-bottom: 20px;
 }
 
-.form-registro-usuario .form-row {
-    margin-bottom: 10px;
+.modal-content p {
+    font-size: 1rem;
+    color: #555;
+    margin-bottom: 20px;
 }
 
-.form-registro-usuario .form-row:last-child {
-    margin-bottom: 1;
-}
-
-.form-registro-usuario button {
-    background-color: rgba(136, 151, 113, 0.8);
-    color: #fff;
+/* Botones en el modal de confirmación */
+.modal-content button {
+    margin: 10px;
     padding: 10px 20px;
-    border: none;
+    font-size: 1rem;
     border-radius: 8px;
     cursor: pointer;
     transition: background-color 0.3s ease;
 }
 
-.form-registro-usuario button[type="button"] {
-    background-color: #dc3545;
-    margin-left: 8px;
+/* Botón de eliminar */
+.modal-content .btn-danger {
+    background-color: #e74c3c;
+    color: white;
+    border: 1px solid #e74c3c;
 }
 
-.form-registro-usuario button:hover {
-    background-color: rgba(0, 0, 0, 0.8);
+.modal-content .btn-danger:hover {
+    background-color: #c0392b;
+    border-color: #c0392b;
 }
 
-.form-paquetes-actividades {
-    background-color: #f5f5f5;
-    padding: 20px;
-    border-radius: 15px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    margin-top: 5px;
+/* Botón de editar (usa mismo color que eliminar por tu indicación) */
+.modal-content .btn-success {
+    background-color: #e74c3c;
+    color: white;
+    border: 1px solid #e74c3c;
 }
 
-.form-paquetes-actividades input,
-.form-paquetes-actividades select {
-    width: 100%;
-    padding: 10px;
-    margin-bottom: 15px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    box-sizing: border-box;
+.modal-content .btn-success:hover {
+    background-color: #c0392b;
+    border-color: #c0392b;
 }
 
-.form-paquetes-actividades .form-row {
-    margin-bottom: 15px;
+/* Botón cancelar */
+.modal-content .btn-secondary {
+    background-color: #000;
+    color: white;
 }
 
-.form-paquetes-actividades .form-row:last-child {
-    margin-bottom: 0;
+.modal-content .btn-secondary:hover {
+    background-color: #333;
 }
 
-.form-paquetes-actividades button {
-    background-color: rgba(136, 151, 113, 0.8);
-    color: #fff;
-    padding: 10px 20px;
-    border: none;
+/* Mensaje de éxito */
+.success-message {
+    margin-top: 20px;
+    padding: 12px;
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
     border-radius: 8px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
+    text-align: center;
+    font-size: 1rem;
 }
 
-.form-paquetes-actividades button[type="button"] {
-    background-color: #dc3545;
-    margin-left: 8px;
-}
-
-.form-paquetes-actividades button:hover {
-    background-color: rgba(174, 197, 140, 0.8);
-}
-
-.usuarios-section {
-    background-color: #f9f9f9;
-    padding: 15px;
-    border-radius: 20px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    margin-bottom: 50px;
-}
-
-.paquetes-section{
-    background-color: #f9f9f9;
-    padding: 20px;
-    border-radius: 20px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    margin-bottom: 50px;
-}
-
-.actividades-section {
-    background-color: #f9f9f9;
-    padding: 20px;
-    border-radius: 20px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    margin-bottom: 50px;
-}
-
-.boton-editar{
-    background-color: rgba(136, 151, 113, 0.8);
-    border-color: rgba(136, 151, 113, 0.8); 
-    color: #fff;
-    padding: 4px 8px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-}
-
-.boton-eliminar{
-    background-color: rgba(207, 6, 6, 0.8);
-    border-color: rgba(207, 6, 6, 0.8);
-    color: #fff;
-    padding: 4px 8px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-}
-
+/* Responsive */
 @media (max-width: 768px) {
-    .admin-content {
-        padding: 20px;
-    }
-
     .admin-title {
         font-size: 2rem;
     }
@@ -207,7 +325,16 @@
         font-size: 1rem;
     }
 
-    .form {
-        padding: 15px;
+    .form-row {
+        flex-direction: column;
+    }
+
+    .table th,
+    .table td {
+        font-size: 0.85rem;
+    }
+
+    .admin-content {
+        padding: 30px 20px;
     }
 }

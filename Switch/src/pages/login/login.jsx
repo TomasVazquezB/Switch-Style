@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
+import api from '../../api/axios'; // Asegurate que esté bien importado
 import './login.css';
 
 export function LoginPage() {
@@ -39,37 +40,36 @@ export function LoginPage() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        setError(null); // Reinicia error si hay uno previo
+        setError(null);
 
         try {
-            const response = await fetch('http://localhost:3001/api/login', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(formData),
+            await api.get('/sanctum/csrf-cookie');
+
+            const response = await api.post('/api/login', {
+                email: formData.identificador,
+                password: formData.contrasena,
             });
 
-            const data = await response.json();
+            const user = response.data;
+            localStorage.setItem('usuario', JSON.stringify(user));
 
-            if (response.ok) {
-                // Guardar usuario completo
-                localStorage.setItem('usuario', JSON.stringify(data));
+            const rol = user.rol?.toLowerCase();
+            const nombre = user.nombre || 'Usuario';
 
-                const rol = data.rol?.toLowerCase();
-                const nombre = data.nombre || 'Usuario';
-
-                if (rol === 'admin') {
-                    alert(`Bienvenido Administrador ${nombre}`);
-                    navigate('/admin');
-                } else {
-                    alert(`Bienvenido ${nombre}`);
-                    navigate('/');
-                }
+            if (rol === 'admin') {
+                alert(`Bienvenido Administrador ${nombre}`);
+                navigate('/admin');
             } else {
-                setError(data.message || 'Credenciales inválidas');
+                alert(`Bienvenido ${nombre}`);
+                navigate('/');
             }
         } catch (err) {
+            if (err.response) {
+                setError(err.response.data.message || 'Credenciales inválidas');
+            } else {
+                setError('Error de conexión al servidor.');
+            }
             console.error(err);
-            setError('Error de conexión al servidor.');
         }
     };
 
