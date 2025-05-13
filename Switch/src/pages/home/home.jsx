@@ -40,7 +40,7 @@ const cardsPerSlide = 7;
 
 const Home = ({ darkMode }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
-  const {producto} = useContext(DataContext);
+  const { producto } = useContext(DataContext);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -56,6 +56,33 @@ const Home = ({ darkMode }) => {
       .catch(err => console.error(err));
   }, []);
 
+  const crearProductoDePrueba = () => {
+    fetch('http://127.0.0.1:8000/api/producto', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        Nombre: 'Campera Switch',
+        Descripción: 'Campera estilo urbano',
+        Precio: 299.99,
+        Tipo: 'Casual',
+        Imagen: 'campera.jpg',
+        ID_Tienda: 1
+      }),
+    })
+      .then(res => res.json())
+      .then(data => {
+        console.log('Producto insertado correctamente:', data);
+        alert('✅ Producto creado correctamente');
+      })
+      .catch(err => {
+        console.error('❌ Error al insertar producto:', err);
+        alert('⚠️ Error al crear producto. Ver consola.');
+      });
+  };
+
+
   const handlePrev = () => {
     setCurrentIndex((prevIndex) => (prevIndex - cardsPerSlide + lastAddedImages.length) % lastAddedImages.length);
   };
@@ -63,6 +90,7 @@ const Home = ({ darkMode }) => {
   const handleNext = () => {
     setCurrentIndex((prevIndex) => (prevIndex + cardsPerSlide) % lastAddedImages.length);
   };
+
 
   return (
     <ErrorBoundary>
@@ -161,6 +189,12 @@ const Home = ({ darkMode }) => {
             </div>
           </div>
         )}
+
+        <div style={{ textAlign: 'center', margin: '40px 0' }}>
+          <button onClick={crearProductoDePrueba} className="btn-primary">
+            Crear Producto de Prueba
+          </button>
+        </div>
 
         <div className="download-section">
           <hr className="black-line" />

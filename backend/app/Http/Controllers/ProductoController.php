@@ -30,8 +30,18 @@ class ProductoController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $producto = new \App\Models\Producto();
+        $producto->Nombre = $request->Nombre;
+        $producto->Descripción = $request->Descripción;
+        $producto->Precio = $request->Precio;
+        $producto->Tipo = $request->Tipo;
+        $producto->Imagen = $request->Imagen;
+        $producto->ID_Tienda = $request->ID_Tienda;
+        $producto->save();
+
+        return response()->json(['message' => 'Producto creado', 'producto' => $producto], 201);
     }
+
 
     /**
      * Display the specified resource.
