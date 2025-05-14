@@ -15,7 +15,7 @@ textarea {
     display: flex;
     justify-content: center; /* Centrado horizontal */
     align-items: center;     /* Centrado vertical */
-    padding: 30px 5%;
+    padding: 20px;
     min-height: 100vh;
     background-color: #f6f7f9;
     box-sizing: border-box;
@@ -28,7 +28,7 @@ textarea {
     border-radius: 18px;
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
     width: 100%;
-    max-width: 1280px;
+    max-width: 1200px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -338,3 +338,12 @@ button.btn:active,
         padding: 30px 20px;
     }
 }
+.admin-container {
+    background-color: var(--background-color);
+    color: var(--text-color);
+  }
+  
+  .btn-primary {
+    background-color: var(--primary-color);
+    color: var(--text-color);
+  }

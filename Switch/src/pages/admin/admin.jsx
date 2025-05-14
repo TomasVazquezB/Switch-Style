@@ -117,7 +117,7 @@ const AdminPage = () => {
 
     return (
         <div className="admin-container">
-            <div className="row">
+            <div>
                 <div className="col admin-content">
                     <h1 className="admin-title">¡Bienvenido, Administrador!</h1>
                     <p className="admin-text">Esta es la página de administrador. Aquí puedes gestionar usuarios, productos.</p>
