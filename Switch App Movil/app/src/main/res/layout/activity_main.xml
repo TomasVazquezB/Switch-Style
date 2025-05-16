@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity"
+    tools:ignore="MissingClass">
+
+    <LinearLayout
+        android:id="@+id/appContent"
+        android:layout_width="337dp"
+        android:layout_height="571dp"
+        android:layout_marginBottom="32dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.328">
+
+        <ImageView
+            android:id="@+id/imageView2"
+            android:layout_width="match_parent"
+            android:layout_height="209dp"
+            android:layout_marginBottom="10dp"
+            android:contentDescription="@string/contentTitleText"
+            app:srcCompat="@drawable/_641723199_369382_1641723267_noticia_normal_recorte1"
+            tools:ignore="ImageContrastCheck" />
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="match_parent"
+            android:layout_height="230dp"
+            android:fontFamily="sans-serif"
+            android:gravity="center"
+            android:text="@string/bienvenido_a_petpal_petpal_es_una_aplicaci_n_m_vil_dise_ada_para_mejorar_la_vida_de_tus_mascotas_con_nuestra_aplicaci_n_puedes_rastrear_la_salud_y_el_bienestar_de_tus_mascotas_programar_citas_con_veterinarios_encontrar_parques_para_perros_cercanos_y_mucho_m_s_nuestra_misi_n_es_proporcionar_a_los_due_os_de_mascotas_una_forma_f_cil_y_conveniente_de_cuidar_a_sus_amigos_peludos_ya_sea_que_tengas_un_perro_juguet_n_un_gato_cari_oso_o_un_h_mster_curioso_petpal_est_aqu_para_ayudarte"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+
+            android:textSize="16sp" />
+
+        <Button
+            android:id="@+id/button"
+            android:layout_width="269dp"
+            android:layout_height="48dp"
+            android:layout_marginStart="35dp"
+            android:layout_marginTop="40dp"
+            android:background="#9993710A"
+            android:contentDescription="@string/buttonText"
+            android:text="@string/comenzar" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linearlayout"
+        android:layout_width="416dp"
+        android:layout_height="77dp"
+        android:layout_marginStart="1dp"
+        android:layout_marginTop="1dp"
+        android:layout_marginEnd="1dp"
+        android:background="#9993710A"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.571"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/appContent"
+        app:layout_constraintVertical_bias="1.0"></LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

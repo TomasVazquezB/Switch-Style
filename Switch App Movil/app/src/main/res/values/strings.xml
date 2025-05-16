@@ -1,0 +1,35 @@
+<resources>
+    <string name="app_name">Petpals</string>
+    <string name="contentTitleText">Lista de contenidos</string>
+    <string name="buttonText">Comenzar</string>
+    <string name="textItem">Es un ejemplo de texto</string>
+    <string name="title_activity_login">LoginActivity</string>
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Password</string>
+    <string name="action_sign_in">Iniciar Sesion</string>
+    <string name="action_sign_in_short">Sign in</string>
+    <string name="welcome">"Welcome !"</string>
+    <string name="invalid_username">Not a valid username</string>
+    <string name="invalid_password">Password must be >5 characters</string>
+    <string name="login_failed">"Login failed"</string>
+    <string name="comenzar">Comenzar</string>
+    <string name="bienvenido_a_petpal_petpal_es_una_aplicaci_n_m_vil_dise_ada_para_mejorar_la_vida_de_tus_mascotas_con_nuestra_aplicaci_n_puedes_rastrear_la_salud_y_el_bienestar_de_tus_mascotas_programar_citas_con_veterinarios_encontrar_parques_para_perros_cercanos_y_mucho_m_s_nuestra_misi_n_es_proporcionar_a_los_due_os_de_mascotas_una_forma_f_cil_y_conveniente_de_cuidar_a_sus_amigos_peludos_ya_sea_que_tengas_un_perro_juguet_n_un_gato_cari_oso_o_un_h_mster_curioso_petpal_est_aqu_para_ayudarte">¡Bienvenido a PetPal! 🐾 PetPal es una aplicación móvil diseñada para mejorar la vida de tus mascotas. Con nuestra aplicación, puedes rastrear la salud y el bienestar de tus mascotas, programar citas con veterinarios, encontrar parques para perros cercanos y mucho más. Nuestra misión es proporcionar a los dueños de mascotas una forma fácil y conveniente de cuidar a sus amigos peludos. Ya sea que tengas un perro juguetón, un gato cariñoso o un hámster curioso, PetPal está aquí para ayudarte.</string>
+    <string name="contrasenia">Contraseña</string>
+    <string name="email">Email</string>
+    <string name="olvido_su_contrase_a">Olvido su contraseña</string>
+    <string name="iniciar_sesion">Iniciar sesion</string>
+    <string name="todo">TODO</string>
+    <string name="recuperar_contraseña">Restablecer contraseña</string>
+    <string name="recuperar_contrase_a">Recuperar contraseña</string>
+    <string name="olvidaste_la_contrase_a">¿Olvidaste la contraseña?</string>
+    <string name="apellido">Apellido</string>
+    <string name="registrarse">Registrarse</string>
+    <string name="contrase_aa">Contraseña</string>
+    <string name="emaila">Email</string>
+    <string name="nombre">Nombre</string>
+    <string name="usuario">Usuario</string>
+    <string name="tiene_cuenta_login">Tiene cuenta? Login</string>
+    <string name="olvido_su_contrase_aa">Olvido su contraseña</string>
+    <string name="contrase_a">Contraseña</string>
+    <string name="emailaa">Email</string>
+</resources>

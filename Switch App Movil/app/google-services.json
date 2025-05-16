@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "601238341796",
+    "firebase_url": "https://petpalms-717eb-default-rtdb.firebaseio.com",
+    "project_id": "petpalms-717eb",
+    "storage_bucket": "petpalms-717eb.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:601238341796:android:7ce1eb7eeb5390d8da3e31",
+        "android_client_info": {
+          "package_name": "com.example.aplicacionbasica"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB-fhl_9Es_fxxpEwMUMDoEhn84eVUKBj0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
