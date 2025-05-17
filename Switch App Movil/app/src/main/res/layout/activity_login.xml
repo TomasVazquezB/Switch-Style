@@ -64,7 +64,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="55dp"
             android:layout_marginTop="25dp"
-            android:background="#4B422A"
+            android:background="#000000"
             android:text="@string/olvido_su_contrase_aa"
             android:textColor="#FFFFFF" />
 
@@ -76,7 +76,7 @@
             android:layout_marginStart="145dp"
             android:layout_marginTop="35dp"
             android:layout_marginBottom="64dp"
-            android:background="#4B422A"
+            android:background="#000000"
             android:minHeight="48dp"
             android:text="@string/action_sign_in"
             android:textColor="#FFFFFF"
@@ -101,7 +101,7 @@
         android:layout_height="225dp"
         android:layout_marginTop="1dp"
         android:layout_marginBottom="15dp"
-        android:background="#9C000000"
+        android:background="#000000"
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

@@ -1,13 +1,15 @@
-package com.example.aplicacionbasica.ui.login;
+package com.example.switchstyle.ui.login;
 
 import android.util.Patterns;
+
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
-import com.example.aplicacionbasica.data.LoginRepository;
-import com.example.aplicacionbasica.data.Result;
-import com.example.aplicacionbasica.data.model.LoggedInUser;
+
 import com.example.aplicacionbasica.R;
+import com.example.switchstyle.data.LoginRepository;
+import com.example.switchstyle.data.Result;
+import com.example.switchstyle.data.model.LoggedInUser;
 
 public class LoginViewModel extends ViewModel {
 

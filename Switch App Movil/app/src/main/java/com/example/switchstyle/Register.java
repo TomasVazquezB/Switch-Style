@@ -1,7 +1,5 @@
-package com.example.aplicacionbasica;
+package com.example.switchstyle;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,7 +7,11 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
-import com.example.aplicacionbasica.ui.login.LoginActivity;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+
+import com.example.switchstyle.ui.login.LoginActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -18,6 +20,7 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -43,8 +46,8 @@ public class Register extends AppCompatActivity {
         password = findViewById(R.id.Contraseña);
         Button btn_register = findViewById(R.id.Button_registro);
 
-
         btn_register.setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View btn_register) {
                 String nameUser = name.getText().toString().trim();

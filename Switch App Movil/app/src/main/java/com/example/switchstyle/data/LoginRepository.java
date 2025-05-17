@@ -1,6 +1,6 @@
-package com.example.aplicacionbasica.data;
+package com.example.switchstyle.data;
 
-import com.example.aplicacionbasica.data.model.LoggedInUser;
+import com.example.switchstyle.data.model.LoggedInUser;
 
 public class LoginRepository {
 

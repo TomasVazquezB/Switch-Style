@@ -16,7 +16,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"></LinearLayout>
+        app:layout_constraintTop_toTopOf="parent" />
 
     <LinearLayout
         android:id="@+id/linearLayout3"
@@ -35,7 +35,8 @@
             android:id="@+id/imageView"
             android:layout_width="match_parent"
             android:layout_height="143dp"
-            app:srcCompat="@mipmap/animales2" />
+            android:contentDescription="TODO"
+            app:srcCompat="@mipmap/switchstyle" />
 
         <EditText
             android:id="@+id/Email_Inicio"
@@ -95,13 +96,5 @@
         app:layout_constraintHorizontal_bias="0.45"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/boton_recuperar" />
-
-    <!-- activity_login.xml -->
-    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:context=".Login">
-    </RelativeLayout>
 
 </android.support.constraint.ConstraintLayout>

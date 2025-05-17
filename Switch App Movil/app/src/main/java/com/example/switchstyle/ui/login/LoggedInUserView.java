@@ -1,4 +1,4 @@
-package com.example.aplicacionbasica.ui.login;
+package com.example.switchstyle.ui.login;
 
 class LoggedInUserView {
     private String displayName;

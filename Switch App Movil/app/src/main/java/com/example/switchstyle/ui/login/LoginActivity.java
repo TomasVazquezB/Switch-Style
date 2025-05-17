@@ -1,17 +1,18 @@
-package com.example.aplicacionbasica.ui.login;
+package com.example.switchstyle.ui.login;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
-import com.example.aplicacionbasica.MainActivity;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.example.aplicacionbasica.R;
-import com.example.aplicacionbasica.Register;
-import com.example.aplicacionbasica.ReiniciarContra;
+import com.example.switchstyle.MainActivity;
+import com.example.switchstyle.ReiniciarContra;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
