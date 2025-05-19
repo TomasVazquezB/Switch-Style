@@ -10,11 +10,21 @@ import { Wallet } from "@mercadopago/sdk-react";
 const Productos = () => {
     const { productoId } = useParams();
     const navigate = useNavigate();
-    const { productos, moneda, agregarAlCarrito } = useContext(ShopContext);
+    const {
+        productos,
+        moneda,
+        agregarAlCarrito,
+        toggleFavorito,
+        esFavorito
+    } = useContext(ShopContext);
+
     const [productoData, setProductoData] = useState(false);
     const [talla, setTalla] = useState('');
     const [img, setImg] = useState('');
     const [activeTab, setActiveTab] = useState('descripcion');
+    const [preferenceId, setPreferenceId] = useState(null);
+    const [mostrarPagos, setMostrarPagos] = useState(false);
+    const [animateFav, setAnimateFav] = useState(false);
 
     const [reviews, setReviews] = useState([
         { id: 1, autor: 'Juan P.', comentario: 'Excelente producto!', puntuacion: 5, fecha: '2024-04-10' },
@@ -22,9 +32,6 @@ const Productos = () => {
         { id: 3, autor: 'Lucas R.', comentario: 'No me convenció el material.', puntuacion: 2, fecha: '2024-04-05' },
     ]);
     const [sortReviews, setSortReviews] = useState('recientes');
-
-    const [preferenceId, setPreferenceId] = useState(null);
-    const [mostrarPagos, setMostrarPagos] = useState(false);
 
     useEffect(() => {
         const found = productos.find((item) => item._id === productoId);
@@ -46,7 +53,6 @@ const Productos = () => {
             }
             setReviews(reviewsOrdenadas);
         };
-
         sortReviewsFunction(sortReviews);
     }, [sortReviews]);
 
@@ -55,12 +61,8 @@ const Productos = () => {
             toast.error('Por favor, seleccione una talla.');
             return;
         }
-
         agregarAlCarrito(productoData._id, talla);
-
-        setTimeout(() => {
-            navigate('/carrito');
-        }, 1000);
+        setTimeout(() => navigate('/carrito'), 1000);
     };
 
     const generarPreferencia = () => {
@@ -89,6 +91,23 @@ const Productos = () => {
             .catch(err => console.error(err));
     };
 
+    const handleFavoritoClick = () => {
+        const agregado = !esFavorito(productoData._id);
+        toggleFavorito(productoData._id);
+
+        if (agregado) {
+            setAnimateFav(true);
+            setTimeout(() => setAnimateFav(false), 500);
+        }
+
+        toast[agregado ? 'success' : 'info'](
+            agregado ? 'Agregado a favoritos ❤️' : 'Quitado de favoritos 🤍',
+            { toastId: 'favorito-toast' }
+        );
+    };
+
+    const favorito = esFavorito(productoData._id);
+
     return productoData ? (
         <div className="content">
             <div className="transition-opacity ease-in duration-500 opacity-100 p-5">
@@ -112,7 +131,33 @@ const Productos = () => {
 
                     {/* Info */}
                     <div className="flex-1">
-                        <h2 className="text-3xl font-bold">{productoData.nombre}</h2>
+                        <div className="flex justify-between items-center">
+                            <h2 className="text-3xl font-bold">{productoData.nombre}</h2>
+                            <button
+                                onClick={handleFavoritoClick}
+                                className="relative p-1 rounded-full transition hover:scale-110 active:scale-95"
+                                title={favorito ? "Quitar de favoritos" : "Agregar a favoritos"}
+                            >
+                                {animateFav && (
+                                    <span className="absolute inset-0 rounded-full animate-ping bg-rose-400 opacity-50 z-0" />
+                                )}
+                                {favorito ? (
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-7 h-7 text-rose-600 relative z-10">
+                                        <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5
+                                            2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09
+                                            C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5
+                                            c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
+                                    </svg>
+                                ) : (
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-7 h-7 text-gray-500 relative z-10">
+                                        <path strokeLinecap="round" strokeLinejoin="round" d="M21.8 6.4c-.9-2.3-3.2-3.8-5.8-3.4-1.3.2-2.5.9-3.5 2
+                                            -1-1.1-2.2-1.8-3.5-2C5.4 2.6 3.1 4.1 2.2 6.4
+                                            -1 12 12 21 12 21s13-9 9.8-14.6z" />
+                                    </svg>
+                                )}
+                            </button>
+                        </div>
+
                         <div className="flex items-center gap-1 mt-3">
                             {[...Array(4)].map((_, i) => (
                                 <img key={i} className="w-4" src={assets.star_icon} alt="star" />
@@ -120,15 +165,13 @@ const Productos = () => {
                             <img className="w-4" src={assets.star_dull_icon} alt="star-dull" />
                             <span className="text-gray-500 ml-2">(122 reviews)</span>
                         </div>
+
                         <br />
                         <h4>{moneda}{productoData.precio}</h4>
-
                         <hr className="pb-2" />
                         <p className="text-gray-600 mt-3 leading-relaxed pb-2">{productoData.descripcion}</p>
-                        <hr />
-                        <br />
+                        <hr /><br />
 
-                        {/* Tallas */}
                         <div className="mt-8">
                             <h5 className="font-semibold mb-2 pb-3">Seleccione talla:</h5>
                             <div className="flex gap-3 pb-4">
@@ -147,7 +190,6 @@ const Productos = () => {
                             </div>
                         </div>
 
-                        {/* Botones */}
                         <button
                             onClick={handleAgregarAlCarrito}
                             disabled={!talla}
@@ -166,20 +208,15 @@ const Productos = () => {
                             COMPRAR AHORA
                         </button>
 
-                        {/* Mostrar opciones de pago si se generó la preferencia */}
                         {mostrarPagos && (
                             <div className="mt-6 space-y-6">
-
-                                {/* PayPal */}
                                 <div>
                                     <PayPalButtons
                                         style={{ layout: "horizontal" }}
                                         createOrder={(data, actions) => {
                                             return actions.order.create({
                                                 purchase_units: [{
-                                                    amount: {
-                                                        value: productoData.precio.toFixed(2)
-                                                    }
+                                                    amount: { value: productoData.precio.toFixed(2) }
                                                 }]
                                             });
                                         }}
@@ -191,11 +228,9 @@ const Productos = () => {
                                         }}
                                     />
                                 </div>
-
-                                {/* MercadoPago */}
                                 <div>
                                     <Wallet
-                                        initialization={{ preferenceId: preferenceId }}
+                                        initialization={{ preferenceId }}
                                         customization={{ texts: { valueProp: 'smart_option' } }}
                                     />
                                 </div>
@@ -204,7 +239,7 @@ const Productos = () => {
                     </div>
                 </div>
 
-                {/* Tabs: Descripción y Reviews */}
+                {/* Tabs */}
                 <div className="mt-20">
                     <div className="flex border-b">
                         <button

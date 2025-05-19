@@ -13,6 +13,7 @@ import MainHombresPage from './pages/Hombre/MainHombres.jsx';
 import MainMujeresPage from './pages/Mujer/MainMujeres';
 import MainKidsPage from './pages/Kids/MainKids.jsx';
 import Productos from './pages/Productos/Productos.jsx';
+import Favoritos from './pages/favoritos/favoritos.jsx';
 import TestLaravel from './pages/TestLaravel.jsx';
 import ErrorBoundary from './components/Error/ErrorBoundary';
 import { ToastContainer } from 'react-toastify';
@@ -43,6 +44,7 @@ function App() {
               <Route path="/MainMujeres" element={<PageTitle title="Mujeres"><MainMujeresPage /></PageTitle>} />
               <Route path="/MainKids" element={<PageTitle title="Kids"><MainKidsPage /></PageTitle>} />
               <Route path="/producto/:productoId" element={<Productos />} />
+              <Route path="/favoritos" element={<PageTitle title="Favoritos"><Favoritos /></PageTitle>} />
             </Routes>
           </ErrorBoundary>
         </main>

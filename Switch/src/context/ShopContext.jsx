@@ -13,13 +13,12 @@ const ShopContextProvider = (props) => {
     const [search, setSearch] = useState('');
     const [showSearch, setShowSearch] = useState(false);
 
-    // ✅ Cargar carrito desde localStorage al iniciar
+    // ✅ CARRITO con localStorage
     const [carritoItems, setCarritoItems] = useState(() => {
         const dataGuardada = localStorage.getItem('carrito');
         return dataGuardada ? JSON.parse(dataGuardada) : {};
     });
 
-    // ✅ Guardar carrito automáticamente en localStorage al cambiar
     useEffect(() => {
         localStorage.setItem('carrito', JSON.stringify(carritoItems));
     }, [carritoItems]);
@@ -114,11 +113,30 @@ const ShopContextProvider = (props) => {
         return totalCantidad;
     };
 
-    // ✅ Función para limpiar el carrito (opcional)
     const limpiarCarrito = () => {
         setCarritoItems({});
         toast.info("Carrito vaciado");
     };
+
+    // ✅ FAVORITOS con localStorage
+    const [favoritos, setFavoritos] = useState(() => {
+        const favsGuardados = localStorage.getItem('favoritos');
+        return favsGuardados ? JSON.parse(favsGuardados) : [];
+    });
+
+    useEffect(() => {
+        localStorage.setItem('favoritos', JSON.stringify(favoritos));
+    }, [favoritos]);
+
+    const toggleFavorito = (productoId) => {
+        setFavoritos(prev =>
+            prev.includes(productoId)
+                ? prev.filter(id => id !== productoId)
+                : [...prev, productoId]
+        );
+    };
+
+    const esFavorito = (productoId) => favoritos.includes(productoId);
 
     const value = {
         moneda,
@@ -133,7 +151,10 @@ const ShopContextProvider = (props) => {
         carritoItems,
         getCarritoCount,
         getCarritoCantidad,
-        limpiarCarrito // ✅ Exportamos también
+        limpiarCarrito,
+        favoritos,
+        toggleFavorito,
+        esFavorito
     };
 
     return (
