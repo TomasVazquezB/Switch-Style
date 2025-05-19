@@ -1,12 +1,21 @@
-import React, { useContext, useEffect, useState } from 'react'
-import { ShopContext } from '../../context/ShopContext.jsx'
+import React, { useContext, useEffect, useState } from 'react';
+import { ShopContext } from '../../context/ShopContext.jsx';
 import { assets } from '../../assets/assets.js';
 import CarritoTotal from '../../components/CarritoTotal/CarritoTotal.jsx';
-
+import { PayPalButtons } from "@paypal/react-paypal-js";
+import { Wallet } from "@mercadopago/sdk-react";
 
 const Carrito = () => {
-    const { productos, moneda, navigate, carritoItems, updateCantidad } = useContext(ShopContext);
+    const {
+        productos,
+        moneda,
+        carritoItems,
+        updateCantidad,
+        limpiarCarrito
+    } = useContext(ShopContext);
+
     const [carritoData, setCarritoData] = useState([]);
+    const [preferenceId, setPreferenceId] = useState(null);
 
     useEffect(() => {
         const tempData = [];
@@ -24,13 +33,40 @@ const Carrito = () => {
         setCarritoData(tempData);
     }, [carritoItems]);
 
+    useEffect(() => {
+        if (carritoData.length === 0) return;
 
+        const items = carritoData.map(item => {
+            const producto = productos.find(p => p._id === item._id);
+            return {
+                title: producto.nombre,
+                quantity: item.cantidad,
+                currency_id: "ARS",
+                unit_price: producto.precio
+            };
+        });
+
+        fetch("http://localhost:4000/create_preference", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ items })
+        })
+            .then(res => res.json())
+            .then(data => setPreferenceId(data.preferenceId))
+            .catch(err => console.error(err));
+    }, [carritoData]);
+
+    const calcularTotal = () => {
+        return carritoData.reduce((total, item) => {
+            const producto = productos.find(p => p._id === item._id);
+            return total + (producto.precio * item.cantidad);
+        }, 0).toFixed(2);
+    };
 
     return (
         <div className='main'>
             <div className="content px-4 py-8">
-                <div className="max-w-3xl mx-auto"> {/* Contenedor centrado y más angosto */}
-
+                <div className="max-w-3xl mx-auto">
                     <h2 className="text-2xl font-semibold mb-8 pb-3">Tu carrito</h2>
 
                     <div className="border-t pt-14">
@@ -47,8 +83,8 @@ const Carrito = () => {
                                             <div
                                                 key={index}
                                                 className="py-4 border-b text-gray-700 grid 
-                              grid-cols-[4fr_0.5fr_0.5fr] sm:grid-cols-[4fr_2fr_0.5fr] 
-                              items-center gap-4"
+                        grid-cols-[4fr_0.5fr_0.5fr] sm:grid-cols-[4fr_2fr_0.5fr] 
+                        items-center gap-4"
                                             >
                                                 <div className="flex items-start gap-6">
                                                     <img
@@ -87,22 +123,62 @@ const Carrito = () => {
                                     })}
                                 </div>
 
+                                <br />
+
+                                {/* ✅ Botón vaciar carrito */}
+                                <div className="text-end mt-6">
+                                    <button
+                                        onClick={limpiarCarrito}
+                                        className="border px-4 py-2 rounded-full text-sm bg-red-600 text-black hover:bg-red-700"
+                                    >
+                                        Vaciar carrito
+                                    </button>
+                                </div>
+
                                 <br></br>
 
-                                {/* Total + Botón */}
                                 <div className="flex justify-end my-20">
+
                                     <div className="w-full sm:w-[450px]">
                                         <CarritoTotal />
-                                        <div className="w-full text-end">
 
-                                            <br></br>
+                                        <br></br>
 
-                                            <button
-                                                onClick={() => navigate('/place-order')}
-                                                className="border px-4 py-2 rounded-full mt-8 bg-black text-white text-sm my-8 px-8 py-3"
-                                            >
-                                                PROCEED TO CHECKOUT
-                                            </button>
+                                        {/* ✅ Métodos de pago */}
+                                        <div className="w-full text-end mt-10">
+                                            <h3 className="font-semibold mb-4">Elige método de pago:</h3>
+
+                                            {/* PayPal */}
+                                            <div className="mb-6">
+                                                <PayPalButtons
+                                                    style={{ layout: "horizontal" }}
+                                                    createOrder={(data, actions) => {
+                                                        return actions.order.create({
+                                                            purchase_units: [{
+                                                                amount: {
+                                                                    value: calcularTotal()
+                                                                }
+                                                            }]
+                                                        });
+                                                    }}
+                                                    onApprove={(data, actions) => {
+                                                        return actions.order.capture().then((details) => {
+                                                            alert(`Transacción completada por ${details.payer.name.given_name}`);
+                                                            limpiarCarrito(); // opcional
+                                                        });
+                                                    }}
+                                                />
+                                            </div>
+
+                                            {/* MercadoPago */}
+                                            <div className="mb-6">
+                                                {preferenceId && (
+                                                    <Wallet
+                                                        initialization={{ preferenceId: preferenceId }}
+                                                        customization={{ texts: { valueProp: 'smart_option' } }}
+                                                    />
+                                                )}
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -113,7 +189,6 @@ const Carrito = () => {
             </div>
         </div>
     );
-
 };
 
 export default Carrito;
