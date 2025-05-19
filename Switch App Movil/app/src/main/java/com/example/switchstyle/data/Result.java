@@ -1,10 +1,13 @@
 package com.example.switchstyle.data;
 
+import androidx.annotation.NonNull;
+
 public class Result<T> {
 
     private Result() {
     }
 
+    @NonNull
     @Override
     public String toString() {
         if (this instanceof Result.Success) {
@@ -18,7 +21,7 @@ public class Result<T> {
     }
 
     public final static class Success<T> extends Result {
-        private T data;
+        private final T data;
 
         public Success(T data) {
             this.data = data;
@@ -30,7 +33,7 @@ public class Result<T> {
     }
 
     public final static class Error extends Result {
-        private Exception error;
+        private final Exception error;
 
         public Error(Exception error) {
             this.error = error;

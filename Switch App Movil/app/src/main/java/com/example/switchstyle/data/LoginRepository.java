@@ -6,7 +6,7 @@ public class LoginRepository {
 
     private static volatile LoginRepository instance;
 
-    private LoginDataSource dataSource;
+    private final LoginDataSource dataSource;
 
     private LoggedInUser user = null;
 

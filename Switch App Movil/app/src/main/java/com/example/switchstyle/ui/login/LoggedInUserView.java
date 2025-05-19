@@ -1,7 +1,7 @@
 package com.example.switchstyle.ui.login;
 
 class LoggedInUserView {
-    private String displayName;
+    private final String displayName;
 
     LoggedInUserView(String displayName) {
         this.displayName = displayName;
