@@ -4,6 +4,8 @@ import { ShopContext } from '../../context/ShopContext';
 import { assets } from '../../assets/assets';
 import './Productos.css';
 import { toast } from 'react-toastify';
+import { PayPalButtons } from "@paypal/react-paypal-js";
+import { Wallet } from "@mercadopago/sdk-react";
 
 const Productos = () => {
     const { productoId } = useParams();
@@ -20,6 +22,9 @@ const Productos = () => {
         { id: 3, autor: 'Lucas R.', comentario: 'No me convenció el material.', puntuacion: 2, fecha: '2024-04-05' },
     ]);
     const [sortReviews, setSortReviews] = useState('recientes');
+
+    const [preferenceId, setPreferenceId] = useState(null);
+    const [mostrarPagos, setMostrarPagos] = useState(false);
 
     useEffect(() => {
         const found = productos.find((item) => item._id === productoId);
@@ -53,10 +58,35 @@ const Productos = () => {
 
         agregarAlCarrito(productoData._id, talla);
 
-        // Redirige después de 1 segundo
         setTimeout(() => {
             navigate('/carrito');
         }, 1000);
+    };
+
+    const generarPreferencia = () => {
+        if (!talla) {
+            toast.error('Por favor, seleccione una talla.');
+            return;
+        }
+
+        const producto = {
+            title: productoData.nombre,
+            quantity: 1,
+            currency_id: "ARS",
+            unit_price: productoData.precio
+        };
+
+        fetch("http://localhost:4000/create_preference", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ items: [producto] })
+        })
+            .then(res => res.json())
+            .then(data => {
+                setPreferenceId(data.preferenceId);
+                setMostrarPagos(true);
+            })
+            .catch(err => console.error(err));
     };
 
     return productoData ? (
@@ -75,7 +105,6 @@ const Productos = () => {
                                 />
                             ))}
                         </div>
-
                         <div className="w-full sm:w-[80%]">
                             <img className="w-full h-auto" src={img} alt="" />
                         </div>
@@ -92,14 +121,10 @@ const Productos = () => {
                             <span className="text-gray-500 ml-2">(122 reviews)</span>
                         </div>
                         <br />
-                        <h4>
-                            {moneda}
-                            {productoData.precio}
-                        </h4>
+                        <h4>{moneda}{productoData.precio}</h4>
 
                         <hr className="pb-2" />
                         <p className="text-gray-600 mt-3 leading-relaxed pb-2">{productoData.descripcion}</p>
-
                         <hr />
                         <br />
 
@@ -122,7 +147,7 @@ const Productos = () => {
                             </div>
                         </div>
 
-                        {/* Botón Agregar al Carrito */}
+                        {/* Botones */}
                         <button
                             onClick={handleAgregarAlCarrito}
                             disabled={!talla}
@@ -133,14 +158,53 @@ const Productos = () => {
                         >
                             AGREGAR AL CARRITO
                         </button>
+
+                        <button
+                            onClick={generarPreferencia}
+                            className="border px-4 py-2 rounded-full mt-4 bg-green-600 text-white hover:bg-green-700"
+                        >
+                            COMPRAR AHORA
+                        </button>
+
+                        {/* Mostrar opciones de pago si se generó la preferencia */}
+                        {mostrarPagos && (
+                            <div className="mt-6 space-y-6">
+
+                                {/* PayPal */}
+                                <div>
+                                    <PayPalButtons
+                                        style={{ layout: "horizontal" }}
+                                        createOrder={(data, actions) => {
+                                            return actions.order.create({
+                                                purchase_units: [{
+                                                    amount: {
+                                                        value: productoData.precio.toFixed(2)
+                                                    }
+                                                }]
+                                            });
+                                        }}
+                                        onApprove={(data, actions) => {
+                                            return actions.order.capture().then((details) => {
+                                                alert(`Pago exitoso por ${details.payer.name.given_name}`);
+                                                navigate("/carrito");
+                                            });
+                                        }}
+                                    />
+                                </div>
+
+                                {/* MercadoPago */}
+                                <div>
+                                    <Wallet
+                                        initialization={{ preferenceId: preferenceId }}
+                                        customization={{ texts: { valueProp: 'smart_option' } }}
+                                    />
+                                </div>
+                            </div>
+                        )}
                     </div>
                 </div>
 
-                <br></br>
-                <br></br>
-                <br></br>
-
-                {/* Tabs abajo */}
+                {/* Tabs: Descripción y Reviews */}
                 <div className="mt-20">
                     <div className="flex border-b">
                         <button
@@ -163,18 +227,11 @@ const Productos = () => {
                         </button>
                     </div>
 
-                    <br></br>
-                    <br></br>
-
                     <div className="py-6 text-gray-700 leading-relaxed text-sm">
                         {activeTab === 'descripcion' ? (
-                            <p>
-                                Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
-
-                            </p>
+                            <p>Lorem Ipsum...</p>
                         ) : (
                             <div className="flex flex-col gap-4">
-                                {/* Dropdown para ordenar reviews */}
                                 <div className="mb-4">
                                     <select
                                         value={sortReviews}
@@ -186,8 +243,6 @@ const Productos = () => {
                                         <option value="peor">Peor puntuados</option>
                                     </select>
                                 </div>
-
-                                {/* Reviews list */}
                                 {reviews.map((review) => (
                                     <div key={review.id} className="border p-4 rounded-md">
                                         <div className="flex items-center justify-between">
