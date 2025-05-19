@@ -32,34 +32,35 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
-            android:id="@+id/imageView"
             android:layout_width="match_parent"
             android:layout_height="143dp"
-            android:contentDescription="TODO"
+            android:contentDescription="@string/todo1"
             app:srcCompat="@mipmap/switchstyle" />
 
         <EditText
             android:id="@+id/Email_Inicio"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="100dp"
+            android:layout_marginStart="100dp"
             android:ems="10"
+            android:importantForAutofill="no"
             android:inputType="textEmailAddress"
             android:minHeight="48dp"
-            android:text="Email"
-            tools:ignore="SpeakableTextPresentCheck" />
+            android:text="@string/email1"
+            tools:ignore="LabelFor,SpeakableTextPresentCheck" />
 
         <EditText
             android:id="@+id/Contraseña_inicio"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="100dp"
+            android:layout_marginStart="100dp"
             android:layout_marginTop="25dp"
             android:ems="10"
+            android:importantForAutofill="no"
             android:inputType="textPassword"
             android:minHeight="48dp"
-            android:text="Contraseña"
-            tools:ignore="SpeakableTextPresentCheck" />
+            android:text="@string/contrase_a1"
+            tools:ignore="LabelFor,SpeakableTextPresentCheck" />
 
     </LinearLayout>
 
@@ -71,7 +72,7 @@
         android:layout_marginTop="16dp"
         android:layout_marginEnd="112dp"
         android:background="#4B422A"
-        android:text="Olvido su contraseña"
+        android:text="@string/olvido_su_contrase_a1"
         android:textColor="#FFFFFF"
         app:layout_constraintBottom_toTopOf="@+id/button5"
         app:layout_constraintEnd_toEndOf="parent"
@@ -89,7 +90,7 @@
         android:layout_marginEnd="144dp"
         android:layout_marginBottom="32dp"
         android:background="#4B422A"
-        android:text="Iniciar sesion"
+        android:text="@string/iniciar_sesion1"
         android:textColor="#FFFFFF"
         app:layout_constraintBottom_toTopOf="@+id/linearLayout"
         app:layout_constraintEnd_toEndOf="parent"

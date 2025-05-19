@@ -6,7 +6,7 @@ import java.io.IOException;
 
 public class LoginDataSource {
 
-    public Result<LoggedInUser> login(String username, String password) {
+    public Result<LoggedInUser> login(String ignoredUsername, String ignoredPassword) {
 
         try {
             LoggedInUser fakeUser = new LoggedInUser(java.util.UUID.randomUUID().toString(),"");
