@@ -1,4 +1,4 @@
-package com.example.aplicacionbasica.data;
+package com.example.switchstyle.data;
 
 public class Result<T> {
 

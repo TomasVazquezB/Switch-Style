@@ -1,10 +1,11 @@
-package com.example.aplicacionbasica.ui.login;
+package com.example.switchstyle.ui.login;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
-import com.example.aplicacionbasica.data.LoginDataSource;
-import com.example.aplicacionbasica.data.LoginRepository;
+
+import com.example.switchstyle.data.LoginDataSource;
+import com.example.switchstyle.data.LoginRepository;
 
 public class LoginViewModelFactory implements ViewModelProvider.Factory {
 

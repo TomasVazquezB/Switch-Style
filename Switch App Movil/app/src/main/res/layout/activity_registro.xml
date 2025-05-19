@@ -11,15 +11,13 @@
         android:layout_width="417dp"
         android:layout_height="80dp"
         android:layout_marginStart="1dp"
-        android:layout_marginTop="1dp"
         android:layout_marginEnd="1dp"
-        android:background="#9993710A"
+        android:background="#000000"
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.571"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintVertical_bias="1.0">
+        app:layout_constraintStart_toStartOf="parent">
 
     </LinearLayout>
 
@@ -88,7 +86,7 @@
         android:layout_height="51dp"
         android:layout_marginStart="157dp"
         android:layout_marginEnd="166dp"
-        android:background="#4B422A"
+        android:background="#000000"
         android:text="@string/tiene_cuenta_login"
         android:textColor="#FFFFFF"
         app:layout_constraintBottom_toBottomOf="@+id/linearlayout"
@@ -105,7 +103,7 @@
         android:layout_marginStart="157dp"
         android:layout_marginEnd="166dp"
         android:layout_marginBottom="110dp"
-        android:background="#4B422A"
+        android:background="#000000"
         android:text="@string/registrarse"
         android:textColor="#FFFFFF"
         app:layout_constraintBottom_toTopOf="@+id/linearlayout"

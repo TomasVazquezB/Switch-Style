@@ -1,4 +1,4 @@
-package com.example.aplicacionbasica.data.model;
+package com.example.switchstyle.data.model;
 
 public class LoggedInUser {
 
