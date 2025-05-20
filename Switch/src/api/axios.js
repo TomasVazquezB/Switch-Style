@@ -1,8 +1,15 @@
 import axios from 'axios';
 
 const api = axios.create({
-  baseURL: 'http://localhost:8000', // Puerto del backend Laravel
-  withCredentials: true,
+  baseURL: 'http://localhost:8000',
+  withCredentials: true, 
 });
 
 export default api;
+
+/* // Cargar token desde localStorage
+const token = localStorage.getItem('token');
+if (token) {
+  api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+}
+ */

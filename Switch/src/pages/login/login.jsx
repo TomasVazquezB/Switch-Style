@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import api from '../../api/axios'; // Asegurate que esté bien importado
 import './login.css';
+import Cookies from 'js-cookie';
 
 export function LoginPage() {
     const [formData, setFormData] = useState({ identificador: '', contrasena: '' });
@@ -43,12 +44,24 @@ export function LoginPage() {
         setError(null);
 
         try {
+            // 1. Obtener cookie de CSRF desde Laravel
             await api.get('/sanctum/csrf-cookie');
 
-            const response = await api.post('/api/login', {
-                email: formData.identificador,
-                password: formData.contrasena,
-            });
+            // 2. Leer el token de la cookie (esto es lo nuevo)
+            const csrfToken = Cookies.get('XSRF-TOKEN');
+
+            // 3. Enviar la petición POST con el token incluido manualmente
+            const response = await api.post('/api/login',
+                {
+                    email: formData.identificador,
+                    password: formData.contrasena,
+                },
+                {
+                    headers: {
+                        'X-XSRF-TOKEN': decodeURIComponent(csrfToken),
+                    }
+                }
+            );
 
             const user = response.data;
             localStorage.setItem('usuario', JSON.stringify(user));
@@ -72,6 +85,9 @@ export function LoginPage() {
             console.error(err);
         }
     };
+
+
+
 
     return (
         <div className={`login-container ${isDarkMode ? 'dark-mode' : ''}`}>
