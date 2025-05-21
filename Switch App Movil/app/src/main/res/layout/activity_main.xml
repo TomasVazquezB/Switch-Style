@@ -34,8 +34,8 @@
 
     <LinearLayout
         android:id="@+id/linearlayout"
-        android:layout_width="416dp"
-        android:layout_height="77dp"
+        android:layout_width="417dp"
+        android:layout_height="80dp"
         android:layout_marginStart="1dp"
         android:layout_marginTop="1dp"
         android:layout_marginEnd="1dp"

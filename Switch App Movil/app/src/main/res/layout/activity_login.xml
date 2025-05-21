@@ -20,11 +20,12 @@
 
     <LinearLayout
         android:id="@+id/linearLayout4"
-        android:layout_width="411dp"
-        android:layout_height="483dp"
-        android:layout_marginTop="83dp"
+        android:layout_width="418dp"
+        android:layout_height="415dp"
+        android:layout_marginTop="176dp"
         android:orientation="vertical"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -92,8 +93,8 @@
         tools:ignore="MissingConstraints" />
 
     <LinearLayout
-        android:layout_width="958dp"
-        android:layout_height="269dp"
+        android:layout_width="417dp"
+        android:layout_height="80dp"
         android:layout_marginTop="1dp"
         android:layout_marginBottom="15dp"
         android:background="#000000"

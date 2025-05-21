@@ -16,7 +16,6 @@
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.571"
         app:layout_constraintStart_toStartOf="parent">
 
     </LinearLayout>
@@ -30,9 +29,10 @@
         android:orientation="vertical"
         app:layout_constraintBottom_toTopOf="@+id/Button_registro"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.142"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.39">
+        app:layout_constraintVertical_bias="0.418">
 
         <EditText
             android:id="@+id/Nombre"
