@@ -1,14 +1,17 @@
 import api from '../../api/axios.js';
 
-export const registrarUsuario = async (formData) => {
-  const response = await api.post('/api/register', {
-    name: formData.nombre,
-    apellido: formData.apellido,
-    email: formData.email,
-    username: formData.usuario,
-    password: formData.contrasena,
-    password_confirmation: formData.contrasena,
-  });
+export const registrarUsuario = async (data) => {
+    // 1. Obtener CSRF token antes del POST
+    await api.get('/sanctum/csrf-cookie');
 
-  return response.data.user;
+    // 2. Hacer el registro
+    const response = await api.post('/api/register', {
+        nombre: data.nombre,
+        apellido: data.apellido,
+        correo: data.email,
+        password: data.contrasena,
+        tipo: 'Usuario', // o lo que tengas por defecto
+    });
+
+    return response.data;
 };

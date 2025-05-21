@@ -111,18 +111,27 @@
   text-align: center;
 }
 
-/* Aceptación de términos */
+.form-row input[type="text"],
+.form-row input[type="email"],
+.form-row input[type="password"] {
+  flex: 1;
+}
+
+
 .aceptar-terminos {
-  font-size: 1em;
-  color: #333333;
   display: flex;
   align-items: center;
-  justify-content: center;
-  margin-top: 20px;
+  justify-content: flex-end;  
+  gap: 8px;
+  margin-top: 10px;
   margin-bottom: 20px;
-  gap: 10px;
-  text-align: left;
+  width: 100%;        
+  box-sizing: border-box;
 }
+
+
+
+
 
 .aceptar-terminos input {
   width: 20px; 
@@ -130,6 +139,7 @@
   border: 2px solid #000; 
   border-radius: 5px; 
   transition: all 0.3s ease;
+  
 }
 
 .aceptar-terminos input:checked {

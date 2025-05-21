@@ -46,6 +46,38 @@ class AuthController extends Controller
 
     }
 
+        public function register(Request $request)
+    {
+        $request->validate([
+            'nombre' => 'required|string|max:100',
+            'apellido' => 'nullable|string|max:100',
+            'correo' => 'required|email|unique:usuario,Correo_Electronico',
+            'password' => 'required|string|min:6',
+            'tipo' => 'in:Free,Premium,Admin,Usuario', // según lo que permitas
+        ]);
+
+        $usuario = new \App\Models\User(); // Tu modelo ya apunta a la tabla 'usuario'
+        $usuario->Nombre = $request->nombre;
+        $usuario->Correo_Electronico = $request->correo;
+        $usuario->Contraseña = bcrypt($request->password);
+        $usuario->Tipo_Usuario = $request->tipo ?? 'Usuario';
+        $usuario->save();
+
+        // (opcional) loguear automáticamente:
+        Auth::loginUsingId($usuario->ID_Usuario);
+        $request->session()->regenerate();
+
+        return response()->json([
+            'message' => 'Usuario registrado exitosamente',
+            'usuario' => [
+                'id' => $usuario->ID_Usuario,
+                'nombre' => $usuario->Nombre,
+                'correo' => $usuario->Correo_Electronico,
+                'rol' => $usuario->Tipo_Usuario,
+            ],
+        ], 201);
+    }
+    
     public function logout(Request $request)
     {
         Auth::logout();

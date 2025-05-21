@@ -92,7 +92,7 @@ export function RegistroPage() {
                                 />
                             </div>
                         </div>
-                        <div className="form-row aceptar-terminos">
+                        <div className=" aceptar-terminos">
                             <input 
                                 type="checkbox" 
                                 name="aceptarTerminos" 
