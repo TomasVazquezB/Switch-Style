@@ -48,7 +48,6 @@ public class Register extends AppCompatActivity {
                 Toast.makeText(Register.this, "Complete los datos", Toast.LENGTH_SHORT).show();
             }else{
                 registerUser(nameUser, emailUser, passUser);
-
             }
         });
 
@@ -58,7 +57,6 @@ public class Register extends AppCompatActivity {
             startActivity(intent);
         });
     }
-
     private void registerUser(String nameUser, String emailUser, String passUser) {
         mFirestore.collection("user").whereEqualTo("name", nameUser)
                 .get()
@@ -96,7 +94,6 @@ public class Register extends AppCompatActivity {
                     }
                 });
     }
-
     @Override
     public boolean onSupportNavigateUp() {
         onBackPressed();

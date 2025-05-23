@@ -12,7 +12,8 @@
         android:background="#000000"
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:ignore="VisualLintBounds" />
 
     <Button
         android:id="@+id/recuperar_contraseña"
@@ -27,9 +28,10 @@
         android:textColor="#FFFFFF"
         app:layout_constraintBottom_toTopOf="@+id/linearLayout2"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.535"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.43"
+        app:layout_constraintVertical_bias="0.677"
         tools:ignore="TextSizeCheck" />
 
     <TextView
@@ -42,9 +44,10 @@
         android:text="@string/olvidaste_la_contrase_a"
         app:layout_constraintBottom_toTopOf="@+id/recuperar_contraseña"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.47"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.100000024" />
+        app:layout_constraintVertical_bias="0.257" />
 
     <EditText
         android:id="@+id/contraseña_recuperada"
@@ -61,10 +64,10 @@
         android:minHeight="48dp"
         app:layout_constraintBottom_toTopOf="@+id/recuperar_contraseña"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.1"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView3"
-        app:layout_constraintVertical_bias="0.395"
+        app:layout_constraintVertical_bias="0.821"
         tools:ignore="SpeakableTextPresentCheck" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

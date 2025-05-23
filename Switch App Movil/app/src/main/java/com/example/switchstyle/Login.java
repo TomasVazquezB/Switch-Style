@@ -22,14 +22,14 @@ public class Login {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_inicio);
-        editTextEmail = editTextEmail.findViewById(R.id.Email_Inicio);
-        editTextContraseña = editTextContraseña.findViewById(R.id.Contraseña_inicio);
+        setContentView(R.layout.activity_login);
+        editTextEmail = editTextEmail.findViewById(R.id.username);
+        editTextContraseña = editTextContraseña.findViewById(R.id.password);
         sharedPreferences = getSharedPreferences("MisPreferencias", MODE_PRIVATE);
         final String emailAlmacenado = sharedPreferences.getString("email", "");
         final String contraseñaAlmacenada = sharedPreferences.getString("contraseña", "");
 
-        Button buttonIniciarSesion = findViewById(R.id.buttonIniciarSesion);
+        Button buttonIniciarSesion = findViewById(R.id.login);
         buttonIniciarSesion.setOnClickListener(buttonIniciarSesion1 -> {
             String emailIngresado = editTextEmail.getText().toString().trim();
             String contraseñaIngresada = editTextContraseña.getText().toString().trim();

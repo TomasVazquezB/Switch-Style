@@ -20,14 +20,27 @@
 
     <LinearLayout
         android:id="@+id/linearLayout4"
-        android:layout_width="418dp"
-        android:layout_height="415dp"
-        android:layout_marginTop="176dp"
+        android:layout_width="432dp"
+        android:layout_height="622dp"
+        android:layout_marginTop="32dp"
         android:orientation="vertical"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="0.095"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="VisualLintBounds">
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="215dp"
+            android:layout_height="147dp"
+            android:layout_marginStart="98dp"
+            android:layout_marginTop="40dp"
+            android:layout_marginEnd="98dp"
+            android:layout_marginBottom="25dp"
+            android:contentDescription="@string/todo"
+            app:srcCompat="@drawable/switchstyle"
+            tools:ignore="MissingConstraints" />
 
         <EditText
             android:id="@+id/username"
@@ -79,20 +92,11 @@
             android:text="@string/action_sign_in"
             android:textColor="#FFFFFF"
             tools:ignore="TouchTargetSizeCheck,TextSizeCheck" />
+
     </LinearLayout>
 
-    <ProgressBar
-        android:layout_width="203dp"
-        android:layout_height="182dp"
-        android:layout_marginTop="64dp"
-        android:layout_marginBottom="64dp"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.3"
-        tools:ignore="MissingConstraints" />
-
     <LinearLayout
+        android:id="@+id/linearLayout3"
         android:layout_width="417dp"
         android:layout_height="80dp"
         android:layout_marginTop="1dp"
@@ -104,6 +108,7 @@
         app:layout_constraintHorizontal_bias="0.519"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="parent"
-        app:layout_constraintVertical_bias="0.6" />
+        app:layout_constraintVertical_bias="0.6"
+        tools:ignore="VisualLintBounds" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
