@@ -10,7 +10,7 @@ export const registrarUsuario = async (data) => {
         apellido: data.apellido,
         correo: data.email,
         password: data.contrasena,
-        tipo: 'Usuario', // o lo que tengas por defecto
+        tipo: 'Free', 
     });
 
     return response.data;

@@ -19,7 +19,8 @@ export function RegistroPage() {
             return;
         }
         registrarUsuario(formData)
-            .then((usuario) => {alert(`Usuario ${usuario.nombre} registrado con éxito`);
+            .then((usuario) => {
+                alert(`Usuario ${usuario.nombre} registrado con éxito`);
                 setFormData({
                     nombre: '',
                     apellido: '',
