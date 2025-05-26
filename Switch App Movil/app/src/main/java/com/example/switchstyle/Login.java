@@ -1,30 +1,26 @@
 package com.example.switchstyle;
 
-import static android.content.Context.MODE_PRIVATE;
-import static androidx.core.content.ContextCompat.startActivity;
-
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+import androidx.appcompat.app.AppCompatActivity;
 
-public class Login {
+public class Login extends AppCompatActivity {
 
     private SharedPreferences sharedPreferences;
     private EditText editTextEmail, editTextContraseña;
-
-    public static Intent newIntent(com.example.switchstyle.ReiniciarContra ignoredReiniciarContra) {
-        return null;
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        editTextEmail = editTextEmail.findViewById(R.id.username);
-        editTextContraseña = editTextContraseña.findViewById(R.id.password);
+
+        editTextEmail = findViewById(R.id.username);
+        editTextContraseña = findViewById(R.id.password);
+
         sharedPreferences = getSharedPreferences("MisPreferencias", MODE_PRIVATE);
         final String emailAlmacenado = sharedPreferences.getString("email", "");
         final String contraseñaAlmacenada = sharedPreferences.getString("contraseña", "");

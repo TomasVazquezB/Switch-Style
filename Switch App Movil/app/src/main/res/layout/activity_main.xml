@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -17,7 +18,16 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.335">
+        app:layout_constraintVertical_bias="0.625">
+
+        <TextView
+            android:id="@+id/textmain"
+            android:layout_width="match_parent"
+            android:layout_height="252dp"
+            android:padding="16dp"
+            android:text="@string/bienvenidos_a_la_experiencia_switch_style_en_tu_m_vil_prep_rate_para_descubrir_un_mundo_donde_la_moda_y_la_tecnolog_a_se_unen_para_transformar_tu_estilo_de_vida_con_nuestra_app_llevas_switch_style_siempre_contigo_ofreci_ndote_acceso_r_pido_y_exclusivo_a_las_ltimas_tendencias_promociones_y_todo_lo_que_nuestro_sitio_web_tiene_para_ti_esto_no_es_solo_una_aplicaci_n_es_tu_puerta_a_un_universo_de_estilo_nico_y_personalizado_vive_switch_style_a_tu_ritmo_con_la_comodidad_y_pasi_n_que_solo_nosotros_te_podemos_brindar"
+            android:textColor="#000000"
+            android:textSize="14sp" />
 
         <Button
             android:id="@+id/button"
@@ -34,8 +44,8 @@
 
     <LinearLayout
         android:id="@+id/linearlayout"
-        android:layout_width="417dp"
-        android:layout_height="80dp"
+        android:layout_width="427dp"
+        android:layout_height="56dp"
         android:layout_marginStart="1dp"
         android:layout_marginTop="1dp"
         android:layout_marginEnd="1dp"
@@ -43,7 +53,6 @@
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.571"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/appContent"
         app:layout_constraintVertical_bias="1.0"
