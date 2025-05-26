@@ -16,7 +16,6 @@ class AuthController extends Controller
             'password' => 'required|string',
         ]);
 
-        // Buscar por correo correcto
         $user = User::where('Correo_Electronico', $request->email)->first();
 
         if (!$user) {
@@ -24,55 +23,53 @@ class AuthController extends Controller
         }
 
         if ($user->Contraseña === $request->password) {
-            // Contraseña sin encriptar → la migramos a bcrypt
+            // Migrar contraseña plana a bcrypt si viene de base de datos antigua
             $user->Contraseña = bcrypt($request->password);
             $user->save();
+        }
 
-            Auth::loginUsingId($user->ID_Usuario);
-        } elseif (Hash::check($request->password, $user->Contraseña)) {
-            Auth::loginUsingId($user->ID_Usuario);
-        } else {
+        if (!Hash::check($request->password, $user->Contraseña)) {
             return response()->json(['message' => 'Credenciales inválidas'], 401);
         }
 
-        $request->session()->regenerate();
+        // ❌ Quitamos sesión para evitar error "Session store not set on request"
+        // Auth::loginUsingId($user->ID_Usuario);
+        // $request->session()->regenerate();
 
         return response()->json([
-            'id' => $user->ID_Usuario,
+            'id'     => $user->ID_Usuario,
             'nombre' => $user->Nombre,
             'correo' => $user->Correo_Electronico,
-            'rol' => $user->Tipo_Usuario,
+            'rol'    => $user->Tipo_Usuario,
         ]);
-
     }
 
-        public function register(Request $request)
-            {
-                $request->validate([
-                    'nombre' => 'required|string|max:100',
-                    'correo' => 'required|email|unique:usuario,Correo_Electronico',
-                    'password' => 'required|string|min:6',
-                    'tipo' => 'nullable|string|in:Free,Premium,Admin,Usuario',
-                ]);
+    public function register(Request $request)
+    {
+        $request->validate([
+            'nombre'   => 'required|string|max:100',
+            'correo'   => 'required|email|unique:usuario,Correo_Electronico',
+            'password' => 'required|string|min:6',
+            'tipo'     => 'nullable|string|in:Free,Premium,Admin,Usuario',
+        ]);
 
-                $usuario = new \App\Models\User();
-                $usuario->Nombre = $request->nombre;
-                $usuario->Correo_Electronico = $request->correo;
-                $usuario->Contraseña = bcrypt($request->password);
-                $usuario->Tipo_Usuario = $request->tipo ?? 'Usuario';
-                $usuario->save();
+        $usuario = new User();
+        $usuario->Nombre             = $request->nombre;
+        $usuario->Correo_Electronico = $request->correo;
+        $usuario->Contraseña         = bcrypt($request->password);
+        $usuario->Tipo_Usuario       = $request->tipo ?? 'Usuario';
+        $usuario->save();
 
-                return response()->json([
-                    'message' => 'Usuario registrado exitosamente',
-                    'usuario' => [
-                    'nombre' => $usuario->Nombre,
-                    'correo' => $usuario->Correo_Electronico,
-                    'rol' => $usuario->Tipo_Usuario,
-                    ],
-                ], 201);
-            }
+        return response()->json([
+            'message' => 'Usuario registrado exitosamente',
+            'usuario' => [
+                'nombre' => $usuario->Nombre,
+                'correo' => $usuario->Correo_Electronico,
+                'rol'    => $usuario->Tipo_Usuario,
+            ],
+        ], 201);
+    }
 
-    
     public function logout(Request $request)
     {
         Auth::logout();
