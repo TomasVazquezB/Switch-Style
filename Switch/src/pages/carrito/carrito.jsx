@@ -16,6 +16,7 @@ const Carrito = () => {
 
     const [carritoData, setCarritoData] = useState([]);
     const [preferenceId, setPreferenceId] = useState(null);
+    const [initPoint, setInitPoint] = useState(null); // Nuevo
 
     useEffect(() => {
         const tempData = [];
@@ -52,7 +53,10 @@ const Carrito = () => {
             body: JSON.stringify({ items })
         })
             .then(res => res.json())
-            .then(data => setPreferenceId(data.preferenceId))
+            .then(data => {
+                setPreferenceId(data.preferenceId);
+                setInitPoint(data.init_point);
+            })
             .catch(err => console.error(err));
     }, [carritoData]);
 
@@ -76,7 +80,7 @@ const Carrito = () => {
                             <>
                                 <div className="space-y-6">
                                     {carritoData.map((item, index) => {
-                                        const productoData = productos.find((producto) => producto._id === item._id);
+                                        const productoData = productos.find(p => p._id === item._id);
                                         if (!productoData) return null;
 
                                         return (
@@ -123,28 +127,19 @@ const Carrito = () => {
                                     })}
                                 </div>
 
-                                <br />
-
-                                {/* ✅ Botón vaciar carrito */}
                                 <div className="text-end mt-6">
                                     <button
                                         onClick={limpiarCarrito}
-                                        className="border px-4 py-2 rounded-full text-sm bg-red-600 text-black hover:bg-red-700"
+                                        className="border px-4 py-2 rounded-full text-sm bg-red-600 text-white hover:bg-red-700"
                                     >
                                         Vaciar carrito
                                     </button>
                                 </div>
 
-                                <br></br>
-
                                 <div className="flex justify-end my-20">
-
                                     <div className="w-full sm:w-[450px]">
                                         <CarritoTotal />
 
-                                        <br></br>
-
-                                        {/* ✅ Métodos de pago */}
                                         <div className="w-full text-end mt-10">
                                             <h3 className="font-semibold mb-4">Elige método de pago:</h3>
 
@@ -164,21 +159,40 @@ const Carrito = () => {
                                                     onApprove={(data, actions) => {
                                                         return actions.order.capture().then((details) => {
                                                             alert(`Transacción completada por ${details.payer.name.given_name}`);
-                                                            limpiarCarrito(); // opcional
+                                                            limpiarCarrito();
                                                         });
                                                     }}
                                                 />
                                             </div>
 
-                                            {/* MercadoPago */}
-                                            <div className="mb-6">
-                                                {preferenceId && (
+                                            {/* MercadoPago Wallet */}
+                                            {preferenceId && (
+                                                <div className="mb-6">
                                                     <Wallet
-                                                        initialization={{ preferenceId: preferenceId }}
+                                                        initialization={{ preferenceId }}
                                                         customization={{ texts: { valueProp: 'smart_option' } }}
                                                     />
-                                                )}
-                                            </div>
+                                                </div>
+                                            )}
+
+                                            {/* Botón personalizado de MercadoPago */}
+                                            {initPoint && (
+                                                <button
+                                                    onClick={() => window.location.href = initPoint}
+                                                    className="mt-4 px-5 py-2 flex items-center gap-2 justify-center bg-blue-600 hover:bg-blue-700 text-white rounded-full text-sm transition-transform transform hover:scale-105"
+                                                >
+                                                    <svg
+                                                        xmlns="http://www.w3.org/2000/svg"
+                                                        className="w-5 h-5"
+                                                        fill="none"
+                                                        viewBox="0 0 24 24"
+                                                        stroke="currentColor"
+                                                    >
+                                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 10h2l1-2h13l1 2h2M7 16h10M9 20h6" />
+                                                    </svg>
+                                                    Pagar con MercadoPago
+                                                </button>
+                                            )}
                                         </div>
                                     </div>
                                 </div>

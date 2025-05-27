@@ -1,7 +1,7 @@
 // server.js
-const express = require('express');
-const cors = require('cors');
-const mercadopago = require('mercadopago');
+import express from 'express';
+import cors from 'cors';
+import mercadopago from 'mercadopago';
 
 const app = express();
 const PORT = 4000;
@@ -9,31 +9,39 @@ const PORT = 4000;
 app.use(cors());
 app.use(express.json());
 
+// ✅ Configura tu access_token de MercadoPago
 mercadopago.configure({
-    access_token: 'TU_ACCESS_TOKEN_MERCADOPAGO' // ⚠️ Reemplaza esto
+    access_token: 'TEST-69d1d189-3428-4757-b74d-e5ea62900894'
 });
 
+// 📦 Endpoint para crear preferencia
 app.post('/create_preference', async (req, res) => {
-    const items = req.body.items;
-
-    const preference = {
-        items,
-        back_urls: {
-            success: "https://tusitio.com/success",
-            failure: "https://tusitio.com/failure",
-            pending: "https://tusitio.com/pending"
-        },
-        auto_return: "approved"
-    };
-
     try {
+        const { items } = req.body;
+
+        const preference = {
+            items: items,
+            back_urls: {
+                success: "http://localhost:5173/success",
+                failure: "http://localhost:5173/failure",
+                pending: "http://localhost:5173/pending"
+            },
+            auto_return: "approved"
+        };
+
         const response = await mercadopago.preferences.create(preference);
-        res.json({ preferenceId: response.body.id });
+        return res.json({
+            preferenceId: response.body.id,
+            init_point: response.body.init_point
+        });
+
     } catch (error) {
-        res.status(500).json({ error: error.message });
+        console.error("Error al crear preferencia:", error);
+        return res.status(500).json({ error: "Error al crear preferencia" });
     }
 });
 
+// Iniciar servidor
 app.listen(PORT, () => {
-    console.log(`Servidor corriendo en puerto ${PORT}`);
+    console.log(`Servidor backend corriendo en http://localhost:${PORT}`);
 });
