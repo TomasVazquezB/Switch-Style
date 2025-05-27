@@ -1,9 +1,8 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import { ShopContext } from '../../context/ShopContext.jsx';
 import { assets } from '../../assets/assets.js';
 import CarritoTotal from '../../components/CarritoTotal/CarritoTotal.jsx';
 import { PayPalButtons } from "@paypal/react-paypal-js";
-import { Wallet } from "@mercadopago/sdk-react";
 
 const Carrito = () => {
     const {
@@ -15,18 +14,17 @@ const Carrito = () => {
     } = useContext(ShopContext);
 
     const [carritoData, setCarritoData] = useState([]);
-    const [preferenceId, setPreferenceId] = useState(null);
-    const [initPoint, setInitPoint] = useState(null); // Nuevo
+    const walletBrickControllerRef = useRef(null);
 
     useEffect(() => {
         const tempData = [];
-        for (const items in carritoItems) {
-            for (const item in carritoItems[items]) {
-                if (carritoItems[items][item] > 0) {
+        for (const id in carritoItems) {
+            for (const talla in carritoItems[id]) {
+                if (carritoItems[id][talla] > 0) {
                     tempData.push({
-                        _id: items,
-                        talla: item,
-                        cantidad: carritoItems[items][item]
+                        _id: id,
+                        talla,
+                        cantidad: carritoItems[id][talla]
                     });
                 }
             }
@@ -34,38 +32,86 @@ const Carrito = () => {
         setCarritoData(tempData);
     }, [carritoItems]);
 
-    useEffect(() => {
-        if (carritoData.length === 0) return;
-
-        const items = carritoData.map(item => {
-            const producto = productos.find(p => p._id === item._id);
-            return {
-                title: producto.nombre,
-                quantity: item.cantidad,
-                currency_id: "ARS",
-                unit_price: producto.precio
-            };
-        });
-
-        fetch("http://localhost:4000/create_preference", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ items })
-        })
-            .then(res => res.json())
-            .then(data => {
-                setPreferenceId(data.preferenceId);
-                setInitPoint(data.init_point);
-            })
-            .catch(err => console.error(err));
-    }, [carritoData]);
-
     const calcularTotal = () => {
         return carritoData.reduce((total, item) => {
             const producto = productos.find(p => p._id === item._id);
             return total + (producto.precio * item.cantidad);
         }, 0).toFixed(2);
     };
+
+    useEffect(() => {
+        if (!window.MercadoPago || carritoData.length === 0) return;
+
+        const mp = new window.MercadoPago("TEST-69d1d189-3428-4757-b74d-e5ea62900894", {
+            locale: "es-AR",
+        });
+
+        const bricksBuilder = mp.bricks();
+
+        const renderWalletBrick = async () => {
+            if (walletBrickControllerRef.current) {
+                walletBrickControllerRef.current.unmount();
+            }
+
+            const controller = await bricksBuilder.create("wallet", "walletBrick_container", {
+                initialization: {
+                    redirectMode: 'blank',
+                },
+                customization: {
+                    theme: "default",
+                    valueProp: "security_safety",
+                    customStyle: {
+                        hideValueProp: false,
+                        valuePropColor: "blue",
+                        buttonHeight: "48px",
+                        borderRadius: "6px",
+                        verticalPadding: "8px",
+                        horizontalPadding: "0px",
+                    },
+                    checkout: {
+                        theme: {
+                            elementsColor: "#4287F5",
+                            headerColor: "#4287F5"
+                        }
+                    }
+                },
+                callbacks: {
+                    onSubmit: () => {
+                        const items = carritoData.map(item => {
+                            const producto = productos.find(p => p._id === item._id);
+                            return {
+                                title: producto.nombre,
+                                quantity: item.cantidad,
+                                currency_id: "ARS",
+                                unit_price: producto.precio
+                            };
+                        });
+
+                        return new Promise((resolve, reject) => {
+                            fetch("http://localhost:4000/create_preference", {
+                                method: "POST",
+                                headers: { "Content-Type": "application/json" },
+                                body: JSON.stringify({ items })
+                            })
+                                .then(res => res.json())
+                                .then(data => resolve(data.preferenceId))
+                                .catch(() => reject());
+                        });
+                    },
+                },
+            });
+
+            walletBrickControllerRef.current = controller;
+        };
+
+        renderWalletBrick();
+
+        return () => {
+            if (walletBrickControllerRef.current) {
+                walletBrickControllerRef.current.unmount();
+            }
+        };
+    }, [carritoData]);
 
     return (
         <div className='main'>
@@ -84,18 +130,9 @@ const Carrito = () => {
                                         if (!productoData) return null;
 
                                         return (
-                                            <div
-                                                key={index}
-                                                className="py-4 border-b text-gray-700 grid 
-                        grid-cols-[4fr_0.5fr_0.5fr] sm:grid-cols-[4fr_2fr_0.5fr] 
-                        items-center gap-4"
-                                            >
+                                            <div key={index} className="py-4 border-b text-gray-700 grid grid-cols-[4fr_0.5fr_0.5fr] sm:grid-cols-[4fr_2fr_0.5fr] items-center gap-4">
                                                 <div className="flex items-start gap-6">
-                                                    <img
-                                                        className="w-16 sm:w-20 object-cover"
-                                                        src={productoData.img[0]}
-                                                        alt={productoData.nombre}
-                                                    />
+                                                    <img className="w-16 sm:w-20 object-cover" src={productoData.img[0]} alt={productoData.nombre} />
                                                     <div>
                                                         <p className="text-xs sm:text-lg font-medium">{productoData.nombre}</p>
                                                         <div className="flex items-center gap-5 mt-2">
@@ -126,25 +163,25 @@ const Carrito = () => {
                                         );
                                     })}
                                 </div>
-
+                                <br></br>
                                 <div className="text-end mt-6">
                                     <button
                                         onClick={limpiarCarrito}
-                                        className="border px-4 py-2 rounded-full text-sm bg-red-600 text-white hover:bg-red-700"
+                                        className="border px-4 py-2 rounded-full text-sm bg-red-600 text-black hover:bg-red-700"
                                     >
                                         Vaciar carrito
                                     </button>
                                 </div>
-
+                                <br></br>
                                 <div className="flex justify-end my-20">
                                     <div className="w-full sm:w-[450px]">
                                         <CarritoTotal />
-
+                                        <br></br>
                                         <div className="w-full text-end mt-10">
                                             <h3 className="font-semibold mb-4">Elige método de pago:</h3>
 
                                             {/* PayPal */}
-                                            <div className="mb-6">
+                                            <div className="mb-6 ">
                                                 <PayPalButtons
                                                     style={{ layout: "horizontal" }}
                                                     createOrder={(data, actions) => {
@@ -165,34 +202,8 @@ const Carrito = () => {
                                                 />
                                             </div>
 
-                                            {/* MercadoPago Wallet */}
-                                            {preferenceId && (
-                                                <div className="mb-6">
-                                                    <Wallet
-                                                        initialization={{ preferenceId }}
-                                                        customization={{ texts: { valueProp: 'smart_option' } }}
-                                                    />
-                                                </div>
-                                            )}
-
-                                            {/* Botón personalizado de MercadoPago */}
-                                            {initPoint && (
-                                                <button
-                                                    onClick={() => window.location.href = initPoint}
-                                                    className="mt-4 px-5 py-2 flex items-center gap-2 justify-center bg-blue-600 hover:bg-blue-700 text-white rounded-full text-sm transition-transform transform hover:scale-105"
-                                                >
-                                                    <svg
-                                                        xmlns="http://www.w3.org/2000/svg"
-                                                        className="w-5 h-5"
-                                                        fill="none"
-                                                        viewBox="0 0 24 24"
-                                                        stroke="currentColor"
-                                                    >
-                                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 10h2l1-2h13l1 2h2M7 16h10M9 20h6" />
-                                                    </svg>
-                                                    Pagar con MercadoPago
-                                                </button>
-                                            )}
+                                            {/* Wallet Brick */}
+                                            <div id="walletBrick_container" className="mb-6"></div>
                                         </div>
                                     </div>
                                 </div>
