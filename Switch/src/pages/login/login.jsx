@@ -72,9 +72,11 @@ export function LoginPage() {
             if (rol === 'admin') {
                 alert(`Bienvenido Administrador ${nombre}`);
                 navigate('/admin');
+                window.dispatchEvent(new Event('usuario-actualizado'));
             } else {
                 alert(`Bienvenido ${nombre}`);
                 navigate('/');
+                window.dispatchEvent(new Event('usuario-actualizado'));
             }
         } catch (err) {
             if (err.response) {
