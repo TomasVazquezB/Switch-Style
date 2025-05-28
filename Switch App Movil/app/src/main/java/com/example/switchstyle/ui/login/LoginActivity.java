@@ -52,15 +52,15 @@ public class LoginActivity extends AppCompatActivity {
 
     private void loginUser(String emailUser, String passUser) {
         if (emailUser.isEmpty() || passUser.isEmpty()){
-            Toast.makeText(LoginActivity.this, "Por favor, ingresa tus datos de acceso.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(LoginActivity.this, "Por favor, ingresa tus datos de acceso", Toast.LENGTH_SHORT).show();
         } else {
             mAuth.signInWithEmailAndPassword(emailUser, passUser).addOnCompleteListener(task -> {
                 if (task.isSuccessful()){
                     startActivity(new Intent(LoginActivity.this, MainActivity.class));
                     finish();
-                    Toast.makeText(LoginActivity.this, "Bienvenido a PetPalms", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(LoginActivity.this, "Bienvenido/a a SwitchStyle", Toast.LENGTH_SHORT).show();
                 } else {
-                    Toast.makeText(LoginActivity.this, "Los datos ingresados son incorrectos.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(LoginActivity.this, "Los datos ingresados son incorrectos, por favor vuelva a intentarlo", Toast.LENGTH_SHORT).show();
                 }
             }).addOnFailureListener(e -> Toast.makeText(LoginActivity.this, "Error al iniciar sesión: " + e.getMessage(), Toast.LENGTH_SHORT).show());
         }
