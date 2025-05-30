@@ -45,9 +45,15 @@ public class Register extends AppCompatActivity {
             String emailUser = email.getText().toString().trim();
             String passUser = password.getText().toString().trim();
 
-            // Verificamos si falta algún campo
-            if (TextUtils.isEmpty(nameUser) || TextUtils.isEmpty(emailUser) || TextUtils.isEmpty(passUser)) {
-                Toast.makeText(Register.this, "Complete todos los datos", Toast.LENGTH_SHORT).show();
+            // Validaciones de campos faltantes con mensajes específicos
+            if (TextUtils.isEmpty(nameUser) && TextUtils.isEmpty(emailUser) && TextUtils.isEmpty(passUser)) {
+                Toast.makeText(Register.this, "Falta completar todos los campos", Toast.LENGTH_SHORT).show();
+            } else if (TextUtils.isEmpty(nameUser)) {
+                Toast.makeText(Register.this, "Falta ingresar el nombre", Toast.LENGTH_SHORT).show();
+            } else if (TextUtils.isEmpty(emailUser)) {
+                Toast.makeText(Register.this, "Falta ingresar el correo electrónico", Toast.LENGTH_SHORT).show();
+            } else if (TextUtils.isEmpty(passUser)) {
+                Toast.makeText(Register.this, "Falta ingresar la contraseña", Toast.LENGTH_SHORT).show();
             } else if (passUser.length() < 6) {
                 // Validación de contraseña mínima de 6 caracteres
                 Toast.makeText(Register.this, "La contraseña debe tener al menos 6 caracteres", Toast.LENGTH_SHORT).show();
@@ -65,34 +71,30 @@ public class Register extends AppCompatActivity {
     }
 
     private void registerUser(String nameUser, String emailUser, String passUser) {
-        // Crear el usuario en Firebase Authentication
         mAuth.createUserWithEmailAndPassword(emailUser, passUser).addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 String userId = mAuth.getCurrentUser().getUid();
 
-                // Crear el mapa con los datos del usuario
                 Map<String, Object> userMap = new HashMap<>();
                 userMap.put("id", userId);
                 userMap.put("name", nameUser);
                 userMap.put("email", emailUser);
 
-                // Guardar los datos del usuario en la colección 'user' con su UID como ID del documento
                 mFirestore.collection("user").document(userId).set(userMap)
                         .addOnSuccessListener(aVoid -> {
-                            // Mostrar mensaje de éxito
                             Toast.makeText(Register.this, "Usuario registrado con éxito", Toast.LENGTH_SHORT).show();
-
-                            // Redirigir al login o a la actividad principal
                             startActivity(new Intent(Register.this, LoginActivity.class));
-                            finish(); // Para que no se quede en el registro
+                            finish();
                         })
-                        .addOnFailureListener(e -> {
-                            // Si ocurre un error al guardar en Firestore, mostrar el error
-                            Toast.makeText(Register.this, "Error al guardar el usuario: " + e.getMessage(), Toast.LENGTH_LONG).show();
-                        });
+                        .addOnFailureListener(e -> Toast.makeText(Register.this, "Error al guardar el usuario: " + e.getMessage(), Toast.LENGTH_LONG).show());
             } else {
-                // Si falla la creación del usuario en Firebase Authentication
-                Toast.makeText(Register.this, "Error al registrar el usuario: " + task.getException().getMessage(), Toast.LENGTH_LONG).show();
+                // Detectar si la excepción es por usuario ya registrado
+                String error = task.getException() != null ? task.getException().getMessage() : "";
+                if (error.contains("The email address is already in use")) {
+                    Toast.makeText(Register.this, "Ya existe una cuenta creada con este correo", Toast.LENGTH_LONG).show();
+                } else {
+                    Toast.makeText(Register.this, "Error al registrar el usuario: " + error, Toast.LENGTH_LONG).show();
+                }
             }
         });
     }

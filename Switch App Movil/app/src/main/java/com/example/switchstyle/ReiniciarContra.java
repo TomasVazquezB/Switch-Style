@@ -30,20 +30,21 @@ public class ReiniciarContra extends AppCompatActivity {
         buttonRestablecerContraseña.setOnClickListener(v -> {
             String email = editTextEmail.getText().toString().trim();
 
-            if (!email.isEmpty()) {
-                mAuth.sendPasswordResetEmail(email)
-                        .addOnCompleteListener(task -> {
-                            if (task.isSuccessful()) {
-                                Toast.makeText(ReiniciarContra.this, "Se ha enviado un correo para restablecer tu contraseña", Toast.LENGTH_SHORT).show();
-                                startActivity(new Intent(ReiniciarContra.this, LoginActivity.class));
-                                finish();
-                            } else {
-                                Toast.makeText(ReiniciarContra.this, "Error al enviar correo de recuperación", Toast.LENGTH_SHORT).show();
-                            }
-                        });
-            } else {
-                Toast.makeText(ReiniciarContra.this, "Ingrese su correo electrónico", Toast.LENGTH_SHORT).show();
+            if (email.isEmpty()) {
+                Toast.makeText(ReiniciarContra.this, "Falta ingresar el email", Toast.LENGTH_SHORT).show();
+                return;
             }
+
+            mAuth.sendPasswordResetEmail(email)
+                    .addOnCompleteListener(task -> {
+                        if (task.isSuccessful()) {
+                            Toast.makeText(ReiniciarContra.this, "Se ha enviado un correo para restablecer tu contraseña", Toast.LENGTH_SHORT).show();
+                            startActivity(new Intent(ReiniciarContra.this, LoginActivity.class));
+                            finish();
+                        } else {
+                            Toast.makeText(ReiniciarContra.this, "Error al enviar correo de recuperación", Toast.LENGTH_SHORT).show();
+                        }
+                    });
         });
     }
 }

@@ -3,10 +3,10 @@ package com.example.switchstyle;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.switchstyle.ui.login.LoginActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -29,35 +29,21 @@ public class MainActivity extends AppCompatActivity {
 
         // Si el usuario no está autenticado, redirigir al login y terminar esta actividad
         if (currentUser == null) {
-            startActivity(new Intent(MainActivity.this, Login.class));
+            startActivity(new Intent(MainActivity.this, LoginActivity.class));
             finish(); // Para que no se quede en MainActivity
         } else {
-            // Si el usuario está autenticado, proceder a obtener su nombre desde Firestore
+            // Si el usuario está autenticado, se puede obtener su información desde Firestore si se necesita más adelante
             String userId = currentUser.getUid();
             mFirestore.collection("user").document(userId).get()
                     .addOnSuccessListener(documentSnapshot -> {
-                        if (documentSnapshot.exists()) {
-                            // Obtener el nombre del usuario de Firestore
-                            String userName = documentSnapshot.getString("name");
-
-                            // Mostrar el mensaje de bienvenida con el nombre en un Toast
-                            if (userName != null) {
-                                Toast.makeText(MainActivity.this, "Bienvenido/a " + userName + " a Switch Style", Toast.LENGTH_LONG).show();
-                            } else {
-                                Toast.makeText(MainActivity.this, "Bienvenido/a a Switch Style", Toast.LENGTH_LONG).show();
-                            }
-                        } else {
-                            // Si no se encuentra el documento del usuario en Firestore
-                            Toast.makeText(MainActivity.this, "Bienvenido/a a Switch Style", Toast.LENGTH_LONG).show();
-                        }
+                        // Documento obtenido exitosamente (puede usarse más adelante)
                     })
                     .addOnFailureListener(e -> {
-                        // Si ocurre un error al intentar obtener los datos del usuario
-                        Toast.makeText(MainActivity.this, "Bienvenido/a a Switch Style", Toast.LENGTH_LONG).show();
+                        // Fallo al obtener datos del usuario (puede manejarse si es necesario)
                     });
         }
 
-        // Acción del botón de registro (por si el usuario quiere registrarse)
+        // Acción del botón "comenzar" → ahora abre Register
         Button button = findViewById(R.id.button);
         button.setOnClickListener(button1 -> {
             Intent intent = new Intent(MainActivity.this, Register.class);
