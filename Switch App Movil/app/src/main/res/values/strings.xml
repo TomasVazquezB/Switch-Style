@@ -29,5 +29,35 @@
     <string name="olvidaste_la_contrase_a">¿Olvidaste la contraseña?</string>
     <string name="contrasenia">Contraseña</string>
     <string name="bienvenida_detallada">¡Prepárate para descubrir un mundo donde la moda y la tecnología se unen para transformar tu estilo de vida. Con nuestra app, llevas Switch Style siempre contigo, ofreciéndote acceso rápido y exclusivo a las últimas tendencias, promociones y todo lo que nuestro sitio web tiene para ti. Esto no es solo una aplicación, es tu puerta a un universo de estilo único y personalizado. Vive Switch Style a tu ritmo, con la comodidad y pasión que solo nosotros te podemos brindar.</string>
-    <string name="bienvenidos_a_switch_style">Bienvenidos a Switch Style</string>
+    <string name="bienvenidos_a_switch_style">Bienvenidos a Switch Style!</string>
+    <string name="todo12">TODO</string>
+    <string name="todo22">TODO</string>
+    <string name="todo223">TODO</string>
+    <string name="catalogo2">Catalogo</string>
+    <string name="usuario2">Usuario</string>
+    <string name="inicio2">Inicio</string>
+
+        <!-- Errores en registro -->
+        <string name="error_campos_vacios">Por favor, complete todos los campos</string>
+        <string name="error_nombre_vacio">El nombre no puede estar vacío</string>
+        <string name="error_email_vacio">El correo electrónico no puede estar vacío</string>
+        <string name="error_contraseña_vacia">La contraseña no puede estar vacía</string>
+        <string name="error_contraseña_corta">La contraseña debe tener al menos 6 caracteres</string>
+        <string name="error_email_existente">El correo electrónico ya está en uso</string>
+        <string name="error_registro_generico">Error al registrar usuario</string>
+
+        <!-- Mensajes de éxito -->
+        <string name="registro_exitoso">Registro exitoso</string>
+
+        <!-- Navigation Bar -->
+        <string name="nav_home">Inicio</string>
+        <string name="nav_register">Registro</string>
+        <string name="nav_catalogs">Catálogos</string>
+
+        <!-- Descripciones para iconos -->
+        <string name="nav_home_desc">Ir a inicio</string>
+        <string name="nav_register_desc">Ir a registro</string>
+        <string name="nav_catalogs_desc">Ir a catálogos</string>
+        <string name="registro_title">Registro</string>
+
 </resources>

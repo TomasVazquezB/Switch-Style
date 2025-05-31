@@ -2,7 +2,7 @@ package com.example.switchstyle;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.widget.Button;
+import android.widget.LinearLayout;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -13,40 +13,55 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 public class MainActivity extends AppCompatActivity {
 
-    private FirebaseAuth mAuth;
-    private FirebaseFirestore mFirestore;
+    private LinearLayout navHome, navRegister, navCatalogs;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_main);
 
-        mAuth = FirebaseAuth.getInstance();
-        mFirestore = FirebaseFirestore.getInstance();
-
-        // Verificar si el usuario está autenticado
+        // Firebase Auth y Firestore
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
+        FirebaseFirestore mFirestore = FirebaseFirestore.getInstance();
         FirebaseUser currentUser = mAuth.getCurrentUser();
 
-        // Si el usuario no está autenticado, redirigir al login y terminar esta actividad
         if (currentUser == null) {
+            // Usuario no logueado: ir a Login
             startActivity(new Intent(MainActivity.this, LoginActivity.class));
-            finish(); // Para que no se quede en MainActivity
+            finish();
+            return;
         } else {
-            // Si el usuario está autenticado, se puede obtener su información desde Firestore si se necesita más adelante
+            // Usuario logueado: obtener datos si quieres
             String userId = currentUser.getUid();
             mFirestore.collection("user").document(userId).get()
                     .addOnSuccessListener(documentSnapshot -> {
-                        // Documento obtenido exitosamente (puede usarse más adelante)
+                        // Aquí puedes manejar datos del usuario
                     })
                     .addOnFailureListener(e -> {
-                        // Fallo al obtener datos del usuario (puede manejarse si es necesario)
+                        // Manejo de error
                     });
         }
 
-        // Acción del botón "comenzar" → ahora abre Register
-        Button button = findViewById(R.id.button);
-        button.setOnClickListener(button1 -> {
+        // Referencias a la barra de navegación
+        navHome = findViewById(R.id.nav_home);
+        navRegister = findViewById(R.id.nav_register);
+        navCatalogs = findViewById(R.id.nav_catalogs);
+
+        // Listener Home (estamos en MainActivity)
+        navHome.setOnClickListener(v -> {
+            // Ya estamos en esta pantalla, no hacemos nada o refrescamos si quieres
+        });
+
+        // Listener Registro
+        navRegister.setOnClickListener(v -> {
             Intent intent = new Intent(MainActivity.this, Register.class);
+            startActivity(intent);
+        });
+
+        // Listener Catálogos
+        navCatalogs.setOnClickListener(v -> {
+            Intent intent = new Intent(MainActivity.this, CatalogoProductos.class);
             startActivity(intent);
         });
     }

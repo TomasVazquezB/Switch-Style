@@ -24,7 +24,7 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        mAuth = FirebaseAuth.getInstance();  // Aseguramos inicialización
+        mAuth = FirebaseAuth.getInstance();
     }
 
     @Override
@@ -79,7 +79,6 @@ public class LoginActivity extends AppCompatActivity {
                         if (user != null) {
                             String userId = user.getUid();
 
-                            // Obtener nombre del usuario desde Firestore
                             mFirestore.collection("user").document(userId).get()
                                     .addOnSuccessListener(documentSnapshot -> {
                                         if (documentSnapshot.exists()) {
@@ -87,8 +86,7 @@ public class LoginActivity extends AppCompatActivity {
                                             if (userName == null || userName.isEmpty()) {
                                                 userName = "usuario";
                                             }
-
-                                            // 🔽 Aquí está la modificación solicitada
+                                            
                                             Toast.makeText(this, "Bienvenido/a Switch Style " + userName, Toast.LENGTH_LONG).show();
 
                                             Intent intent = new Intent(LoginActivity.this, MainActivity.class);
