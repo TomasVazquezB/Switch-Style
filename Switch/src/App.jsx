@@ -19,6 +19,7 @@ import ErrorBoundary from './components/Error/ErrorBoundary';
 import { ToastContainer } from 'react-toastify';
 import { PayPalScriptProvider } from "@paypal/react-paypal-js";
 import 'react-toastify/dist/ReactToastify.css';
+import PerfilUsuario from './pages/Perfil/PerfilUsuario.jsx';
 import '/index.css';
 
 function App() {
@@ -45,6 +46,7 @@ function App() {
               <Route path="/MainKids" element={<PageTitle title="Kids"><MainKidsPage /></PageTitle>} />
               <Route path="/producto/:productoId" element={<Productos />} />
               <Route path="/favoritos" element={<PageTitle title="Favoritos"><Favoritos /></PageTitle>} />
+              <Route path="/perfil" element={<PerfilUsuario />} />
             </Routes>
           </ErrorBoundary>
         </main>
