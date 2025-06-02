@@ -78,17 +78,13 @@ public class Register extends AppCompatActivity {
         navRegister = findViewById(R.id.nav_register);
         navCatalogs = findViewById(R.id.nav_catalogs);
 
-        navHome.setOnClickListener(v -> {
-            startActivity(new Intent(Register.this, MainActivity.class));
-        });
+        navHome.setOnClickListener(v -> startActivity(new Intent(Register.this, MainActivity.class)));
 
         navRegister.setOnClickListener(v -> {
             // Ya estamos en registro, no hacer nada
         });
 
-        navCatalogs.setOnClickListener(v -> {
-            startActivity(new Intent(Register.this, CatalogoProductos.class));
-        });
+        navCatalogs.setOnClickListener(v -> startActivity(new Intent(Register.this, CatalogoProductos.class)));
     }
 
     private void registerUser(String nameUser, String emailUser, String passUser) {

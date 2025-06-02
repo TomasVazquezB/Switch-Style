@@ -5,10 +5,12 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.Toast;
+
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.switchstyle.MainActivity;
+import com.example.switchstyle.CatalogoProductos;
 import com.example.switchstyle.R;
 import com.example.switchstyle.ReiniciarContra;
 import com.google.firebase.auth.FirebaseAuth;
@@ -20,6 +22,9 @@ public class LoginActivity extends AppCompatActivity {
     EditText email, password;
     FirebaseAuth mAuth;
     FirebaseFirestore mFirestore;
+
+    // Barra de navegación
+    LinearLayout navHome, navRegister, navCatalogs;
 
     @Override
     protected void onStart() {
@@ -50,6 +55,26 @@ public class LoginActivity extends AppCompatActivity {
         btn_forgot_password.setOnClickListener(view ->
                 startActivity(new Intent(LoginActivity.this, ReiniciarContra.class))
         );
+
+        // 🔻 Inicializar barra de navegación
+        navHome = findViewById(R.id.nav_home);
+        navRegister = findViewById(R.id.nav_register);
+        navCatalogs = findViewById(R.id.nav_catalogs);
+
+        navHome.setOnClickListener(v -> {
+            // Si tenés una pantalla Home personalizada, podrías dirigir allí
+            Toast.makeText(this, "Ya estás en el Login", Toast.LENGTH_SHORT).show();
+        });
+
+        navRegister.setOnClickListener(v -> {
+            // Redirigir al registro si querés implementarlo
+            Toast.makeText(this, "Función de registro no implementada", Toast.LENGTH_SHORT).show();
+        });
+
+        navCatalogs.setOnClickListener(v -> {
+            startActivity(new Intent(LoginActivity.this, CatalogoProductos.class));
+            finish();
+        });
     }
 
     private void validarCamposYLoguear(String emailUser, String passUser) {
@@ -86,10 +111,11 @@ public class LoginActivity extends AppCompatActivity {
                                             if (userName == null || userName.isEmpty()) {
                                                 userName = "usuario";
                                             }
-                                            
+
                                             Toast.makeText(this, "Bienvenido/a Switch Style " + userName, Toast.LENGTH_LONG).show();
 
-                                            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                                            // 🔴 Redirigir a CatalogoProductos
+                                            Intent intent = new Intent(LoginActivity.this, CatalogoProductos.class);
                                             intent.putExtra("userName", userName);
                                             startActivity(intent);
                                             finish();
