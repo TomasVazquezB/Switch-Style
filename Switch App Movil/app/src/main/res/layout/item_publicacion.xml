@@ -1,21 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout
-xmlns:android="http://schemas.android.com/apk/res/android"
-xmlns:app="http://schemas.android.com/apk/res-auto"
-xmlns:tools="http://schemas.android.com/tools"
-android:layout_width="match_parent"
-android:layout_height="wrap_content"
-android:layout_margin="4dp"
-android:background="#FFF">
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="4dp"
+    android:background="#FFF">
 
+    <!-- ViewPager para mostrar las imágenes, con espacio más abajo -->
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/viewPagerImagenes"
         android:layout_width="0dp"
         android:layout_height="200dp"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        android:layout_marginTop="80dp"
+    app:layout_constraintTop_toBottomOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintBottom_toTopOf="@id/btnMeGusta" />
 
+    <!-- Botón de Me Gusta (corazón) alineado a la izquierda y más abajo -->
     <ImageButton
         android:id="@+id/btnMeGusta"
         tools:ignore="TouchTargetSizeCheck"
@@ -26,7 +30,6 @@ android:background="#FFF">
         android:contentDescription="@string/like"
         android:src="@drawable/favorite_24px"
         app:layout_constraintEnd_toEndOf="@id/viewPagerImagenes"
-        app:layout_constraintTop_toTopOf="@id/viewPagerImagenes"
-        app:tint="#FF0000" />
-
+    app:layout_constraintTop_toBottomOf="@id/viewPagerImagenes"
+    app:tint="#FF0000" />
 </androidx.constraintlayout.widget.ConstraintLayout>
