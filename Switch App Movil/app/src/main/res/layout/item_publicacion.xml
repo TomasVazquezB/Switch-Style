@@ -1,35 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="4dp"
-    android:background="#FFF">
+    android:layout_margin="8dp"
+    app:cardCornerRadius="12dp"
+    app:cardElevation="6dp"
+    android:background="@android:color/white">
 
-    <!-- ViewPager para mostrar las imágenes, con espacio más abajo -->
-    <androidx.viewpager2.widget.ViewPager2
-        android:id="@+id/viewPagerImagenes"
-        android:layout_width="0dp"
-        android:layout_height="200dp"
-        android:layout_marginTop="80dp"
-    app:layout_constraintTop_toBottomOf="parent"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintBottom_toTopOf="@id/btnMeGusta" />
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="8dp">
 
-    <!-- Botón de Me Gusta (corazón) alineado a la izquierda y más abajo -->
-    <ImageButton
-        android:id="@+id/btnMeGusta"
-        tools:ignore="TouchTargetSizeCheck"
-        android:layout_width="36dp"
-        android:layout_height="36dp"
-        android:layout_margin="8dp"
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/viewPagerImagenes"
+            android:layout_width="0dp"
+            android:layout_height="250dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <ImageButton
+            android:id="@+id/btnMeGusta"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginStart="8dp"
         android:background="?attr/selectableItemBackgroundBorderless"
         android:contentDescription="@string/like"
         android:src="@drawable/favorite_24px"
-        app:layout_constraintEnd_toEndOf="@id/viewPagerImagenes"
-    app:layout_constraintTop_toBottomOf="@id/viewPagerImagenes"
-    app:tint="#FF0000" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+        app:layout_constraintTop_toBottomOf="@id/viewPagerImagenes"
+        app:layout_constraintStart_toStartOf="parent" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.cardview.widget.CardView>

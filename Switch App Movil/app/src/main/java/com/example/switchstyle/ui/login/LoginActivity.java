@@ -1,6 +1,7 @@
 package com.example.switchstyle.ui.login;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.widget.Button;
@@ -62,12 +63,10 @@ public class LoginActivity extends AppCompatActivity {
         navCatalogs = findViewById(R.id.nav_catalogs);
 
         navHome.setOnClickListener(v -> {
-            // Si tenés una pantalla Home personalizada, podrías dirigir allí
             Toast.makeText(this, "Ya estás en el Login", Toast.LENGTH_SHORT).show();
         });
 
         navRegister.setOnClickListener(v -> {
-            // Redirigir al registro si querés implementarlo
             Toast.makeText(this, "Función de registro no implementada", Toast.LENGTH_SHORT).show();
         });
 
@@ -114,11 +113,14 @@ public class LoginActivity extends AppCompatActivity {
 
                                             Toast.makeText(this, "Bienvenido/a Switch Style " + userName, Toast.LENGTH_LONG).show();
 
-                                            // 🔴 Redirigir a CatalogoProductos
+                                            // ✅ Guardar estado logueado
+                                            SharedPreferences prefs = getSharedPreferences("mi_app_prefs", MODE_PRIVATE);
+                                            prefs.edit().putBoolean("logueado", true).apply();
+
+                                            // ✅ Redirigir al catálogo y limpiar historial
                                             Intent intent = new Intent(LoginActivity.this, CatalogoProductos.class);
-                                            intent.putExtra("userName", userName);
+                                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                             startActivity(intent);
-                                            finish();
                                         } else {
                                             Toast.makeText(this, "No se encontró información del usuario", Toast.LENGTH_SHORT).show();
                                         }
