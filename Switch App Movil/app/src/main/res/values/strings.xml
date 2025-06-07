@@ -59,5 +59,10 @@
         <string name="nav_register_desc">Ir a registro</string>
         <string name="nav_catalogs_desc">Ir a catálogos</string>
         <string name="registro_title">Registro</string>
-
+    <string name="inicio">Inicio</string>
+    <string name="usuario">Usuario</string>
+    <string name="catalogo">Catalogo</string>
+    <string name="like">Me gusta</string>
+    <string name="image">Imagen de producto</string>
+    <string name="registro_boton">Ir al registro o el login</string>
 </resources>

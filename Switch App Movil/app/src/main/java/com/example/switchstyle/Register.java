@@ -35,18 +35,15 @@ public class Register extends AppCompatActivity {
         setTitle(R.string.registro_title);
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
 
-        // Inicializa Firebase
         mFirestore = FirebaseFirestore.getInstance();
         mAuth = FirebaseAuth.getInstance();
 
-        // Referencias UI
         name = findViewById(R.id.Nombre);
         email = findViewById(R.id.Email);
         password = findViewById(R.id.Contraseña);
         Button btnRegister = findViewById(R.id.Button_registro);
         Button btnIrLogin = findViewById(R.id.buttonIrALogin);
 
-        // Click en botón registrar
         btnRegister.setOnClickListener(v -> {
             String nameUser = name.getText().toString().trim();
             String emailUser = email.getText().toString().trim();
@@ -67,28 +64,21 @@ public class Register extends AppCompatActivity {
             }
         });
 
-        // Click para ir a login
         btnIrLogin.setOnClickListener(v -> {
             startActivity(new Intent(Register.this, LoginActivity.class));
             finish();
         });
 
-        // Referencias navegación inferior
         navHome = findViewById(R.id.nav_home);
         navRegister = findViewById(R.id.nav_register);
         navCatalogs = findViewById(R.id.nav_catalogs);
 
-        navHome.setOnClickListener(v -> {
-            startActivity(new Intent(Register.this, MainActivity.class));
-        });
+        navHome.setOnClickListener(v -> startActivity(new Intent(Register.this, MainActivity.class)));
 
         navRegister.setOnClickListener(v -> {
-            // Ya estamos en registro, no hacer nada
         });
 
-        navCatalogs.setOnClickListener(v -> {
-            startActivity(new Intent(Register.this, CatalogoProductos.class));
-        });
+        navCatalogs.setOnClickListener(v -> startActivity(new Intent(Register.this, CatalogoProductos.class)));
     }
 
     private void registerUser(String nameUser, String emailUser, String passUser) {
