@@ -1,23 +1,30 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './admin.css';
+import { fetchUsuarios, eliminarUsuario } from '../../services/firebaseAdmin'; // <-- Ajustá el path si está en otra carpeta
 
 const AdminPage = () => {
-    const [usuariosList, setUsuariosList] = useState([
-        { id: 1, nombre: 'Tomas', apellido: 'Vazquez Brouver', email: 'tomas.vazquez@davinci.edu.ar', rol: 'admin', favoritos: [] },
-    ]);
-
+    const [usuariosList, setUsuariosList] = useState([]);
     const [productosList, setProductosList] = useState([
         { id: 1, nombre: 'Producto A', descripcion: 'Descripción del Producto A' },
         { id: 2, nombre: 'Producto B', descripcion: 'Descripción del Producto B' },
         { id: 3, nombre: 'Producto C', descripcion: 'Descripción del Producto C' },
     ]);
 
+    useEffect(() => {
+        const cargarUsuarios = async () => {
+            const usuarios = await fetchUsuarios();
+            setUsuariosList(usuarios);
+        };
+        cargarUsuarios();
+    }, []);
+
+
     const [formDataUsuario, setFormDataUsuario] = useState({
         id: '',
         nombre: '',
         apellido: '',
         email: '',
-        rol: 'usuario' 
+        rol: 'usuario'
     });
 
     const [formDataProducto, setFormDataProducto] = useState({
@@ -27,12 +34,12 @@ const AdminPage = () => {
     });
 
     const [showModal, setShowModal] = useState(false);
-    const [showEditModal, setShowEditModal] = useState(false); 
+    const [showEditModal, setShowEditModal] = useState(false);
     const [currentItem, setCurrentItem] = useState(null);
     const [successMessage, setSuccessMessage] = useState('');
 
-    const handleChangeUsuario = (e) => { setFormDataUsuario({...formDataUsuario, [e.target.name]: e.target.value}); };
-    const handleChangeProducto = (e) => { setFormDataProducto({...formDataProducto, [e.target.name]: e.target.value}); };
+    const handleChangeUsuario = (e) => { setFormDataUsuario({ ...formDataUsuario, [e.target.name]: e.target.value }); };
+    const handleChangeProducto = (e) => { setFormDataProducto({ ...formDataProducto, [e.target.name]: e.target.value }); };
 
     const handleSubmitUsuario = (e) => {
         e.preventDefault();
@@ -42,7 +49,7 @@ const AdminPage = () => {
             apellido: formDataUsuario.apellido,
             email: formDataUsuario.email,
             rol: formDataUsuario.rol,
-            favoritos: [] 
+            favoritos: []
         };
         setUsuariosList([...usuariosList, newUsuario]);
         setFormDataUsuario({
@@ -50,14 +57,14 @@ const AdminPage = () => {
             nombre: '',
             apellido: '',
             email: '',
-            rol: 'usuario' 
+            rol: 'usuario'
         });
     };
 
     const handleSubmitProducto = (e) => {
         e.preventDefault();
         const newProducto = {
-            id: productosList.length + 1, 
+            id: productosList.length + 1,
             nombre: formDataProducto.nombre,
             descripcion: formDataProducto.descripcion
         };
@@ -85,9 +92,10 @@ const AdminPage = () => {
         setCurrentItem(null);
     };
 
-    const confirmarEliminacion = () => {
+    const confirmarEliminacion = async () => {
         if (currentItem.tipo === 'usuario') {
-            const updatedUsuarios = usuariosList.filter(usuario => usuario.id !== currentItem.item.id);
+            await eliminarUsuario(currentItem.item.id);
+            const updatedUsuarios = await fetchUsuarios();
             setUsuariosList(updatedUsuarios);
             setSuccessMessage('Usuario eliminado con éxito.');
         } else if (currentItem.tipo === 'producto') {
@@ -95,24 +103,25 @@ const AdminPage = () => {
             setProductosList(updatedProductos);
             setSuccessMessage('Producto eliminado con éxito.');
         }
-        setShowModal(false); 
+        setShowModal(false);
     };
+
 
     const confirmarEdicion = () => {
         if (currentItem.tipo === 'usuario') {
-            const updatedUsuarios = usuariosList.map(usuario => 
+            const updatedUsuarios = usuariosList.map(usuario =>
                 usuario.id === currentItem.item.id ? { ...usuario, ...formDataUsuario } : usuario
             );
             setUsuariosList(updatedUsuarios);
             setSuccessMessage('Usuario editado con éxito.');
         } else if (currentItem.tipo === 'producto') {
-            const updatedProductos = productosList.map(producto => 
+            const updatedProductos = productosList.map(producto =>
                 producto.id === currentItem.item.id ? { ...producto, ...formDataProducto } : producto
             );
             setProductosList(updatedProductos);
             setSuccessMessage('Producto editado con éxito.');
         }
-        setShowEditModal(false); 
+        setShowEditModal(false);
     };
 
     return (
@@ -121,11 +130,11 @@ const AdminPage = () => {
                 <div className="col admin-content">
                     <h1 className="admin-title">¡Bienvenido, Administrador!</h1>
                     <p className="admin-text">Esta es la página de administrador. Aquí puedes gestionar usuarios, productos.</p>
-                    <br/>
-                    
+                    <br />
+
                     <div className="form-registro-usuario">
                         <h3>Alta/Baja/Modificación de Usuarios</h3>
-                        <br/>
+                        <br />
                         <form onSubmit={handleSubmitUsuario}>
                             <div className="form-row">
                                 <input type="text" name="nombre" placeholder="Nombre" value={formDataUsuario.nombre} onChange={handleChangeUsuario} />
@@ -146,9 +155,9 @@ const AdminPage = () => {
                         </form>
                     </div>
 
-                    <br/>
+                    <br />
 
-                    <br/>
+                    <br />
                     <div className="usuarios-section">
                         <h3>Usuarios</h3>
                         <table className="table">
@@ -182,7 +191,7 @@ const AdminPage = () => {
 
                     <div className="form-registro-usuario">
                         <h3>Alta/Baja/Modificación de Productos</h3>
-                        <br/>
+                        <br />
                         <form onSubmit={handleSubmitProducto}>
                             <div className="form-row">
                                 <input type="text" name="nombre" placeholder="Nombre del Producto" value={formDataProducto.nombre} onChange={handleChangeProducto} />
@@ -196,7 +205,7 @@ const AdminPage = () => {
                         </form>
                     </div>
 
-                    <br/>
+                    <br />
                     <div className="productos-section">
                         <h3>Productos</h3>
                         <table className="table">
