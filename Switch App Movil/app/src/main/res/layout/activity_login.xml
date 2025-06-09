@@ -34,7 +34,8 @@
             android:adjustViewBounds="true"
             android:contentDescription="@string/todo"
             android:scaleType="fitCenter"
-            app:srcCompat="@mipmap/ic_switchstyle_launcher_foreground" />
+            app:srcCompat="@mipmap/ic_switchstyle_launcher_foreground"
+            tools:ignore="VisualLintBounds" />
 
         <EditText
             android:id="@+id/username"
@@ -93,6 +94,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
 
+        <!-- Home -->
         <LinearLayout
             android:id="@+id/nav_home"
             android:layout_width="0dp"
@@ -115,12 +117,13 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="6dp"
-                android:text="@string/inicio2"
+                android:layout_marginTop="4dp"
+                android:text="@string/inicio"
                 android:textColor="#FFFFFF"
-                android:textSize="14sp" />
+                android:textSize="13sp" />
         </LinearLayout>
 
+        <!-- Registro -->
         <LinearLayout
             android:id="@+id/nav_register"
             android:layout_width="0dp"
@@ -143,12 +146,13 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="6dp"
-                android:text="@string/usuario2"
+                android:layout_marginTop="4dp"
+                android:text="@string/usuario"
                 android:textColor="#FFFFFF"
-                android:textSize="14sp" />
+                android:textSize="13sp" />
         </LinearLayout>
 
+        <!-- Catálogo -->
         <LinearLayout
             android:id="@+id/nav_catalogs"
             android:layout_width="0dp"
@@ -171,10 +175,10 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="6dp"
-                android:text="@string/catalogo2"
+                android:layout_marginTop="4dp"
+                android:text="@string/catalogo"
                 android:textColor="#FFFFFF"
-                android:textSize="14sp" />
+                android:textSize="13sp" />
         </LinearLayout>
     </LinearLayout>
 

@@ -29,11 +29,13 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        mAuth = FirebaseAuth.getInstance();
+        if (mAuth == null) mAuth = FirebaseAuth.getInstance();
         FirebaseUser currentUser = mAuth.getCurrentUser();
         if (currentUser != null) {
-            startActivity(new Intent(LoginActivity.this, CatalogoProductos.class));
-            finish();
+            // Solo lanzamos intent, NO hacemos finish() para mantener la activity
+            Intent intent = new Intent(LoginActivity.this, CatalogoProductos.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intent);
         }
     }
 
@@ -45,10 +47,12 @@ public class LoginActivity extends AppCompatActivity {
 
         mAuth = FirebaseAuth.getInstance();
         mFirestore = FirebaseFirestore.getInstance();
+
         email = findViewById(R.id.username);
         password = findViewById(R.id.password);
         Button btn_login = findViewById(R.id.login);
         Button btn_forgot_password = findViewById(R.id.boton_recuperar);
+
         btn_login.setOnClickListener(view -> {
             String emailUser = email.getText().toString().trim();
             String passUser = password.getText().toString().trim();
@@ -65,16 +69,16 @@ public class LoginActivity extends AppCompatActivity {
 
         navHome.setOnClickListener(v -> {
             startActivity(new Intent(LoginActivity.this, MainActivity.class));
-            finish();
+            // No hacemos finish para mantener navegación sin cerrar login
         });
 
         navCatalogs.setOnClickListener(v -> {
             FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
             if (user != null) {
                 startActivity(new Intent(LoginActivity.this, CatalogoProductos.class));
-                finish();
-
+                // No hacemos finish()
             }
+            // Si user es null, no hacer nada para no bloquear botón
         });
     }
 
@@ -98,7 +102,9 @@ public class LoginActivity extends AppCompatActivity {
                                         if (userName == null || userName.isEmpty()) userName = "usuario";
 
                                         Toast.makeText(this, "Bienvenido/a Switch Style " + userName, Toast.LENGTH_LONG).show();
+
                                         Intent intent = new Intent(LoginActivity.this, CatalogoProductos.class);
+                                        // Aquí sí limpiamos el stack para evitar volver al login
                                         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                         startActivity(intent);
                                     })

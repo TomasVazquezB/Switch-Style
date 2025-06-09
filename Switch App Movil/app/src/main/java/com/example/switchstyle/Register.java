@@ -76,9 +76,18 @@ public class Register extends AppCompatActivity {
         navHome.setOnClickListener(v -> startActivity(new Intent(Register.this, MainActivity.class)));
 
         navRegister.setOnClickListener(v -> {
+            // Ya estás en registro, no hace falta acción
         });
 
-        navCatalogs.setOnClickListener(v -> startActivity(new Intent(Register.this, CatalogoProductos.class)));
+        navCatalogs.setOnClickListener(v -> {
+            if (mAuth.getCurrentUser() != null) {
+                // Usuario logueado, puede ir al catálogo
+                startActivity(new Intent(Register.this, CatalogoProductos.class));
+            } else {
+                // Usuario no logueado, ir a CatalogoProductos (se mostrará el layout de validación)
+                startActivity(new Intent(Register.this, CatalogoProductos.class));
+            }
+        });
     }
 
     private void registerUser(String nameUser, String emailUser, String passUser) {
@@ -94,7 +103,11 @@ public class Register extends AppCompatActivity {
                 mFirestore.collection("user").document(userId).set(userMap)
                         .addOnSuccessListener(aVoid -> {
                             Toast.makeText(this, R.string.registro_exitoso, Toast.LENGTH_SHORT).show();
-                            startActivity(new Intent(Register.this, LoginActivity.class));
+                            mAuth.signOut(); // Cierra sesión luego del registro
+                            // ✅ Redirigir al LoginActivity directamente
+                            Intent intent = new Intent(Register.this, LoginActivity.class);
+                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                            startActivity(intent);
                             finish();
                         })
                         .addOnFailureListener(e -> Toast.makeText(this, getString(R.string.error_registro_generico) + ": " + e.getMessage(), Toast.LENGTH_LONG).show());
