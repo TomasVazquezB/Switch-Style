@@ -2,59 +2,49 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\ProfileUpdateRequest;
-use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Redirect;
-use Illuminate\View\View;
+use Illuminate\Support\Facades\Hash;
 
 class ProfileController extends Controller
 {
-    /**
-     * Display the user's profile form.
-     */
-    public function edit(Request $request): View
+    public function edit()
     {
         return view('profile.edit', [
-            'user' => $request->user(),
+            'user' => auth()->user(),
         ]);
     }
 
-    /**
-     * Update the user's profile information.
-     */
-    public function update(ProfileUpdateRequest $request): RedirectResponse
+    public function update(Request $request)
     {
-        $request->user()->fill($request->validated());
+        $request->validate([
+            'Nombre' => 'required|string|max:255',
+            'Correo_Electronico' => 'required|email|unique:users,Correo_Electronico,' . auth()->id(),
+        ]);
 
-        if ($request->user()->isDirty('email')) {
-            $request->user()->email_verified_at = null;
+        $user = auth()->user();
+        $user->Nombre = $request->Nombre;
+        $user->Correo_Electronico = $request->Correo_Electronico;
+        $user->save();
+
+        return back()->with('success', 'Datos actualizados correctamente.');
+    }
+
+    public function updatePassword(Request $request)
+    {
+        $request->validate([
+            'current_password' => 'required',
+            'password' => 'required|string|min:8|confirmed',
+        ]);
+
+        if (!Hash::check($request->current_password, auth()->user()->password)) {
+            return back()->withErrors(['current_password' => 'La contraseña actual no es correcta.']);
         }
 
-        $request->user()->save();
+        $user = auth()->user();
+        $user->password = bcrypt($request->password);
+        $user->save();
 
-        return Redirect::route('profile.edit')->with('status', 'profile-updated');
-    }
-
-    /**
-     * Delete the user's account.
-     */
-    public function destroy(Request $request): RedirectResponse
-    {
-        $request->validateWithBag('userDeletion', [
-            'password' => ['required', 'current_password'],
-        ]);
-
-        $user = $request->user();
-
-        Auth::logout();
-
-        $user->delete();
-
-        $request->session()->invalidate();
-        $request->session()->regenerateToken();
-
-        return Redirect::to('/');
+        return back()->with('success', 'Contraseña actualizada correctamente.');
     }
 }
