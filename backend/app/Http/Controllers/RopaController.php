@@ -9,10 +9,15 @@ use Illuminate\Support\Facades\Storage;
 class RopaController extends Controller
 {
     public function index()
-    {
+{
+    if (auth()->user()->Tipo_Usuario === 'admin') {
         $ropas = Ropa::latest()->get();
-        return view('ropas.index', compact('ropas'));
+    } else {
+        $ropas = Ropa::where('ID_Usuario', auth()->id())->latest()->get();
     }
+
+    return view('ropas.index', compact('ropas'));
+}
 
     public function create()
     {
@@ -35,15 +40,17 @@ class RopaController extends Controller
         $ruta = $request->file('imagen')->store('ropa', 'public');
 
         Ropa::create([
-            'titulo' => $request->titulo,
-            'descripcion' => $request->descripcion,
-            'precio' => $request->precio,
-            'cantidad' => $request->cantidad,
-            'talla' => $request->talla,
-            'categoria' => $request->categoria,
-            'genero' => $request->genero,
-            'ruta_imagen' => $ruta
-        ]);
+    'titulo' => $request->titulo,
+    'descripcion' => $request->descripcion,
+    'precio' => $request->precio,
+    'cantidad' => $request->cantidad,
+    'talla' => $request->talla,
+    'categoria' => $request->categoria,
+    'genero' => $request->genero,
+    'ruta_imagen' => $ruta,
+    'ID_Usuario' => auth()->id(), // 👈 Asigna el usuario actual
+]);
+
 
         return redirect()->route('ropas.index')->with('success', 'Prenda guardada.');
     }

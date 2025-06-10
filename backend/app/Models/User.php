@@ -2,14 +2,13 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Hash;
 
 class User extends Authenticatable
 {
-    use HasFactory, Notifiable;
+    use Notifiable;
 
     protected $table = 'usuario';
     protected $primaryKey = 'ID_Usuario';
@@ -22,52 +21,32 @@ class User extends Authenticatable
         'Tipo_Usuario',
     ];
 
-    protected $hidden = ['Contraseña', 'remember_token'];
+    protected $hidden = [
+        'Contraseña',
+        'remember_token',
+    ];
 
+    /**
+     * Devuelve el nombre de la clave primaria (para Auth)
+     */
     public function getAuthIdentifierName()
     {
-        return 'ID_Usuario';
+        return $this->primaryKey; // Esto es 'ID_Usuario'
     }
 
+    /**
+     * Devuelve el campo de contraseña para Auth
+     */
     public function getAuthPassword()
     {
         return $this->Contraseña;
     }
 
-    public function setContraseñaAttribute($value)
+    /**
+     * Devuelve el nombre del campo usado como login
+     */
+    public function username()
     {
-        if (!empty($value) && !Hash::needsRehash($value)) {
-            $this->attributes['Contraseña'] = bcrypt($value);
-        } else {
-            $this->attributes['Contraseña'] = $value;
-        }
-    }
-
-    // Roles
-    public function esAdmin(): bool
-    {
-        return $this->Tipo_Usuario === 'Admin';
-    }
-
-    public function esPremium(): bool
-    {
-        return $this->Tipo_Usuario === 'Premium';
-    }
-
-    public function esFree(): bool
-    {
-        return $this->Tipo_Usuario === 'Free';
-    }
-
-    public function puedeVender(): bool
-    {
-        return in_array($this->Tipo_Usuario, ['Premium', 'Free', 'Admin']);
-    }
-
-    protected function casts(): array
-    {
-        return [
-            'email_verified_at' => 'datetime',
-        ];
+        return 'Correo_Electronico';
     }
 }

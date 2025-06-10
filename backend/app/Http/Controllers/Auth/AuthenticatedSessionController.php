@@ -3,43 +3,51 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Auth\LoginRequest;
-use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\View\View;
+use Illuminate\Validation\ValidationException;
 
 class AuthenticatedSessionController extends Controller
 {
-    /**
-     * Display the login view.
-     */
-    public function create(): View
+    public function create()
     {
         return view('auth.login');
     }
 
-    /**
-     * Handle an incoming authentication request.
-     */
-    public function store(LoginRequest $request): RedirectResponse
-    {
-        $request->authenticate();
+    public function store(Request $request)
+{
+    $credentials = $request->validate([
+        'Correo_Electronico' => ['required', 'email'],
+        'password' => ['required'],
+    ]);
 
-        $request->session()->regenerate();
-
-        return redirect()->intended(route('dashboard', absolute: false));
+    if (!Auth::attempt([
+        'Correo_Electronico' => $credentials['Correo_Electronico'],
+        'password' => $credentials['password']
+    ], $request->filled('remember'))) {
+        throw ValidationException::withMessages([
+            'Correo_Electronico' => __('Estas credenciales no coinciden con nuestros registros.'),
+        ]);
     }
 
-    /**
-     * Destroy an authenticated session.
-     */
-    public function destroy(Request $request): RedirectResponse
+    $request->session()->regenerate();
+
+    $tipo = strtolower(Auth::user()->Tipo_Usuario);
+
+    return match ($tipo) {
+        'admin' => redirect()->route('admin.dashboard'), // ✅ aquí va directamente a la tabla
+        'free', 'premium' => redirect()->route('dashboard'),
+        default => redirect('/'),
+    };
+}
+
+
+
+    public function destroy(Request $request)
     {
-        Auth::guard('web')->logout();
+        Auth::logout();
 
         $request->session()->invalidate();
-
         $request->session()->regenerateToken();
 
         return redirect('/');

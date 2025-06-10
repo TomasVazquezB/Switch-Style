@@ -3,17 +3,22 @@
 namespace App\Http\Middleware;
 
 use Closure;
-use Illuminate\Http\Request;
-use Symfony\Component\HttpFoundation\Response;
+use Illuminate\Support\Facades\Auth;
 
 class TipoUsuario
 {
-    public function handle(Request $request, Closure $next, ...$tipos)
+    public function handle($request, Closure $next, ...$tiposPermitidos)
     {
-        $usuario = auth()->user();
+        if (!Auth::check()) {
+            return redirect()->route('login');
+        }
 
-        if (!$usuario || !in_array(strtolower($usuario->Tipo_Usuario), $tipos)) {
-            abort(403, 'Acceso no autorizado');
+        $usuario = Auth::user();
+        $tipo = strtolower($usuario->Tipo_Usuario); // Verifica con la columna de tu base
+        $permitidos = array_map('strtolower', $tiposPermitidos);
+
+        if (!in_array($tipo, $permitidos)) {
+            abort(403, 'Acceso denegado.');
         }
 
         return $next($request);
