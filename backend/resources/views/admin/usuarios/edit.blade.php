@@ -10,9 +10,9 @@
 
         <div class="mb-4">
             <label class="block text-gray-700">Nombre</label>
-            <input type="text" name="name" value="{{ old('name', $user->name) }}"
-                   class="w-full px-4 py-2 border rounded @error('name') border-red-500 @enderror" required>
-            @error('name') <p class="text-red-500 text-sm">{{ $message }}</p> @enderror
+            <input type="text" name="Nombre" value="{{ old('Nombre', $user->Nombre) }}"
+                   class="w-full px-4 py-2 border rounded @error('Nombre') border-red-500 @enderror" required>
+            @error('Nombre') <p class="text-red-500 text-sm">{{ $message }}</p> @enderror
         </div>
 
         <div class="mb-4">
