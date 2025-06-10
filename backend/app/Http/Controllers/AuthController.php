@@ -10,72 +10,33 @@ use App\Models\User;
 class AuthController extends Controller
 {
     public function login(Request $request)
-    {
-        $request->validate([
-            'email'    => 'required|email',
-            'password' => 'required|string',
-        ]);
+{
+    $request->validate([
+        'email'    => 'required|email',
+        'password' => 'required|string',
+    ]);
 
-        $user = User::where('Correo_Electronico', $request->email)->first();
+    $user = User::where('Correo_Electronico', $request->email)->first();
 
-        if (!$user) {
-            return response()->json(['message' => 'Usuario no encontrado'], 401);
-        }
-
-        if ($user->Contraseña === $request->password) {
-            // Migrar contraseña plana a bcrypt si viene de base de datos antigua
-            $user->Contraseña = bcrypt($request->password);
-            $user->save();
-        }
-
-        if (!Hash::check($request->password, $user->Contraseña)) {
-            return response()->json(['message' => 'Credenciales inválidas'], 401);
-        }
-
-        // ❌ Quitamos sesión para evitar error "Session store not set on request"
-        // Auth::loginUsingId($user->ID_Usuario);
-        // $request->session()->regenerate();
-
-        return response()->json([
-            'id'     => $user->ID_Usuario,
-            'nombre' => $user->Nombre,
-            'correo' => $user->Correo_Electronico,
-            'rol'    => $user->Tipo_Usuario,
-        ]);
+    if (!$user || !Hash::check($request->password, $user->Contraseña)) {
+        return back()->withErrors([
+            'email' => 'Las credenciales no coinciden',
+        ])->withInput();
     }
 
-    public function register(Request $request)
-    {
-        $request->validate([
-            'nombre'   => 'required|string|max:100',
-            'correo'   => 'required|email|unique:usuario,Correo_Electronico',
-            'password' => 'required|string|min:6',
-            'tipo'     => 'nullable|string|in:Free,Premium,Admin,Usuario',
-        ]);
+    Auth::login($user);
+    $request->session()->regenerate();
 
-        $usuario = new User();
-        $usuario->Nombre             = $request->nombre;
-        $usuario->Correo_Electronico = $request->correo;
-        $usuario->Contraseña         = bcrypt($request->password);
-        $usuario->Tipo_Usuario       = $request->tipo ?? 'Usuario';
-        $usuario->save();
-
-        return response()->json([
-            'message' => 'Usuario registrado exitosamente',
-            'usuario' => [
-                'nombre' => $usuario->Nombre,
-                'correo' => $usuario->Correo_Electronico,
-                'rol'    => $usuario->Tipo_Usuario,
-            ],
-        ], 201);
+    // 🔐 Redirección basada en el tipo de usuario
+    switch (strtolower($user->Tipo_Usuario)) {
+        case 'admin':
+            return redirect()->route('admin.dashboard');
+        case 'free':
+        case 'premium':
+        case 'usuario':
+        default:
+            return redirect()->route('dashboard');
     }
+}
 
-    public function logout(Request $request)
-    {
-        Auth::logout();
-        $request->session()->invalidate();
-        $request->session()->regenerateToken();
-
-        return response()->json(['message' => 'Sesión cerrada']);
-    }
 }

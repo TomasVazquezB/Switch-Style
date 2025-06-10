@@ -6,17 +6,19 @@ use Illuminate\Database\Eloquent\Model;
 
 class Ropa extends Model
 {
-    protected $fillable = [
-    'titulo',
-    'descripcion',
-    'precio',
-    'ruta_imagen',
-    'cantidad',
-    'talla',
-    'categoria',
-    'genero',
-];
+    protected $table = 'ropas';
 
+    protected $fillable = [
+        'titulo',
+        'descripcion',
+        'precio',
+        'ruta_imagen',
+        'cantidad',
+        'talla',
+        'categoria',
+        'genero',
+    ];
 }
+
 
 

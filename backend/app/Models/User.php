@@ -2,23 +2,15 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Hash;
 
 class User extends Authenticatable
 {
-    /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable;
 
-    
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var list<string>
-     */
-    
     protected $table = 'usuario';
     protected $primaryKey = 'ID_Usuario';
     public $timestamps = false;
@@ -30,35 +22,52 @@ class User extends Authenticatable
         'Tipo_Usuario',
     ];
 
-    
-    protected $hidden = ['Contraseña','remember_token'];
+    protected $hidden = ['Contraseña', 'remember_token'];
 
     public function getAuthIdentifierName()
     {
-        return 'ID_Usuario'; // o 'id' si Laravel lo espera como clave primaria
+        return 'ID_Usuario';
     }
 
     public function getAuthPassword()
     {
-        return $this->Contraseña; // 👈 importante para Auth::attempt o Hash::check
+        return $this->Contraseña;
     }
-    /**
-     * The attributes that should be hidden for serialization.
-     *
-     * @var list<string>
-     */
-    
 
-    /**
-     * Get the attributes that should be cast.
-     *
-     * @return array<string, string>
-     */
+    public function setContraseñaAttribute($value)
+    {
+        if (!empty($value) && !Hash::needsRehash($value)) {
+            $this->attributes['Contraseña'] = bcrypt($value);
+        } else {
+            $this->attributes['Contraseña'] = $value;
+        }
+    }
+
+    // Roles
+    public function esAdmin(): bool
+    {
+        return $this->Tipo_Usuario === 'Admin';
+    }
+
+    public function esPremium(): bool
+    {
+        return $this->Tipo_Usuario === 'Premium';
+    }
+
+    public function esFree(): bool
+    {
+        return $this->Tipo_Usuario === 'Free';
+    }
+
+    public function puedeVender(): bool
+    {
+        return in_array($this->Tipo_Usuario, ['Premium', 'Free', 'Admin']);
+    }
+
     protected function casts(): array
     {
         return [
             'email_verified_at' => 'datetime',
-            'password' => 'hashed',
         ];
     }
 }
