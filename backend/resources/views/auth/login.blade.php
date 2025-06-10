@@ -20,6 +20,9 @@
         </div>
 
         <div class="flex items-center justify-end mt-4">
+            <a href="{{ route('register') }}" class="text-sm text-blue-600 hover:underline">
+        ¿No tenés cuenta? Registrate
+    </a>
             <x-primary-button class="ms-3">
                 Iniciar sesión
             </x-primary-button>

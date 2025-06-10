@@ -35,8 +35,8 @@ class AuthenticatedSessionController extends Controller
     $tipo = strtolower(Auth::user()->Tipo_Usuario);
 
     return match ($tipo) {
-        'admin' => redirect()->route('admin.dashboard'), // ✅ aquí va directamente a la tabla
-        'free', 'premium' => redirect()->route('dashboard'),
+        'admin' => redirect()->route('inicio'), // ✅ aquí va directamente a la tabla
+        'free', 'premium' => redirect()->route('inicio'),
         default => redirect('/'),
     };
 }
