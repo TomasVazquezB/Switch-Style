@@ -32,12 +32,13 @@ class Kernel extends HttpKernel
         ],
     ];
 
-    protected $routeMiddleware = [
+    protected $middlewareAliases = [
         'auth' => \App\Http\Middleware\Authenticate::class,
         'guest' => \App\Http\Middleware\RedirectIfAuthenticated::class,
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
 
-        // Registro del middleware personalizado
+        // ✅ Este es el alias que estás usando en las rutas
         'tipo_usuario' => \App\Http\Middleware\TipoUsuario::class,
     ];
 }
+

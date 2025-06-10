@@ -5,6 +5,7 @@ use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RopaController;
 use App\Http\Controllers\UserController;
+use App\Http\Middleware\TipoUsuario; // ✅ Importar la clase directamente
 
 // Página de bienvenida
 Route::get('/', function () {
@@ -31,7 +32,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     // ADMIN
-    Route::middleware('tipousuario:admin')->group(function () {
+    Route::middleware([TipoUsuario::class . ':admin'])->group(function () {
         Route::get('/admin', function () {
             return view('admin.dashboard');
         })->name('admin.dashboard');
@@ -40,16 +41,14 @@ Route::middleware('auth')->group(function () {
     });
 
     // FREE, PREMIUM, ADMIN
-    Route::middleware('tipousuario:free,premium,admin')->group(function () {
+    Route::middleware([TipoUsuario::class . ':free,premium,admin'])->group(function () {
         Route::resource('ropas', RopaController::class);
     });
 
+    // Prueba middleware
     Route::get('/test-middleware', function () {
-    return '¡Middleware funcionando!';
-})->middleware('tipousuario:admin');
-
+        return '¡Middleware funcionando!';
+    })->middleware([TipoUsuario::class . ':admin']);
 });
-
-
 
 require __DIR__.'/auth.php';
