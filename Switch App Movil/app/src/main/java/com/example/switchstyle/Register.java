@@ -1,9 +1,9 @@
 package com.example.switchstyle;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -24,14 +24,13 @@ public class Register extends AppCompatActivity {
     private EditText name, email, password;
     private FirebaseFirestore mFirestore;
     private FirebaseAuth mAuth;
+    private static final String TAG = "RegisterActivity";
 
-    private LinearLayout navHome, navRegister, navCatalogs;
-
-    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registro);
+
         setTitle(R.string.registro_title);
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
 
@@ -49,14 +48,8 @@ public class Register extends AppCompatActivity {
             String emailUser = email.getText().toString().trim();
             String passUser = password.getText().toString().trim();
 
-            if (TextUtils.isEmpty(nameUser) && TextUtils.isEmpty(emailUser) && TextUtils.isEmpty(passUser)) {
+            if (TextUtils.isEmpty(nameUser) || TextUtils.isEmpty(emailUser) || TextUtils.isEmpty(passUser)) {
                 Toast.makeText(this, R.string.error_campos_vacios, Toast.LENGTH_SHORT).show();
-            } else if (TextUtils.isEmpty(nameUser)) {
-                Toast.makeText(this, R.string.error_nombre_vacio, Toast.LENGTH_SHORT).show();
-            } else if (TextUtils.isEmpty(emailUser)) {
-                Toast.makeText(this, R.string.error_email_vacio, Toast.LENGTH_SHORT).show();
-            } else if (TextUtils.isEmpty(passUser)) {
-                Toast.makeText(this, R.string.error_contraseña_vacia, Toast.LENGTH_SHORT).show();
             } else if (passUser.length() < 6) {
                 Toast.makeText(this, R.string.error_contraseña_corta, Toast.LENGTH_SHORT).show();
             } else {
@@ -69,23 +62,33 @@ public class Register extends AppCompatActivity {
             finish();
         });
 
-        navHome = findViewById(R.id.nav_home);
-        navRegister = findViewById(R.id.nav_register);
-        navCatalogs = findViewById(R.id.nav_catalogs);
+        LinearLayout navHome = findViewById(R.id.nav_home);
+        LinearLayout navRegister = findViewById(R.id.nav_register);
+        LinearLayout navCatalogs = findViewById(R.id.nav_catalogs);
 
-        navHome.setOnClickListener(v -> startActivity(new Intent(Register.this, MainActivity.class)));
+        navHome.setOnClickListener(v -> {
+            startActivity(new Intent(Register.this, MainActivity.class));
+            finish();
+        });
 
         navRegister.setOnClickListener(v -> {
-            // Ya estás en registro, no hace falta acción
+            startActivity(new Intent(Register.this, LoginActivity.class));
+            finish();
         });
 
         navCatalogs.setOnClickListener(v -> {
-            if (mAuth.getCurrentUser() != null) {
-                // Usuario logueado, puede ir al catálogo
-                startActivity(new Intent(Register.this, CatalogoProductos.class));
-            } else {
-                // Usuario no logueado, ir a CatalogoProductos (se mostrará el layout de validación)
-                startActivity(new Intent(Register.this, CatalogoProductos.class));
+            try {
+                if (mAuth.getCurrentUser() != null) {
+                    Log.d(TAG, "Usuario autenticado, yendo al catálogo");
+                    startActivity(new Intent(Register.this, CatalogoProductos.class));
+                } else {
+                    Log.d(TAG, "Usuario no autenticado, yendo a LoginValidation");
+                    startActivity(new Intent(Register.this, LoginValidation.class));
+                }
+                finish();
+            } catch (Exception e) {
+                Log.e(TAG, "Error al abrir el catálogo", e);
+                Toast.makeText(Register.this, "Error al abrir el catálogo", Toast.LENGTH_LONG).show();
             }
         });
     }
@@ -103,16 +106,19 @@ public class Register extends AppCompatActivity {
                 mFirestore.collection("user").document(userId).set(userMap)
                         .addOnSuccessListener(aVoid -> {
                             Toast.makeText(this, R.string.registro_exitoso, Toast.LENGTH_SHORT).show();
-                            mAuth.signOut(); // Cierra sesión luego del registro
-                            // ✅ Redirigir al LoginActivity directamente
-                            Intent intent = new Intent(Register.this, LoginActivity.class);
-                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                            startActivity(intent);
+
+                            // ✅ Mantenemos al usuario logueado y lo mandamos al catálogo directamente
+                            startActivity(new Intent(Register.this, CatalogoProductos.class));
                             finish();
                         })
-                        .addOnFailureListener(e -> Toast.makeText(this, getString(R.string.error_registro_generico) + ": " + e.getMessage(), Toast.LENGTH_LONG).show());
+                        .addOnFailureListener(e -> {
+                            Log.e(TAG, "Fallo al guardar en Firestore", e);
+                            Toast.makeText(this, getString(R.string.error_registro_generico) + ": " + e.getMessage(), Toast.LENGTH_LONG).show();
+                        });
+
             } else {
                 String error = task.getException() != null ? task.getException().getMessage() : "";
+                Log.e(TAG, "Fallo al registrar: " + error);
                 if (error != null && error.contains("email address is already in use")) {
                     Toast.makeText(this, R.string.error_email_existente, Toast.LENGTH_LONG).show();
                 } else {

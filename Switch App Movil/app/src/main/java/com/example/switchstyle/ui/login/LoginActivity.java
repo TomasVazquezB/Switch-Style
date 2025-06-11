@@ -11,9 +11,11 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.switchstyle.CatalogoProductos;
+import com.example.switchstyle.LoginValidation;
 import com.example.switchstyle.MainActivity;
 import com.example.switchstyle.R;
 import com.example.switchstyle.ReiniciarContra;
+import com.example.switchstyle.Register;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -32,10 +34,7 @@ public class LoginActivity extends AppCompatActivity {
         if (mAuth == null) mAuth = FirebaseAuth.getInstance();
         FirebaseUser currentUser = mAuth.getCurrentUser();
         if (currentUser != null) {
-            // Solo lanzamos intent, NO hacemos finish() para mantener la activity
-            Intent intent = new Intent(LoginActivity.this, CatalogoProductos.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            startActivity(intent);
+            startActivity(new Intent(LoginActivity.this, CatalogoProductos.class));
         }
     }
 
@@ -59,26 +58,25 @@ public class LoginActivity extends AppCompatActivity {
             validarCamposYLoguear(emailUser, passUser);
         });
 
-        btn_forgot_password.setOnClickListener(view ->
-                startActivity(new Intent(LoginActivity.this, ReiniciarContra.class))
+        btn_forgot_password.setOnClickListener(view -> startActivity(new Intent(LoginActivity.this, ReiniciarContra.class))
         );
 
         navHome = findViewById(R.id.nav_home);
         navRegister = findViewById(R.id.nav_register);
         navCatalogs = findViewById(R.id.nav_catalogs);
+        navHome.setOnClickListener(v -> startActivity(new Intent(LoginActivity.this, MainActivity.class))
+        );
 
-        navHome.setOnClickListener(v -> {
-            startActivity(new Intent(LoginActivity.this, MainActivity.class));
-            // No hacemos finish para mantener navegación sin cerrar login
-        });
+        navRegister.setOnClickListener(v -> startActivity(new Intent(LoginActivity.this, Register.class))
+        );
 
         navCatalogs.setOnClickListener(v -> {
             FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
             if (user != null) {
                 startActivity(new Intent(LoginActivity.this, CatalogoProductos.class));
-                // No hacemos finish()
+            } else {
+                startActivity(new Intent(LoginActivity.this, LoginValidation.class));
             }
-            // Si user es null, no hacer nada para no bloquear botón
         });
     }
 
@@ -104,13 +102,10 @@ public class LoginActivity extends AppCompatActivity {
                                         Toast.makeText(this, "Bienvenido/a Switch Style " + userName, Toast.LENGTH_LONG).show();
 
                                         Intent intent = new Intent(LoginActivity.this, CatalogoProductos.class);
-                                        // Aquí sí limpiamos el stack para evitar volver al login
                                         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                         startActivity(intent);
                                     })
-                                    .addOnFailureListener(e ->
-                                            Toast.makeText(this, "Error al obtener los datos del usuario", Toast.LENGTH_SHORT).show()
-                                    );
+                                    .addOnFailureListener(e -> Toast.makeText(this, "Error al obtener los datos del usuario", Toast.LENGTH_SHORT).show());
                         }
                     } else {
                         Toast.makeText(this, "Correo o contraseña incorrectos", Toast.LENGTH_SHORT).show();

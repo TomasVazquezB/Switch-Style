@@ -21,8 +21,6 @@ public class ReiniciarContra extends AppCompatActivity {
     private EditText editTextEmail;
     private FirebaseAuth mAuth;
 
-    private LinearLayout navHome, navRegister, navCatalogs;
-
     @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,9 +52,9 @@ public class ReiniciarContra extends AppCompatActivity {
         });
 
         LinearLayout navigationBar = findViewById(R.id.navigationBar);
-        navHome = findViewById(R.id.nav_home);
-        navRegister = findViewById(R.id.nav_register);
-        navCatalogs = findViewById(R.id.nav_catalogs);
+        LinearLayout navHome = findViewById(R.id.nav_home);
+        LinearLayout navRegister = findViewById(R.id.nav_register);
+        LinearLayout navCatalogs = findViewById(R.id.nav_catalogs);
 
         navHome.setOnClickListener(v -> startActivity(new Intent(ReiniciarContra.this, MainActivity.class)));
         navRegister.setOnClickListener(v -> startActivity(new Intent(ReiniciarContra.this, Register.class)));

@@ -26,11 +26,6 @@ import java.util.List;
 
 public class CatalogoProductos extends AppCompatActivity {
 
-    private RecyclerView recyclerView;
-    private List<Publicacion> publicaciones;
-
-    private LinearLayout navHome, navRegister, navCatalogs;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,10 +42,10 @@ public class CatalogoProductos extends AppCompatActivity {
         }
 
         setContentView(R.layout.activity_catalogo_productos);
-        recyclerView = findViewById(R.id.recyclerViewProductos);
+        RecyclerView recyclerView = findViewById(R.id.recyclerViewProductos);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        publicaciones = new ArrayList<>();
+        List<Publicacion> publicaciones = new ArrayList<>();
         for (int i = 0; i < 20; i++) {
             publicaciones.add(new Publicacion((i % 3) + 1, i % 2 == 0));
         }
@@ -61,9 +56,9 @@ public class CatalogoProductos extends AppCompatActivity {
     }
 
     private void initNavigation() {
-        navHome = findViewById(R.id.nav_home);
-        navRegister = findViewById(R.id.nav_register);
-        navCatalogs = findViewById(R.id.nav_catalogs);
+        LinearLayout navHome = findViewById(R.id.nav_home);
+        LinearLayout navRegister = findViewById(R.id.nav_register);
+        LinearLayout navCatalogs = findViewById(R.id.nav_catalogs);
 
         if (navHome != null) {
             navHome.setOnClickListener(v -> {
@@ -98,7 +93,7 @@ public class CatalogoProductos extends AppCompatActivity {
         }
     }
 
-    private class PublicacionAdapter extends RecyclerView.Adapter<PublicacionAdapter.PublicacionViewHolder> {
+    private static class PublicacionAdapter extends RecyclerView.Adapter<PublicacionAdapter.PublicacionViewHolder> {
 
         private final List<Publicacion> publicaciones;
         PublicacionAdapter(List<Publicacion> publicaciones) {
@@ -132,7 +127,7 @@ public class CatalogoProductos extends AppCompatActivity {
         public int getItemCount() {
             return publicaciones.size();
         }
-        class PublicacionViewHolder extends RecyclerView.ViewHolder {
+        static class PublicacionViewHolder extends RecyclerView.ViewHolder {
             ViewPager2 viewPagerImagenes;
             ImageButton btnMeGusta;
 
@@ -170,7 +165,7 @@ public class CatalogoProductos extends AppCompatActivity {
             return cantidad;
         }
 
-        class ImagenViewHolder extends RecyclerView.ViewHolder {
+        static class ImagenViewHolder extends RecyclerView.ViewHolder {
             ImageView imageView;
             ImagenViewHolder(@NonNull View itemView) {
                 super(itemView);
