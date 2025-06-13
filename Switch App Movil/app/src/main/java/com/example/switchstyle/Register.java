@@ -13,6 +13,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.switchstyle.ui.login.LoginActivity;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.HashMap;
@@ -25,6 +26,17 @@ public class Register extends AppCompatActivity {
     private FirebaseFirestore mFirestore;
     private FirebaseAuth mAuth;
     private static final String TAG = "RegisterActivity";
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        if (mAuth == null) mAuth = FirebaseAuth.getInstance();
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        if (currentUser != null) {
+            startActivity(new Intent(Register.this, CatalogoProductos.class));
+            finish();
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,36 +71,38 @@ public class Register extends AppCompatActivity {
 
         btnIrLogin.setOnClickListener(v -> {
             startActivity(new Intent(Register.this, LoginActivity.class));
-            finish();
+            finishAffinity(); // Cierra esta y actividades anteriores
         });
 
+        // Navegación inferior
         LinearLayout navHome = findViewById(R.id.nav_home);
         LinearLayout navRegister = findViewById(R.id.nav_register);
         LinearLayout navCatalogs = findViewById(R.id.nav_catalogs);
 
         navHome.setOnClickListener(v -> {
             startActivity(new Intent(Register.this, MainActivity.class));
-            finish();
+            finishAffinity(); // Asegura que solo quede una actividad abierta
         });
 
         navRegister.setOnClickListener(v -> {
             startActivity(new Intent(Register.this, LoginActivity.class));
-            finish();
+            finishAffinity();
         });
 
         navCatalogs.setOnClickListener(v -> {
-            try {
-                if (mAuth.getCurrentUser() != null) {
-                    Log.d(TAG, "Usuario autenticado, yendo al catálogo");
-                    startActivity(new Intent(Register.this, CatalogoProductos.class));
-                } else {
-                    Log.d(TAG, "Usuario no autenticado, yendo a LoginValidation");
-                    startActivity(new Intent(Register.this, LoginValidation.class));
-                }
-                finish();
-            } catch (Exception e) {
-                Log.e(TAG, "Error al abrir el catálogo", e);
-                Toast.makeText(Register.this, "Error al abrir el catálogo", Toast.LENGTH_LONG).show();
+            FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+            if (user != null) {
+                startActivity(new Intent(Register.this, CatalogoProductos.class));
+                finishAffinity();
+            } else {
+                setContentView(R.layout.activity_login_validation);
+                setTitle("Acceso restringido");
+
+                Button btnIrLoginDesdeValidacion = findViewById(R.id.btnIrRegistro);
+                btnIrLoginDesdeValidacion.setOnClickListener(view -> {
+                    startActivity(new Intent(Register.this, LoginActivity.class));
+                    finishAffinity();
+                });
             }
         });
     }
@@ -106,16 +120,13 @@ public class Register extends AppCompatActivity {
                 mFirestore.collection("user").document(userId).set(userMap)
                         .addOnSuccessListener(aVoid -> {
                             Toast.makeText(this, R.string.registro_exitoso, Toast.LENGTH_SHORT).show();
-
-                            // ✅ Mantenemos al usuario logueado y lo mandamos al catálogo directamente
                             startActivity(new Intent(Register.this, CatalogoProductos.class));
-                            finish();
+                            finishAffinity();
                         })
                         .addOnFailureListener(e -> {
                             Log.e(TAG, "Fallo al guardar en Firestore", e);
                             Toast.makeText(this, getString(R.string.error_registro_generico) + ": " + e.getMessage(), Toast.LENGTH_LONG).show();
                         });
-
             } else {
                 String error = task.getException() != null ? task.getException().getMessage() : "";
                 Log.e(TAG, "Fallo al registrar: " + error);
@@ -132,5 +143,12 @@ public class Register extends AppCompatActivity {
     public boolean onSupportNavigateUp() {
         finish();
         return true;
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        // Cierra todas las actividades al salir
+        finishAffinity();
     }
 }

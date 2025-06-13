@@ -17,7 +17,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
 
-import com.example.switchstyle.ui.login.LoginActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -26,22 +25,19 @@ import java.util.List;
 
 public class CatalogoProductos extends AppCompatActivity {
 
+    private FirebaseAuth mAuth;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+        mAuth = FirebaseAuth.getInstance();
 
-        if (currentUser == null) {
-            setContentView(R.layout.activity_login_validation);
-            findViewById(R.id.btnIrRegistro).setOnClickListener(v -> {
-                startActivity(new Intent(this, Register.class));
-                finish();
-            });
-            return;
-        }
+        if (!validarSesion()) return;
 
         setContentView(R.layout.activity_catalogo_productos);
+        setTitle("Catálogo de productos");
+
         RecyclerView recyclerView = findViewById(R.id.recyclerViewProductos);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
@@ -52,7 +48,21 @@ public class CatalogoProductos extends AppCompatActivity {
 
         PublicacionAdapter adapter = new PublicacionAdapter(publicaciones);
         recyclerView.setAdapter(adapter);
+
         initNavigation();
+    }
+
+    private boolean validarSesion() {
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        if (currentUser == null) {
+            setContentView(R.layout.activity_login_validation);
+            findViewById(R.id.btnIrRegistro).setOnClickListener(v -> {
+                startActivity(new Intent(this, Register.class)); // CORREGIDO: Va a Register, no Login
+                finish();
+            });
+            return false;
+        }
+        return true;
     }
 
     private void initNavigation() {
@@ -69,16 +79,14 @@ public class CatalogoProductos extends AppCompatActivity {
 
         if (navRegister != null) {
             navRegister.setOnClickListener(v -> {
-                FirebaseAuth.getInstance().signOut();
-                Intent intent = new Intent(this, LoginActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                startActivity(intent);
+                startActivity(new Intent(this, Register.class));
                 finish();
             });
         }
 
         if (navCatalogs != null) {
             navCatalogs.setOnClickListener(v -> {
+                // Ya estamos aquí, puedes poner acción opcional
             });
         }
     }
@@ -96,6 +104,7 @@ public class CatalogoProductos extends AppCompatActivity {
     private static class PublicacionAdapter extends RecyclerView.Adapter<PublicacionAdapter.PublicacionViewHolder> {
 
         private final List<Publicacion> publicaciones;
+
         PublicacionAdapter(List<Publicacion> publicaciones) {
             this.publicaciones = publicaciones;
         }
@@ -127,6 +136,7 @@ public class CatalogoProductos extends AppCompatActivity {
         public int getItemCount() {
             return publicaciones.size();
         }
+
         static class PublicacionViewHolder extends RecyclerView.ViewHolder {
             ViewPager2 viewPagerImagenes;
             ImageButton btnMeGusta;
@@ -142,6 +152,7 @@ public class CatalogoProductos extends AppCompatActivity {
     private static class ImagenAdapter extends RecyclerView.Adapter<ImagenAdapter.ImagenViewHolder> {
 
         private final int cantidad;
+
         ImagenAdapter(int cantidad) {
             this.cantidad = cantidad;
         }
@@ -167,10 +178,17 @@ public class CatalogoProductos extends AppCompatActivity {
 
         static class ImagenViewHolder extends RecyclerView.ViewHolder {
             ImageView imageView;
+
             ImagenViewHolder(@NonNull View itemView) {
                 super(itemView);
                 imageView = itemView.findViewById(R.id.imagenProducto);
             }
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finishAffinity();
     }
 }

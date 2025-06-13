@@ -11,11 +11,10 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.switchstyle.CatalogoProductos;
-import com.example.switchstyle.LoginValidation;
 import com.example.switchstyle.MainActivity;
 import com.example.switchstyle.R;
-import com.example.switchstyle.ReiniciarContra;
 import com.example.switchstyle.Register;
+import com.example.switchstyle.ReiniciarContra;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -35,6 +34,7 @@ public class LoginActivity extends AppCompatActivity {
         FirebaseUser currentUser = mAuth.getCurrentUser();
         if (currentUser != null) {
             startActivity(new Intent(LoginActivity.this, CatalogoProductos.class));
+            finish();
         }
     }
 
@@ -58,24 +58,37 @@ public class LoginActivity extends AppCompatActivity {
             validarCamposYLoguear(emailUser, passUser);
         });
 
-        btn_forgot_password.setOnClickListener(view -> startActivity(new Intent(LoginActivity.this, ReiniciarContra.class))
-        );
+        btn_forgot_password.setOnClickListener(view ->
+                startActivity(new Intent(LoginActivity.this, ReiniciarContra.class)));
 
         navHome = findViewById(R.id.nav_home);
         navRegister = findViewById(R.id.nav_register);
         navCatalogs = findViewById(R.id.nav_catalogs);
-        navHome.setOnClickListener(v -> startActivity(new Intent(LoginActivity.this, MainActivity.class))
-        );
 
-        navRegister.setOnClickListener(v -> startActivity(new Intent(LoginActivity.this, Register.class))
-        );
+        navHome.setOnClickListener(v -> {
+            startActivity(new Intent(LoginActivity.this, MainActivity.class));
+            finishAffinity(); // Asegura que no haya activities anteriores activas
+        });
+
+        navRegister.setOnClickListener(v -> {
+            startActivity(new Intent(LoginActivity.this, Register.class));
+            finishAffinity();
+        });
 
         navCatalogs.setOnClickListener(v -> {
             FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
             if (user != null) {
                 startActivity(new Intent(LoginActivity.this, CatalogoProductos.class));
+                finishAffinity();
             } else {
-                startActivity(new Intent(LoginActivity.this, LoginValidation.class));
+                setContentView(R.layout.activity_login_validation);
+                setTitle("Acceso restringido");
+
+                Button btnIrLoginDesdeValidacion = findViewById(R.id.btnIrRegistro);
+                btnIrLoginDesdeValidacion.setOnClickListener(view2 -> {
+                    startActivity(new Intent(LoginActivity.this, LoginActivity.class));
+                    finishAffinity();
+                });
             }
         });
     }
@@ -114,5 +127,11 @@ public class LoginActivity extends AppCompatActivity {
                 .addOnFailureListener(e ->
                         Toast.makeText(this, "Error al iniciar sesión: " + e.getMessage(), Toast.LENGTH_SHORT).show()
                 );
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finishAffinity(); // Cierra todas las actividades activas
     }
 }
