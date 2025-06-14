@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -43,7 +44,7 @@ public class CatalogoProductos extends AppCompatActivity {
 
         List<Publicacion> publicaciones = new ArrayList<>();
         for (int i = 0; i < 20; i++) {
-            publicaciones.add(new Publicacion((i % 3) + 1, i % 2 == 0));
+            publicaciones.add(new Publicacion((i % 20) + 1, i % 2 == 0));  // Hasta 20 imágenes para test
         }
 
         PublicacionAdapter adapter = new PublicacionAdapter(publicaciones);
@@ -57,7 +58,7 @@ public class CatalogoProductos extends AppCompatActivity {
         if (currentUser == null) {
             setContentView(R.layout.activity_login_validation);
             findViewById(R.id.btnIrRegistro).setOnClickListener(v -> {
-                startActivity(new Intent(this, Register.class)); // CORREGIDO: Va a Register, no Login
+                startActivity(new Intent(this, Register.class)); // Va a Register
                 finish();
             });
             return false;
@@ -70,23 +71,22 @@ public class CatalogoProductos extends AppCompatActivity {
         LinearLayout navRegister = findViewById(R.id.nav_register);
         LinearLayout navCatalogs = findViewById(R.id.nav_catalogs);
 
+        // Bloqueamos la navegación para que no puedan salir del catálogo
         if (navHome != null) {
             navHome.setOnClickListener(v -> {
-                startActivity(new Intent(this, MainActivity.class));
-                finish();
+                // Nada para bloquear navegación
             });
         }
 
         if (navRegister != null) {
             navRegister.setOnClickListener(v -> {
-                startActivity(new Intent(this, Register.class));
-                finish();
+                // Nada para bloquear navegación
             });
         }
 
         if (navCatalogs != null) {
             navCatalogs.setOnClickListener(v -> {
-                // Ya estamos aquí, puedes poner acción opcional
+                // Ya estamos aquí, sin acción
             });
         }
     }
@@ -121,15 +121,42 @@ public class CatalogoProductos extends AppCompatActivity {
             Publicacion publicacion = publicaciones.get(position);
             ImagenAdapter imagenAdapter = new ImagenAdapter(publicacion.cantidadImagenes);
             holder.viewPagerImagenes.setAdapter(imagenAdapter);
+
+            // Mostrar contador solo si hay más de 1 imagen
+            if (publicacion.cantidadImagenes > 1) {
+                holder.tvContadorImagenes.setVisibility(View.VISIBLE);
+                holder.tvContadorImagenes.setText(holder.tvContadorImagenes.getContext()
+                        .getString(R.string.contador_imagenes, 1, publicacion.cantidadImagenes));
+            } else {
+                holder.tvContadorImagenes.setVisibility(View.GONE);
+            }
+
             holder.btnMeGusta.setImageResource(publicacion.meGusta
                     ? R.drawable.favorite_filled_24px
                     : R.drawable.favorite_24px);
+
             holder.btnMeGusta.setOnClickListener(v -> {
                 publicacion.meGusta = !publicacion.meGusta;
                 holder.btnMeGusta.setImageResource(publicacion.meGusta
                         ? R.drawable.favorite_filled_24px
                         : R.drawable.favorite_24px);
             });
+
+            // Eliminar callback anterior para evitar fugas de memoria
+            if (holder.pageChangeCallback != null) {
+                holder.viewPagerImagenes.unregisterOnPageChangeCallback(holder.pageChangeCallback);
+            }
+
+            // Registrar nuevo callback para actualizar contador al cambiar página
+            holder.pageChangeCallback = new ViewPager2.OnPageChangeCallback() {
+                @Override
+                public void onPageSelected(int pos) {
+                    super.onPageSelected(pos);
+                    holder.tvContadorImagenes.setText(holder.tvContadorImagenes.getContext()
+                            .getString(R.string.contador_imagenes, pos + 1, publicacion.cantidadImagenes));
+                }
+            };
+            holder.viewPagerImagenes.registerOnPageChangeCallback(holder.pageChangeCallback);
         }
 
         @Override
@@ -140,11 +167,14 @@ public class CatalogoProductos extends AppCompatActivity {
         static class PublicacionViewHolder extends RecyclerView.ViewHolder {
             ViewPager2 viewPagerImagenes;
             ImageButton btnMeGusta;
+            TextView tvContadorImagenes;
+            ViewPager2.OnPageChangeCallback pageChangeCallback;
 
             PublicacionViewHolder(@NonNull View itemView) {
                 super(itemView);
                 viewPagerImagenes = itemView.findViewById(R.id.viewPagerImagenes);
                 btnMeGusta = itemView.findViewById(R.id.btnMeGusta);
+                tvContadorImagenes = itemView.findViewById(R.id.tvContadorImagenes);
             }
         }
     }
@@ -188,7 +218,8 @@ public class CatalogoProductos extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
+        // Bloqueamos el botón atrás para que no salga del catálogo
+        // No llamamos super.onBackPressed()
         super.onBackPressed();
-        finishAffinity();
     }
 }

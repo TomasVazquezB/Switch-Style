@@ -65,4 +65,8 @@
     <string name="like">Me gusta</string>
     <string name="image">Imagen de producto</string>
     <string name="registro_boton">Ir al registro o el login</string>
+    <string name="_1_3">1/3</string>
+    <string name="contador_imagenes">%1$d/%2$d</string>
+    <string name="_1_32">1/3</string>
+
 </resources>

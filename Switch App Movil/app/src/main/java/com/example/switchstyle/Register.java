@@ -32,9 +32,11 @@ public class Register extends AppCompatActivity {
         super.onStart();
         if (mAuth == null) mAuth = FirebaseAuth.getInstance();
         FirebaseUser currentUser = mAuth.getCurrentUser();
+
+        // ✅ Ya no redirigimos al catálogo automáticamente
+        // Si querés forzar logout aquí también, podés hacerlo:
         if (currentUser != null) {
-            startActivity(new Intent(Register.this, CatalogoProductos.class));
-            finish();
+            FirebaseAuth.getInstance().signOut();
         }
     }
 
@@ -120,8 +122,15 @@ public class Register extends AppCompatActivity {
                 mFirestore.collection("user").document(userId).set(userMap)
                         .addOnSuccessListener(aVoid -> {
                             Toast.makeText(this, R.string.registro_exitoso, Toast.LENGTH_SHORT).show();
-                            startActivity(new Intent(Register.this, CatalogoProductos.class));
-                            finishAffinity();
+
+                            // 🔐 Cerrar sesión después de registrar
+                            FirebaseAuth.getInstance().signOut();
+
+                            // 👉 Redirigir al login
+                            Intent intent = new Intent(Register.this, LoginActivity.class);
+                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                            startActivity(intent);
+                            finish();
                         })
                         .addOnFailureListener(e -> {
                             Log.e(TAG, "Fallo al guardar en Firestore", e);
