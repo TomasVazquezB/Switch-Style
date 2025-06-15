@@ -1,13 +1,8 @@
 @extends('layouts.app')
 
 @section('content')
-  
-
-
-<div class="max-w-2xl mx-auto mt-16 bg-white shadow-lg rounded-lg p-8">
-    <h2 class="text-3xl font-bold mb-6 text-gray-800">
-        {{ isset($ropa) ? 'Editar prenda' : 'Agregar prenda' }}
-    </h2>
+<div class="max-w-3xl mx-auto mt-12 bg-white shadow-md rounded-lg p-8">
+    <h2 class="text-2xl font-bold mb-6 text-gray-800">Agregar prenda</h2>
 
     @if ($errors->any())
         <div class="bg-red-100 text-red-700 p-4 rounded mb-6 border border-red-200">
@@ -19,101 +14,79 @@
         </div>
     @endif
 
-    <form 
-        action="{{ isset($ropa) ? route('ropas.update', $ropa->id) : route('ropas.store') }}"
-        method="POST"
-        enctype="multipart/form-data"
-        class="space-y-5"
-    >
+    <form action="{{ route('ropas.store') }}" method="POST" enctype="multipart/form-data" class="space-y-6">
         @csrf
-        @if(isset($ropa)) @method('PUT') @endif
 
-        <!-- TÍTULO -->
         <div>
             <label class="block text-sm font-medium text-gray-700 mb-1">Título</label>
-            <input type="text" name="titulo" value="{{ old('titulo', $ropa->titulo ?? '') }}"
-                   class="w-full border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400" required>
+            <input type="text" name="titulo" value="{{ old('titulo') }}" required
+                   class="w-full border border-gray-300 rounded-md px-4 py-2 focus:ring-2 focus:ring-blue-400">
         </div>
 
-        <!-- DESCRIPCIÓN -->
         <div>
             <label class="block text-sm font-medium text-gray-700 mb-1">Descripción</label>
-            <textarea name="descripcion" rows="3"
-                      class="w-full border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
-                      required>{{ old('descripcion', $ropa->descripcion ?? '') }}</textarea>
+            <textarea name="descripcion" rows="3" required
+                      class="w-full border border-gray-300 rounded-md px-4 py-2 focus:ring-2 focus:ring-blue-400">{{ old('descripcion') }}</textarea>
         </div>
 
-        <!-- PRECIO Y CANTIDAD -->
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1">Precio</label>
-                <input type="number" name="precio" step="0.01"
-                       value="{{ old('precio', $ropa->precio ?? '') }}"
-                       class="w-full border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
-                       required>
-            </div>
-            <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1">Cantidad</label>
-                <input type="number" name="cantidad"
-                       value="{{ old('cantidad', $ropa->cantidad ?? '') }}"
-                       class="w-full border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
-                       required>
-            </div>
-        </div>
-
-        <!-- TALLA, CATEGORÍA, GÉNERO -->
-        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-            <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1">Talla</label>
-                <select name="talla" class="w-full border border-gray-300 rounded-md px-4 py-2 focus:ring-2 focus:ring-blue-400" required>
-                    @foreach(['S','M','L','XL','XXL'] as $t)
-                        <option value="{{ $t }}" {{ old('talla', $ropa->talla ?? '') === $t ? 'selected' : '' }}>{{ $t }}</option>
-                    @endforeach
-                </select>
-            </div>
-
-            <div>
                 <label class="block text-sm font-medium text-gray-700 mb-1">Categoría</label>
-                <select name="categoria" class="w-full border border-gray-300 rounded-md px-4 py-2 focus:ring-2 focus:ring-blue-400" required>
-                    @foreach(['Remeras','Pantalones','Camperas','Shorts','Faldas','Vestidos'] as $c)
-                        <option value="{{ $c }}" {{ old('categoria', $ropa->categoria ?? '') === $c ? 'selected' : '' }}>{{ $c }}</option>
+                <select name="categoria_id" required class="w-full border border-gray-300 rounded-md px-4 py-2">
+                    <option value="">Seleccione</option>
+                    @foreach($categorias as $c)
+                        <option value="{{ $c->id }}" {{ old('categoria_id') == $c->id ? 'selected' : '' }}>
+                            {{ $c->nombre }}
+                        </option>
                     @endforeach
                 </select>
             </div>
 
             <div>
                 <label class="block text-sm font-medium text-gray-700 mb-1">Género</label>
-                <select name="genero" class="w-full border border-gray-300 rounded-md px-4 py-2 focus:ring-2 focus:ring-blue-400" required>
-                    @foreach(['Hombre','Mujer'] as $g)
-                        <option value="{{ $g }}" {{ old('genero', $ropa->genero ?? '') === $g ? 'selected' : '' }}>{{ $g }}</option>
+                <select name="genero_id" required class="w-full border border-gray-300 rounded-md px-4 py-2">
+                    <option value="">Seleccione</option>
+                    @foreach($generos as $g)
+                        <option value="{{ $g->id }}" {{ old('genero_id') == $g->id ? 'selected' : '' }}>
+                            {{ $g->nombre }}
+                        </option>
                     @endforeach
                 </select>
             </div>
         </div>
 
-        <!-- IMAGEN ACTUAL -->
-        @if(isset($ropa) && $ropa->ruta_imagen)
-            <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1">Imagen actual:</label>
-                <img src="{{ asset('storage/' . $ropa->ruta_imagen) }}" alt="Imagen actual" class="w-32 rounded shadow border mt-2">
-            </div>
-        @endif
-
-        <!-- NUEVA IMAGEN -->
         <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1">Imagen (opcional)</label>
-            <input type="file" name="imagen" class="w-full border border-gray-300 rounded-md px-4 py-2">
+            <label class="block text-sm font-medium text-gray-700 mb-1">Stock por talla</label>
+            <div class="flex flex-wrap gap-6">
+                @foreach ($tallas as $talla)
+                    <div class="flex flex-col items-center">
+                        <label class="text-sm font-medium">{{ $talla->nombre }}</label>
+                        <input type="hidden" name="tallas[{{ $talla->id }}][id]" value="{{ $talla->id }}">
+                        <input type="number" min="0" name="tallas[{{ $talla->id }}][cantidad]" value="0"
+                               class="w-20 text-center border border-gray-300 rounded-md px-2 py-1">
+                    </div>
+                @endforeach
+            </div>
         </div>
 
-        <!-- BOTÓN -->
+        <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Precio</label>
+            <input type="number" step="0.01" name="precio" value="{{ old('precio') }}" required
+                   class="w-full border border-gray-300 rounded-md px-4 py-2 focus:ring-2 focus:ring-blue-400">
+        </div>
+
+        <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Imágenes (puede subir varias)</label>
+            <input type="file" name="imagenes[]" multiple
+                   class="w-full border border-gray-300 rounded-md px-4 py-2">
+        </div>
+
         <div class="text-end">
             <button type="submit"
                     class="bg-blue-600 text-white font-medium px-6 py-2 rounded-md hover:bg-blue-700 transition">
-                {{ isset($ropa) ? 'Actualizar' : 'Guardar' }}
+                Guardar
             </button>
         </div>
     </form>
 </div>
-
-
 @endsection

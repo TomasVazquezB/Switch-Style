@@ -4,7 +4,6 @@ namespace App\Models;
 
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Illuminate\Support\Facades\Hash;
 
 class User extends Authenticatable
 {
@@ -13,6 +12,9 @@ class User extends Authenticatable
     protected $table = 'usuario';
     protected $primaryKey = 'ID_Usuario';
     public $timestamps = false;
+
+    public $incrementing = true; // ✅ Asegura que Laravel lo trate como autoincrement
+    protected $keyType = 'int';  // ✅ Para evitar problemas si Laravel espera string
 
     protected $fillable = [
         'Nombre',
@@ -26,27 +28,18 @@ class User extends Authenticatable
         'remember_token',
     ];
 
-    /**
-     * Devuelve el nombre de la clave primaria (para Auth)
-     */
-    public function getAuthIdentifierName()
-    {
-        return $this->primaryKey; // Esto es 'ID_Usuario'
-    }
-
-    /**
-     * Devuelve el campo de contraseña para Auth
-     */
     public function getAuthPassword()
     {
         return $this->Contraseña;
     }
 
-    /**
-     * Devuelve el nombre del campo usado como login
-     */
-    public function username()
+    public function getAuthIdentifierName()
     {
-        return 'Correo_Electronico';
+        return 'ID_Usuario';
+    }
+
+    public function getEmailForPasswordReset()
+    {
+        return $this->Correo_Electronico;
     }
 }
