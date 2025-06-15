@@ -11,7 +11,6 @@
     @endif
 
     <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-6">
-        <!-- 🔍 Filtro de búsqueda y categoría -->
         <form method="GET" class="flex flex-wrap gap-4 items-end">
             <div>
                 <label class="block text-sm font-medium text-gray-600">Buscar por título</label>
@@ -21,11 +20,11 @@
 
             <div>
                 <label class="block text-sm font-medium text-gray-600">Categoría</label>
-                <select name="categoria" class="border border-gray-300 rounded px-3 py-2">
+                <select name="categoria_id" class="border border-gray-300 rounded px-3 py-2">
                     <option value="">Todas</option>
-                    @foreach(['Remeras','Pantalones','Camperas','Shorts','Faldas','Vestidos','Camisa','Pantalón','Zapatilla','Accesorio'] as $cat)
-                        <option value="{{ $cat }}" {{ request('categoria') === $cat ? 'selected' : '' }}>
-                            {{ $cat }}
+                    @foreach($categorias as $c)
+                        <option value="{{ $c->id }}" {{ request('categoria_id') == $c->id ? 'selected' : '' }}>
+                            {{ $c->nombre }}
                         </option>
                     @endforeach
                 </select>
@@ -33,11 +32,11 @@
 
             <div>
                 <label class="block text-sm font-medium text-gray-600">Género</label>
-                <select name="genero" class="border border-gray-300 rounded px-3 py-2">
+                <select name="genero_id" class="border border-gray-300 rounded px-3 py-2">
                     <option value="">Todos</option>
-                    @foreach(['Hombre','Mujer','Chicos'] as $gen)
-                        <option value="{{ $gen }}" {{ request('genero') === $gen ? 'selected' : '' }}>
-                            {{ $gen }}
+                    @foreach($generos as $g)
+                        <option value="{{ $g->id }}" {{ request('genero_id') == $g->id ? 'selected' : '' }}>
+                            {{ $g->nombre }}
                         </option>
                     @endforeach
                 </select>
@@ -62,10 +61,9 @@
                     <th class="px-4 py-2 border">Imagen</th>
                     <th class="px-4 py-2 border">Título</th>
                     <th class="px-4 py-2 border">Precio</th>
-                    <th class="px-4 py-2 border">Talla</th>
                     <th class="px-4 py-2 border">Categoría</th>
                     <th class="px-4 py-2 border">Género</th>
-                    <th class="px-4 py-2 border">Cantidad</th>
+                    <th class="px-4 py-2 border">Stock por Talla</th>
                     <th class="px-4 py-2 border">Acciones</th>
                 </tr>
             </thead>
@@ -81,10 +79,13 @@
                         </td>
                         <td class="px-4 py-2 border">{{ $ropa->titulo }}</td>
                         <td class="px-4 py-2 border">${{ number_format($ropa->precio, 2, ',', '.') }}</td>
-                        <td class="px-4 py-2 border">{{ $ropa->talla }}</td>
-                        <td class="px-4 py-2 border">{{ $ropa->categoria }}</td>
-                        <td class="px-4 py-2 border">{{ $ropa->genero }}</td>
-                        <td class="px-4 py-2 border">{{ $ropa->cantidad }}</td>
+                        <td class="px-4 py-2 border">{{ $ropa->categoria->nombre ?? '-' }}</td>
+                        <td class="px-4 py-2 border">{{ $ropa->genero->nombre ?? '-' }}</td>
+                        <td class="px-4 py-2 border">
+                            @foreach($ropa->tallas as $t)
+                                <div>{{ $t->nombre }}: {{ $t->pivot->cantidad }}</div>
+                            @endforeach
+                        </td>
                         <td class="px-4 py-2 border text-center space-x-2">
                             <a href="{{ route('ropas.edit', $ropa->id) }}"
                                class="text-blue-600 hover:underline">Editar</a>
@@ -101,7 +102,7 @@
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="8" class="text-center px-4 py-6 text-gray-500 italic">
+                        <td colspan="7" class="text-center px-4 py-6 text-gray-500 italic">
                             No hay prendas que coincidan.
                         </td>
                     </tr>

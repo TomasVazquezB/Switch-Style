@@ -9,10 +9,9 @@ class Talla extends Model
     protected $fillable = ['nombre'];
 
     /**
-     * Relación con prendas usando tabla pivote (ropa_talla)
-     * con acceso al campo 'cantidad'.
+     * Relación con prendas (ropa) usando tabla pivote ropa_talla
      */
-    public function ropasConStock()
+    public function ropas()
     {
         return $this->belongsToMany(Ropa::class, 'ropa_talla')
                     ->withPivot('cantidad')

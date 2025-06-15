@@ -101,7 +101,50 @@ class RopaController extends Controller
 
     public function update(Request $request, Ropa $ropa)
     {
-        // Actualización no incluida, ya que depende de si se modificará el stock por talla también.
+        $request->validate([
+            'titulo' => 'required|string',
+            'descripcion' => 'required|string',
+            'precio' => 'required|numeric',
+            'categoria_id' => 'required|exists:categorias,id',
+            'genero_id' => 'required|exists:generos,id',
+            'tallas' => 'required|array',
+            'tallas.*.id' => 'required|exists:tallas,id',
+            'tallas.*.cantidad' => 'required|integer|min:0',
+            'imagenes.*' => 'nullable|image|max:2048',
+        ]);
+
+        DB::transaction(function () use ($request, $ropa) {
+            $ropa->update([
+                'titulo' => $request->titulo,
+                'descripcion' => $request->descripcion,
+                'precio' => $request->precio,
+                'categoria_id' => $request->categoria_id,
+                'genero_id' => $request->genero_id,
+            ]);
+
+            // Sync tallas con cantidades
+            $syncData = [];
+            foreach ($request->tallas as $tallaData) {
+                if ((int)$tallaData['cantidad'] > 0) {
+                    $syncData[$tallaData['id']] = ['cantidad' => $tallaData['cantidad']];
+                }
+            }
+            $ropa->tallas()->sync($syncData);
+
+            // Nuevas imágenes
+            if ($request->hasFile('imagenes')) {
+                foreach ($request->file('imagenes') as $index => $imagen) {
+                    $ruta = $imagen->store('ropa', 'public');
+                    $ropa->imagenes()->create(['ruta' => $ruta]);
+
+                    if (!$ropa->ruta_imagen || $index === 0) {
+                        $ropa->update(['ruta_imagen' => $ruta]);
+                    }
+                }
+            }
+        });
+
+        return redirect()->route('ropas.index')->with('success', 'Prenda actualizada.');
     }
 
     public function destroy(Ropa $ropa)

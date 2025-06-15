@@ -32,31 +32,6 @@
 
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1">Precio</label>
-                <input type="number" step="0.01" name="precio" value="{{ old('precio', $ropa->precio) }}" required
-                       class="w-full border border-gray-300 rounded-md px-4 py-2 focus:ring-2 focus:ring-blue-400">
-            </div>
-            <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1">Cantidad</label>
-                <input type="number" name="cantidad" value="{{ old('cantidad', $ropa->cantidad) }}" required
-                       class="w-full border border-gray-300 rounded-md px-4 py-2 focus:ring-2 focus:ring-blue-400">
-            </div>
-        </div>
-
-        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-            <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1">Talla</label>
-                <select name="talla_id" required class="w-full border border-gray-300 rounded-md px-4 py-2">
-                    <option value="">Seleccionar</option>
-                    @foreach($tallas as $talla)
-                        <option value="{{ $talla->id }}" {{ old('talla_id', $ropa->talla_id) == $talla->id ? 'selected' : '' }}>
-                            {{ $talla->nombre }}
-                        </option>
-                    @endforeach
-                </select>
-            </div>
-
-            <div>
                 <label class="block text-sm font-medium text-gray-700 mb-1">Categoría</label>
                 <select name="categoria_id" required class="w-full border border-gray-300 rounded-md px-4 py-2">
                     <option value="">Seleccionar</option>
@@ -81,7 +56,29 @@
             </div>
         </div>
 
-        <!-- Imágenes actuales -->
+        <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Precio</label>
+            <input type="number" step="0.01" name="precio" value="{{ old('precio', $ropa->precio) }}" required
+                   class="w-full border border-gray-300 rounded-md px-4 py-2 focus:ring-2 focus:ring-blue-400">
+        </div>
+
+        <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Stock por talla</label>
+            <div class="flex flex-wrap gap-6 items-center">
+                @foreach($tallas as $talla)
+                    @php
+                        $cantidad = optional($ropa->tallas->firstWhere('id', $talla->id))->pivot->cantidad ?? 0;
+                    @endphp
+                    <div class="flex items-center gap-2">
+                        <input type="hidden" name="tallas[{{ $talla->id }}][id]" value="{{ $talla->id }}">
+                        <input type="number" min="0" name="tallas[{{ $talla->id }}][cantidad]" value="{{ old('tallas.'.$talla->id.'.cantidad', $cantidad) }}"
+                               class="w-20 text-center border border-gray-300 rounded-md px-2 py-1">
+                        <label class="text-sm font-medium">{{ $talla->nombre }}</label>
+                    </div>
+                @endforeach
+            </div>
+        </div>
+
         @if($ropa->imagenes->count())
             <div>
                 <label class="block text-sm font-medium text-gray-700 mb-1">Imágenes actuales:</label>
@@ -90,7 +87,6 @@
                         <div class="relative group border rounded overflow-hidden">
                             <img src="{{ asset('storage/' . $img->ruta) }}" class="w-full h-32 object-cover">
 
-                            <!-- Botón eliminar -->
                             <form action="{{ route('imagenes.destroy', $img->id) }}" method="POST" class="absolute top-1 right-1">
                                 @csrf
                                 @method('DELETE')
@@ -100,7 +96,6 @@
                                 </button>
                             </form>
 
-                            <!-- Botón principal -->
                             <form action="{{ route('imagenes.principal', $img->id) }}" method="POST" class="absolute bottom-1 left-1">
                                 @csrf
                                 @method('PUT')
@@ -115,7 +110,6 @@
             </div>
         @endif
 
-        <!-- Subir nuevas imágenes -->
         <div>
             <label class="block text-sm font-medium text-gray-700 mb-1">Subir nuevas imágenes (opcional)</label>
             <input type="file" name="imagenes[]" multiple
