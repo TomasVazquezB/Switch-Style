@@ -9,21 +9,28 @@
                 <x-nav-link :href="route('profile.edit')" :active="request()->routeIs('profile.edit')">
                     {{ __('Perfil') }}
                 </x-nav-link>
+
                 <!-- Solo admins -->
                 @if (Auth::check() && strtolower(Auth::user()->Tipo_Usuario) === 'admin')
                     <x-nav-link :href="route('admin.usuarios.index')" :active="request()->routeIs('admin.usuarios.*')">
                         {{ __('Panel deUsuarios') }}
                     </x-nav-link>
                 @endif
+
                 <x-nav-link :href="route('ropas.index')" :active="request()->routeIs('ropas.*')">
                     {{ __('Mis Prendas') }}
                 </x-nav-link>
                 <x-nav-link :href="route('ropas.create')" :active="request()->routeIs('ropas.create')">
                     {{ __('Publicar Prenda') }}
                 </x-nav-link>
-                
 
-                
+                {{-- ✅ Nuevos accesos para accesorios --}}
+                <x-nav-link :href="route('accesorios.index')" :active="request()->routeIs('accesorios.*')">
+                    {{ __('Mis Accesorios') }}
+                </x-nav-link>
+                <x-nav-link :href="route('accesorios.create')" :active="request()->routeIs('accesorios.create')">
+                    {{ __('Publicar Accesorio') }}
+                </x-nav-link>
             </div>
 
             <!-- Usuario + Logout -->

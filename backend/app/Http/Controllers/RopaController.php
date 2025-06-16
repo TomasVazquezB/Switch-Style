@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Ropa;
 use App\Models\Imagen;
+use App\Models\Categoria;
+use App\Models\Genero;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\DB;
@@ -15,6 +17,11 @@ class RopaController extends Controller
     $query = auth()->user()->Tipo_Usuario === 'admin'
         ? Ropa::query()
         : Ropa::propias();
+
+    // Excluir accesorios
+    $query->whereHas('categoria', function ($q) {
+        $q->whereNotIn('nombre', ['Collares', 'Aritos', 'Anillos']);
+    });
 
     if ($request->filled('busqueda')) {
         $query->where('titulo', 'like', '%' . $request->busqueda . '%');
@@ -30,12 +37,13 @@ class RopaController extends Controller
 
     $ropas = $query->latest()->paginate(8)->appends($request->query());
 
-
-    $categorias = \App\Models\Categoria::all();
-    $generos = \App\Models\Genero::all();
-
-    return view('ropas.index', compact('ropas', 'categorias', 'generos'));
+    return view('ropas.index', [
+        'ropas' => $ropas,
+        'categorias' => Categoria::whereNotIn('nombre', ['Collares', 'Aritos', 'Anillos'])->get(),
+        'generos' => Genero::all()
+    ]);
 }
+
 
     public function create()
     {
