@@ -2,10 +2,10 @@
 -- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
--- Servidor: 127.0.0.1
--- Tiempo de generación: 07-06-2025 a las 22:04:51
--- Versión del servidor: 10.4.32-MariaDB
--- Versión de PHP: 8.2.12
+-- Host: 127.0.0.1
+-- Generation Time: Jun 16, 2025 at 02:06 AM
+-- Server version: 10.4.32-MariaDB
+-- PHP Version: 8.2.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -18,13 +18,13 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Base de datos: `switchstyle`
+-- Database: `switchstyle`
 --
 
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `cache`
+-- Table structure for table `cache`
 --
 
 CREATE TABLE `cache` (
@@ -36,7 +36,7 @@ CREATE TABLE `cache` (
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `cache_locks`
+-- Table structure for table `cache_locks`
 --
 
 CREATE TABLE `cache_locks` (
@@ -48,70 +48,85 @@ CREATE TABLE `cache_locks` (
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `categoría`
+-- Table structure for table `categorias`
 --
 
-CREATE TABLE `categoría` (
-  `ID_Categoría` int(11) NOT NULL,
-  `Nombre` varchar(100) NOT NULL,
-  `Descripción` text DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `failed_jobs`
---
-
-CREATE TABLE `failed_jobs` (
+CREATE TABLE `categorias` (
   `id` bigint(20) UNSIGNED NOT NULL,
-  `uuid` varchar(255) NOT NULL,
-  `connection` text NOT NULL,
-  `queue` text NOT NULL,
-  `payload` longtext NOT NULL,
-  `exception` longtext NOT NULL,
-  `failed_at` timestamp NOT NULL DEFAULT current_timestamp()
+  `nombre` varchar(255) NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `categorias`
+--
+
+INSERT INTO `categorias` (`id`, `nombre`, `created_at`, `updated_at`) VALUES
+(1, 'Remeras', NULL, NULL),
+(2, 'Camisas', NULL, NULL),
+(3, 'Camperas', NULL, NULL),
+(4, 'Shorts', NULL, NULL),
+(5, 'Pantalónes', NULL, NULL),
+(6, 'Faldas', NULL, NULL),
+(7, 'Vestidos', NULL, NULL),
+(8, 'Botas', NULL, NULL),
+(9, 'Zapatillas', NULL, NULL),
+(10, 'Collares', NULL, NULL),
+(11, 'Anillos', NULL, NULL),
+(12, 'Aritos', NULL, NULL);
 
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `jobs`
+-- Table structure for table `generos`
 --
 
-CREATE TABLE `jobs` (
+CREATE TABLE `generos` (
   `id` bigint(20) UNSIGNED NOT NULL,
-  `queue` varchar(255) NOT NULL,
-  `payload` longtext NOT NULL,
-  `attempts` tinyint(3) UNSIGNED NOT NULL,
-  `reserved_at` int(10) UNSIGNED DEFAULT NULL,
-  `available_at` int(10) UNSIGNED NOT NULL,
-  `created_at` int(10) UNSIGNED NOT NULL
+  `nombre` varchar(255) NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `generos`
+--
+
+INSERT INTO `generos` (`id`, `nombre`, `created_at`, `updated_at`) VALUES
+(1, 'Hombre', NULL, NULL),
+(2, 'Mujer', NULL, NULL),
+(3, 'Chicos', NULL, NULL);
 
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `job_batches`
+-- Table structure for table `imagenes`
 --
 
-CREATE TABLE `job_batches` (
-  `id` varchar(255) NOT NULL,
-  `name` varchar(255) NOT NULL,
-  `total_jobs` int(11) NOT NULL,
-  `pending_jobs` int(11) NOT NULL,
-  `failed_jobs` int(11) NOT NULL,
-  `failed_job_ids` longtext NOT NULL,
-  `options` mediumtext DEFAULT NULL,
-  `cancelled_at` int(11) DEFAULT NULL,
-  `created_at` int(11) NOT NULL,
-  `finished_at` int(11) DEFAULT NULL
+CREATE TABLE `imagenes` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `ropa_id` bigint(20) UNSIGNED NOT NULL,
+  `ruta` varchar(255) NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `imagenes`
+--
+
+INSERT INTO `imagenes` (`id`, `ropa_id`, `ruta`, `created_at`, `updated_at`) VALUES
+(1, 3, 'ropa/woH32WhMDiJOxCGcEusRA2u8fcJxXTvB9pJ8sWTn.png', '2025-06-16 02:55:50', '2025-06-16 02:55:50'),
+(2, 3, 'ropa/6GKTXFL1YKeJpD1nBTW7FF4GEuTVOMqLqI1kT2g0.png', '2025-06-16 02:55:50', '2025-06-16 02:55:50'),
+(3, 3, 'ropa/XFgNd9YvkoRKglXC96xaJHPgrQjYDheKwpiF8UZG.png', '2025-06-16 02:55:50', '2025-06-16 02:55:50'),
+(4, 3, 'ropa/Ze6CdWMGYl0wmXZZIDWUzF6YRmuzYqWNrZoVsApt.png', '2025-06-16 02:55:50', '2025-06-16 02:55:50'),
+(5, 3, 'ropa/Refk0P9LtkPF1f5ejCS9RjZgmkY8w8LX6Pb296rd.png', '2025-06-16 02:55:50', '2025-06-16 02:55:50');
 
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `migrations`
+-- Table structure for table `migrations`
 --
 
 CREATE TABLE `migrations` (
@@ -121,20 +136,28 @@ CREATE TABLE `migrations` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
--- Volcado de datos para la tabla `migrations`
+-- Dumping data for table `migrations`
 --
 
 INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 (1, '0001_01_01_000000_create_users_table', 1),
 (2, '0001_01_01_000001_create_cache_table', 1),
 (3, '0001_01_01_000002_create_jobs_table', 1),
-(4, '2025_05_10_210552_create_productos_table', 1),
-(5, '2025_05_20_003125_create_personal_access_tokens_table', 2);
+(4, '2025_05_20_003125_create_personal_access_tokens_table', 1),
+(5, '2025_06_07_220100_create_ropas_table', 1),
+(6, '2025_06_15_203755_create_imagenes_table', 1),
+(7, '2025_06_15_210225_create_categorias_table', 1),
+(8, '2025_06_15_210229_create_tallas_table', 1),
+(9, '2025_06_15_210233_create_generos_table', 1),
+(10, '2025_06_15_210337_update_ropas_add_foreign_keys', 1),
+(11, '2025_06_15_214255_create_ropa_talla_table', 2),
+(12, '2025_06_15_220122_remove_talla_and_cantidad_from_ropas_table', 3),
+(13, '2025_06_15_221213_remove_cantidad_from_ropas_table', 4);
 
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `password_reset_tokens`
+-- Table structure for table `password_reset_tokens`
 --
 
 CREATE TABLE `password_reset_tokens` (
@@ -146,7 +169,7 @@ CREATE TABLE `password_reset_tokens` (
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `personal_access_tokens`
+-- Table structure for table `personal_access_tokens`
 --
 
 CREATE TABLE `personal_access_tokens` (
@@ -165,56 +188,57 @@ CREATE TABLE `personal_access_tokens` (
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `producto`
+-- Table structure for table `ropas`
 --
 
-CREATE TABLE `producto` (
-  `ID_Producto` int(11) NOT NULL,
-  `Nombre` varchar(100) NOT NULL,
-  `Descripción` text DEFAULT NULL,
-  `Precio` decimal(10,2) NOT NULL,
-  `Tipo` enum('Casual','Formal') NOT NULL,
-  `Imagen` varchar(255) DEFAULT NULL,
-  `ID_Tienda` int(11) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Volcado de datos para la tabla `producto`
---
-
-INSERT INTO `producto` (`ID_Producto`, `Nombre`, `Descripción`, `Precio`, `Tipo`, `Imagen`, `ID_Tienda`) VALUES
-(4, 'Remera Oversize', 'Remera de algodón oversize unisex, ideal para verano.', 7999.99, 'Casual', 'remera1.jpg', 1),
-(5, 'Campera Switch', 'Campera estilo urbano', 299.99, 'Casual', 'campera.jpg', 1);
-
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `productos`
---
-
-CREATE TABLE `productos` (
+CREATE TABLE `ropas` (
   `id` bigint(20) UNSIGNED NOT NULL,
-  `nombre` varchar(255) NOT NULL,
+  `titulo` varchar(255) NOT NULL,
+  `descripcion` text NOT NULL,
   `precio` decimal(8,2) NOT NULL,
+  `categoria_id` bigint(20) UNSIGNED NOT NULL,
+  `genero_id` bigint(20) UNSIGNED NOT NULL,
+  `ID_Usuario` bigint(20) UNSIGNED NOT NULL,
+  `ruta_imagen` varchar(255) DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- --------------------------------------------------------
-
 --
--- Estructura de tabla para la tabla `producto_categoría`
+-- Dumping data for table `ropas`
 --
 
-CREATE TABLE `producto_categoría` (
-  `ID_Producto` int(11) NOT NULL,
-  `ID_Categoría` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+INSERT INTO `ropas` (`id`, `titulo`, `descripcion`, `precio`, `categoria_id`, `genero_id`, `ID_Usuario`, `ruta_imagen`, `created_at`, `updated_at`) VALUES
+(3, 'Men Round Neck Pure Cotton T-shirt', 'A lightweight, usually knitted, pullover shirt, close-fitting and with a round neckline and short sleeves, worn as an undershirt or outer garment.', 20000.00, 1, 1, 6, 'ropa/woH32WhMDiJOxCGcEusRA2u8fcJxXTvB9pJ8sWTn.png', '2025-06-16 02:55:50', '2025-06-16 03:04:10');
 
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `sessions`
+-- Table structure for table `ropa_talla`
+--
+
+CREATE TABLE `ropa_talla` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `ropa_id` bigint(20) UNSIGNED NOT NULL,
+  `talla_id` bigint(20) UNSIGNED NOT NULL,
+  `cantidad` int(11) NOT NULL DEFAULT 0,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `ropa_talla`
+--
+
+INSERT INTO `ropa_talla` (`id`, `ropa_id`, `talla_id`, `cantidad`, `created_at`, `updated_at`) VALUES
+(7, 3, 2, 4, '2025-06-16 02:55:50', '2025-06-16 02:55:50'),
+(8, 3, 3, 2, '2025-06-16 02:55:50', '2025-06-16 02:55:50'),
+(9, 3, 4, 1, '2025-06-16 02:55:50', '2025-06-16 02:55:50');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `sessions`
 --
 
 CREATE TABLE `sessions` (
@@ -227,23 +251,16 @@ CREATE TABLE `sessions` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
--- Volcado de datos para la tabla `sessions`
+-- Dumping data for table `sessions`
 --
 
 INSERT INTO `sessions` (`id`, `user_id`, `ip_address`, `user_agent`, `payload`, `last_activity`) VALUES
-('8xbCYMXj9ypCc2Y5ltuMpWUHI803JZR7Va0TfIcj', NULL, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36 OPR/118.0.0.0', 'YTozOntzOjY6Il90b2tlbiI7czo0MDoiOEhiMXd0WDY1dElLRnV3dGlzMlBKVDhWVXQ2Ulh1WU9XTVpuSlQ5MiI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MzI6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC9hcGkvcHJ1ZWJhIjt9czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319fQ==', 1747108576),
-('BER5NB1jP5UIzSo7PASIQ4fmba6FaMrZLg8PrXvS', NULL, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36 OPR/118.0.0.0', 'YTozOntzOjY6Il90b2tlbiI7czo0MDoidmpZSkhQdDlXRFNiWk91eHBBdkxYNVpOZzVyT0QzVXBUNTBXVEduaSI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MzI6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC9hcGkvcHJ1ZWJhIjt9czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319fQ==', 1747706740),
-('DdcCb8TjYpHhcvXEIf1fsgh1mqrDbsidSvwTOtyA', NULL, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36 OPR/118.0.0.0', 'YTozOntzOjY6Il90b2tlbiI7czo0MDoiZTFXbnZOWFVScENRVjE4eWFCdnVSWllzR3AxdEFJQjQwTVZhd0Y3eSI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6NDE6Imh0dHA6Ly9sb2NhbGhvc3Q6ODAwMC9zYW5jdHVtL2NzcmYtY29va2llIjt9czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319fQ==', 1747709132),
-('KrBdpfwcshcYweOoC0zqzT7mdjyR0yzmFG9nGr5x', NULL, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36 OPR/118.0.0.0', 'YTozOntzOjY6Il90b2tlbiI7czo0MDoiT2R1UXpIYlZ5d0prVUFNSEh1bVVVTUl4WTBFeEE2RGJwR2tnQm9BeSI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MzI6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC9hcGkvcHJ1ZWJhIjt9czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319fQ==', 1747699724),
-('nFsMeMUvVsEoHmu9slN0BYKiiJSfrxCiv4epae3H', NULL, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36 OPR/118.0.0.0', 'YTozOntzOjY6Il90b2tlbiI7czo0MDoiNlJ4UGY5ZUlTbmVrRkhHbEtrOFJ5d0ZRczlsTHVNRzdhSDBVOHZxNCI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MzI6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC9hcGkvcHJ1ZWJhIjt9czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319fQ==', 1747699963),
-('nuO5awiXaftce7kRmkvxZaZ9jVsWG3DWYrd5wvw4', NULL, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36 OPR/118.0.0.0', 'YTozOntzOjY6Il90b2tlbiI7czo0MDoiZTFsdUhrckVycDA2MDlyZzlNMXpJaUFEaUZHeXJXb0FMdkZXVndnTSI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MzI6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC9hcGkvcHJ1ZWJhIjt9czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319fQ==', 1747699740),
-('RahHurrWmCVglukgTq8wziQ44YOFcKisR9PocapR', NULL, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36 OPR/118.0.0.0', 'YTozOntzOjY6Il90b2tlbiI7czo0MDoieTl5RkR4enlNNGxTWWUwRGIwbHBtQjQ5SktYTUFGUlhKVFhQbXFiZCI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MjE6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMCI7fXM6NjoiX2ZsYXNoIjthOjI6e3M6Mzoib2xkIjthOjA6e31zOjM6Im5ldyI7YTowOnt9fX0=', 1747108654),
-('XZq4J7GDnVb2eIA7BYU8oV8sHpvDOtmTd5TmgRTI', NULL, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36 OPR/118.0.0.0', 'YTozOntzOjY6Il90b2tlbiI7czo0MDoidXNwUjhvRzFuVUE5TG9oZXU2a3hrcXBSQUp2aktWbDU0aHZpM1FBeCI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MzI6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC9hcGkvcHJ1ZWJhIjt9czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319fQ==', 1747709108);
+('aDieSldjA8pFCzrkH6rS3haR8VpW3FP8AA8L8P0p', 6, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Safari/537.36', 'YTo1OntzOjY6Il90b2tlbiI7czo0MDoiY0hMbWJIU0czaW13dHdYcG8zdThzOU8wbEpqbGFzazdLYnN3MVcyQSI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6NjI6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC9yb3Bhcz9idXNxdWVkYT0mY2F0ZWdvcmlhX2lkPSZnZW5lcm9faWQ9Ijt9czozOiJ1cmwiO2E6MTp7czo4OiJpbnRlbmRlZCI7czoyODoiaHR0cDovLzEyNy4wLjAuMTo4MDAwL2luaWNpbyI7fXM6NTA6ImxvZ2luX3dlYl81OWJhMzZhZGRjMmIyZjk0MDE1ODBmMDE0YzdmNThlYTRlMzA5ODlkIjtpOjY7fQ==', 1750032380);
 
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `suscripción`
+-- Table structure for table `suscripción`
 --
 
 CREATE TABLE `suscripción` (
@@ -255,7 +272,31 @@ CREATE TABLE `suscripción` (
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `tienda`
+-- Table structure for table `tallas`
+--
+
+CREATE TABLE `tallas` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `nombre` varchar(255) NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `tallas`
+--
+
+INSERT INTO `tallas` (`id`, `nombre`, `created_at`, `updated_at`) VALUES
+(1, 'S', NULL, NULL),
+(2, 'M', NULL, NULL),
+(3, 'L', NULL, NULL),
+(4, 'XL', NULL, NULL),
+(5, 'XXL', NULL, NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `tienda`
 --
 
 CREATE TABLE `tienda` (
@@ -269,7 +310,7 @@ CREATE TABLE `tienda` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Volcado de datos para la tabla `tienda`
+-- Dumping data for table `tienda`
 --
 
 INSERT INTO `tienda` (`ID_Tienda`, `Nombre`, `Dirección`, `Horario_Apertura`, `Horario_Cierre`, `Teléfono`, `Web`) VALUES
@@ -278,28 +319,11 @@ INSERT INTO `tienda` (`ID_Tienda`, `Nombre`, `Dirección`, `Horario_Apertura`, `
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `users`
---
-
-CREATE TABLE `users` (
-  `id` bigint(20) UNSIGNED NOT NULL,
-  `name` varchar(255) NOT NULL,
-  `email` varchar(255) NOT NULL,
-  `email_verified_at` timestamp NULL DEFAULT NULL,
-  `password` varchar(255) NOT NULL,
-  `remember_token` varchar(100) DEFAULT NULL,
-  `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `usuario`
+-- Table structure for table `usuario`
 --
 
 CREATE TABLE `usuario` (
-  `ID_Usuario` int(11) NOT NULL,
+  `ID_Usuario` int(11) UNSIGNED NOT NULL,
   `Nombre` varchar(100) NOT NULL,
   `Correo_Electronico` varchar(100) NOT NULL,
   `Contraseña` varchar(255) NOT NULL,
@@ -308,19 +332,22 @@ CREATE TABLE `usuario` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Volcado de datos para la tabla `usuario`
+-- Dumping data for table `usuario`
 --
 
 INSERT INTO `usuario` (`ID_Usuario`, `Nombre`, `Correo_Electronico`, `Contraseña`, `Tipo_Usuario`, `Fecha_Registro`) VALUES
 (1, 'Tomas Vazquez Brouver', 'tomas.vazquez@davinci.edu.ar', '$2y$12$oar8qTWwUmSDdYJCIEj3buCwWe5YnWKppNZEeuHXLaiuFRLXVtg3m', 'Admin', '2025-05-05 10:39:04'),
 (2, 'Carolina Belen Ho ', 'maria.lopez@example.com', '67890', 'Admin', '2025-05-05 10:39:04'),
 (3, 'Joaquin Cardozo', 'carlos.garcia@example.com', '$2y$12$9.sRr0FI4RZg1EQv89ZuHuV6DPHRKVo/j8EOcv/KgtM2Y1eqR5zWq', 'Admin', '2025-05-05 10:39:04'),
-(5, 'J', 'cj@gmail.com', '$2y$12$2I6xYI8GQF8evy8SkFiDq.MvsVviGjJooaLpVtBuZcu1Vh3S1c47y', 'Free', '2025-05-26 02:00:46');
+(5, 'J', 'cj@gmail.com', '$2y$12$2I6xYI8GQF8evy8SkFiDq.MvsVviGjJooaLpVtBuZcu1Vh3S1c47y', 'Free', '2025-05-26 02:00:46'),
+(6, 'Free', 'free@example.com', '$2y$12$O/GgrEOZZfbfynQONhWDJeMyfhnnXgY9cHNwLequtzeu60Ac0SoHy', 'Free', '2025-06-15 18:39:41'),
+(7, 'Premium', 'premium@example.com', '$2y$12$lJOpwTSfHsFnU.MeQtklhOamSnqOyfeBQ.P40uW8tl/Sn7boJMHVe', 'Premium', '2025-06-15 18:40:07'),
+(8, 'Admin', 'admin@example.com', '$2y$12$YLmrpand0ErHxsbjFXoxEOvZ.ZnREljiTj81ZdGJ1RHxj/iSFC3Ki', 'Admin', '2025-06-15 18:40:41');
 
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `valoración`
+-- Table structure for table `valoración`
 --
 
 CREATE TABLE `valoración` (
@@ -333,61 +360,56 @@ CREATE TABLE `valoración` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Índices para tablas volcadas
+-- Indexes for dumped tables
 --
 
 --
--- Indices de la tabla `cache`
+-- Indexes for table `cache`
 --
 ALTER TABLE `cache`
   ADD PRIMARY KEY (`key`);
 
 --
--- Indices de la tabla `cache_locks`
+-- Indexes for table `cache_locks`
 --
 ALTER TABLE `cache_locks`
   ADD PRIMARY KEY (`key`);
 
 --
--- Indices de la tabla `categoría`
+-- Indexes for table `categorias`
 --
-ALTER TABLE `categoría`
-  ADD PRIMARY KEY (`ID_Categoría`);
-
---
--- Indices de la tabla `failed_jobs`
---
-ALTER TABLE `failed_jobs`
+ALTER TABLE `categorias`
   ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `failed_jobs_uuid_unique` (`uuid`);
+  ADD UNIQUE KEY `categorias_nombre_unique` (`nombre`);
 
 --
--- Indices de la tabla `jobs`
+-- Indexes for table `generos`
 --
-ALTER TABLE `jobs`
+ALTER TABLE `generos`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `jobs_queue_index` (`queue`);
+  ADD UNIQUE KEY `generos_nombre_unique` (`nombre`);
 
 --
--- Indices de la tabla `job_batches`
+-- Indexes for table `imagenes`
 --
-ALTER TABLE `job_batches`
-  ADD PRIMARY KEY (`id`);
+ALTER TABLE `imagenes`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `imagenes_ropa_id_foreign` (`ropa_id`);
 
 --
--- Indices de la tabla `migrations`
+-- Indexes for table `migrations`
 --
 ALTER TABLE `migrations`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indices de la tabla `password_reset_tokens`
+-- Indexes for table `password_reset_tokens`
 --
 ALTER TABLE `password_reset_tokens`
   ADD PRIMARY KEY (`email`);
 
 --
--- Indices de la tabla `personal_access_tokens`
+-- Indexes for table `personal_access_tokens`
 --
 ALTER TABLE `personal_access_tokens`
   ADD PRIMARY KEY (`id`),
@@ -395,27 +417,23 @@ ALTER TABLE `personal_access_tokens`
   ADD KEY `personal_access_tokens_tokenable_type_tokenable_id_index` (`tokenable_type`,`tokenable_id`);
 
 --
--- Indices de la tabla `producto`
+-- Indexes for table `ropas`
 --
-ALTER TABLE `producto`
-  ADD PRIMARY KEY (`ID_Producto`),
-  ADD KEY `ID_Tienda` (`ID_Tienda`);
+ALTER TABLE `ropas`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `ropas_categoria_id_foreign` (`categoria_id`),
+  ADD KEY `ropas_genero_id_foreign` (`genero_id`);
 
 --
--- Indices de la tabla `productos`
+-- Indexes for table `ropa_talla`
 --
-ALTER TABLE `productos`
-  ADD PRIMARY KEY (`id`);
+ALTER TABLE `ropa_talla`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `ropa_talla_ropa_id_foreign` (`ropa_id`),
+  ADD KEY `ropa_talla_talla_id_foreign` (`talla_id`);
 
 --
--- Indices de la tabla `producto_categoría`
---
-ALTER TABLE `producto_categoría`
-  ADD PRIMARY KEY (`ID_Producto`,`ID_Categoría`),
-  ADD KEY `ID_Categoría` (`ID_Categoría`);
-
---
--- Indices de la tabla `sessions`
+-- Indexes for table `sessions`
 --
 ALTER TABLE `sessions`
   ADD PRIMARY KEY (`id`),
@@ -423,34 +441,34 @@ ALTER TABLE `sessions`
   ADD KEY `sessions_last_activity_index` (`last_activity`);
 
 --
--- Indices de la tabla `suscripción`
+-- Indexes for table `suscripción`
 --
 ALTER TABLE `suscripción`
   ADD PRIMARY KEY (`ID_Suscripción`),
   ADD KEY `ID_Usuario` (`ID_Usuario`);
 
 --
--- Indices de la tabla `tienda`
+-- Indexes for table `tallas`
+--
+ALTER TABLE `tallas`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `tallas_nombre_unique` (`nombre`);
+
+--
+-- Indexes for table `tienda`
 --
 ALTER TABLE `tienda`
   ADD PRIMARY KEY (`ID_Tienda`);
 
 --
--- Indices de la tabla `users`
---
-ALTER TABLE `users`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `users_email_unique` (`email`);
-
---
--- Indices de la tabla `usuario`
+-- Indexes for table `usuario`
 --
 ALTER TABLE `usuario`
   ADD PRIMARY KEY (`ID_Usuario`),
   ADD UNIQUE KEY `Correo_Electronico` (`Correo_Electronico`);
 
 --
--- Indices de la tabla `valoración`
+-- Indexes for table `valoración`
 --
 ALTER TABLE `valoración`
   ADD PRIMARY KEY (`ID_Valoración`),
@@ -458,110 +476,86 @@ ALTER TABLE `valoración`
   ADD KEY `ID_Producto` (`ID_Producto`);
 
 --
--- AUTO_INCREMENT de las tablas volcadas
+-- AUTO_INCREMENT for dumped tables
 --
 
 --
--- AUTO_INCREMENT de la tabla `categoría`
+-- AUTO_INCREMENT for table `categorias`
 --
-ALTER TABLE `categoría`
-  MODIFY `ID_Categoría` int(11) NOT NULL AUTO_INCREMENT;
+ALTER TABLE `categorias`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
--- AUTO_INCREMENT de la tabla `failed_jobs`
+-- AUTO_INCREMENT for table `generos`
 --
-ALTER TABLE `failed_jobs`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+ALTER TABLE `generos`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
--- AUTO_INCREMENT de la tabla `jobs`
+-- AUTO_INCREMENT for table `imagenes`
 --
-ALTER TABLE `jobs`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+ALTER TABLE `imagenes`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
--- AUTO_INCREMENT de la tabla `migrations`
+-- AUTO_INCREMENT for table `migrations`
 --
 ALTER TABLE `migrations`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
--- AUTO_INCREMENT de la tabla `personal_access_tokens`
+-- AUTO_INCREMENT for table `personal_access_tokens`
 --
 ALTER TABLE `personal_access_tokens`
   MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT de la tabla `producto`
+-- AUTO_INCREMENT for table `ropas`
 --
-ALTER TABLE `producto`
-  MODIFY `ID_Producto` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+ALTER TABLE `ropas`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
--- AUTO_INCREMENT de la tabla `productos`
+-- AUTO_INCREMENT for table `ropa_talla`
 --
-ALTER TABLE `productos`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+ALTER TABLE `ropa_talla`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
--- AUTO_INCREMENT de la tabla `suscripción`
+-- AUTO_INCREMENT for table `tallas`
 --
-ALTER TABLE `suscripción`
-  MODIFY `ID_Suscripción` int(11) NOT NULL AUTO_INCREMENT;
+ALTER TABLE `tallas`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
--- AUTO_INCREMENT de la tabla `tienda`
---
-ALTER TABLE `tienda`
-  MODIFY `ID_Tienda` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
-
---
--- AUTO_INCREMENT de la tabla `users`
---
-ALTER TABLE `users`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT de la tabla `usuario`
+-- AUTO_INCREMENT for table `usuario`
 --
 ALTER TABLE `usuario`
-  MODIFY `ID_Usuario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `ID_Usuario` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
--- AUTO_INCREMENT de la tabla `valoración`
---
-ALTER TABLE `valoración`
-  MODIFY `ID_Valoración` int(11) NOT NULL AUTO_INCREMENT;
-
---
--- Restricciones para tablas volcadas
+-- Constraints for dumped tables
 --
 
 --
--- Filtros para la tabla `producto`
+-- Constraints for table `imagenes`
 --
-ALTER TABLE `producto`
-  ADD CONSTRAINT `producto_ibfk_1` FOREIGN KEY (`ID_Tienda`) REFERENCES `tienda` (`ID_Tienda`);
+ALTER TABLE `imagenes`
+  ADD CONSTRAINT `imagenes_ropa_id_foreign` FOREIGN KEY (`ropa_id`) REFERENCES `ropas` (`id`) ON DELETE CASCADE;
 
 --
--- Filtros para la tabla `producto_categoría`
+-- Constraints for table `ropas`
 --
-ALTER TABLE `producto_categoría`
-  ADD CONSTRAINT `producto_categoría_ibfk_1` FOREIGN KEY (`ID_Producto`) REFERENCES `producto` (`ID_Producto`),
-  ADD CONSTRAINT `producto_categoría_ibfk_2` FOREIGN KEY (`ID_Categoría`) REFERENCES `categoría` (`ID_Categoría`);
+ALTER TABLE `ropas`
+  ADD CONSTRAINT `ropas_categoria_id_foreign` FOREIGN KEY (`categoria_id`) REFERENCES `categorias` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `ropas_genero_id_foreign` FOREIGN KEY (`genero_id`) REFERENCES `generos` (`id`) ON DELETE CASCADE;
 
 --
--- Filtros para la tabla `suscripción`
+-- Constraints for table `ropa_talla`
 --
-ALTER TABLE `suscripción`
-  ADD CONSTRAINT `suscripción_ibfk_1` FOREIGN KEY (`ID_Usuario`) REFERENCES `usuario` (`ID_Usuario`);
-
---
--- Filtros para la tabla `valoración`
---
-ALTER TABLE `valoración`
-  ADD CONSTRAINT `valoración_ibfk_1` FOREIGN KEY (`ID_Usuario`) REFERENCES `usuario` (`ID_Usuario`),
-  ADD CONSTRAINT `valoración_ibfk_2` FOREIGN KEY (`ID_Producto`) REFERENCES `producto` (`ID_Producto`);
+ALTER TABLE `ropa_talla`
+  ADD CONSTRAINT `ropa_talla_ropa_id_foreign` FOREIGN KEY (`ropa_id`) REFERENCES `ropas` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `ropa_talla_talla_id_foreign` FOREIGN KEY (`talla_id`) REFERENCES `tallas` (`id`) ON DELETE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

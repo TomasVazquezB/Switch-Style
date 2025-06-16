@@ -62,22 +62,23 @@
                    class="w-full border border-gray-300 rounded-md px-4 py-2 focus:ring-2 focus:ring-blue-400">
         </div>
 
-        <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1">Stock por talla</label>
-            <div class="flex flex-wrap gap-6 items-center">
-                @foreach($tallas as $talla)
-                    @php
-                        $cantidad = optional($ropa->tallas->firstWhere('id', $talla->id))->pivot->cantidad ?? 0;
-                    @endphp
-                    <div class="flex items-center gap-2">
-                        <input type="hidden" name="tallas[{{ $talla->id }}][id]" value="{{ $talla->id }}">
-                        <input type="number" min="0" name="tallas[{{ $talla->id }}][cantidad]" value="{{ old('tallas.'.$talla->id.'.cantidad', $cantidad) }}"
-                               class="w-20 text-center border border-gray-300 rounded-md px-2 py-1">
-                        <label class="text-sm font-medium">{{ $talla->nombre }}</label>
-                    </div>
-                @endforeach
+       <div>
+    <label class="block text-sm font-medium text-gray-700 mb-1">Stock por talla</label>
+    <div class="flex flex-wrap gap-6 items-center">
+        @foreach ($tallas as $talla)
+            @php
+                $cantidad = $ropa->tallas->firstWhere('id', $talla->id)?->pivot->cantidad ?? 0;
+            @endphp
+            <div class="flex items-center gap-2">
+                <input type="hidden" name="tallas[{{ $talla->id }}][id]" value="{{ $talla->id }}">
+                <input type="number" min="0" name="tallas[{{ $talla->id }}][cantidad]" value="{{ $cantidad }}"
+                       class="w-20 text-center border border-gray-300 rounded-md px-2 py-1">
+                <label class="text-sm font-medium">{{ $talla->nombre }}</label>
             </div>
-        </div>
+        @endforeach
+    </div>
+</div>
+
 
         @if($ropa->imagenes->count())
             <div>

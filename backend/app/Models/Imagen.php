@@ -6,10 +6,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class Imagen extends Model
 {
-    protected $fillable = [
-        'ruta',
-        'ropa_id',
-    ];
+    protected $table = 'imagenes'; // 👈 nombre correcto
+
+    protected $fillable = ['ruta', 'ropa_id'];
 
     public function ropa()
     {
