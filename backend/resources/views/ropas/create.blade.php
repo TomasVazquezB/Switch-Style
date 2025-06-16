@@ -33,13 +33,13 @@
             <div>
                 <label class="block text-sm font-medium text-gray-700 mb-1">Categoría</label>
                 <select name="categoria_id" required class="w-full border border-gray-300 rounded-md px-4 py-2">
-                    <option value="">Seleccione</option>
-                    @foreach($categorias as $c)
-                        <option value="{{ $c->id }}" {{ old('categoria_id') == $c->id ? 'selected' : '' }}>
-                            {{ $c->nombre }}
-                        </option>
-                    @endforeach
-                </select>
+    <option value="">Seleccione</option>
+    @foreach($categorias as $c)
+        <option value="{{ $c->id }}" {{ old('categoria_id') == $c->id ? 'selected' : '' }}>
+            {{ $c->nombre }}
+        </option>
+    @endforeach
+</select>
             </div>
 
             <div>

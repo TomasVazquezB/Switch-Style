@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Models\ImagenAccesorio;
 
 class Accesorio extends Model
 {
@@ -13,7 +14,7 @@ class Accesorio extends Model
         'descripcion',
         'precio',
         'ruta_imagen',
-        'categoria',
+        'categoria_id', // ← corregido
         'ID_Usuario',
     ];
 
@@ -22,8 +23,13 @@ class Accesorio extends Model
         return $this->belongsTo(User::class, 'ID_Usuario');
     }
 
+    public function categoria()
+    {
+        return $this->belongsTo(Categoria::class, 'categoria_id');
+    }
+
     public function imagenes()
     {
-        return $this->hasMany(Imagen::class);
+        return $this->hasMany(ImagenAccesorio::class, 'accesorio_id');
     }
 }

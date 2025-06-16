@@ -6,7 +6,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RopaController;
 use App\Http\Controllers\AccesorioController;
 use App\Http\Controllers\UserController;
-use App\Http\Controllers\ImagenController;
+use App\Http\Controllers\ImagenAccesorioController;
 use App\Http\Middleware\TipoUsuario;
 
 Route::get('/', fn() => redirect()->route('inicio'));
@@ -32,7 +32,7 @@ Route::middleware('auth')->group(function () {
         Route::put('/contraseña', [ProfileController::class, 'updatePassword'])->name('profile.password.update');
     });
 
-    // Usuarios solo para admin
+    // Usuarios (solo admin)
     Route::middleware([TipoUsuario::class . ':admin'])->prefix('admin/usuarios')->name('admin.usuarios.')->group(function () {
         Route::get('/', [UserController::class, 'index'])->name('index');
         Route::get('/create', [UserController::class, 'create'])->name('create');
@@ -42,16 +42,14 @@ Route::middleware('auth')->group(function () {
         Route::delete('/{user}', [UserController::class, 'destroy'])->name('destroy');
     });
 
-    // Rutas para prendas
+    // Rutas para prendas y accesorios
     Route::middleware([TipoUsuario::class . ':free,premium,admin'])->group(function () {
         Route::resource('ropas', RopaController::class);
-
-        // Rutas para accesorios
         Route::resource('accesorios', AccesorioController::class);
 
-        // Imágenes
-        Route::delete('/imagenes/{imagen}', [ImagenController::class, 'destroy'])->name('imagenes.destroy');
-        Route::put('/imagenes/{imagen}/principal', [ImagenController::class, 'setAsPrincipal'])->name('imagenes.principal');
+        // Rutas para imágenes de accesorios
+        Route::delete('/imagenes/{imagen}', [ImagenAccesorioController::class, 'destroy'])->name('imagenes.destroy');
+        Route::put('/imagenes/{imagen}/principal', [ImagenAccesorioController::class, 'marcarComoPrincipal'])->name('imagenes.principal');
     });
 });
 

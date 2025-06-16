@@ -13,42 +13,41 @@ use Illuminate\Support\Facades\DB;
 class RopaController extends Controller
 {
     public function index(Request $request)
-{
-    $query = auth()->user()->Tipo_Usuario === 'admin'
-        ? Ropa::query()
-        : Ropa::propias();
+    {
+        $query = auth()->user()->Tipo_Usuario === 'admin'
+            ? Ropa::query()
+            : Ropa::propias();
 
-    // Excluir accesorios
-    $query->whereHas('categoria', function ($q) {
-        $q->whereNotIn('nombre', ['Collares', 'Aritos', 'Anillos']);
-    });
+        // Excluir accesorios
+        $query->whereHas('categoria', function ($q) {
+            $q->whereNotIn('nombre', ['Collares', 'Aritos', 'Anillos']);
+        });
 
-    if ($request->filled('busqueda')) {
-        $query->where('titulo', 'like', '%' . $request->busqueda . '%');
+        if ($request->filled('busqueda')) {
+            $query->where('titulo', 'like', '%' . $request->busqueda . '%');
+        }
+
+        if ($request->filled('categoria_id')) {
+            $query->where('categoria_id', $request->categoria_id);
+        }
+
+        if ($request->filled('genero_id')) {
+            $query->where('genero_id', $request->genero_id);
+        }
+
+        $ropas = $query->latest()->paginate(8)->appends($request->query());
+
+        return view('ropas.index', [
+            'ropas' => $ropas,
+            'categorias' => Categoria::whereNotIn('nombre', ['Collares', 'Aritos', 'Anillos'])->get(),
+            'generos' => Genero::all()
+        ]);
     }
-
-    if ($request->filled('categoria_id')) {
-        $query->where('categoria_id', $request->categoria_id);
-    }
-
-    if ($request->filled('genero_id')) {
-        $query->where('genero_id', $request->genero_id);
-    }
-
-    $ropas = $query->latest()->paginate(8)->appends($request->query());
-
-    return view('ropas.index', [
-        'ropas' => $ropas,
-        'categorias' => Categoria::whereNotIn('nombre', ['Collares', 'Aritos', 'Anillos'])->get(),
-        'generos' => Genero::all()
-    ]);
-}
-
 
     public function create()
     {
         return view('ropas.create', [
-            'categorias' => \App\Models\Categoria::all(),
+            'categorias' => Categoria::whereNotIn('nombre', ['Anillos', 'Collares', 'Aritos'])->get(),
             'tallas' => \App\Models\Talla::all(),
             'generos' => \App\Models\Genero::all(),
         ]);
@@ -107,12 +106,11 @@ class RopaController extends Controller
 
     return view('ropas.edit', [
         'ropa' => $ropa,
-        'categorias' => \App\Models\Categoria::all(),
+        'categorias' => Categoria::whereNotIn('nombre', ['Anillos', 'Collares', 'Aritos'])->get(),
         'tallas' => \App\Models\Talla::all(),
         'generos' => \App\Models\Genero::all(),
     ]);
 }
-
 
     public function update(Request $request, Ropa $ropa)
     {
@@ -137,7 +135,6 @@ class RopaController extends Controller
                 'genero_id' => $request->genero_id,
             ]);
 
-            // Sync tallas con cantidades
             $syncData = [];
             foreach ($request->tallas as $tallaData) {
                 if ((int)$tallaData['cantidad'] > 0) {
@@ -146,7 +143,6 @@ class RopaController extends Controller
             }
             $ropa->tallas()->sync($syncData);
 
-            // Nuevas imágenes
             if ($request->hasFile('imagenes')) {
                 foreach ($request->file('imagenes') as $index => $imagen) {
                     $ruta = $imagen->store('ropa', 'public');
@@ -163,27 +159,22 @@ class RopaController extends Controller
     }
 
     public function destroy(Ropa $ropa)
-{
-    // Eliminar imágenes del disco y la BD
-    foreach ($ropa->imagenes as $img) {
-        if (Storage::disk('public')->exists($img->ruta)) {
-            Storage::disk('public')->delete($img->ruta);
+    {
+        foreach ($ropa->imagenes as $img) {
+            if (Storage::disk('public')->exists($img->ruta)) {
+                Storage::disk('public')->delete($img->ruta);
+            }
+            $img->delete();
         }
-        $img->delete();
+
+        if ($ropa->ruta_imagen && Storage::disk('public')->exists($ropa->ruta_imagen)) {
+            Storage::disk('public')->delete($ropa->ruta_imagen);
+        }
+
+        $ropa->tallas()->detach();
+
+        $ropa->delete();
+
+        return redirect()->route('ropas.index')->with('success', 'Prenda eliminada.');
     }
-
-    // Borrar imagen principal si existe
-    if ($ropa->ruta_imagen && Storage::disk('public')->exists($ropa->ruta_imagen)) {
-        Storage::disk('public')->delete($ropa->ruta_imagen);
-    }
-
-    // ⚠️ Eliminar registros de la tabla pivote ropa_talla
-    $ropa->tallas()->detach();
-
-    // Finalmente, eliminar la prenda
-    $ropa->delete();
-
-    return redirect()->route('ropas.index')->with('success', 'Prenda eliminada.');
-}
-
 }
