@@ -2,7 +2,7 @@ services:
   - type: web
     name: laravel-backend
     env: docker
-    repo: https://github.com/TomasVazquezB/Switch-Style/tree/caro-tomas-y-joaquin
+    repo: repo: https://github.com/TomasVazquezB/Switch-Style
     dockerfilePath: backend/Dockerfile
     buildCommand: ""
     startCommand: apache2-foreground
