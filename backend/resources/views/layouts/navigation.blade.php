@@ -20,16 +20,10 @@
                 <x-nav-link :href="route('ropas.index')" :active="request()->routeIs('ropas.*')">
                     {{ __('Mis Prendas') }}
                 </x-nav-link>
-                <x-nav-link :href="route('ropas.create')" :active="request()->routeIs('ropas.create')">
-                    {{ __('Publicar Prenda') }}
-                </x-nav-link>
 
                 {{-- ✅ Nuevos accesos para accesorios --}}
                 <x-nav-link :href="route('accesorios.index')" :active="request()->routeIs('accesorios.*')">
                     {{ __('Mis Accesorios') }}
-                </x-nav-link>
-                <x-nav-link :href="route('accesorios.create')" :active="request()->routeIs('accesorios.create')">
-                    {{ __('Publicar Accesorio') }}
                 </x-nav-link>
             </div>
 
