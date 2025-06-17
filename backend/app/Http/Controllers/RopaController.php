@@ -177,4 +177,37 @@ class RopaController extends Controller
 
         return redirect()->route('ropas.index')->with('success', 'Prenda eliminada.');
     }
+
+    public function apiIndex(Request $request)
+    {
+        $query = Ropa::with(['imagenes', 'categoria', 'genero'])
+            ->whereHas('categoria', function ($q) {
+                $q->whereNotIn('nombre', ['Anillos', 'Collares', 'Aritos']);
+            });
+
+        // Filtro por nombre de género (como "Hombre")
+        if ($request->filled('genero')) {
+            $nombreGenero = strtolower($request->genero); // ej. "hombre"
+            $query->whereHas('genero', function ($q) use ($nombreGenero) {
+                $q->whereRaw('LOWER(nombre) = ?', [$nombreGenero]);
+            });
+        }
+
+        if ($request->filled('precio_min')) {
+            $query->where('precio', '>=', $request->precio_min);
+        }
+
+        if ($request->filled('precio_max')) {
+            $query->where('precio', '<=', $request->precio_max);
+        }
+
+        if ($request->filled('talla')) {
+            $query->whereHas('tallas', function ($q) use ($request) {
+                $q->where('nombre', $request->talla);
+            });
+        }
+
+        return $query->get();
+    }
+
 }

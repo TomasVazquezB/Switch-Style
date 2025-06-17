@@ -5,12 +5,14 @@ import { getAuth } from 'firebase/auth';
 import { getFirestore } from 'firebase/firestore';
 
 const firebaseConfig = {
-  apiKey: "TU_API_KEY",
-  authDomain: "TU_DOMINIO.firebaseapp.com",
-  projectId: "ID_PROYECTO",
-  storageBucket: "TU_BUCKET.appspot.com",
-  messagingSenderId: "SENDER_ID",
-  appId: "APP_ID"
+  apiKey: "AIzaSyCcHu0LaExsVxyx3uwNOwz5hTlk8Av0cgc",
+  authDomain: "petpalms-717eb.firebaseapp.com",
+  databaseURL: "https://petpalms-717eb-default-rtdb.firebaseio.com",
+  projectId: "petpalms-717eb",
+  storageBucket: "petpalms-717eb.firebasestorage.app",
+  messagingSenderId: "601238341796",
+  appId: "1:601238341796:web:2399fd95db0b8cabda3e31",
+  measurementId: "G-KDL4D0NL6Q"
 };
 
 const app = initializeApp(firebaseConfig);
