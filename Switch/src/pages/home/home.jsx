@@ -5,6 +5,7 @@ import { Carousel } from 'react-responsive-carousel';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import { DataContext } from '../../context/DataContext';
 import ErrorBoundary from '../../components/Error/ErrorBoundary';
+import { useNavigate } from 'react-router-dom';
 
 import banner1 from '../../assets/banner1.jpg';
 import banner2 from '../../assets/banner2.jpg';
@@ -38,9 +39,14 @@ const lastAddedImages = [
 ];
 const cardsPerSlide = 7;
 
+
+
+
 const Home = ({ darkMode }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const { producto } = useContext(DataContext);
+  const navigate = useNavigate();
+
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -114,7 +120,9 @@ const Home = ({ darkMode }) => {
                   <div className="hero-text-zara">
                     <h1 className="title">Últimas novedades</h1>
                     <p className="description">Descubre las nuevas tendencias del momento con súper ofertas de lanzamiento</p>
-                    <button className="btn-discover">Descubre lo nuevo</button>
+                    <button className="btn-discover" onClick={() => navigate('/MainMujeres')}>
+                      Descubre lo nuevo
+                    </button>
                   </div>
                 </div>
               ))}
@@ -190,19 +198,23 @@ const Home = ({ darkMode }) => {
           </div>
         )}
 
-        <div style={{ textAlign: 'center', margin: '40px 0' }}>
-          <button onClick={crearProductoDePrueba} className="btn-primary">
-            Crear Producto de Prueba
-          </button>
-        </div>
+
 
         <div className="download-section">
           <hr className="black-line" />
           <div className="download-row">
             <p className="download-text">Descarga la aplicación y únete a la experiencia Switch Style</p>
             <div className="download-icons">
-              <div className="store-icon"><FaApple size={40} /><p>App Store</p></div>
-              <div className="store-icon"><FaGooglePlay size={40} /><p>Play Store</p></div>
+              <a className="store-icon" href="https://apps.apple.com/app/id000000000" target="_blank" rel="noopener noreferrer">
+                <FaApple size={40} />
+                <p>App Store</p>
+              </a>
+
+              <a className="store-icon" href="https://play.google.com/store/apps/details?id=com.switchstyle.app" target="_blank" rel="noopener noreferrer">
+                <FaGooglePlay size={40} />
+                <p>Play Store</p>
+              </a>
+
             </div>
           </div>
         </div>
