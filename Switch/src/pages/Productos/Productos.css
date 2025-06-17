@@ -1,123 +1,93 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+/* src/pages/Productos/Productos.css */
 
-/* Contenedor general */
 .content {
-    max-width: 1200px;
-    margin: 0 auto;
+    background-color: #ffffff;
     padding: 2rem;
+    margin-top: 3rem;
 }
 
-/* Galería lateral */
-.gallery-thumbs {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
+img {
+    border-radius: 0.25rem;
+}
+
+/* Miniaturas verticales */
+.thumbnail {
     width: 5rem;
-}
-
-.gallery-thumbs img {
-    width: 4rem;
-    height: 4rem;
+    height: 5rem;
     object-fit: cover;
     cursor: pointer;
-    border: 1px solid #ddd;
+    border: 1px solid #ccc;
     border-radius: 0.25rem;
-    transition: transform 0.2s;
+    transition: transform 0.2s ease;
 }
 
-.gallery-thumbs img:hover {
+.thumbnail:hover {
     transform: scale(1.05);
-    border-color: black;
 }
 
 /* Imagen principal */
 .main-image {
-    max-width: 500px;
-    height: auto;
+    width: 100%;
+    max-height: 500px;
+    object-fit: contain;
     border-radius: 0.5rem;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-}
-
-/* Detalles del producto */
-.product-details {
-    flex: 1;
-    padding-left: 2rem;
-}
-
-.product-details h2 {
-    font-size: 1.875rem;
-    font-weight: 700;
-    margin-bottom: 0.5rem;
-}
-
-.product-details p {
-    margin-bottom: 0.75rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 /* Tallas */
-.talla-button {
+.talla-btn {
     padding: 0.5rem 1rem;
-    border-radius: 9999px;
     border: 1px solid #ccc;
+    border-radius: 9999px;
     font-size: 0.875rem;
-    transition: all 0.2s;
     cursor: pointer;
-    background-color: white;
+    transition: all 0.2s ease-in-out;
 }
 
-.talla-button.selected {
+.talla-btn:hover {
+    background-color: #f3f3f3;
+}
+
+.talla-btn.active {
     background-color: black;
     color: white;
     border-color: black;
 }
 
-/* Botones */
-.btn {
-    padding: 0.75rem 1.5rem;
-    border-radius: 0.5rem;
-    font-weight: 600;
-    transition: all 0.2s ease-in-out;
+/* Botones de acción */
+.button {
+    padding: 0.5rem 1.5rem;
+    border-radius: 0.375rem;
+    font-weight: 500;
+    transition: background-color 0.2s ease;
 }
 
-.btn-primary {
+.button.carrito {
     background-color: black;
     color: white;
 }
 
-.btn-success {
-    background-color: #0f766e;
+.button.carrito:hover {
+    background-color: #333;
+}
+
+.button.comprar {
+    background-color: #16a34a;
     color: white;
 }
 
-.btn:hover {
-    transform: scale(1.03);
+.button.comprar:hover {
+    background-color: #15803d;
 }
 
 /* Tabs */
-.tabs {
-    display: flex;
-    gap: 1.5rem;
-    border-bottom: 1px solid #ddd;
-    margin-top: 2rem;
-    margin-bottom: 1rem;
+.tab-button {
+    padding: 0.5rem 1rem;
+    font-weight: 500;
+    border-bottom: 2px solid transparent;
+    transition: all 0.2s ease;
 }
 
-.tab {
-    padding-bottom: 0.5rem;
-    cursor: pointer;
-    font-weight: 600;
-}
-
-.tab.active {
-    border-bottom: 2px solid black;
-    color: black;
-}
-
-.review-card {
-    background-color: #f9fafb;
-    padding: 1rem;
-    border-radius: 0.5rem;
-    border: 1px solid #e5e7eb;
+.tab-button.active {
+    border-color: black;
 }
