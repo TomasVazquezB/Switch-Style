@@ -8,6 +8,7 @@ use App\Http\Controllers\AccesorioController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ImagenAccesorioController;
 use App\Http\Middleware\TipoUsuario;
+use App\Http\Controllers\AuthController;
 
 Route::get('/', fn() => redirect()->route('inicio'));
 
@@ -18,6 +19,8 @@ Route::middleware('guest')->group(function () {
     Route::get('/login', [AuthenticatedSessionController::class, 'create'])->name('login');
     Route::post('/login', [AuthenticatedSessionController::class, 'store']);
 });
+
+Route::post('/api/login', [AuthController::class, 'login']);
 
 Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])->middleware('auth')->name('logout');
 
