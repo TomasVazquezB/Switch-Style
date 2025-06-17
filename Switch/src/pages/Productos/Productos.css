@@ -1,7 +1,123 @@
-@import "tailwindcss";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
+/* Contenedor general */
 .content {
-    max-width: 100%;
+    max-width: 1200px;
     margin: 0 auto;
+    padding: 2rem;
+}
+
+/* Galería lateral */
+.gallery-thumbs {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    width: 5rem;
+}
+
+.gallery-thumbs img {
+    width: 4rem;
+    height: 4rem;
+    object-fit: cover;
+    cursor: pointer;
+    border: 1px solid #ddd;
+    border-radius: 0.25rem;
+    transition: transform 0.2s;
+}
+
+.gallery-thumbs img:hover {
+    transform: scale(1.05);
+    border-color: black;
+}
+
+/* Imagen principal */
+.main-image {
+    max-width: 500px;
+    height: auto;
+    border-radius: 0.5rem;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Detalles del producto */
+.product-details {
+    flex: 1;
+    padding-left: 2rem;
+}
+
+.product-details h2 {
+    font-size: 1.875rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+}
+
+.product-details p {
+    margin-bottom: 0.75rem;
+}
+
+/* Tallas */
+.talla-button {
+    padding: 0.5rem 1rem;
+    border-radius: 9999px;
+    border: 1px solid #ccc;
+    font-size: 0.875rem;
+    transition: all 0.2s;
+    cursor: pointer;
     background-color: white;
+}
+
+.talla-button.selected {
+    background-color: black;
+    color: white;
+    border-color: black;
+}
+
+/* Botones */
+.btn {
+    padding: 0.75rem 1.5rem;
+    border-radius: 0.5rem;
+    font-weight: 600;
+    transition: all 0.2s ease-in-out;
+}
+
+.btn-primary {
+    background-color: black;
+    color: white;
+}
+
+.btn-success {
+    background-color: #0f766e;
+    color: white;
+}
+
+.btn:hover {
+    transform: scale(1.03);
+}
+
+/* Tabs */
+.tabs {
+    display: flex;
+    gap: 1.5rem;
+    border-bottom: 1px solid #ddd;
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+}
+
+.tab {
+    padding-bottom: 0.5rem;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+.tab.active {
+    border-bottom: 2px solid black;
+    color: black;
+}
+
+.review-card {
+    background-color: #f9fafb;
+    padding: 1rem;
+    border-radius: 0.5rem;
+    border: 1px solid #e5e7eb;
 }

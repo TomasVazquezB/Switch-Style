@@ -4,7 +4,6 @@ import axios from 'axios';
 import { toast } from 'react-toastify';
 import { PayPalButtons } from "@paypal/react-paypal-js";
 import { Wallet } from "@mercadopago/sdk-react";
-import { assets } from '../../assets/assets';
 import './Productos.css';
 
 const Productos = () => {
@@ -70,7 +69,7 @@ const Productos = () => {
             title: productoData.titulo,
             quantity: 1,
             currency_id: "ARS",
-            unit_price: productoData.precio
+            unit_price: Number(productoData.precio)
         };
 
         fetch("http://localhost:4000/create_preference", {
@@ -111,7 +110,11 @@ const Productos = () => {
                 <div className="flex-1">
                     <h2 className="text-3xl font-bold mb-2">{productoData.titulo}</h2>
                     <p className="text-gray-700 mb-2">{productoData.descripcion}</p>
-                    <p className="text-xl font-semibold text-green-700 mb-4">${productoData.precio.toFixed(2)}</p>
+                    {productoData.precio && !isNaN(productoData.precio) && (
+                        <p className="text-xl font-semibold text-green-700 mb-4">
+                            ${Number(productoData.precio).toFixed(2)}
+                        </p>
+                    )}
 
                     {/* Tallas */}
                     <div className="mb-4">
@@ -121,8 +124,7 @@ const Productos = () => {
                                 <button
                                     key={index}
                                     onClick={() => setTalla(t.nombre)}
-                                    className={`px-4 py-2 border rounded-full ${talla === t.nombre ? 'bg-black text-white' : 'bg-white text-black'
-                                        }`}
+                                    className={`px-4 py-2 border rounded-full ${talla === t.nombre ? 'bg-black text-white' : 'bg-white text-black'}`}
                                 >
                                     {t.nombre}
                                 </button>
@@ -137,14 +139,13 @@ const Productos = () => {
                         Comprar ahora
                     </button>
 
-                    {/* PayPal y MercadoPago */}
                     {mostrarPagos && (
                         <div className="mt-6 space-y-6">
                             <PayPalButtons
                                 style={{ layout: "horizontal" }}
                                 createOrder={(data, actions) => {
                                     return actions.order.create({
-                                        purchase_units: [{ amount: { value: productoData.precio.toFixed(2) } }]
+                                        purchase_units: [{ amount: { value: Number(productoData.precio).toFixed(2) } }]
                                     });
                                 }}
                                 onApprove={(data, actions) => {

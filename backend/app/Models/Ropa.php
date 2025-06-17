@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-
 use Illuminate\Database\Eloquent\Model;
 
 class Ropa extends Model
@@ -26,7 +25,7 @@ class Ropa extends Model
 
     public function imagenes()
     {
-        return $this->hasMany(Imagen::class);
+        return $this->hasMany(Imagen::class, 'ropa_id');
     }
 
     public function categoria()
@@ -51,3 +50,4 @@ class Ropa extends Model
         return $query->where('ID_Usuario', $userId ?? auth()->id());
     }
 }
+

@@ -210,4 +210,18 @@ class RopaController extends Controller
         return $query->get();
     }
 
+    public function apiShow($id)
+{
+    try {
+        $ropa = Ropa::with(['imagenes', 'categoria', 'genero', 'tallas'])->findOrFail($id);
+
+        return response()->json($ropa);
+    } catch (\Exception $e) {
+        return response()->json([
+            'error' => 'Producto no encontrado',
+            'detalle' => $e->getMessage()
+        ], 500);
+    }
+}
+
 }
