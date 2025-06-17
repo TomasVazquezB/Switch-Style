@@ -44,13 +44,10 @@ export function LoginPage() {
         setError(null);
 
         try {
-            // 1. Obtener cookie de CSRF desde Laravel
-            await api.get('/sanctum/csrf-cookie');
 
-            // 2. Leer el token de la cookie (esto es lo nuevo)
+            await api.get('/sanctum/csrf-cookie');
             const csrfToken = Cookies.get('XSRF-TOKEN');
 
-            // 3. Enviar la petición POST con el token incluido manualmente
             const response = await api.post('/api/login',
                 {
                     email: formData.identificador,
@@ -62,6 +59,7 @@ export function LoginPage() {
                     }
                 }
             );
+
 
             const user = response.data;
             localStorage.setItem('usuario', JSON.stringify(user));
