@@ -6,9 +6,16 @@ import { toast } from 'react-toastify';
 
 const Carrito = () => {
     const [carritoData, setCarritoData] = useState(() => {
-        const saved = localStorage.getItem('carrito');
-        return saved ? JSON.parse(saved) : [];
+        try {
+            const saved = localStorage.getItem('carrito');
+            const parsed = saved ? JSON.parse(saved) : [];
+            return Array.isArray(parsed) ? parsed : [];
+        } catch (error) {
+            console.error("Error al parsear carrito:", error);
+            return [];
+        }
     });
+
     const [productos, setProductos] = useState([]);
     const [accesorios, setAccesorios] = useState([]);
     const [moneda, setMoneda] = useState("$");
