@@ -1,3 +1,4 @@
+// ✅ Productos.jsx
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
@@ -6,7 +7,7 @@ import { PayPalButtons } from "@paypal/react-paypal-js";
 import { Wallet } from "@mercadopago/sdk-react";
 
 const Productos = () => {
-    const { productoId } = useParams();
+    const { tipo, productoId } = useParams(); // nota: tipo puede ser "ropa" o "accesorio"
     const navigate = useNavigate();
 
     const [productoData, setProductoData] = useState(null);
@@ -23,7 +24,8 @@ const Productos = () => {
     const [sortReviews, setSortReviews] = useState('recientes');
 
     useEffect(() => {
-        axios.get(`http://127.0.0.1:8000/api/ropa/${productoId}`)
+        const url = `http://127.0.0.1:8000/api/${tipo}/${productoId}`;
+        axios.get(url)
             .then(res => {
                 setProductoData(res.data);
                 if (res.data.imagenes?.length > 0) {
@@ -31,7 +33,7 @@ const Productos = () => {
                 }
             })
             .catch(() => toast.error("Producto no encontrado"));
-    }, [productoId]);
+    }, [productoId, tipo]);
 
     useEffect(() => {
         const ordenar = [...reviews];
@@ -42,13 +44,13 @@ const Productos = () => {
     }, [sortReviews]);
 
     const handleAgregarAlCarrito = () => {
-        if (!talla) return toast.error('Por favor, seleccione una talla.');
+        if (!talla && tipo === 'ropa') return toast.error('Por favor, seleccione una talla.');
         toast.success('Producto agregado al carrito');
         setTimeout(() => navigate('/carrito'), 1000);
     };
 
     const generarPreferencia = () => {
-        if (!talla) return toast.error('Por favor, seleccione una talla.');
+        if (!talla && tipo === 'ropa') return toast.error('Por favor, seleccione una talla.');
         const producto = {
             title: productoData.titulo,
             quantity: 1,
@@ -97,23 +99,23 @@ const Productos = () => {
                     <p className="text-gray-700">{productoData.descripcion}</p>
                     <p className="text-xl font-semibold text-green-700">${Number(productoData.precio).toFixed(2)}</p>
 
-                    {/* Tallas */}
-                    <div>
-                        <p className="mb-1 font-medium">Tallas disponibles:</p>
-                        <div className="flex gap-3">
-                            {productoData.tallas.map((t, index) => (
-                                <button
-                                    key={index}
-                                    onClick={() => setTalla(t.nombre)}
-                                    className={`px-4 py-2 border rounded-full transition ${talla === t.nombre
-                                        ? 'bg-black text-white'
-                                        : 'bg-white text-black'}`}
-                                >
-                                    {t.nombre}
-                                </button>
-                            ))}
+                    {/* Tallas solo si es ropa */}
+                    {tipo === 'ropa' && productoData.tallas?.length > 0 && (
+                        <div>
+                            <p className="mb-1 font-medium">Tallas disponibles:</p>
+                            <div className="flex gap-3">
+                                {productoData.tallas.map((t, index) => (
+                                    <button
+                                        key={index}
+                                        onClick={() => setTalla(t.nombre)}
+                                        className={`px-4 py-2 border rounded-full transition ${talla === t.nombre ? 'bg-black text-white' : 'bg-white text-black'}`}
+                                    >
+                                        {t.nombre}
+                                    </button>
+                                ))}
+                            </div>
                         </div>
-                    </div>
+                    )}
 
                     {/* Botones */}
                     <div className="flex gap-4 mt-4">
@@ -147,16 +149,10 @@ const Productos = () => {
             {/* Tabs */}
             <div className="mt-10">
                 <div className="flex gap-6 border-b mb-4">
-                    <button
-                        onClick={() => setActiveTab('descripcion')}
-                        className={`pb-2 ${activeTab === 'descripcion' ? 'border-b-2 font-bold' : 'text-gray-500'}`}
-                    >
+                    <button onClick={() => setActiveTab('descripcion')} className={`pb-2 ${activeTab === 'descripcion' ? 'border-b-2 font-bold' : 'text-gray-500'}`}>
                         Descripción
                     </button>
-                    <button
-                        onClick={() => setActiveTab('reviews')}
-                        className={`pb-2 ${activeTab === 'reviews' ? 'border-b-2 font-bold' : 'text-gray-500'}`}
-                    >
+                    <button onClick={() => setActiveTab('reviews')} className={`pb-2 ${activeTab === 'reviews' ? 'border-b-2 font-bold' : 'text-gray-500'}`}>
                         Reviews ({reviews.length})
                     </button>
                 </div>
@@ -165,11 +161,7 @@ const Productos = () => {
                     <p className="text-sm text-gray-600">{productoData.descripcion}</p>
                 ) : (
                     <div className="space-y-4">
-                        <select
-                            value={sortReviews}
-                            onChange={(e) => setSortReviews(e.target.value)}
-                            className="border px-3 py-2 rounded-md text-gray-700"
-                        >
+                        <select value={sortReviews} onChange={(e) => setSortReviews(e.target.value)} className="border px-3 py-2 rounded-md text-gray-700">
                             <option value="recientes">Más recientes</option>
                             <option value="mejor">Mejor puntuados</option>
                             <option value="peor">Peor puntuados</option>

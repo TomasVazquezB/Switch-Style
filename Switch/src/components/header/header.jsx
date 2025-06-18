@@ -260,7 +260,13 @@ const Header = ({ toggleTheme }) => {
                             </div>
                         </div>
                         <div className="nav-dropdown">
-                            <span className="nav-link">Accesorios</span>
+                            <Nav.Link
+                                as={NavLink}
+                                to="/accesorios"
+                                className={({ isActive }) => getLinkClass(isActive)}
+                            >
+                                Accesorios
+                            </Nav.Link>
                             <div className="dropdown-menu">
                                 <NavLink to="/accesorios/cadenas" className={({ isActive }) => getLinkClass(isActive)}>Cadenas</NavLink>
                                 <NavLink to="/accesorios/anillos" className={({ isActive }) => getLinkClass(isActive)}>Anillos</NavLink>

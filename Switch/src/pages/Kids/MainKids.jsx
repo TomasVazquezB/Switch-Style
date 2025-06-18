@@ -103,8 +103,8 @@ const MainKids = () => {
                                     type="button"
                                     onClick={() => toggleTallaManual(size)}
                                     className={`px-4 py-2 border rounded-full text-sm transition-colors duration-200 ${tallas.includes(size)
-                                            ? 'bg-black text-white border-black hover:bg-gray-800'
-                                            : 'bg-white text-black border-gray-400 hover:bg-gray-100'
+                                        ? 'bg-black text-white border-black hover:bg-gray-800'
+                                        : 'bg-white text-black border-gray-400 hover:bg-gray-100'
                                         }`}
                                 >
                                     {size}
@@ -154,6 +154,7 @@ const MainKids = () => {
                             img={item.ruta_imagen}
                             nombre={item.titulo}
                             precio={item.precio}
+                            tipo="ropa"
                         />
                     ))}
                 </div>

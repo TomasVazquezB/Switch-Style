@@ -12,14 +12,15 @@ import CarritoPage from './pages/carrito/carrito.jsx';
 import MainHombresPage from './pages/Hombre/MainHombres.jsx';
 import MainMujeresPage from './pages/Mujer/MainMujeres';
 import MainKidsPage from './pages/Kids/MainKids.jsx';
+import MainAccesorios from './pages/Accesorios/MainAccesorios.jsx';
 import Productos from './pages/Productos/Productos.jsx';
 import Favoritos from './pages/favoritos/favoritos.jsx';
 import TestLaravel from './pages/TestLaravel.jsx';
+import PerfilUsuario from './pages/Perfil/PerfilUsuario.jsx';
 import ErrorBoundary from './components/Error/ErrorBoundary';
 import { ToastContainer } from 'react-toastify';
 import { PayPalScriptProvider } from "@paypal/react-paypal-js";
 import 'react-toastify/dist/ReactToastify.css';
-import PerfilUsuario from './pages/Perfil/PerfilUsuario.jsx';
 import '/index.css';
 
 function App() {
@@ -43,10 +44,11 @@ function App() {
               <Route path="/carrito" element={<PageTitle title="Carrito"><CarritoPage /></PageTitle>} />
               <Route path="/MainHombres" element={<PageTitle title="Hombres"><MainHombresPage /></PageTitle>} />
               <Route path="/MainMujeres" element={<PageTitle title="Mujeres"><MainMujeresPage /></PageTitle>} />
-              <Route path="/MainKids" element={<PageTitle title="Kids"><MainKidsPage /></PageTitle>} />
-              <Route path="/producto/:productoId" element={<Productos />} />
+              <Route path="/MainKids" element={<PageTitle title="Chicos"><MainKidsPage /></PageTitle>} />
+              <Route path="/accesorios" element={<PageTitle title="Accesorios"><MainAccesorios /></PageTitle>} />
+              <Route path="/producto/:tipo/:productoId" element={<Productos />} />
               <Route path="/favoritos" element={<PageTitle title="Favoritos"><Favoritos /></PageTitle>} />
-              <Route path="/perfil" element={<PerfilUsuario />} />
+              <Route path="/perfil" element={<PageTitle title="Perfil"><PerfilUsuario /></PageTitle>} />
             </Routes>
           </ErrorBoundary>
         </main>

@@ -2,12 +2,12 @@ import React, { useContext } from 'react';
 import { ShopContext } from '../../context/ShopContext';
 import { Link } from 'react-router-dom';
 
-const ProductoItem = ({ id, img, nombre, precio }) => {
+const ProductoItem = ({ id, img, nombre, precio, tipo }) => {
     const { moneda } = useContext(ShopContext);
 
     return (
         <Link
-            to={`/producto/${id}`}
+            to={`/producto/${tipo}/${id}`}
             onClick={() => window.scrollTo(0, 0)}
             className="block bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300"
         >

@@ -142,4 +142,15 @@ class AccesorioController extends Controller
 
         return redirect()->route('accesorios.index')->with('success', 'Accesorio eliminado correctamente.');
     }
+
+    public function apiIndex()
+{
+    return Accesorio::with('imagenes', 'categoria')->get();
+}
+
+public function apiShow($id)
+{
+    $accesorio = Accesorio::with(['imagenes', 'categoria',])->findOrFail($id);
+    return response()->json($accesorio);
+}
 }

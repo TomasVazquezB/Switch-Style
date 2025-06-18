@@ -159,6 +159,7 @@ const MainHombres = () => {
               img={item.ruta_imagen} // 🔥 imagen corregida
               nombre={item.titulo}
               precio={item.precio}
+              tipo="ropa"
             />
           ))}
         </div>

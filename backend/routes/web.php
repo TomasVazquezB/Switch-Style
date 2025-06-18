@@ -27,7 +27,6 @@ Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])->midd
 Route::get('/dashboard', fn() => view('dashboard'))->middleware('auth')->name('dashboard');
 
 Route::middleware('auth')->group(function () {
-
     // Perfil
     Route::prefix('perfil')->group(function () {
         Route::get('/', [ProfileController::class, 'edit'])->name('profile.edit');
