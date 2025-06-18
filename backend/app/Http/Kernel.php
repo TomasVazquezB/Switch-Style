@@ -8,12 +8,7 @@ class Kernel extends HttpKernel
 {
     protected $middleware = [
         \Illuminate\Http\Middleware\HandleCors::class,
-        \App\Http\Middleware\EncryptCookies::class,
-        \Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse::class,
-        \Illuminate\Session\Middleware\StartSession::class,
-        \Illuminate\View\Middleware\ShareErrorsFromSession::class,
-        \App\Http\Middleware\VerifyCsrfToken::class,
-        \Illuminate\Routing\Middleware\SubstituteBindings::class,
+        // ❌ NO pongas EncryptCookies, Session, CSRF ni Sanctum aquí
     ];
 
     protected $middlewareGroups = [
@@ -27,12 +22,13 @@ class Kernel extends HttpKernel
         ],
 
         'api' => [
+            // ✅ Este es el correcto para SPA con cookies
             \Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful::class,
             \Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse::class,
-            \Illuminate\Session\Middleware\StartSession::class, // 👈 OBLIGATORIO
+            \Illuminate\Session\Middleware\StartSession::class,
             \Illuminate\View\Middleware\ShareErrorsFromSession::class,
             'throttle:api',
-            \Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull::class,
+            \Illuminate\Routing\Middleware\SubstituteBindings::class,
         ],
     ];
 
@@ -40,9 +36,6 @@ class Kernel extends HttpKernel
         'auth' => \App\Http\Middleware\Authenticate::class,
         'guest' => \App\Http\Middleware\RedirectIfAuthenticated::class,
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
-
-        // ✅ Este es el alias que estás usando en las rutas
         'tipo_usuario' => \App\Http\Middleware\TipoUsuario::class,
     ];
 }
-
