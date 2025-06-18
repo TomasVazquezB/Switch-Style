@@ -5,6 +5,7 @@ use App\Http\Controllers\RopaController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AccesorioController;
+use App\Http\Controllers\CarritoController;
 
 // Test
 Route::get('/test', fn () => response()->json(['message' => 'API funcionando correctamente']));

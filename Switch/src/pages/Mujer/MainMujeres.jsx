@@ -81,7 +81,7 @@ const MainMujeres = () => {
 
     return (
         <div className="content">
-            <section className="sidebar fixed top-0 left-0 h-screen overflow-y-auto bg-white border-r px-4 py-6">
+            <section className="sidebar top-0 left- h-screen overflow-y-auto bg-white border-r px-4 py-6">
                 <div className="sidebar-content">
                     <div className="mb-4">
                         <h4 className="mb-3">CATEGORIA</h4>
@@ -134,8 +134,8 @@ const MainMujeres = () => {
                 </div>
             </section>
 
-            <div className="main pl-[220px] px-8 py-6">
-                <div className="flex justify-end mb-2">
+            <div className="main pl-[220px] px-8 py-2">
+                <div className="flex justify-end mb-3">
                     <select
                         onChange={(e) => setSortTipo(e.target.value)}
                         className="border border-gray-300 text-sm px-2 py-1 rounded"

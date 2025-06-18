@@ -50,6 +50,7 @@
                     <th class="px-4 py-2 border">Imagen</th>
                     <th class="px-4 py-2 border">Título</th>
                     <th class="px-4 py-2 border">Precio</th>
+                    <th class="px-4 py-2 border">Stock</th>
                     <th class="px-4 py-2 border">Categoría</th>
                     <th class="px-4 py-2 border">Acciones</th>
                 </tr>
@@ -66,6 +67,7 @@
                         </td>
                         <td class="px-4 py-2 border">{{ $accesorio->titulo }}</td>
                         <td class="px-4 py-2 border">${{ number_format($accesorio->precio, 2, ',', '.') }}</td>
+                        <td class="px-4 py-2 border text-center">{{ $accesorio->stock }}</td>
                         <td class="px-4 py-2 border">{{ $accesorio->categoria->nombre ?? '-' }}</td>
                         <td class="px-4 py-2 border text-center space-x-2">
                             <a href="{{ route('accesorios.edit', $accesorio->id) }}"
@@ -83,7 +85,7 @@
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="5" class="text-center px-4 py-6 text-gray-500 italic">
+                        <td colspan="6" class="text-center px-4 py-6 text-gray-500 italic">
                             No hay accesorios que coincidan.
                         </td>
                     </tr>

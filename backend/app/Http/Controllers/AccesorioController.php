@@ -39,6 +39,7 @@ class AccesorioController extends Controller
             'titulo' => 'required|string|max:255',
             'descripcion' => 'required|string',
             'precio' => 'required|numeric',
+            'stock' => 'required|integer|min:0',
             'categoria_id' => 'required|exists:categorias,id',
             'imagenes.*' => 'nullable|image|max:2048',
         ]);
@@ -48,6 +49,7 @@ class AccesorioController extends Controller
                 'titulo' => $request->titulo,
                 'descripcion' => $request->descripcion,
                 'precio' => $request->precio,
+                'stock' => $request->stock,
                 'categoria_id' => $request->categoria_id,
                 'ID_Usuario' => auth()->id(),
             ]);
@@ -59,6 +61,7 @@ class AccesorioController extends Controller
                     ImagenAccesorio::create([
                         'ruta' => $ruta,
                         'accesorio_id' => $accesorio->id,
+                        'es_principal' => $index === 0,
                     ]);
 
                     if ($index === 0) {
@@ -85,6 +88,7 @@ class AccesorioController extends Controller
             'titulo' => 'required|string|max:255',
             'descripcion' => 'required|string',
             'precio' => 'required|numeric',
+            'stock' => 'required|integer|min:0',
             'categoria_id' => 'required|exists:categorias,id',
             'imagenes.*' => 'nullable|image|max:2048',
         ]);
@@ -96,6 +100,7 @@ class AccesorioController extends Controller
                 'titulo' => $request->titulo,
                 'descripcion' => $request->descripcion,
                 'precio' => $request->precio,
+                'stock' => $request->stock,
                 'categoria_id' => $request->categoria_id,
             ]);
 
@@ -106,6 +111,7 @@ class AccesorioController extends Controller
                     ImagenAccesorio::create([
                         'ruta' => $ruta,
                         'accesorio_id' => $accesorio->id,
+                        'es_principal' => false,
                     ]);
 
                     if ($index === 0 && !$accesorio->ruta_imagen) {
@@ -123,7 +129,6 @@ class AccesorioController extends Controller
         $accesorio = Accesorio::with('imagenes')->findOrFail($id);
 
         DB::transaction(function () use ($accesorio) {
-            // Eliminar imágenes físicas
             foreach ($accesorio->imagenes as $imagen) {
                 if ($imagen->ruta && Storage::disk('public')->exists($imagen->ruta)) {
                     Storage::disk('public')->delete($imagen->ruta);
@@ -131,12 +136,10 @@ class AccesorioController extends Controller
                 $imagen->delete();
             }
 
-            // Eliminar imagen principal si existe
             if ($accesorio->ruta_imagen && Storage::disk('public')->exists($accesorio->ruta_imagen)) {
                 Storage::disk('public')->delete($accesorio->ruta_imagen);
             }
 
-            // Eliminar el accesorio
             $accesorio->delete();
         });
 
@@ -144,13 +147,25 @@ class AccesorioController extends Controller
     }
 
     public function apiIndex()
+    {
+        return Accesorio::with('imagenes', 'categoria')->get();
+    }
+
+    public function apiShow($id)
 {
-    return Accesorio::with('imagenes', 'categoria')->get();
+    $accesorio = Accesorio::with(['imagenes', 'categoria'])->findOrFail($id);
+
+    return response()->json([
+        'id' => $accesorio->id,
+        'titulo' => $accesorio->titulo,
+        'descripcion' => $accesorio->descripcion,
+        'precio' => $accesorio->precio,
+        'stock' => $accesorio->stock,
+        'ruta_imagen' => $accesorio->ruta_imagen,
+        'categoria' => $accesorio->categoria,
+        'imagenes' => $accesorio->imagenes,
+    ]);
 }
 
-public function apiShow($id)
-{
-    $accesorio = Accesorio::with(['imagenes', 'categoria',])->findOrFail($id);
-    return response()->json($accesorio);
-}
+
 }

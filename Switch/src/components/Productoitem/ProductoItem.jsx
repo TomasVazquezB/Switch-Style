@@ -11,7 +11,7 @@ const ProductoItem = ({ id, img, nombre, precio, tipo }) => {
             onClick={() => window.scrollTo(0, 0)}
             className="block bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300"
         >
-            <div className="overflow-hidden rounded-t-lg">
+            <div className="overflow-hidden rounded-t-lg h-[600px]">
                 <img
                     src={`http://127.0.0.1:8000/storage/${img}`}
                     alt={nombre}

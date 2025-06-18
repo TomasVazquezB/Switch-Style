@@ -1,31 +1,52 @@
-import React, { useContext } from 'react';
-import { ShopContext } from '../../context/ShopContext.jsx';
-import './CarritoTotal.css'
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
+import './CarritoTotal.css';
 
 const CarritoTotal = () => {
-    const { carritoItems, productos, moneda } = useContext(ShopContext);
+    const [carritoItems, setCarritoItems] = useState([]);
+    const [moneda, setMoneda] = useState('$');
+    const [productos, setProductos] = useState([]);
+
+    useEffect(() => {
+        const fetchCarrito = async () => {
+            try {
+                const carritoResponse = await axios.get('http://localhost:8000/api/carrito');
+                setCarritoItems(carritoResponse.data);
+            } catch (error) {
+                console.error('Error al obtener carrito:', error);
+            }
+        };
+
+        const fetchProductos = async () => {
+            try {
+                const productosResponse = await axios.get('http://localhost:8000/api/ropa');
+                setProductos(productosResponse.data);
+            } catch (error) {
+                console.error('Error al obtener productos:', error);
+            }
+        };
+
+        fetchCarrito();
+        fetchProductos();
+    }, []);
 
     const calcularTotal = () => {
         let total = 0;
-        for (const productoId in carritoItems) {
-            const item = productos.find((p) => p._id === productoId);
-            if (!item) continue;
-
-            for (const talla in carritoItems[productoId]) {
-                const cantidad = carritoItems[productoId][talla];
-                total += item.precio * cantidad;
-            }
+        for (const item of carritoItems) {
+            const producto = productos.find((p) => p.id === item.producto_id);
+            if (!producto) continue;
+            total += producto.precio * item.cantidad;
         }
-        return total;
+        return total.toFixed(2);
     };
 
     return (
-        <div className="border p-4 rounded-md bg-gray-50">
-            <div className="flex justify-between mb-2">
-                <p>Total:</p>
-                <p className="font-semibold">{moneda}{calcularTotal()}</p>
+        <div className="">
+            <div className="flex justify-between text-lg font-medium text-gray-800 mb-2">
+                <span>Total:</span>
+                <span>{moneda}{calcularTotal()}</span>
             </div>
-            <p className="text-sm text-gray-500 mb-4">* El total no incluye envío</p>
+            <p className="text-sm text-gray-500">* El total no incluye envío</p>
         </div>
     );
 };

@@ -1,59 +1,88 @@
-// ✅ Productos.jsx
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import { PayPalButtons } from "@paypal/react-paypal-js";
 import { Wallet } from "@mercadopago/sdk-react";
+import './Productos.css';
 
 const Productos = () => {
-    const { tipo, productoId } = useParams(); // nota: tipo puede ser "ropa" o "accesorio"
+    const { tipo, productoId } = useParams();
     const navigate = useNavigate();
 
     const [productoData, setProductoData] = useState(null);
     const [talla, setTalla] = useState('');
+    const [cantidad, setCantidad] = useState(1);
+    const [stockDisponible, setStockDisponible] = useState(0);
     const [img, setImg] = useState('');
     const [activeTab, setActiveTab] = useState('descripcion');
     const [preferenceId, setPreferenceId] = useState(null);
     const [mostrarPagos, setMostrarPagos] = useState(false);
-    const [reviews, setReviews] = useState([
-        { id: 1, autor: 'Juan P.', comentario: 'Excelente producto!', puntuacion: 5, fecha: '2024-04-10' },
-        { id: 2, autor: 'Maria G.', comentario: 'Muy bueno pero la entrega tardó.', puntuacion: 4, fecha: '2024-04-15' },
-        { id: 3, autor: 'Lucas R.', comentario: 'No me convenció el material.', puntuacion: 2, fecha: '2024-04-05' },
-    ]);
     const [sortReviews, setSortReviews] = useState('recientes');
+    const [reviews] = useState([
+        { id: 1, autor: 'Juan', fecha: '2025-06-01', comentario: 'Muy buen producto.', puntuacion: 5 },
+        { id: 2, autor: 'Ana', fecha: '2025-06-05', comentario: 'Podría ser mejor.', puntuacion: 3 }
+    ]);
 
     useEffect(() => {
-        const url = `http://127.0.0.1:8000/api/${tipo}/${productoId}`;
+        const endpoint = tipo.includes('accesorio') ? 'accesorios' : 'ropa';
+        const url = `http://127.0.0.1:8000/api/${endpoint}/${productoId}`;
         axios.get(url)
             .then(res => {
                 setProductoData(res.data);
                 if (res.data.imagenes?.length > 0) {
                     setImg(`http://127.0.0.1:8000/storage/${res.data.imagenes[0].ruta}`);
                 }
+                if (tipo.includes('accesorio')) {
+                    setStockDisponible(res.data.stock || 0);
+                }
             })
             .catch(() => toast.error("Producto no encontrado"));
     }, [productoId, tipo]);
 
-    useEffect(() => {
-        const ordenar = [...reviews];
-        if (sortReviews === 'recientes') ordenar.sort((a, b) => new Date(b.fecha) - new Date(a.fecha));
-        if (sortReviews === 'mejor') ordenar.sort((a, b) => b.puntuacion - a.puntuacion);
-        if (sortReviews === 'peor') ordenar.sort((a, b) => a.puntuacion - b.puntuacion);
-        setReviews(ordenar);
-    }, [sortReviews]);
+    const handleSeleccionTalla = (nombreTalla) => {
+        setTalla(nombreTalla);
+        const tallaData = productoData.tallas.find(t => t.nombre === nombreTalla);
+        setStockDisponible(tallaData?.pivot?.cantidad || 0);
+        setCantidad(1);
+    };
 
     const handleAgregarAlCarrito = () => {
-        if (!talla && tipo === 'ropa') return toast.error('Por favor, seleccione una talla.');
-        toast.success('Producto agregado al carrito');
+        if (!talla && tipo.includes('ropa')) return toast.error('Seleccione una talla.');
+        if (cantidad < 1 || cantidad > stockDisponible) return toast.error('Cantidad inválida.');
+
+        const nuevoItem = {
+            producto_id: productoData.id,
+            titulo: productoData.titulo,
+            precio: productoData.precio,
+            ruta_imagen: productoData.imagenes?.[0]?.ruta
+                ? `http://127.0.0.1:8000/storage/${productoData.imagenes[0].ruta}`
+                : '',
+            talla: tipo.includes('ropa') ? talla : null,
+            cantidad
+        };
+
+        const carritoExistente = JSON.parse(localStorage.getItem("carrito")) || [];
+        const index = carritoExistente.findIndex(
+            (item) => item.producto_id === nuevoItem.producto_id && item.talla === nuevoItem.talla
+        );
+
+        if (index >= 0) {
+            carritoExistente[index].cantidad += cantidad;
+        } else {
+            carritoExistente.push(nuevoItem);
+        }
+
+        localStorage.setItem("carrito", JSON.stringify(carritoExistente));
+        toast.success("Producto agregado al carrito");
         setTimeout(() => navigate('/carrito'), 1000);
     };
 
     const generarPreferencia = () => {
-        if (!talla && tipo === 'ropa') return toast.error('Por favor, seleccione una talla.');
+        if (!talla && tipo.includes('ropa')) return toast.error('Seleccione una talla.');
         const producto = {
             title: productoData.titulo,
-            quantity: 1,
+            quantity: cantidad,
             currency_id: "ARS",
             unit_price: productoData.precio
         };
@@ -70,110 +99,201 @@ const Productos = () => {
             });
     };
 
-    if (!productoData) return <div className="p-10 text-center text-gray-500">Cargando producto...</div>;
+    if (!productoData) return <div className="content">Cargando producto...</div>;
+
+    const sinStock = stockDisponible === 0;
 
     return (
-        <div className="max-w-7xl mx-auto p-6">
-            <div className="flex flex-col lg:flex-row gap-10">
-                {/* Galería de miniaturas */}
-                <div className="flex lg:flex-col gap-2 overflow-x-auto lg:overflow-y-auto w-full lg:w-28">
-                    {productoData.imagenes.map((imgItem, index) => (
-                        <img
-                            key={index}
-                            src={`http://127.0.0.1:8000/storage/${imgItem.ruta}`}
-                            alt={`Miniatura ${index + 1}`}
-                            onClick={() => setImg(`http://127.0.0.1:8000/storage/${imgItem.ruta}`)}
-                            className="w-20 h-20 object-cover border rounded cursor-pointer"
-                        />
-                    ))}
+        <div className="content">
+            <div style={{
+                maxWidth: '1200px',
+                margin: '0 auto',
+                display: 'grid',
+                gridTemplateColumns: '120px auto 1.2fr',
+                columnGap: '1rem',
+                alignItems: 'start'
+            }}>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+                    {productoData.imagenes.map((imgItem, index) => {
+                        const ruta = `http://127.0.0.1:8000/storage/${imgItem.ruta}`;
+                        return (
+                            <img
+                                key={index}
+                                src={ruta}
+                                alt={`Miniatura ${index + 1}`}
+                                onClick={() => setImg(ruta)}
+                                className={`thumbnail ${img === ruta ? 'active' : ''}`}
+                            />
+                        );
+                    })}
                 </div>
 
-                {/* Imagen principal */}
-                <div className="flex-1">
-                    <img src={img} alt="Producto" className="w-full rounded-lg shadow-md object-contain max-h-[500px]" />
+                <div style={{ backgroundColor: '#f9f9f9', padding: '1rem', borderRadius: '0.75rem' }}>
+                    <img src={img} alt="Producto" className="main-image" />
                 </div>
 
-                {/* Detalles del producto */}
-                <div className="flex-1 space-y-4">
-                    <h2 className="text-3xl font-bold">{productoData.titulo}</h2>
-                    <p className="text-gray-700">{productoData.descripcion}</p>
-                    <p className="text-xl font-semibold text-green-700">${Number(productoData.precio).toFixed(2)}</p>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
+                    <div>
+                        <h2 style={{ fontSize: '2rem', fontWeight: 'bold' }}>{productoData.titulo}</h2>
+                        <p style={{ fontSize: '1.5rem', fontWeight: 'bold', color: '#15803d', marginTop: '1rem' }}>
+                            ${Number(productoData.precio).toFixed(2)}
+                        </p>
+                        {tipo.includes('accesorio') && (
+                            <p style={{ fontSize: '1rem', marginTop: '0.5rem', color: sinStock ? 'red' : '#555' }}>
+                                {sinStock ? 'Sin stock disponible' : `Stock disponible: ${stockDisponible}`}
+                            </p>
+                        )}
+                    </div>
 
-                    {/* Tallas solo si es ropa */}
-                    {tipo === 'ropa' && productoData.tallas?.length > 0 && (
+                    {tipo.includes('ropa') && productoData.tallas?.length > 0 && (
                         <div>
-                            <p className="mb-1 font-medium">Tallas disponibles:</p>
-                            <div className="flex gap-3">
+                            <p style={{ fontWeight: 500, marginBottom: '0.5rem' }}>Tallas disponibles:</p>
+                            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
                                 {productoData.tallas.map((t, index) => (
                                     <button
                                         key={index}
-                                        onClick={() => setTalla(t.nombre)}
-                                        className={`px-4 py-2 border rounded-full transition ${talla === t.nombre ? 'bg-black text-white' : 'bg-white text-black'}`}
+                                        onClick={() => handleSeleccionTalla(t.nombre)}
+                                        className={`talla-btn ${talla === t.nombre ? 'active' : ''}`}
                                     >
                                         {t.nombre}
                                     </button>
                                 ))}
                             </div>
+
+                            {talla && (
+                                <div className="mt-4">
+                                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                                        Cantidad (Stock disponible: {stockDisponible})
+                                    </label>
+                                    <input
+                                        type="number"
+                                        min="1"
+                                        max={stockDisponible}
+                                        value={cantidad}
+                                        onChange={(e) => setCantidad(parseInt(e.target.value))}
+                                        className="border px-3 py-1 w-24 rounded"
+                                    />
+                                </div>
+                            )}
                         </div>
                     )}
 
-                    {/* Botones */}
-                    <div className="flex gap-4 mt-4">
-                        <button onClick={handleAgregarAlCarrito} className="bg-black text-white px-4 py-2 rounded hover:bg-gray-800">
+                    {tipo.includes('accesorio') && !sinStock && (
+                        <div className="mt-4">
+                            <label className="block text-sm font-medium text-gray-700 mb-1">
+                                Cantidad
+                            </label>
+                            <input
+                                type="number"
+                                min="1"
+                                max={stockDisponible}
+                                value={cantidad}
+                                onChange={(e) => setCantidad(parseInt(e.target.value))}
+                                className="border px-3 py-1 w-24 rounded"
+                            />
+                        </div>
+                    )}
+
+                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1rem' }}>
+                        <button
+                            className="button carrito"
+                            onClick={handleAgregarAlCarrito}
+                            disabled={sinStock}
+                            style={sinStock ? { backgroundColor: '#ccc', cursor: 'not-allowed' } : {}}
+                        >
                             Agregar al carrito
                         </button>
-                        <button onClick={generarPreferencia} className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">
+                        <button
+                            className="button comprar"
+                            onClick={generarPreferencia}
+                            disabled={sinStock}
+                            style={sinStock ? { backgroundColor: '#ccc', cursor: 'not-allowed' } : {}}
+                        >
                             Comprar ahora
                         </button>
                     </div>
 
-                    {/* Pagos */}
                     {mostrarPagos && (
-                        <div className="mt-6 space-y-6">
+                        <div style={{ marginTop: '2rem' }}>
                             <PayPalButtons
                                 style={{ layout: "horizontal" }}
                                 createOrder={(data, actions) =>
-                                    actions.order.create({ purchase_units: [{ amount: { value: productoData.precio.toFixed(2) } }] })}
+                                    actions.order.create({ purchase_units: [{ amount: { value: productoData.precio.toFixed(2) } }] })
+                                }
                                 onApprove={(data, actions) =>
                                     actions.order.capture().then(details => {
                                         toast.success(`Pago aprobado por ${details.payer.name.given_name}`);
                                         navigate("/carrito");
-                                    })}
+                                    })
+                                }
                             />
-                            <Wallet initialization={{ preferenceId }} />
+                            <div style={{ marginTop: '1rem' }}>
+                                <Wallet initialization={{ preferenceId }} />
+                            </div>
                         </div>
                     )}
                 </div>
             </div>
 
-            {/* Tabs */}
-            <div className="mt-10">
-                <div className="flex gap-6 border-b mb-4">
-                    <button onClick={() => setActiveTab('descripcion')} className={`pb-2 ${activeTab === 'descripcion' ? 'border-b-2 font-bold' : 'text-gray-500'}`}>
+            {/* Tabs y reviews */}
+            <div style={{
+                marginTop: '4rem',
+                maxWidth: '1000px',
+                marginLeft: 'auto',
+                marginRight: 'auto'
+            }}>
+                <div style={{
+                    display: 'flex',
+                    gap: '1rem',
+                    borderBottom: '1px solid #ddd',
+                    marginBottom: '1rem'
+                }}>
+                    <button
+                        onClick={() => setActiveTab('descripcion')}
+                        className={`tab-button ${activeTab === 'descripcion' ? 'active' : ''}`}
+                    >
                         Descripción
                     </button>
-                    <button onClick={() => setActiveTab('reviews')} className={`pb-2 ${activeTab === 'reviews' ? 'border-b-2 font-bold' : 'text-gray-500'}`}>
+                    <button
+                        onClick={() => setActiveTab('reviews')}
+                        className={`tab-button ${activeTab === 'reviews' ? 'active' : ''}`}
+                    >
                         Reviews ({reviews.length})
                     </button>
                 </div>
 
                 {activeTab === 'descripcion' ? (
-                    <p className="text-sm text-gray-600">{productoData.descripcion}</p>
+                    <p style={{ color: '#444', fontSize: '0.95rem' }}>{productoData.descripcion}</p>
                 ) : (
-                    <div className="space-y-4">
-                        <select value={sortReviews} onChange={(e) => setSortReviews(e.target.value)} className="border px-3 py-2 rounded-md text-gray-700">
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                        <select
+                            value={sortReviews}
+                            onChange={(e) => setSortReviews(e.target.value)}
+                            style={{
+                                padding: '0.5rem',
+                                fontSize: '0.875rem',
+                                borderRadius: '0.375rem',
+                                border: '1px solid #ccc',
+                                width: 'fit-content'
+                            }}
+                        >
                             <option value="recientes">Más recientes</option>
                             <option value="mejor">Mejor puntuados</option>
                             <option value="peor">Peor puntuados</option>
                         </select>
+
                         {reviews.map(review => (
-                            <div key={review.id} className="border p-4 rounded-md bg-gray-50">
-                                <div className="flex justify-between text-sm">
-                                    <span className="font-semibold">{review.autor}</span>
-                                    <span className="text-gray-500">{review.fecha}</span>
+                            <div key={review.id} className="review-card">
+                                <div style={{
+                                    display: 'flex',
+                                    justifyContent: 'space-between',
+                                    fontSize: '0.875rem'
+                                }}>
+                                    <span className="review-author">{review.autor}</span>
+                                    <span className="review-date">{review.fecha}</span>
                                 </div>
-                                <p className="mt-2 text-gray-700">{review.comentario}</p>
-                                <p className="text-yellow-600 mt-1">⭐ {review.puntuacion}/5</p>
+                                <p className="review-text">{review.comentario}</p>
+                                <p className="review-stars">⭐ {review.puntuacion}/5</p>
                             </div>
                         ))}
                     </div>

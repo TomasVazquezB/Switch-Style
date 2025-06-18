@@ -14,7 +14,8 @@ class Accesorio extends Model
         'descripcion',
         'precio',
         'ruta_imagen',
-        'categoria_id', // ← corregido
+        'stock', // ← AGREGADO
+        'categoria_id',
         'ID_Usuario',
     ];
 
