@@ -1,8 +1,7 @@
 package com.example.switchstyle;
 
-import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
+import android.annotation.SuppressLint;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,14 +9,22 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.DataSource;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.load.engine.GlideException;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -27,6 +34,10 @@ import java.util.List;
 public class CatalogoProductos extends AppCompatActivity {
 
     private FirebaseAuth mAuth;
+    private RecyclerView recyclerView;
+    private PublicacionAdapter adapter;
+    private List<Publicacion> publicaciones;
+    private boolean isLoading = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,16 +50,30 @@ public class CatalogoProductos extends AppCompatActivity {
         setContentView(R.layout.activity_catalogo_productos);
         setTitle("Catálogo de productos");
 
-        RecyclerView recyclerView = findViewById(R.id.recyclerViewProductos);
+        recyclerView = findViewById(R.id.recyclerViewProductos);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        List<Publicacion> publicaciones = new ArrayList<>();
-        for (int i = 0; i < 20; i++) {
-            publicaciones.add(new Publicacion((i % 20) + 1, i % 2 == 0));  // Hasta 20 imágenes para test
-        }
-
-        PublicacionAdapter adapter = new PublicacionAdapter(publicaciones);
+        publicaciones = new ArrayList<>();
+        adapter = new PublicacionAdapter(publicaciones);
         recyclerView.setAdapter(adapter);
+
+        cargarMasPublicaciones();
+
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(@NonNull RecyclerView rv, int dx, int dy) {
+                super.onScrolled(rv, dx, dy);
+                LinearLayoutManager lm = (LinearLayoutManager) recyclerView.getLayoutManager();
+                if (lm != null && !isLoading) {
+                    int totalItemCount = lm.getItemCount();
+                    int lastVisibleItem = lm.findLastVisibleItemPosition();
+
+                    if (lastVisibleItem >= totalItemCount - 3) {
+                        cargarMasPublicaciones();
+                    }
+                }
+            }
+        });
 
         initNavigation();
     }
@@ -58,7 +83,7 @@ public class CatalogoProductos extends AppCompatActivity {
         if (currentUser == null) {
             setContentView(R.layout.activity_login_validation);
             findViewById(R.id.btnIrRegistro).setOnClickListener(v -> {
-                startActivity(new Intent(this, Register.class)); // Va a Register
+                startActivity(new android.content.Intent(this, Register.class));
                 finish();
             });
             return false;
@@ -71,33 +96,79 @@ public class CatalogoProductos extends AppCompatActivity {
         LinearLayout navRegister = findViewById(R.id.nav_register);
         LinearLayout navCatalogs = findViewById(R.id.nav_catalogs);
 
-        // Bloqueamos la navegación para que no puedan salir del catálogo
-        if (navHome != null) {
-            navHome.setOnClickListener(v -> {
-                // Nada para bloquear navegación
-            });
-        }
+        if (navHome != null) navHome.setOnClickListener(v -> { /* bloqueado */ });
+        if (navRegister != null) navRegister.setOnClickListener(v -> { /* bloqueado */ });
+        if (navCatalogs != null) navCatalogs.setOnClickListener(v -> { /* ya estamos aquí */ });
+    }
 
-        if (navRegister != null) {
-            navRegister.setOnClickListener(v -> {
-                // Nada para bloquear navegación
-            });
+    @SuppressLint("NotifyDataSetChanged")
+    private void cargarMasPublicaciones() {
+        isLoading = true;
+        int startId = publicaciones.size() + 1;
+        int PAGE_SIZE = 20;
+        for (int i = 0; i < PAGE_SIZE; i++) {
+            int pubId = startId + i;
+            String categoria;
+            switch (pubId % 4) {
+                case 1:
+                    categoria = "ropa_mujer";
+                    break;
+                case 2:
+                    categoria = "ropa_hombre";
+                    break;
+                case 3:
+                    categoria = "ropa_ninos";
+                    break;
+                default:
+                    categoria = "accesorios";
+            }
+            int cantidadImagenes = 2 + (pubId % 4); // 2 a 5 imágenes
+            boolean meGusta = (pubId % 3 == 0);
+            publicaciones.add(new Publicacion(pubId, cantidadImagenes, meGusta, categoria));
         }
-
-        if (navCatalogs != null) {
-            navCatalogs.setOnClickListener(v -> {
-                // Ya estamos aquí, sin acción
-            });
-        }
+        adapter.notifyDataSetChanged();
+        isLoading = false;
     }
 
     public static class Publicacion {
+        int id;
         int cantidadImagenes;
         boolean meGusta;
+        String categoria;
+        List<String> urlsImagenes;
 
-        Publicacion(int cantidadImagenes, boolean meGusta) {
+        Publicacion(int id, int cantidadImagenes, boolean meGusta, String categoria) {
+            this.id = id;
             this.cantidadImagenes = cantidadImagenes;
             this.meGusta = meGusta;
+            this.categoria = categoria;
+            this.urlsImagenes = generarImagenesTematicas(id, cantidadImagenes, categoria);
+        }
+
+        private static List<String> generarImagenesTematicas(int idPublicacion, int cantidad, String categoria) {
+            List<String> imgs = new ArrayList<>();
+            String query;
+            switch (categoria) {
+                case "accesorios":
+                    query = "accessories";
+                    break;
+                case "ropa_mujer":
+                    query = "women fashion";
+                    break;
+                case "ropa_hombre":
+                    query = "men fashion";
+                    break;
+                case "ropa_ninos":
+                    query = "kids clothes";
+                    break;
+                default:
+                    query = "clothes";
+                    break;
+            }
+            for (int j = 0; j < cantidad; j++) {
+                imgs.add("https://source.unsplash.com/800x800/?" + query.replace(" ", "%20") + "&sig=" + (idPublicacion * 10 + j));
+            }
+            return imgs;
         }
     }
 
@@ -119,10 +190,9 @@ public class CatalogoProductos extends AppCompatActivity {
         @Override
         public void onBindViewHolder(@NonNull PublicacionViewHolder holder, int position) {
             Publicacion publicacion = publicaciones.get(position);
-            ImagenAdapter imagenAdapter = new ImagenAdapter(publicacion.cantidadImagenes);
+            ImagenAdapter imagenAdapter = new ImagenAdapter(publicacion.urlsImagenes, holder);
             holder.viewPagerImagenes.setAdapter(imagenAdapter);
 
-            // Mostrar contador solo si hay más de 1 imagen
             if (publicacion.cantidadImagenes > 1) {
                 holder.tvContadorImagenes.setVisibility(View.VISIBLE);
                 holder.tvContadorImagenes.setText(holder.tvContadorImagenes.getContext()
@@ -131,6 +201,7 @@ public class CatalogoProductos extends AppCompatActivity {
                 holder.tvContadorImagenes.setVisibility(View.GONE);
             }
 
+            // Botón MeGusta
             holder.btnMeGusta.setImageResource(publicacion.meGusta
                     ? R.drawable.favorite_filled_24px
                     : R.drawable.favorite_24px);
@@ -142,12 +213,10 @@ public class CatalogoProductos extends AppCompatActivity {
                         : R.drawable.favorite_24px);
             });
 
-            // Eliminar callback anterior para evitar fugas de memoria
             if (holder.pageChangeCallback != null) {
                 holder.viewPagerImagenes.unregisterOnPageChangeCallback(holder.pageChangeCallback);
             }
 
-            // Registrar nuevo callback para actualizar contador al cambiar página
             holder.pageChangeCallback = new ViewPager2.OnPageChangeCallback() {
                 @Override
                 public void onPageSelected(int pos) {
@@ -181,10 +250,10 @@ public class CatalogoProductos extends AppCompatActivity {
 
     private static class ImagenAdapter extends RecyclerView.Adapter<ImagenAdapter.ImagenViewHolder> {
 
-        private final int cantidad;
+        private final List<String> urls;
 
-        ImagenAdapter(int cantidad) {
-            this.cantidad = cantidad;
+        ImagenAdapter(List<String> urls, PublicacionAdapter.PublicacionViewHolder holder) {
+            this.urls = urls;
         }
 
         @NonNull
@@ -196,30 +265,52 @@ public class CatalogoProductos extends AppCompatActivity {
 
         @Override
         public void onBindViewHolder(@NonNull ImagenViewHolder holder, int position) {
-            int[] colores = {Color.LTGRAY, Color.DKGRAY, Color.GRAY, Color.CYAN, Color.MAGENTA};
-            int color = colores[position % colores.length];
-            holder.imageView.setImageDrawable(new ColorDrawable(color));
+            String url = urls.get(position);
+
+            holder.progressBar.setVisibility(View.VISIBLE);
+
+            Glide.with(holder.imageView.getContext())
+                    .load(url)
+                    .centerCrop()
+                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                    .listener(new RequestListener<Drawable>() {
+                        @Override
+                        public boolean onLoadFailed(@Nullable GlideException e, Object model,
+                                                    @NonNull Target<Drawable> target, boolean isFirstResource) {
+                            holder.progressBar.setVisibility(View.GONE);
+                            // No fondo rojo o negro
+                            return false;
+                        }
+
+                        @Override
+                        public boolean onResourceReady(@NonNull Drawable resource, @NonNull Object model,
+                                                       Target<Drawable> target, @NonNull DataSource dataSource, boolean isFirstResource) {
+                            holder.progressBar.setVisibility(View.GONE);
+                            return false;
+                        }
+                    })
+                    .into(holder.imageView);
         }
 
         @Override
         public int getItemCount() {
-            return cantidad;
+            return urls.size();
         }
 
         static class ImagenViewHolder extends RecyclerView.ViewHolder {
             ImageView imageView;
+            ProgressBar progressBar;
 
             ImagenViewHolder(@NonNull View itemView) {
                 super(itemView);
                 imageView = itemView.findViewById(R.id.imagenProducto);
+                progressBar = itemView.findViewById(R.id.progressBarImagen);
             }
         }
     }
 
     @Override
     public void onBackPressed() {
-        // Bloqueamos el botón atrás para que no salga del catálogo
-        // No llamamos super.onBackPressed()
         super.onBackPressed();
     }
 }
