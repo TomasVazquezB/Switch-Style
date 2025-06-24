@@ -1,17 +1,45 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import api from '../../api/axios';
+import './login.css';
 import Cookies from 'js-cookie';
 import loginImage from '../../assets/login.jpg'; // Ajustá esta ruta según tu estructura
 
 export function LoginPage() {
     const [formData, setFormData] = useState({ identificador: '', contrasena: '' });
     const [error, setError] = useState(null);
+    const [isDarkMode, setIsDarkMode] = useState(false);
     const navigate = useNavigate();
 
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
     };
+
+    useEffect(() => {
+        const checkDarkMode = () => {
+            const bodyDark = document.body.classList.contains('dark');
+            const htmlDark = document.documentElement.classList.contains('dark');
+            const systemDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            return bodyDark || htmlDark || systemDark;
+        };
+
+        const updateMode = () => setIsDarkMode(checkDarkMode());
+
+        updateMode();
+
+        const observer = new MutationObserver(updateMode);
+        observer.observe(document.body, { attributes: true, attributeFilter: ['class'] });
+        observer.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
+
+        const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+        mediaQuery.addEventListener('change', updateMode);
+
+        return () => {
+            observer.disconnect();
+            mediaQuery.removeEventListener('change', updateMode);
+        };
+    }, []);
+
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -46,20 +74,16 @@ export function LoginPage() {
     };
 
     return (
-        <div className="flex min-h-screen">
-            {/* Imagen izquierda (35%) */}
-            <div
-                className="w-[35%] hidden md:block bg-cover bg-center"
-                style={{ backgroundImage: `url(${loginImage})` }}
-            ></div>
+        <div className={`login-container ${isDarkMode ? 'dark-mode' : ''}`}>
+            <div className="image-container">
+                <img src="../src/assets/login.jpg" alt="Imagen" className="login-image" />
+            </div>
 
-            {/* Formulario (65%) */}
-            <div className="w-full md:w-[65%] flex items-center justify-center bg-white p-6">
-                <div className="w-full max-w-xl border border-black rounded-xl px-12 py-14 text-center space-y-6 shadow-lg">
-                    <h1 className="text-3xl font-bold">INGRESAR</h1>
-                    <h3 className="text-gray-600">BIENVENIDO DE VUELTA</h3>
-
-                    <form onSubmit={handleSubmit} className="space-y-5 text-left">
+            <div className="login-box">
+                <div className="login-form">
+                    <h1 className="bienvenida">Ingresar</h1>
+                    <h3 className="bienvenido">Bienvenido de vuelta</h3>
+                    <form onSubmit={handleSubmit}>
                         <input
                             type="text"
                             name="identificador"
@@ -67,7 +91,7 @@ export function LoginPage() {
                             required
                             value={formData.identificador}
                             onChange={handleChange}
-                            className="w-full px-4 py-3 rounded border border-gray-300 bg-gray-50 text-black focus:outline-none focus:ring focus:ring-blue-200"
+                            className="form-control input_user"
                         />
 
                         <input
@@ -77,27 +101,15 @@ export function LoginPage() {
                             required
                             value={formData.contrasena}
                             onChange={handleChange}
-                            className="w-full px-4 py-3 rounded border border-gray-300 bg-white text-black focus:outline-none focus:ring focus:ring-blue-200"
+                            className="form-control input_user"
                         />
 
-                        {error && (
-                            <div className="bg-red-100 text-red-700 font-bold text-sm px-4 py-2 rounded">
-                                {error}
-                            </div>
-                        )}
+                        {error && <div className="alert alert-danger">{error}</div>}
 
-                        <button
-                            type="submit"
-                            className="w-full bg-black text-white py-3 rounded hover:bg-gray-800 transition"
-                        >
-                            INGRESAR
-                        </button>
+                        <button type="submit" className="button-login">Ingresar</button>
 
-                        <p className="text-sm text-center text-black mt-4">
-                            ¿TODAVÍA NO ESTÁS REGISTRADO?{' '}
-                            <Link to="/registro" className="text-blue-600 font-bold hover:underline">
-                                REGÍSTRATE AQUÍ
-                            </Link>
+                        <p className="registro-link">
+                            ¿Todavía no estás registrado? <Link to="/registro">Regístrate aquí</Link>
                         </p>
                     </form>
                 </div>

@@ -36,43 +36,47 @@
 
 .login-form {
   width: 100%;
-  max-width: 600px;
-  padding: 20px;
+  max-width: 700px; /* antes era 600px */
+  padding: 40px; /* más espacio interior */
   border-radius: 10px;
   text-align: center;
   transition: background-color 0.4s ease, color 0.4s ease, border 0.4s ease;
 }
 
 .bienvenida {
-  font-size: 1.5em;
-  margin-bottom: 20px;
+  font-size: 2em; /* más grande */
+  margin-bottom: 15px;
   font-weight: bold;
 }
 
 .bienvenido {
-  font-size: 1.2em;
-  margin-bottom: 20px;
+  font-size: 1.3em;
+  margin-bottom: 35px; /* más separación */
   text-align: center;
 }
 
+
 .input_user,
 .input_pass {
-  padding: 10px;
-  border-radius: 5px;
+  padding: 15px; /* más relleno */
+  border-radius: 6px;
   width: 100%;
-  margin-bottom: 15px;
+  margin-bottom: 25px; /* más espacio entre ellos */
   background-color: white;
+  font-size: 1rem;
 }
 
+
 .button-login {
-  padding: 10px 20px;
-  font-size: 16px;
+  padding: 12px 20px;
+  font-size: 17px;
   cursor: pointer;
-  border-radius: 5px;
+  border-radius: 6px;
   width: 100%;
-  margin-top: 20px;
+  margin-top: 25px; /* más espacio respecto al input */
   transition: background-color 0.3s ease, color 0.3s ease;
 }
+
 
 .button-login:hover {
   background-color: #333333;
