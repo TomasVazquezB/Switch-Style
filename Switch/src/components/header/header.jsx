@@ -8,14 +8,13 @@ import { NavLink, useNavigate } from 'react-router-dom';
 import { FaSearch, FaHeart, FaShoppingCart, FaUserCircle } from 'react-icons/fa';
 import { BsMoon, BsSun } from 'react-icons/bs';
 
-const Header = ({ toggleTheme }) => {
+const Header = ({ toggleTheme, darkMode }) => {
     const [usuario, setUsuario] = useState(null);
-    const [isDarkMode, setIsDarkMode] = useState(true);
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [showProfileMenu, setShowProfileMenu] = useState(false);
     const navigate = useNavigate();
 
-    useEffect(() => {
+    /* useEffect(() => {
         const storedUser = localStorage.getItem('usuario');
         if (storedUser) {
             setUsuario(JSON.parse(storedUser));
@@ -24,14 +23,14 @@ const Header = ({ toggleTheme }) => {
         localStorage.setItem('darkMode', isDarkMode.toString());
 
 
-    }, [isDarkMode]);
+    }, [isDarkMode]); */
 
-    useEffect(() => {
+    /* useEffect(() => {
         const savedMode = localStorage.getItem('darkMode');
         setIsDarkMode(savedMode === 'true');
-    }, []);
+    }, []); */
 
-    const toggleDarkMode = () => setIsDarkMode(!isDarkMode);
+    /*  const toggleDarkMode = () => setIsDarkMode(!isDarkMode); */
 
     const handleClick = (e) => {
         const links = document.querySelectorAll('.nav-link');
@@ -77,29 +76,26 @@ const Header = ({ toggleTheme }) => {
         body.classList.remove('dark-mode', 'light-mode');
         navbars.forEach(nav => nav.classList.remove('navbar-light-mode'));
 
-        if (isDarkMode) {
+        if (darkMode) {
             body.classList.add('dark-mode');
         } else {
             body.classList.add('light-mode');
             navbars.forEach(nav => nav.classList.add('navbar-light-mode'));
         }
+    }, [darkMode]);
 
-        localStorage.setItem('darkMode', isDarkMode.toString());
-        const loggedIn = localStorage.getItem('isLoggedIn');
-        setIsLoggedIn(loggedIn === 'true');
-    }, [isDarkMode]);
 
     const getLinkClass = (isActive) =>
-        `nav-link ${isDarkMode ? 'text-white' : 'text-dark'} ${isActive ? 'active-link' : ''}`;
+        `nav-link ${darkMode ? 'text-white' : 'text-dark'} ${isActive ? 'active-link' : ''}`;
 
     return (
         <>
-            <div className={`offer-bar ${isDarkMode ? 'bg-ultra-dark' : 'bg-ultra-light'} text-center pt-4 pb-2`}>
+            <div className={`offer-bar ${darkMode ? 'bg-ultra-dark' : 'bg-ultra-light'} text-center pt-4 pb-2`}>
                 <br />
-                <p className={isDarkMode ? 'text-dark' : 'text-white'}>¡Suscribite para obtener ofertas unicas y obten un 15% en tu primer compra!</p>
+                <p className={darkMode ? 'text-dark' : 'text-white'}>¡Suscribite para obtener ofertas unicas y obten un 15% en tu primer compra!</p>
             </div>
 
-            <Navbar expand="lg" className={`navbar-top ${isDarkMode ? 'bg-dark' : 'bg-light'}`}>
+            <Navbar expand="lg" className={`navbar-top ${darkMode ? 'bg-dark' : 'bg-light'}`}>
                 <Container fluid>
                     <Navbar.Brand as={NavLink} to="/" onClick={() => navigate('/')}>
                         <img src="../src/assets/LOGO.png" width="90" height="50" className="d-inline-block align-top" alt="Logo" />
@@ -109,12 +105,17 @@ const Header = ({ toggleTheme }) => {
                     <Navbar.Collapse id="navbarNav">
                         <Nav className="me-auto">
                             <div className="mode-switch">
-                                <BsSun className={`mode-icon ${isDarkMode ? 'inactive' : 'active'}`} />
+                                <BsSun className={`mode-icon ${darkMode ? 'inactive' : 'active'}`} />
                                 <label className="switch">
-                                    <input type="checkbox" onChange={toggleDarkMode} checked={isDarkMode} />
-                                    <span className="slider" onClick={toggleTheme}></span>
+                                    <input
+                                        type="checkbox"
+                                        onChange={toggleTheme} // Usar la función que viene del `App.jsx`
+                                        checked={darkMode}     // Mostrar el estado desde `App.jsx`
+                                    />
+                                    <span className="slider"></span>
                                 </label>
-                                <BsMoon className={`mode-icon ${isDarkMode ? 'active' : 'inactive'}`} />
+
+                                <BsMoon className={`mode-icon ${darkMode ? 'active' : 'inactive'}`} />
                             </div>
                         </Nav>
 
@@ -124,10 +125,10 @@ const Header = ({ toggleTheme }) => {
                                 <FaSearch />
                             </button>
                             <Nav.Link as={NavLink} to="/favoritos" className="icon-separator">
-                                <FaHeart className={`navbar-icon ${isDarkMode ? 'text-white' : 'text-dark'}`} />
+                                <FaHeart className={`navbar-icon ${darkMode ? 'text-white' : 'text-dark'}`} />
                             </Nav.Link>
                             <Nav.Link onClick={goToCart} className="icon-separator">
-                                <FaShoppingCart className={`navbar-icon ${isDarkMode ? 'text-white' : 'text-dark'}`} />
+                                <FaShoppingCart className={`navbar-icon ${darkMode ? 'text-white' : 'text-dark'}`} />
                             </Nav.Link>
                         </div>
 
@@ -148,7 +149,7 @@ const Header = ({ toggleTheme }) => {
                                             <NavLink
                                                 to="/perfil"
                                                 className={({ isActive }) =>
-                                                    `block px-4 py-2 text-sm ${isDarkMode ? 'text-white hover:bg-gray-700' : 'text-gray-800 hover:bg-gray-100'
+                                                    `block px-4 py-2 text-sm ${darkMode ? 'text-white hover:bg-gray-700' : 'text-gray-800 hover:bg-gray-100'
                                                     }`
                                                 }
                                             >
@@ -157,7 +158,7 @@ const Header = ({ toggleTheme }) => {
                                             <NavLink
                                                 to="/pedidos"
                                                 className={({ isActive }) =>
-                                                    `block px-4 py-2 text-sm ${isDarkMode ? 'text-white hover:bg-gray-700' : 'text-gray-800 hover:bg-gray-100'
+                                                    `block px-4 py-2 text-sm ${darkMode ? 'text-white hover:bg-gray-700' : 'text-gray-800 hover:bg-gray-100'
                                                     }`
                                                 }
                                             >
@@ -166,7 +167,7 @@ const Header = ({ toggleTheme }) => {
                                             <NavLink
                                                 to="/favoritos"
                                                 className={({ isActive }) =>
-                                                    `block px-4 py-2 text-sm ${isDarkMode ? 'text-white hover:bg-gray-700' : 'text-gray-800 hover:bg-gray-100'
+                                                    `block px-4 py-2 text-sm ${darkMode ? 'text-white hover:bg-gray-700' : 'text-gray-800 hover:bg-gray-100'
                                                     }`
                                                 }
                                             >
@@ -175,7 +176,7 @@ const Header = ({ toggleTheme }) => {
                                             <NavLink
                                                 to="/FAQ"
                                                 className={({ isActive }) =>
-                                                    `block px-4 py-2 text-sm ${isDarkMode ? 'text-white hover:bg-gray-700' : 'text-gray-800 hover:bg-gray-100'
+                                                    `block px-4 py-2 text-sm ${darkMode ? 'text-white hover:bg-gray-700' : 'text-gray-800 hover:bg-gray-100'
                                                     }`
                                                 }
                                             >
@@ -214,7 +215,7 @@ const Header = ({ toggleTheme }) => {
                 </Container>
             </Navbar>
 
-            <Navbar expand="lg" className={`navbar-bottom ${isDarkMode ? 'bg-dark' : 'bg-light'}`}>
+            <Navbar expand="lg" className={`navbar-bottom ${darkMode ? 'bg-dark' : 'bg-light'}`}>
                 <Container fluid>
                     <Nav className="me-auto" style={{ justifyContent: 'space-evenly', width: '100%' }}>
                         <div className="nav-dropdown">

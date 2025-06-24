@@ -24,8 +24,26 @@ import 'react-toastify/dist/ReactToastify.css';
 import '/index.css';
 
 function App() {
-  const [darkMode, setDarkMode] = useState(false);
+  const [darkMode, setDarkMode] = useState(() => {
+    return localStorage.getItem('darkMode') === 'true';
+  });
+
+  useEffect(() => {
+    if (darkMode) {
+      document.body.classList.add('dark-mode');
+      document.body.classList.remove('light-mode');
+    } else {
+      document.body.classList.remove('dark-mode');
+      document.body.classList.add('light-mode');
+    }
+
+    localStorage.setItem('darkMode', darkMode);
+  }, [darkMode]);
+
   const toggleTheme = () => setDarkMode(prev => !prev);
+
+
+
 
   return (
     <PayPalScriptProvider options={{ clientId: "AbSH4YtXgr7HDRqfrLVMI8GJRF_iOK10cGwbs_NiwJN96bDp6GcZsOERyV4T29kvRE1o2D--KJAXFJE3" }}>
