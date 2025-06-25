@@ -3,6 +3,7 @@ package com.example.switchstyle;
 import android.annotation.SuppressLint;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -147,26 +148,9 @@ public class CatalogoProductos extends AppCompatActivity {
 
         private static List<String> generarImagenesTematicas(int idPublicacion, int cantidad, String categoria) {
             List<String> imgs = new ArrayList<>();
-            String query;
-            switch (categoria) {
-                case "accesorios":
-                    query = "accessories";
-                    break;
-                case "ropa_mujer":
-                    query = "women fashion";
-                    break;
-                case "ropa_hombre":
-                    query = "men fashion";
-                    break;
-                case "ropa_ninos":
-                    query = "kids clothes";
-                    break;
-                default:
-                    query = "clothes";
-                    break;
-            }
+            String query = "nature";  // Usamos una categoría de prueba 'nature'
             for (int j = 0; j < cantidad; j++) {
-                imgs.add("https://source.unsplash.com/800x800/?" + query.replace(" ", "%20") + "&sig=" + (idPublicacion * 10 + j));
+                imgs.add("https://source.unsplash.com/800x800/?" + query);
             }
             return imgs;
         }
@@ -190,7 +174,7 @@ public class CatalogoProductos extends AppCompatActivity {
         @Override
         public void onBindViewHolder(@NonNull PublicacionViewHolder holder, int position) {
             Publicacion publicacion = publicaciones.get(position);
-            ImagenAdapter imagenAdapter = new ImagenAdapter(publicacion.urlsImagenes, holder);
+            ImagenAdapter imagenAdapter = new ImagenAdapter(publicacion.urlsImagenes);
             holder.viewPagerImagenes.setAdapter(imagenAdapter);
 
             if (publicacion.cantidadImagenes > 1) {
@@ -252,7 +236,7 @@ public class CatalogoProductos extends AppCompatActivity {
 
         private final List<String> urls;
 
-        ImagenAdapter(List<String> urls, PublicacionAdapter.PublicacionViewHolder holder) {
+        ImagenAdapter(List<String> urls) {
             this.urls = urls;
         }
 
@@ -267,6 +251,7 @@ public class CatalogoProductos extends AppCompatActivity {
         public void onBindViewHolder(@NonNull ImagenViewHolder holder, int position) {
             String url = urls.get(position);
 
+            // Mostrar ProgressBar mientras carga la imagen
             holder.progressBar.setVisibility(View.VISIBLE);
 
             Glide.with(holder.imageView.getContext())
@@ -278,13 +263,13 @@ public class CatalogoProductos extends AppCompatActivity {
                         public boolean onLoadFailed(@Nullable GlideException e, Object model,
                                                     @NonNull Target<Drawable> target, boolean isFirstResource) {
                             holder.progressBar.setVisibility(View.GONE);
-                            // No fondo rojo o negro
-                            return false;
+                            Log.e("GlideError", "Error loading image: " + (e != null ? e.getMessage() : "Unknown error"));
+                            return false; // false para que Glide maneje el error y coloque la imagen de error
                         }
 
                         @Override
                         public boolean onResourceReady(@NonNull Drawable resource, @NonNull Object model,
-                                                       Target<Drawable> target, @NonNull DataSource dataSource, boolean isFirstResource) {
+                                                       @NonNull Target<Drawable> target, @NonNull DataSource dataSource, boolean isFirstResource) {
                             holder.progressBar.setVisibility(View.GONE);
                             return false;
                         }
@@ -307,10 +292,5 @@ public class CatalogoProductos extends AppCompatActivity {
                 progressBar = itemView.findViewById(R.id.progressBarImagen);
             }
         }
-    }
-
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
     }
 }
