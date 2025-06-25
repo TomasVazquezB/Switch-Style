@@ -20,6 +20,19 @@
   border-bottom: 1px solid #222;
 }
 
+.offer-bar-text {
+  transition: color 0.3s ease;
+}
+
+.dark-mode .offer-bar-text {
+  color: #000000 
+}
+
+.light-mode .offer-bar-text {
+  color: #ffffff 
+}
+
+
 .navbar-top {
   position: fixed;
   top: 0;

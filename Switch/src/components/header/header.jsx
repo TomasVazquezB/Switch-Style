@@ -90,9 +90,9 @@ const Header = ({ toggleTheme, darkMode }) => {
 
     return (
         <>
-            <div className={`offer-bar ${darkMode ? 'bg-ultra-dark' : 'bg-ultra-light'} text-center pt-4 pb-2`}>
+            <div className={`offer-bar ${darkMode ? 'bg-ultra-light' : 'bg-ultra-dark'} text-center pt-4 pb-2`}>
                 <br />
-                <p className={darkMode ? 'text-dark' : 'text-white'}>¡Suscribite para obtener ofertas unicas y obten un 15% en tu primer compra!</p>
+                <p className="offer-bar-text">¡Suscribite para obtener ofertas unicas y obten un 15% en tu primer compra!</p>
             </div>
 
             <Navbar expand="lg" className={`navbar-top ${darkMode ? 'bg-dark' : 'bg-light'}`}>
