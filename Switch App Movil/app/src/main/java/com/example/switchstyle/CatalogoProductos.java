@@ -68,7 +68,6 @@ public class CatalogoProductos extends AppCompatActivity {
                 if (lm != null && !isLoading) {
                     int totalItemCount = lm.getItemCount();
                     int lastVisibleItem = lm.findLastVisibleItemPosition();
-
                     if (lastVisibleItem >= totalItemCount - 3) {
                         cargarMasPublicaciones();
                     }
@@ -91,17 +90,14 @@ public class CatalogoProductos extends AppCompatActivity {
         }
         return true;
     }
-
     private void initNavigation() {
         LinearLayout navHome = findViewById(R.id.nav_home);
         LinearLayout navRegister = findViewById(R.id.nav_register);
         LinearLayout navCatalogs = findViewById(R.id.nav_catalogs);
-
         if (navHome != null) navHome.setOnClickListener(v -> { /* bloqueado */ });
         if (navRegister != null) navRegister.setOnClickListener(v -> { /* bloqueado */ });
         if (navCatalogs != null) navCatalogs.setOnClickListener(v -> { /* ya estamos aquí */ });
     }
-
     @SuppressLint("NotifyDataSetChanged")
     private void cargarMasPublicaciones() {
         isLoading = true;
@@ -130,14 +126,12 @@ public class CatalogoProductos extends AppCompatActivity {
         adapter.notifyDataSetChanged();
         isLoading = false;
     }
-
     public static class Publicacion {
         int id;
         int cantidadImagenes;
         boolean meGusta;
         String categoria;
         List<String> urlsImagenes;
-
         Publicacion(int id, int cantidadImagenes, boolean meGusta, String categoria) {
             this.id = id;
             this.cantidadImagenes = cantidadImagenes;
@@ -145,29 +139,22 @@ public class CatalogoProductos extends AppCompatActivity {
             this.categoria = categoria;
             this.urlsImagenes = generarImagenesTematicas(id, cantidadImagenes, categoria);
         }
-
         private static List<String> generarImagenesTematicas(int idPublicacion, int cantidad, String categoria) {
             List<String> imgs = new ArrayList<>();
-            String query = "nature";  // Usamos una categoría de prueba 'nature'
-            for (int j = 0; j < cantidad; j++) {
-                imgs.add("https://source.unsplash.com/800x800/?" + query);
-            }
+            String query = "nature";
+            for (int j = 0; j < cantidad; j++) { imgs.add("https://source.unsplash.com/800x800/?" + query);}
             return imgs;
         }
     }
-
     private static class PublicacionAdapter extends RecyclerView.Adapter<PublicacionAdapter.PublicacionViewHolder> {
-
         private final List<Publicacion> publicaciones;
-
         PublicacionAdapter(List<Publicacion> publicaciones) {
             this.publicaciones = publicaciones;
         }
 
         @NonNull
         @Override
-        public PublicacionViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_publicacion, parent, false);
+        public PublicacionViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) { View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_publicacion, parent, false);
             return new PublicacionViewHolder(view);
         }
 
@@ -185,28 +172,16 @@ public class CatalogoProductos extends AppCompatActivity {
                 holder.tvContadorImagenes.setVisibility(View.GONE);
             }
 
-            // Botón MeGusta
-            holder.btnMeGusta.setImageResource(publicacion.meGusta
-                    ? R.drawable.favorite_filled_24px
-                    : R.drawable.favorite_24px);
+            holder.btnMeGusta.setImageResource(publicacion.meGusta ? R.drawable.favorite_filled_24px : R.drawable.favorite_24px);
+            holder.btnMeGusta.setOnClickListener(v -> { publicacion.meGusta = !publicacion.meGusta; holder.btnMeGusta.setImageResource(publicacion.meGusta  ? R.drawable.favorite_filled_24px : R.drawable.favorite_24px);});
 
-            holder.btnMeGusta.setOnClickListener(v -> {
-                publicacion.meGusta = !publicacion.meGusta;
-                holder.btnMeGusta.setImageResource(publicacion.meGusta
-                        ? R.drawable.favorite_filled_24px
-                        : R.drawable.favorite_24px);
-            });
-
-            if (holder.pageChangeCallback != null) {
-                holder.viewPagerImagenes.unregisterOnPageChangeCallback(holder.pageChangeCallback);
-            }
+            if (holder.pageChangeCallback != null) {holder.viewPagerImagenes.unregisterOnPageChangeCallback(holder.pageChangeCallback); }
 
             holder.pageChangeCallback = new ViewPager2.OnPageChangeCallback() {
                 @Override
                 public void onPageSelected(int pos) {
                     super.onPageSelected(pos);
-                    holder.tvContadorImagenes.setText(holder.tvContadorImagenes.getContext()
-                            .getString(R.string.contador_imagenes, pos + 1, publicacion.cantidadImagenes));
+                    holder.tvContadorImagenes.setText(holder.tvContadorImagenes.getContext().getString(R.string.contador_imagenes, pos + 1, publicacion.cantidadImagenes));
                 }
             };
             holder.viewPagerImagenes.registerOnPageChangeCallback(holder.pageChangeCallback);
@@ -216,13 +191,11 @@ public class CatalogoProductos extends AppCompatActivity {
         public int getItemCount() {
             return publicaciones.size();
         }
-
         static class PublicacionViewHolder extends RecyclerView.ViewHolder {
             ViewPager2 viewPagerImagenes;
             ImageButton btnMeGusta;
             TextView tvContadorImagenes;
             ViewPager2.OnPageChangeCallback pageChangeCallback;
-
             PublicacionViewHolder(@NonNull View itemView) {
                 super(itemView);
                 viewPagerImagenes = itemView.findViewById(R.id.viewPagerImagenes);
@@ -231,45 +204,34 @@ public class CatalogoProductos extends AppCompatActivity {
             }
         }
     }
-
     private static class ImagenAdapter extends RecyclerView.Adapter<ImagenAdapter.ImagenViewHolder> {
-
         private final List<String> urls;
-
-        ImagenAdapter(List<String> urls) {
-            this.urls = urls;
-        }
+        ImagenAdapter(List<String> urls) { this.urls = urls;}
 
         @NonNull
         @Override
-        public ImagenViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_imagen, parent, false);
+        public ImagenViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) { View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_imagen, parent, false);
             return new ImagenViewHolder(view);
         }
 
         @Override
         public void onBindViewHolder(@NonNull ImagenViewHolder holder, int position) {
             String url = urls.get(position);
-
-            // Mostrar ProgressBar mientras carga la imagen
             holder.progressBar.setVisibility(View.VISIBLE);
-
             Glide.with(holder.imageView.getContext())
                     .load(url)
                     .centerCrop()
                     .diskCacheStrategy(DiskCacheStrategy.ALL)
                     .listener(new RequestListener<Drawable>() {
                         @Override
-                        public boolean onLoadFailed(@Nullable GlideException e, Object model,
-                                                    @NonNull Target<Drawable> target, boolean isFirstResource) {
+                        public boolean onLoadFailed(@Nullable GlideException e, Object model, @NonNull Target<Drawable> target, boolean isFirstResource) {
                             holder.progressBar.setVisibility(View.GONE);
                             Log.e("GlideError", "Error loading image: " + (e != null ? e.getMessage() : "Unknown error"));
                             return false; // false para que Glide maneje el error y coloque la imagen de error
                         }
 
                         @Override
-                        public boolean onResourceReady(@NonNull Drawable resource, @NonNull Object model,
-                                                       @NonNull Target<Drawable> target, @NonNull DataSource dataSource, boolean isFirstResource) {
+                        public boolean onResourceReady(@NonNull Drawable resource, @NonNull Object model, @NonNull Target<Drawable> target, @NonNull DataSource dataSource, boolean isFirstResource) {
                             holder.progressBar.setVisibility(View.GONE);
                             return false;
                         }
@@ -281,11 +243,9 @@ public class CatalogoProductos extends AppCompatActivity {
         public int getItemCount() {
             return urls.size();
         }
-
         static class ImagenViewHolder extends RecyclerView.ViewHolder {
             ImageView imageView;
             ProgressBar progressBar;
-
             ImagenViewHolder(@NonNull View itemView) {
                 super(itemView);
                 imageView = itemView.findViewById(R.id.imagenProducto);
