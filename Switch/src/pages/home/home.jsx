@@ -217,6 +217,7 @@ const Home = ({ darkMode }) => {
 
             </div>
           </div>
+          <br />
         </div>
       </div>
     </ErrorBoundary>
