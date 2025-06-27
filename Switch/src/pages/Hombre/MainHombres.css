@@ -80,3 +80,152 @@
 .card .precio {
   font-weight: 600;
 }
+/* Modo claro */
+.light-mode .sidebar {
+  background-color: #ffffff;
+  color: #000000;
+}
+
+.light-mode .sidebar h4 {
+  color: #111;
+}
+
+.light-mode .sidebar input[type="checkbox"] {
+  accent-color: #000000;
+}
+
+.light-mode .range span {
+  color: #000000;
+}
+
+.light-mode .main {
+  background-color: #f9f9f9;
+  color: #000000;
+}
+
+/* Modo oscuro */
+.dark-mode .sidebar {
+  background-color: #1e1e1e;
+  color: #f1f1f1;
+}
+
+.dark-mode .sidebar h4 {
+  color: #000000;
+}
+
+.dark-mode .sidebar input[type="checkbox"] {
+  accent-color: #ffffff;
+}
+
+.dark-mode .range span {
+  color: #000000;
+}
+
+.dark-mode .main {
+  background-color: #121212;
+  color: #f1f1f1;
+}
+
+.dark-mode select {
+  background-color: #2a2a2a;
+  color: #ffffff;
+  border-color: #555;
+}
+
+.light-mode select {
+  background-color: #ffffff;
+  color: #000000;
+}
+
+.dark-mode .app-content  {
+  background-color: #121212;
+  color: #f1f1f1;
+}
+
+.dark-mode .content  {
+  background-color: #121212;
+  color: #f1f1f1;
+}
+
+.light-mode .app-content {
+  background-color: #ffffff;
+  color: #000000;
+}
+
+.light-mode .content {
+  background-color: #ffffff;
+  color: #000000;
+}
+
+/* Estilo oscuro para el sidebar */
+.dark-mode .sidebar {
+  background-color: #1e1e1e !important; /* Fondo oscuro */
+  color: #ffffff !important; /* Texto claro */
+  border-color: #333 !important; /* Borde más oscuro */
+}
+
+.light-mode .sidebar {
+  background-color: #ffffff;
+  color: #000000;
+  border-color: #ddd;
+}
+
+.dark-mode .sidebar-content {
+  background-color: transparent; /* Evita sobrescritura blanca */
+}
+
+.dark-mode .sidebar input[type="checkbox"] {
+  accent-color: #ffffff;
+}
+
+.dark-mode .sidebar h4 {
+  color: #ffffff;
+}
+
+.dark-mode .sidebar label {
+  color: #ffffff;
+}
+
+.dark-mode .sidebar .border {
+  border-color: #333;
+}
+
+/* Botones de talla en modo oscuro */
+.dark-mode .sidebar button {
+  background-color: #2a2a2a;
+  color: white;
+  border-color: #444;
+}
+
+.dark-mode .sidebar button:hover {
+  background-color: #3a3a3a;
+}
+
+/* 🌙 DARK MODE */
+.dark-mode .range input[type="range"] {
+  background-color: #444;
+}
+
+.range {
+  background-color: white;
+  padding: 10px;
+  border-radius: 6px;
+  transition: background-color 0.3s ease;
+}
+
+/* 🌙 Modo oscuro */
+.dark-mode .range {
+  background-color: #1e1e1e; /* o #121212 para más oscuridad */
+}
+
+/* Modo claro (por defecto no hace falta si ya está bien) */
+.range span {
+  color: black;
+}
+
+
+/* 🌙 Modo oscuro */
+.dark-mode .range span {
+  color: white;
+}
+
