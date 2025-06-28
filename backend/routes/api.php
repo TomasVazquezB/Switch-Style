@@ -6,6 +6,10 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AccesorioController;
 use App\Http\Controllers\CarritoController;
+use App\Http\Controllers\FirebaseController;
+
+Route::post('/firebase/add-user', [FirebaseController::class, 'addUser']);
+Route::get('/firebase/get-users', [FirebaseController::class, 'getUsers']);
 
 // Test
 Route::get('/test', fn () => response()->json(['message' => 'API funcionando correctamente']));
