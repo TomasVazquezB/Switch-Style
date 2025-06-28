@@ -105,7 +105,7 @@ const Header = ({ toggleTheme, darkMode }) => {
                     <Navbar.Collapse id="navbarNav">
                         <Nav className="me-auto">
                             <div className="mode-switch">
-                                <BsSun className={`mode-icon ${darkMode ? 'inactive' : 'active'}`} />
+                                <BsMoon className={`mode-icon ${darkMode ? 'active' : 'inactive'}`} />
                                 <label className="switch">
                                     <input
                                         type="checkbox"
@@ -115,7 +115,7 @@ const Header = ({ toggleTheme, darkMode }) => {
                                     <span className="slider"></span>
                                 </label>
 
-                                <BsMoon className={`mode-icon ${darkMode ? 'active' : 'inactive'}`} />
+                                <BsSun className={`mode-icon ${darkMode ? 'inactive' : 'active'}`} />
                             </div>
                         </Nav>
 
