@@ -1,0 +1,28 @@
+FROM php:8.2-apache
+
+# Instalar extensiones necesarias
+RUN apt-get update && apt-get install -y \
+    git curl zip unzip libpng-dev libonig-dev libxml2-dev libzip-dev \
+    && docker-php-ext-install pdo pdo_mysql mbstring zip exif pcntl
+
+# Instalar Composer
+COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+
+# Habilitar mod_rewrite
+RUN a2enmod rewrite
+
+# Copiar archivos del proyecto
+COPY . /var/www/html
+
+# Copiar configuración de Apache personalizada
+COPY docker/apache/vhost.conf /etc/apache2/sites-available/000-default.conf
+
+# Establecer permisos
+RUN chown -R www-data:www-data /var/www/html \
+    && chmod -R 755 /var/www/html/storage /var/www/html/bootstrap/cache
+
+# Correr composer install
+WORKDIR /var/www/html
+RUN composer install --no-dev --optimize-autoloader
+
+EXPOSE 80
