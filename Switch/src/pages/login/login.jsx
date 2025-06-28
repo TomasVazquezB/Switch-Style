@@ -15,7 +15,7 @@ export function LoginPage() {
         setFormData({ ...formData, [e.target.name]: e.target.value });
     };
 
-    useEffect(() => {
+    /* useEffect(() => {
         const checkDarkMode = () => {
             const bodyDark = document.body.classList.contains('dark');
             const htmlDark = document.documentElement.classList.contains('dark');
@@ -38,7 +38,7 @@ export function LoginPage() {
             observer.disconnect();
             mediaQuery.removeEventListener('change', updateMode);
         };
-    }, []);
+    }, []); */
 
 
     const handleSubmit = async (e) => {
@@ -74,7 +74,8 @@ export function LoginPage() {
     };
 
     return (
-        <div className={`login-container ${isDarkMode ? 'dark-mode' : ''}`}>
+        <div className="login-container">
+
             <div className="image-container">
                 <img src="../src/assets/login.jpg" alt="Imagen" className="login-image" />
             </div>
