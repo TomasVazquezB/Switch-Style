@@ -9,6 +9,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\ImagenAccesorioController;
 use App\Http\Middleware\TipoUsuario;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\FirebaseController;
 
 Route::get('/', fn() => redirect()->route('inicio'));
 
@@ -53,6 +54,10 @@ Route::middleware('auth')->group(function () {
         Route::delete('/imagenes/{imagen}', [ImagenAccesorioController::class, 'destroy'])->name('imagenes.destroy');
         Route::put('/imagenes/{imagen}/principal', [ImagenAccesorioController::class, 'marcarComoPrincipal'])->name('imagenes.principal');
     });
+
+    Route::post('/firebase/guardar', [FirebaseController::class, 'guardar']);
+
+    
 });
 
 require __DIR__.'/auth.php';
