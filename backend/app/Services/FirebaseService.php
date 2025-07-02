@@ -3,26 +3,27 @@
 namespace App\Services;
 
 use Kreait\Firebase\Factory;
+use Kreait\Firebase\ServiceAccount;
+use Kreait\Firebase\Auth;
+use Kreait\Firebase\Firestore;
 
 class FirebaseService
 {
+    protected $auth;
     protected $firestore;
 
     public function __construct()
     {
-        $jsonString = env('FIREBASE_CREDENTIALS_JSON');
+        $serviceAccount = ServiceAccount::fromJsonFile(config('firebase.credentials.file'));
+        $firebase = (new Factory)->withServiceAccount($serviceAccount);
 
-        $path = storage_path('app/firebase/firebase_credentials.json');
+        $this->auth = $firebase->createAuth();
+        $this->firestore = $firebase->createFirestore();
+    }
 
-        if (!file_exists($path)) {
-            if (!is_dir(dirname($path))) {
-                mkdir(dirname($path), 0755, true);
-            }
-            file_put_contents($path, $jsonString);
-        }
-
-        $factory = (new Factory)->withServiceAccount($path);
-        $this->firestore = $factory->createFirestore()->database();
+    public function getAuth()
+    {
+        return $this->auth;
     }
 
     public function getFirestore()
