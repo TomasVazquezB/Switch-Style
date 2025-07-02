@@ -12,6 +12,25 @@ const MainHombres = () => {
   const [precioMin] = useState(100);
   const [precioMax, setPrecioMax] = useState(350);
 
+  // FAVORITOS
+  const [favoritos, setFavoritos] = useState(() => {
+    const stored = localStorage.getItem("favoritos");
+    return stored ? JSON.parse(stored) : [];
+  });
+
+  const toggleFavorito = (id) => {
+    setFavoritos((prev) => {
+      let nuevos;
+      if (prev.includes(id)) {
+        nuevos = prev.filter((favId) => favId !== id);
+      } else {
+        nuevos = [...prev, id];
+      }
+      localStorage.setItem("favoritos", JSON.stringify(nuevos));
+      return nuevos;
+    });
+  };
+
   const fetchProductos = async () => {
     try {
       const res = await axios.get('http://127.0.0.1:8000/api/ropa', {
@@ -155,11 +174,14 @@ const MainHombres = () => {
         <div className="product-grid">
           {filtroProductos.map((item) => (
             <ProductoItem
+              key={item.id}
               id={item.id}
-              img={item.ruta_imagen} // 🔥 imagen corregida
+              img={item.ruta_imagen}
               nombre={item.titulo}
               precio={item.precio}
               tipo="ropa"
+              esFavorito={favoritos.includes(item.id)}
+              onToggleFavorito={() => toggleFavorito(item.id)}
             />
           ))}
         </div>

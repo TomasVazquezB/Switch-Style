@@ -80,6 +80,7 @@
 .card .precio {
   font-weight: 600;
 }
+
 /* Modo claro */
 .light-mode .sidebar {
   background-color: #ffffff;
@@ -137,12 +138,12 @@
   color: #000000;
 }
 
-.dark-mode .app-content  {
+.dark-mode .app-content {
   background-color: #121212;
   color: #f1f1f1;
 }
 
-.dark-mode .content  {
+.dark-mode .content {
   background-color: #121212;
   color: #f1f1f1;
 }
@@ -159,9 +160,12 @@
 
 /* Estilo oscuro para el sidebar */
 .dark-mode .sidebar {
-  background-color: #1e1e1e !important; /* Fondo oscuro */
-  color: #ffffff !important; /* Texto claro */
-  border-color: #333 !important; /* Borde más oscuro */
+  background-color: #1e1e1e !important;
+  /* Fondo oscuro */
+  color: #ffffff !important;
+  /* Texto claro */
+  border-color: #333 !important;
+  /* Borde más oscuro */
 }
 
 .light-mode .sidebar {
@@ -171,7 +175,8 @@
 }
 
 .dark-mode .sidebar-content {
-  background-color: transparent; /* Evita sobrescritura blanca */
+  background-color: transparent;
+  /* Evita sobrescritura blanca */
 }
 
 .dark-mode .sidebar input[type="checkbox"] {
@@ -215,7 +220,8 @@
 
 /* 🌙 Modo oscuro */
 .dark-mode .range {
-  background-color: #1e1e1e; /* o #121212 para más oscuridad */
+  background-color: #1e1e1e;
+  /* o #121212 para más oscuridad */
 }
 
 /* Modo claro (por defecto no hace falta si ya está bien) */
@@ -228,4 +234,3 @@
 .dark-mode .range span {
   color: white;
 }
-

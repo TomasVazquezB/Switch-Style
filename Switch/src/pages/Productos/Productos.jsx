@@ -19,6 +19,11 @@ const Productos = () => {
     const [preferenceId, setPreferenceId] = useState(null);
     const [mostrarPagos, setMostrarPagos] = useState(false);
     const [sortReviews, setSortReviews] = useState('recientes');
+    const [favoritos, setFavoritos] = useState(() => {
+        const stored = localStorage.getItem("favoritos");
+        return stored ? JSON.parse(stored) : [];
+    });
+
     const [reviews] = useState([
         { id: 1, autor: 'Juan', fecha: '2025-06-01', comentario: 'Muy buen producto.', puntuacion: 5 },
         { id: 2, autor: 'Ana', fecha: '2025-06-05', comentario: 'Podría ser mejor.', puntuacion: 3 }
@@ -39,6 +44,19 @@ const Productos = () => {
             })
             .catch(() => toast.error("Producto no encontrado"));
     }, [productoId, tipo]);
+
+    const toggleFavorito = () => {
+        setFavoritos((prev) => {
+            let nuevos;
+            if (prev.includes(productoData.id)) {
+                nuevos = prev.filter((id) => id !== productoData.id);
+            } else {
+                nuevos = [...prev, productoData.id];
+            }
+            localStorage.setItem("favoritos", JSON.stringify(nuevos));
+            return nuevos;
+        });
+    };
 
     const handleSeleccionTalla = (nombreTalla) => {
         setTalla(nombreTalla);
@@ -62,7 +80,15 @@ const Productos = () => {
             cantidad
         };
 
-        const carritoExistente = JSON.parse(localStorage.getItem("carrito")) || [];
+        // ✅ Carga segura del carrito
+        let carritoExistente;
+        try {
+            const guardado = JSON.parse(localStorage.getItem("carrito"));
+            carritoExistente = Array.isArray(guardado) ? guardado : [];
+        } catch (e) {
+            carritoExistente = [];
+        }
+
         const index = carritoExistente.findIndex(
             (item) => item.producto_id === nuevoItem.producto_id && item.talla === nuevoItem.talla
         );
@@ -77,6 +103,7 @@ const Productos = () => {
         toast.success("Producto agregado al carrito");
         setTimeout(() => navigate('/carrito'), 1000);
     };
+
 
     const generarPreferencia = () => {
         if (!talla && tipo.includes('ropa')) return toast.error('Seleccione una talla.');
@@ -138,6 +165,19 @@ const Productos = () => {
                         <p style={{ fontSize: '1.5rem', fontWeight: 'bold', color: '#15803d', marginTop: '1rem' }}>
                             ${Number(productoData.precio).toFixed(2)}
                         </p>
+                        <button
+                            onClick={toggleFavorito}
+                            style={{
+                                marginTop: '0.5rem',
+                                background: 'none',
+                                border: 'none',
+                                cursor: 'pointer',
+                                fontSize: '1.2rem',
+                                color: favoritos.includes(productoData.id) ? 'red' : '#888'
+                            }}
+                        >
+                            {favoritos.includes(productoData.id) ? '❤️ Quitar de favoritos' : '🤍 Agregar a favoritos'}
+                        </button>
                         {tipo.includes('accesorio') && (
                             <p style={{ fontSize: '1rem', marginTop: '0.5rem', color: sinStock ? 'red' : '#555' }}>
                                 {sinStock ? 'Sin stock disponible' : `Stock disponible: ${stockDisponible}`}
