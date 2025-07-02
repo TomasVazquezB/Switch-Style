@@ -15,40 +15,16 @@ export function LoginPage() {
         setFormData({ ...formData, [e.target.name]: e.target.value });
     };
 
-    /* useEffect(() => {
-        const checkDarkMode = () => {
-            const bodyDark = document.body.classList.contains('dark');
-            const htmlDark = document.documentElement.classList.contains('dark');
-            const systemDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-            return bodyDark || htmlDark || systemDark;
-        };
-
-        const updateMode = () => setIsDarkMode(checkDarkMode());
-
-        updateMode();
-
-        const observer = new MutationObserver(updateMode);
-        observer.observe(document.body, { attributes: true, attributeFilter: ['class'] });
-        observer.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
-
-        const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
-        mediaQuery.addEventListener('change', updateMode);
-
-        return () => {
-            observer.disconnect();
-            mediaQuery.removeEventListener('change', updateMode);
-        };
-    }, []); */
 
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         setError(null);
-
+    
         try {
             await api.get('/sanctum/csrf-cookie');
             const csrfToken = Cookies.get('XSRF-TOKEN');
-
+    
             const response = await api.post(
                 '/api/login',
                 {
@@ -61,17 +37,26 @@ export function LoginPage() {
                     },
                 }
             );
-
+    
             const user = response.data;
             localStorage.setItem('usuario', JSON.stringify(user));
             window.dispatchEvent(new Event('usuario-actualizado'));
-            alert(`Bienvenido ${user.nombre || ''}`);
-            navigate('/');
+    
+            alert(`Bienvenido ${user.Nombre || ''}`);
+    
+            // 🔀 Redirección según tipo de usuario
+            if (user.Tipo_Usuario === 'Admin') {
+                window.location.href = 'http://127.0.0.1:8000/admin';  // Laravel panel admin
+            } else {
+                navigate('/'); // Home con perfil visible
+            }
+    
         } catch (err) {
             console.error(err);
             setError(err.response?.data?.message || 'Error al iniciar sesión.');
         }
     };
+    
 
     return (
         <div className="login-container">
