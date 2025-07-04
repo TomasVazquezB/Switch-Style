@@ -1,14 +1,13 @@
 <?php
 
 return [
-    // Configuración de las credenciales de Firebase
     'credentials' => [
-        // Ruta al archivo JSON de las credenciales de Firebase
-        'file' => env('FIREBASE_CREDENTIALS_JSON', storage_path('app/firebase/firebase-services.json')),
+        // Ruta al archivo JSON de las credenciales Firebase
+        'file' => env('FIREBASE_CREDENTIALS_JSON', storage_path('firebase/firebase_credentials.json')),
     ],
 
-    // Configuración de Firestore
     'firestore' => [
-        'project_id' => env('FIREBASE_PROJECT_ID', 'your-project-id'),  // Si usas Firestore
-    ]
+        // ID del proyecto Firebase
+        'project_id' => env('FIREBASE_PROJECT_ID', 'petpalms-717eb'),
+    ],
 ];
