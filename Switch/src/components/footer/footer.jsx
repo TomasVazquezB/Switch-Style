@@ -28,7 +28,7 @@ const Footer = () => {
               rel="noopener noreferrer"
               className="social-icon"
             >
-              <FaInstagram />
+              <FaInstagram size={30} />
             </a>
           </div>
           <span className="social-text">Switch Style</span>
