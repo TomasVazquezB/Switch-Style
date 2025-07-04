@@ -1,9 +1,8 @@
 <?php
 
 return [
-    'credentials' => [
-        // Ruta al archivo JSON de las credenciales Firebase
-        'file' => env('FIREBASE_CREDENTIALS_JSON', storage_path('firebase/firebase_credentials.json')),
+       'credentials' => [
+        'file' => env('FIREBASE_CREDENTIALS_JSON', storage_path('app/firebase/firebase-services.json')),
     ],
 
     'firestore' => [

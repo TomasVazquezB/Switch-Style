@@ -10,42 +10,62 @@ class FirebaseController extends Controller
     protected $firestore;
     protected $auth;
 
+    /**
+     * Inyecta el servicio FirebaseService
+     */
     public function __construct(FirebaseService $firebaseService)
     {
         $this->firestore = $firebaseService->getFirestore();
         $this->auth = $firebaseService->getAuth();
     }
 
+    /**
+     * Crea un usuario en Firebase Auth y lo guarda en Firestore
+     */
     public function addUser(Request $request)
     {
-        // Validar los datos recibidos
+        // Validación básica, sin 'unique' en SQL porque estamos con Firestore
         $validated = $request->validate([
             'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:users,email',
+            'email' => 'required|email',
             'password' => 'required|min:6',
         ]);
 
         try {
-            // Crear un nuevo usuario en Firebase Auth
+            // Crear usuario en Firebase Authentication
             $user = $this->auth->createUser([
                 'email' => $validated['email'],
                 'password' => $validated['password'],
                 'displayName' => $validated['name'],
             ]);
 
-            // Guardar datos adicionales en Firestore
-            $this->firestore->collection('users')->document($user->uid)->set([
+            // Obtener UID directamente (es propiedad, no método)
+            if (empty($user->uid)) {
+                return response()->json(['error' => 'No se pudo obtener el UID del usuario'], 500);
+            }
+            $uid = $user->uid;
+
+            // Guardar datos adicionales en Firestore, colección 'users', documento con uid de Firebase Auth
+            $this->firestore->collection('users')->document($uid)->set([
                 'name' => $validated['name'],
                 'email' => $validated['email'],
-                'created_at' => now(),
+                'created_at' => now()->toDateTimeString(),
             ]);
 
-            return response()->json(['message' => 'User added successfully', 'uid' => $user->uid]);
+            return response()->json(['message' => 'User added successfully', 'uid' => $uid]);
+
         } catch (\Throwable $e) {
-            return response()->json(['error' => 'Error adding user', 'message' => $e->getMessage()], 500);
+            // Devolver error en caso de fallo
+            return response()->json([
+                'error' => 'Error adding user',
+                'message' => $e->getMessage()
+            ], 500);
         }
     }
 
+    /**
+     * Obtiene todos los usuarios guardados en Firestore en la colección 'users'
+     */
     public function getUsers()
     {
         try {
@@ -53,12 +73,20 @@ class FirebaseController extends Controller
             $users = [];
 
             foreach ($documents as $doc) {
-                $users[] = $doc->data();
+                if ($doc->exists()) {
+                    $data = $doc->data();
+                    $data['id'] = $doc->id();
+                    $users[] = $data;
+                }
             }
 
             return response()->json($users);
+
         } catch (\Throwable $e) {
-            return response()->json(['error' => 'Error fetching users', 'message' => $e->getMessage()], 500);
+            return response()->json([
+                'error' => 'Error fetching users',
+                'message' => $e->getMessage()
+            ], 500);
         }
     }
 }

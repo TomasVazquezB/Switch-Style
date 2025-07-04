@@ -3,9 +3,7 @@
 namespace App\Services;
 
 use Kreait\Firebase\Factory;
-use Kreait\Firebase\ServiceAccount;
 use Kreait\Firebase\Auth;
-use Kreait\Firebase\Firestore;
 
 class FirebaseService
 {
@@ -14,20 +12,26 @@ class FirebaseService
 
     public function __construct()
     {
-        $serviceAccount = ServiceAccount::fromJsonFile(config('firebase.credentials.file'));
-        $firebase = (new Factory)->withServiceAccount($serviceAccount);
+        $firebaseCredentials = config('firebase.credentials.file');
 
-        $this->auth = $firebase->createAuth();
-        $this->firestore = $firebase->createFirestore();
+        if (!file_exists($firebaseCredentials)) {
+            throw new \Exception("Archivo de credenciales Firebase no encontrado en: $firebaseCredentials");
+        }
+
+        $factory = (new Factory)
+            ->withServiceAccount($firebaseCredentials);
+
+        $this->auth = $factory->createAuth();
+        $this->firestore = $factory->createFirestore();
     }
 
-    public function getAuth()
+    public function getAuth(): Auth
     {
         return $this->auth;
     }
 
-    public function getFirestore()
+    public function getFirestore() // Devuelve instancia de Google\Cloud\Firestore\FirestoreClient
     {
-        return $this->firestore;
+        return $this->firestore->database(); // Este es el objeto real que tiene ->collection()
     }
 }
