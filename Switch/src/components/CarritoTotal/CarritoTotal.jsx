@@ -1,31 +1,14 @@
-import React, { useContext } from 'react';
-import { ShopContext } from '../../context/ShopContext.jsx';
-import './CarritoTotal.css'
+import React from 'react';
+import './CarritoTotal.css';
 
-const CarritoTotal = () => {
-    const { carritoItems, productos, moneda } = useContext(ShopContext);
-
-    const calcularTotal = () => {
-        let total = 0;
-        for (const productoId in carritoItems) {
-            const item = productos.find((p) => p._id === productoId);
-            if (!item) continue;
-
-            for (const talla in carritoItems[productoId]) {
-                const cantidad = carritoItems[productoId][talla];
-                total += item.precio * cantidad;
-            }
-        }
-        return total;
-    };
-
+const CarritoTotal = ({ total, moneda }) => {
     return (
-        <div className="border p-4 rounded-md bg-gray-50">
-            <div className="flex justify-between mb-2">
-                <p>Total:</p>
-                <p className="font-semibold">{moneda}{calcularTotal()}</p>
+        <div>
+            <div className="flex justify-between text-lg font-medium text-gray-800 mb-2">
+                <span>Total:</span>
+                <span>{moneda}{total}</span>
             </div>
-            <p className="text-sm text-gray-500 mb-4">* El total no incluye envío</p>
+            <p className="text-sm text-gray-500">* El total no incluye envío</p>
         </div>
     );
 };

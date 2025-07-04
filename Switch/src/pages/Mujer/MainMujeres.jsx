@@ -1,103 +1,99 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import ProductoItem from '../../components/Productoitem/ProductoItem';
-import { ShopContext } from '../../context/ShopContext';
-import './MainMujeres.css'
+import axios from 'axios';
+import './MainMujeres.css';
 
 const MainMujeres = () => {
-    const { productos, search, showSearch } = useContext(ShopContext);
+    const [productos, setProductos] = useState([]);
     const [filtroProductos, setFiltroProductos] = useState([]);
-    const [categoria] = useState(['Mujeres']);
     const [subCategoria, setSubCategoria] = useState([]);
-    const [sortTipo, setSortTipo] = useState('relavent');
     const [tallas, setTallas] = useState([]);
+    const [sortTipo, setSortTipo] = useState('relavente');
+    const [precioMin] = useState(100);
     const [precioMax, setPrecioMax] = useState(350);
-    const [precioMin, setPrecioMin] = useState(100);
 
-    const maxPrice = Math.max(...productos.map((item) => item.precio), 350);
-
-    const toggleSubCategoria = (e) => {
-        if (subCategoria.includes(e.target.value)) {setSubCategoria((prev) => prev.filter((a) => a !== e.target.value));
-        } else {
-            setSubCategoria((prev) => [...prev, e.target.value]);
+    const fetchProductos = async () => {
+        try {
+            const res = await axios.get('http://127.0.0.1:8000/api/ropa', {
+                params: { genero: 'Mujer' }
+            });
+            setProductos(res.data);
+            setFiltroProductos(res.data);
+        } catch (error) {
+            console.error("Error al obtener productos:", error);
         }
     };
 
-    const toggleTalla = (e) => {
-    const tallaSeleccionada = e.target.value;
+    useEffect(() => {
+        fetchProductos();
+    }, []);
 
-        if (tallas.includes(tallaSeleccionada)) {setTallas((prev) => prev.filter((t) => t !== tallaSeleccionada));
-        } else {
-            setTallas((prev) => [...prev, tallaSeleccionada]);
-        }
+    const toggleSubCategoria = (e) => {
+        const value = e.target.value;
+        setSubCategoria((prev) =>
+            prev.includes(value) ? prev.filter((item) => item !== value) : [...prev, value]
+        );
     };
 
     const toggleTallaManual = (size) => {
-        if (tallas.includes(size)) {setTallas((prev) => prev.filter((s) => s !== size));
-        } else {
-            setTallas((prev) => [...prev, size]);
-        }
+        setTallas((prev) =>
+            prev.includes(size) ? prev.filter((t) => t !== size) : [...prev, size]
+        );
     };
 
     const applyFiltro = () => {
-        let productosCopy = productos.slice();
+        let temp = [...productos];
 
-        if (showSearch && search) {productosCopy = productosCopy.filter((item) => item.nombre.toLowerCase().includes(search.toLowerCase()));}
-
-        if (categoria.length > 0) {productosCopy = productosCopy.filter((item) => categoria.includes(item.categoria));}
-
-        if (subCategoria.length > 0) {productosCopy = productosCopy.filter((item) => subCategoria.includes(item.subCategoria));}
-
-        if (tallas.length > 0) {productosCopy = productosCopy.filter((item) => {
-                if (Array.isArray(item.talla)) {
-                    return item.talla.some((t) => tallas.includes(t));
-                }
-                return tallas.includes(item.talla);
-            });
+        if (subCategoria.length > 0) {
+            temp = temp.filter((item) => subCategoria.includes(item.categoria?.nombre));
         }
 
-        productosCopy = productosCopy.filter((item) => item.precio >= precioMin && item.precio <= precioMax);
-        setFiltroProductos(productosCopy);
-    };
-
-    const sortProducto = async () => {
-        let fpCopy = filtroProductos.slice();
-
-        switch (sortTipo) {
-            case 'low-high':
-                setFiltroProductos(fpCopy.sort((a, b) => a.precio - b.precio));
-                break;
-
-            case 'high-low':
-                setFiltroProductos(fpCopy.sort((a, b) => b.precio - a.precio));
-                break;
-
-            default:
-                applyFiltro();
-                break;
+        if (tallas.length > 0) {
+            temp = temp.filter((item) => item.tallas?.some((t) => tallas.includes(t.nombre)));
         }
+
+        temp = temp.filter((item) => item.precio >= precioMin && item.precio <= precioMax);
+
+        setFiltroProductos(temp);
     };
 
-    useEffect(() => {applyFiltro();}, [categoria, subCategoria, search, showSearch, tallas, precioMin, precioMax]);
+    const ordenar = () => {
+        const ordenados = [...filtroProductos];
+        if (sortTipo === 'low-high') {
+            ordenados.sort((a, b) => a.precio - b.precio);
+        } else if (sortTipo === 'high-low') {
+            ordenados.sort((a, b) => b.precio - a.precio);
+        }
+        setFiltroProductos(ordenados);
+    };
 
-    useEffect(() => {sortProducto();}, [sortTipo]);
+    useEffect(() => {
+        applyFiltro();
+    }, [subCategoria, tallas, precioMax]);
+
+    useEffect(() => {
+        ordenar();
+    }, [sortTipo]);
+
+    const maxPrice = productos.length > 0
+        ? Math.max(...productos.map((p) => p.precio || 0))
+        : 350;
 
     return (
         <div className="content">
-            <section className="sidebar fixed top-0 left-0 h-screen overflow-y-auto">
+            <section className="sidebar top-0 left- h-screen overflow-y-auto bg-white border-r px-4 py-6">
                 <div className="sidebar-content">
                     <div className="mb-4">
-                        <h4 className="mb-3">CATEGORIA</h4> 
+                        <h4 className="mb-3">CATEGORIA</h4>
                         <div className="flex flex-col gap-2 text-sm font-light text-gray-700">
-                            <p className="flex gap-2">
-                                <input className="w-3" value={"Remeras"} onChange={toggleSubCategoria} type="checkbox"/>Remeras</p>
-                            <p className="flex gap-2">
-                                <input className="w-3" value={"Pantalones"} onChange={toggleSubCategoria} type="checkbox"/>Pantalones</p>
-                            <p className="flex gap-2">
-                                <input className="w-3" value={"Camperas"} onChange={toggleSubCategoria} type="checkbox"/>Camperas</p>
+                            <label><input type="checkbox" value="Remeras" onChange={toggleSubCategoria} /> Remeras</label>
+                            <label><input type="checkbox" value="Pantalones" onChange={toggleSubCategoria} /> Pantalones</label>
+                            <label><input type="checkbox" value="Camperas" onChange={toggleSubCategoria} /> Camperas</label>
                         </div>
                     </div>
 
-                    <hr/>
+                    <hr className="my-4" />
+
                     <div className="mb-4">
                         <h4 className="mb-3">TALLA</h4>
                         <div className="flex flex-wrap gap-3 text-sm font-light text-gray-700">
@@ -109,58 +105,61 @@ const MainMujeres = () => {
                                     className={`px-4 py-2 border rounded-full text-sm transition-colors duration-200 ${tallas.includes(size)
                                         ? 'bg-black text-white border-black hover:bg-gray-800'
                                         : 'bg-white text-black border-gray-400 hover:bg-gray-100'
-                                        }`}>
+                                        }`}
+                                >
                                     {size}
                                 </button>
                             ))}
                         </div>
                     </div>
 
-                    <hr/>
+                    <hr className="my-4" />
+
                     <div className="mb-4">
-                        <h4 >PRECIO</h4>
-                        <div className="range">
-                            <div className="range-labels">
-                                <span>${precioMin}&nbsp;</span>
-                            </div>
+                        <h4>PRECIO</h4>
+                        <div className="range flex items-center gap-2">
+                            <span>${precioMin}</span>
                             <input
                                 type="range"
-                                id="priceRange"
                                 min={precioMin}
                                 max={maxPrice}
                                 step="10"
                                 value={precioMax}
-                                onChange={(e) => setPrecioMax(e.target.value)}/>
-                            <span>&nbsp;${precioMax}</span>
+                                onChange={(e) => setPrecioMax(e.target.value)}
+                                className="w-full"
+                            />
+                            <span>${precioMax}</span>
                         </div>
                     </div>
-
-                    <br/>
-
                 </div>
             </section>
 
-            <div className="main">
-                <div className="row">
-                    <div className="column">
-                        <select onChange={(e) => setSortTipo(e.target.value)} className="border-2 border-gray-300 text-sm px-2">
-                            <option value="relavente">Sort by: Relavente</option>
-                            <option value="low-high">Sort by: Low to High</option>
-                            <option value="high-low">Sort by: High to Low</option>
-                        </select>
-                    </div>
+            <div className="main pl-[220px] px-8 py-2">
+                <div className="flex justify-end mb-3">
+                    <select
+                        onChange={(e) => setSortTipo(e.target.value)}
+                        className="border border-gray-300 text-sm px-2 py-1 rounded"
+                    >
+                        <option value="relavente">Sort by: Relevante</option>
+                        <option value="low-high">Sort by: Low to High</option>
+                        <option value="high-low">Sort by: High to Low</option>
+                    </select>
+                </div>
 
-                    <div style={{ display: 'flex', flexWrap: 'wrap' }}>
-                        {filtroProductos.map((item, index) => (
-                            <div style={{ padding: '20px', margin: '20px', border: '2px solid grey' }} key={index}>
-                                <ProductoItem id={item._id} img={item.img} name={item.nombre} precio={item.precio} />
-                            </div>
-                        ))}
-                    </div>
+                <div className="product-grid grid grid-cols-3 gap-6">
+                    {filtroProductos.map((item) => (
+                        <ProductoItem
+                            key={item.id}
+                            id={item.id}
+                            img={item.ruta_imagen}
+                            nombre={item.titulo}
+                            precio={item.precio}
+                            tipo="ropa"
+                        />
+                    ))}
                 </div>
             </div>
         </div>
-
     );
 };
 

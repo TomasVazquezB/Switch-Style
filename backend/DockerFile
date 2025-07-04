@@ -1,0 +1,32 @@
+FROM php:8.2-apache
+
+# Instalar extensiones necesarias del sistema y Composer
+RUN apt-get update && apt-get install -y \
+    git curl zip unzip libpng-dev libonig-dev libxml2-dev libzip-dev \
+    libssl-dev libcurl4-openssl-dev pkg-config libprotobuf-dev protobuf-compiler \
+    && docker-php-ext-install pdo pdo_mysql mbstring zip exif pcntl \
+    && pecl install grpc \
+    && docker-php-ext-enable grpc \
+    && curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer \
+    && a2enmod rewrite
+
+# Copiar archivos del proyecto Laravel
+COPY . /var/www/html
+
+# Copiar configuración personalizada de Apache
+COPY docker/apache/vhost.conf /etc/apache2/sites-available/000-default.conf
+
+# Establecer directorio de trabajo y permisos
+WORKDIR /var/www/html
+RUN chown -R www-data:www-data /var/www/html \
+    && chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache
+
+# Instalar dependencias de Composer y optimizar Laravel
+RUN composer install --no-dev --optimize-autoloader \
+    && php artisan config:clear \
+    && php artisan config:cache \
+    && php artisan route:cache \
+    && php artisan view:cache
+
+# Exponer puerto 80
+EXPOSE 80

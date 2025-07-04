@@ -1,26 +1,35 @@
 import React, { useRef } from 'react';
 import { Link } from 'react-router-dom';
 import Typography from '@mui/material/Typography';
-import { FaPhoneAlt, FaEnvelope, FaFacebookF, FaTwitter, FaInstagram, FaRegSmileWink } from 'react-icons/fa';
+import { FaPhoneAlt, FaEnvelope, FaInstagram, FaRegSmileWink } from 'react-icons/fa';
 import './footer.css';
 
 const Footer = () => {
   const quienesSomosRef = useRef(null);
-  const scrollToQuienesSomos = () => { quienesSomosRef.current?.scrollIntoView({ behavior: 'smooth' }); };
+  const scrollToQuienesSomos = () => {
+    quienesSomosRef.current?.scrollIntoView({ behavior: 'smooth' });
+  };
 
   return (
     <footer className="footer footer-center bg-base-200/60 rounded-sm p-4">
       <nav className="footer-nav">
         <FaRegSmileWink className="smile-icon" />
-        <Link to="/quienessomos" onClick={scrollToQuienesSomos} className="quienes-link"> ¿Querés conocernos?</Link>
+        <Link to="/quienessomos" onClick={scrollToQuienesSomos} className="quienes-link">
+          ¿Querés conocernos?
+        </Link>
       </nav>
+
       <nav>
         <div className="social-icons">
-          
           <div className="icons-inline">
-            <FaFacebookF className="social-icon" />
-            <FaTwitter className="social-icon" />
-            <FaInstagram className="social-icon" />
+            <a
+              href="https://www.instagram.com/switchstyle25/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="social-icon"
+            >
+              <FaInstagram />
+            </a>
           </div>
           <span className="social-text">Switch Style</span>
         </div>
@@ -36,8 +45,11 @@ const Footer = () => {
           <span className="contact-text">consultas@switchstyle.com</span>
         </div>
       </nav>
+
       <aside>
-        <span color="white" className="footer-text"> © 2024-2025 Switch Style | Todos los derechos reservados</span>
+        <span color="white" className="footer-text">
+          © 2024-2025 Switch Style | Todos los derechos reservados
+        </span>
       </aside>
     </footer>
   );
