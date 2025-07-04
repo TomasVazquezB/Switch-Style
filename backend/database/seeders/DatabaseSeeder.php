@@ -2,9 +2,11 @@
 
 namespace Database\Seeders;
 
-use App\Models\User;
-// use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use App\Models\User;
+use App\Models\Talla;
+use App\Models\Categoria;
+use App\Models\Genero;
 
 class DatabaseSeeder extends Seeder
 {
@@ -13,11 +15,39 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
+    
+        // Tallas
+        Talla::insert([
+            ['nombre' => 'S'],
+            ['nombre' => 'M'],
+            ['nombre' => 'L'],
+            ['nombre' => 'XL'],
+            ['nombre' => 'XXL'],
+        ]);
 
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
+        // Categorías
+        Categoria::insert([
+            
+            ['nombre' => 'Remeras'],
+            ['nombre' => 'Camisas'],
+            ['nombre' => 'Camperas'],
+            ['nombre' => 'Shorts'],
+            ['nombre' => 'Pantalónes'],
+            ['nombre' => 'Faldas'],
+            ['nombre' => 'Vestidos'],
+            ['nombre' => 'Botas'],
+            ['nombre' => 'Zapatillas'],
+            ['nombre' => 'Collares'],
+            ['nombre' => 'Anillos'],
+            ['nombre' => 'Aritos'],
+            
+        ]);
+
+        // Géneros
+        Genero::insert([
+            ['nombre' => 'Hombre'],
+            ['nombre' => 'Mujer'],
+            ['nombre' => 'Chicos'],
         ]);
     }
 }

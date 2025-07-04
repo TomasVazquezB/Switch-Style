@@ -8,46 +8,66 @@ import { NavLink, useNavigate } from 'react-router-dom';
 import { FaSearch, FaHeart, FaShoppingCart, FaUserCircle } from 'react-icons/fa';
 import { BsMoon, BsSun } from 'react-icons/bs';
 
-const Header = ({ toggleTheme }) => {
-    const [isDarkMode, setIsDarkMode] = useState(true);
+const Header = ({ toggleTheme, darkMode }) => {
+    const [usuario, setUsuario] = useState(null);
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [showProfileMenu, setShowProfileMenu] = useState(false);
     const navigate = useNavigate();
 
-    useEffect(() => {
+    /* useEffect(() => {
+        const storedUser = localStorage.getItem('usuario');
+        if (storedUser) {
+            setUsuario(JSON.parse(storedUser));
+        }
         document.body.classList.add(isDarkMode ? 'dark-mode' : 'light-mode');
         localStorage.setItem('darkMode', isDarkMode.toString());
-        const loggedIn = localStorage.getItem('isLoggedIn');
-        setIsLoggedIn(loggedIn === 'true');
-    }, [isDarkMode]);
 
-    useEffect(() => {
+
+    }, [isDarkMode]); */
+
+    /* useEffect(() => {
         const savedMode = localStorage.getItem('darkMode');
-        if (savedMode === 'true') {
-            setIsDarkMode(true);
-        } else {
-            setIsDarkMode(false);
-        }
-    }, []);
+        setIsDarkMode(savedMode === 'true');
+    }, []); */
 
-    const toggleDarkMode = () => { setIsDarkMode(!isDarkMode); };
+    /*  const toggleDarkMode = () => setIsDarkMode(!isDarkMode); */
 
     const handleClick = (e) => {
         const links = document.querySelectorAll('.nav-link');
         links.forEach(link => link.classList.remove('clicked'));
         e.target.classList.add('clicked');
-        setTimeout(() => {e.target.classList.remove('clicked');}, 2000);
+        setTimeout(() => {
+            e.target.classList.remove('clicked');
+        }, 2000);
     };
 
-    const handleProfileClick = () => { setShowProfileMenu(!showProfileMenu); };
+    const handleProfileClick = () => setShowProfileMenu(!showProfileMenu);
 
     const handleLogout = () => {
-        localStorage.removeItem('isLoggedIn');
-        setIsLoggedIn(false);
+        localStorage.removeItem('usuario');
+        setUsuario(null);
+        setShowProfileMenu(false);
         navigate('/login');
     };
 
-    const goToCart = () => { navigate('/carrito'); };
+    useEffect(() => {
+        const actualizarUsuario = () => {
+            const userData = localStorage.getItem('usuario');
+            if (userData) {
+                setUsuario(JSON.parse(userData));
+            } else {
+                setUsuario(null);
+            }
+        };
+
+        actualizarUsuario(); // inicial
+        window.addEventListener('usuario-actualizado', actualizarUsuario);
+        return () => window.removeEventListener('usuario-actualizado', actualizarUsuario);
+    }, []);
+
+
+
+    const goToCart = () => navigate('/carrito');
 
     useEffect(() => {
         const body = document.body;
@@ -56,27 +76,27 @@ const Header = ({ toggleTheme }) => {
         body.classList.remove('dark-mode', 'light-mode');
         navbars.forEach(nav => nav.classList.remove('navbar-light-mode'));
 
-        if (isDarkMode) {
+        if (darkMode) {
             body.classList.add('dark-mode');
         } else {
             body.classList.add('light-mode');
             navbars.forEach(nav => nav.classList.add('navbar-light-mode'));
         }
+    }, [darkMode]);
 
-        localStorage.setItem('darkMode', isDarkMode.toString());
-        const loggedIn = localStorage.getItem('isLoggedIn');
-        setIsLoggedIn(loggedIn === 'true');
-    }, [isDarkMode]);
+
+    const getLinkClass = (isActive) =>
+        `nav-link ${darkMode ? 'text-white' : 'text-dark'} ${isActive ? 'active-link' : ''}`;
 
     return (
         <>
-            <div className={`offer-bar ${isDarkMode ? 'bg-ultra-dark' : 'bg-ultra-light'} text-center pt-4 pb-2`}>
+            <div className={`offer-bar ${darkMode ? 'bg-ultra-light' : 'bg-ultra-dark'} text-center pt-4 pb-2`}>
                 <br />
-                <p className={isDarkMode ? 'text-dark' : 'text-white'}>¡Suscribite para obtener ofertas unicas y obten un 15% en tu primer compra!</p>
+                <p className="offer-bar-text">¡Suscribite para obtener ofertas unicas y obten un 15% en tu primer compra!</p>
             </div>
 
-            <Navbar expand="lg" className={`navbar-top ${isDarkMode ? 'bg-dark' : 'bg-light'}`}>
-                <Container fluid style={{ maxWidth: "100%" }}>
+            <Navbar expand="lg" className={`navbar-top ${darkMode ? 'bg-dark' : 'bg-light'}`}>
+                <Container fluid>
                     <Navbar.Brand as={NavLink} to="/" onClick={() => navigate('/')}>
                         <img src="../src/assets/LOGO.png" width="90" height="50" className="d-inline-block align-top" alt="Logo" />
                     </Navbar.Brand>
@@ -85,12 +105,17 @@ const Header = ({ toggleTheme }) => {
                     <Navbar.Collapse id="navbarNav">
                         <Nav className="me-auto">
                             <div className="mode-switch">
-                                <BsMoon className={`mode-icon ${isDarkMode ? 'active' : 'inactive'}`} />
+                                <BsMoon className={`mode-icon ${darkMode ? 'active' : 'inactive'}`} />
                                 <label className="switch">
-                                    <input type="checkbox" onChange={toggleDarkMode} checked={isDarkMode} />
-                                    <span className="slider" onClick={toggleTheme}></span>
+                                    <input
+                                        type="checkbox"
+                                        onChange={toggleTheme} // Usar la función que viene del `App.jsx`
+                                        checked={darkMode}     // Mostrar el estado desde `App.jsx`
+                                    />
+                                    <span className="slider"></span>
                                 </label>
-                                <BsSun className={`mode-icon ${isDarkMode ? 'inactive' : 'active'}`} />
+
+                                <BsSun className={`mode-icon ${darkMode ? 'inactive' : 'active'}`} />
                             </div>
                         </Nav>
 
@@ -100,31 +125,89 @@ const Header = ({ toggleTheme }) => {
                                 <FaSearch />
                             </button>
                             <Nav.Link as={NavLink} to="/favoritos" className="icon-separator">
-                                <FaHeart className={`navbar-icon ${isDarkMode ? 'text-white' : 'text-dark'}`} />
+                                <FaHeart className={`navbar-icon ${darkMode ? 'text-white' : 'text-dark'}`} />
                             </Nav.Link>
                             <Nav.Link onClick={goToCart} className="icon-separator">
-                                <FaShoppingCart className={`navbar-icon ${isDarkMode ? 'text-white' : 'text-dark'}`} />
+                                <FaShoppingCart className={`navbar-icon ${darkMode ? 'text-white' : 'text-dark'}`} />
                             </Nav.Link>
                         </div>
 
                         <Nav className="ms-auto">
-                            {isLoggedIn ? (
+                            {usuario ? (
                                 <div className="profile-container">
-                                    <FaUserCircle className="navbar-icon profile-icon" onClick={handleProfileClick} />
+                                    <img
+                                        src={usuario.foto || '/default-avatar.png'}
+                                        alt="Perfil"
+                                        className="w-8 h-8 rounded-full cursor-pointer"
+                                        onClick={handleProfileClick}
+                                    />
                                     {showProfileMenu && (
                                         <div className="profile-menu">
-                                            <NavLink to="/perfil">Mi Perfil</NavLink>
-                                            <NavLink to="/pedidos">Mis Pedidos</NavLink>
-                                            <NavLink to="/favoritos">Mis Favoritos</NavLink>
-                                            <NavLink to="/FAQ">Preguntas Frecuentes</NavLink>
-                                            <button onClick={handleLogout}>Salir</button>
+                                            <div className="px-4 py-2 border-b border-gray-200 text-sm font-medium">
+                                                Hola, {usuario.nombre}
+                                            </div>
+                                            <NavLink
+                                                to="/perfil"
+                                                className={({ isActive }) =>
+                                                    `block px-4 py-2 text-sm ${darkMode ? 'text-white hover:bg-gray-700' : 'text-gray-800 hover:bg-gray-100'
+                                                    }`
+                                                }
+                                            >
+                                                Mi Perfil
+                                            </NavLink>
+                                            <NavLink
+                                                to="/pedidos"
+                                                className={({ isActive }) =>
+                                                    `block px-4 py-2 text-sm ${darkMode ? 'text-white hover:bg-gray-700' : 'text-gray-800 hover:bg-gray-100'
+                                                    }`
+                                                }
+                                            >
+                                                Mis pedidos
+                                            </NavLink>
+                                            <NavLink
+                                                to="/favoritos"
+                                                className={({ isActive }) =>
+                                                    `block px-4 py-2 text-sm ${darkMode ? 'text-white hover:bg-gray-700' : 'text-gray-800 hover:bg-gray-100'
+                                                    }`
+                                                }
+                                            >
+                                                Mis favoritos
+                                            </NavLink>
+                                            <NavLink
+                                                to="/FAQ"
+                                                className={({ isActive }) =>
+                                                    `block px-4 py-2 text-sm ${darkMode ? 'text-white hover:bg-gray-700' : 'text-gray-800 hover:bg-gray-100'
+                                                    }`
+                                                }
+                                            >
+                                                FAQ
+                                            </NavLink>
+
+                                            {usuario.rol === 'Admin' && (
+                                                <NavLink to="/admin" className={({ isActive }) => getLinkClass(isActive)}>Panel Admin</NavLink>
+                                            )}
+                                            <button onClick={handleLogout}>Cerrar sesión</button>
                                         </div>
                                     )}
                                 </div>
                             ) : (
                                 <>
-                                    <Nav.Link className={`navbar-icon ${isDarkMode ? 'text-white' : 'text-dark'}`} as={NavLink} to="/registro" activeClassName="active-link" onClick={handleClick}>Registro</Nav.Link>
-                                    <Nav.Link className={`navbar-icon ${isDarkMode ? 'text-white' : 'text-dark'}`} as={NavLink} to="/login" activeClassName="active-link" onClick={handleClick}>Login</Nav.Link>
+                                    <Nav.Link
+                                        as={NavLink}
+                                        to="/registro"
+                                        onClick={handleClick}
+                                        className={({ isActive }) => getLinkClass(isActive)}
+                                    >
+                                        Registro
+                                    </Nav.Link>
+                                    <Nav.Link
+                                        as={NavLink}
+                                        to="/login"
+                                        onClick={handleClick}
+                                        className={({ isActive }) => getLinkClass(isActive)}
+                                    >
+                                        Login
+                                    </Nav.Link>
                                 </>
                             )}
                         </Nav>
@@ -132,47 +215,70 @@ const Header = ({ toggleTheme }) => {
                 </Container>
             </Navbar>
 
-            <Navbar expand="lg" className={`navbar-bottom ${isDarkMode ? 'bg-dark' : 'bg-light'}`}>
+            <Navbar expand="lg" className={`navbar-bottom ${darkMode ? 'bg-dark' : 'bg-light'}`}>
                 <Container fluid>
                     <Nav className="me-auto" style={{ justifyContent: 'space-evenly', width: '100%' }}>
                         <div className="nav-dropdown">
-                            <Nav.Link as={NavLink} to="/MainHombres">Hombres</Nav.Link>
+                            <Nav.Link
+                                as={NavLink}
+                                to="/MainHombres"
+                                className={({ isActive }) => getLinkClass(isActive)}
+                            >
+                                Hombres
+                            </Nav.Link>
                             <div className="dropdown-menu">
-                                <NavLink to="/ropa/hombres/remeras">Remeras</NavLink>
-                                <NavLink to="/ropa/hombres/pantalones">Pantalones</NavLink>
-                                <NavLink to="/ropa/hombres/camperas">Camperas</NavLink>
+                                <NavLink to="/ropa/hombres/remeras" className={({ isActive }) => getLinkClass(isActive)}>Remeras</NavLink>
+                                <NavLink to="/ropa/hombres/pantalones" className={({ isActive }) => getLinkClass(isActive)}>Pantalones</NavLink>
+                                <NavLink to="/ropa/hombres/camperas" className={({ isActive }) => getLinkClass(isActive)}>Camperas</NavLink>
                             </div>
                         </div>
                         <div className="nav-dropdown">
-                            <Nav.Link as={NavLink} to="/MainMujeres">Mujeres</Nav.Link>
+                            <Nav.Link
+                                as={NavLink}
+                                to="/MainMujeres"
+                                className={({ isActive }) => getLinkClass(isActive)}
+                            >
+                                Mujeres
+                            </Nav.Link>
                             <div className="dropdown-menu">
-                                <NavLink to="/ropa/hombres/remeras">Remeras</NavLink>
-                                <NavLink to="/ropa/hombres/pantalones">Pantalones</NavLink>
-                                <NavLink to="/ropa/hombres/camperas">Camperas</NavLink>
+                                <NavLink to="/ropa/mujeres/remeras" className={({ isActive }) => getLinkClass(isActive)}>Remeras</NavLink>
+                                <NavLink to="/ropa/mujeres/pantalones" className={({ isActive }) => getLinkClass(isActive)}>Pantalones</NavLink>
+                                <NavLink to="/ropa/mujeres/camperas" className={({ isActive }) => getLinkClass(isActive)}>Camperas</NavLink>
                             </div>
                         </div>
                         <div className="nav-dropdown">
-                            <Nav.Link as={NavLink} to="/MainKids">Chicos</Nav.Link>
+                            <Nav.Link
+                                as={NavLink}
+                                to="/MainKids"
+                                className={({ isActive }) => getLinkClass(isActive)}
+                            >
+                                Chicos
+                            </Nav.Link>
                             <div className="dropdown-menu">
-                                <NavLink to="/ropa/hombres/remeras">Remeras</NavLink>
-                                <NavLink to="/ropa/hombres/pantalones">Pantalones</NavLink>
-                                <NavLink to="/ropa/hombres/camperas">Camperas</NavLink>
+                                <NavLink to="/ropa/kids/remeras" className={({ isActive }) => getLinkClass(isActive)}>Remeras</NavLink>
+                                <NavLink to="/ropa/kids/pantalones" className={({ isActive }) => getLinkClass(isActive)}>Pantalones</NavLink>
+                                <NavLink to="/ropa/kids/camperas" className={({ isActive }) => getLinkClass(isActive)}>Camperas</NavLink>
                             </div>
                         </div>
                         <div className="nav-dropdown">
-                            <span className="nav-link">Accesorios</span>
+                            <Nav.Link
+                                as={NavLink}
+                                to="/accesorios"
+                                className={({ isActive }) => getLinkClass(isActive)}
+                            >
+                                Accesorios
+                            </Nav.Link>
                             <div className="dropdown-menu">
-                                <NavLink to="/ropa/hombres/remeras">Cadenas</NavLink>
-                                <NavLink to="/ropa/hombres/pantalones">Anillos</NavLink>
-                                <NavLink to="/ropa/hombres/camperas">Brazaletes</NavLink>
+                                <NavLink to="/accesorios/cadenas" className={({ isActive }) => getLinkClass(isActive)}>Cadenas</NavLink>
+                                <NavLink to="/accesorios/anillos" className={({ isActive }) => getLinkClass(isActive)}>Anillos</NavLink>
+                                <NavLink to="/accesorios/brazaletes" className={({ isActive }) => getLinkClass(isActive)}>Brazaletes</NavLink>
                             </div>
                         </div>
-
                     </Nav>
                 </Container>
             </Navbar>
         </>
     );
-}
+};
 
 export default Header;

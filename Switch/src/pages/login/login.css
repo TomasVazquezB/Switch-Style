@@ -1,15 +1,15 @@
 .login-container {
   display: flex;
   flex-wrap: wrap;
-  min-height: calc(100vh - 160px); 
-  margin-top: 4px;  
-  margin-bottom: 4px; 
-  padding: 0 6px; 
-  justify-content: space-between; 
+  min-height: calc(100vh - 160px);
+  margin-top: 4px;
+  margin-bottom: 4px;
+  padding: 0 6px;
+  justify-content: space-between;
 }
 
 .image-container {
-  flex: 0.4; 
+  flex: 0.4;
   display: flex;
   justify-content: flex-start;
   align-items: center;
@@ -17,62 +17,66 @@
 }
 
 .login-image {
-  width: 100%; 
-  max-width: none; 
-  height: 100%; 
-  object-fit: cover; 
+  width: 100%;
+  max-width: none;
+  height: 100%;
+  object-fit: cover;
   border-radius: 10px;
 }
 
 .login-box {
-  flex: 0.6; 
+  flex: 0.6;
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 20px 40px; 
+  padding: 20px 40px;
   border-radius: 10px;
-  min-height: calc(100vh - 160px); 
+  min-height: calc(100vh - 160px);
 }
 
 .login-form {
   width: 100%;
-  max-width: 600px; 
-  padding: 20px;
+  max-width: 700px; /* antes era 600px */
+  padding: 40px; /* más espacio interior */
   border-radius: 10px;
   text-align: center;
   transition: background-color 0.4s ease, color 0.4s ease, border 0.4s ease;
 }
 
 .bienvenida {
-  font-size: 1.5em;
-  margin-bottom: 20px;
+  font-size: 2em; /* más grande */
+  margin-bottom: 15px;
   font-weight: bold;
 }
 
 .bienvenido {
-  font-size: 1.2em;
-  margin-bottom: 20px;
+  font-size: 1.3em;
+  margin-bottom: 35px; /* más separación */
   text-align: center;
 }
 
+
 .input_user,
 .input_pass {
-  padding: 10px;
-  border-radius: 5px;
+  padding: 15px; /* más relleno */
+  border-radius: 6px;
   width: 100%;
-  margin-bottom: 15px;
-  background-color: white; 
+  margin-bottom: 25px; /* más espacio entre ellos */
+  background-color: white;
+  font-size: 1rem;
 }
 
+
 .button-login {
-  padding: 10px 20px;
-  font-size: 16px;
+  padding: 12px 20px;
+  font-size: 17px;
   cursor: pointer;
-  border-radius: 5px;
+  border-radius: 6px;
   width: 100%;
-  margin-top: 20px;
+  margin-top: 25px; /* más espacio respecto al input */
   transition: background-color 0.3s ease, color 0.3s ease;
 }
+
 
 .button-login:hover {
   background-color: #333333;
@@ -84,37 +88,6 @@
   font-weight: bold;
 }
 
-.login-container:not(.dark-mode) .login-form {
-  background-color: #000000;
-  color: #ffffff;
-  border: 2px solid #ffffff;
-}
-
-.login-container:not(.dark-mode) .bienvenida {
-  color: #ffffff;
-}
-
-.login-container:not(.dark-mode) .bienvenido {
-  color: #dddddd;
-}
-
-.login-container:not(.dark-mode) .input_user,
-.login-container:not(.dark-mode) .input_pass {
-  background-color: #222222;
-  color: #ffffff;
-  border: 1px solid #444444;
-}
-
-.login-container:not(.dark-mode) .button-login {
-  background-color: #ffffff;
-  color: #000000;
-  border: 1px solid #ffffff;
-}
-
-.login-container:not(.dark-mode) .button-login:hover {
-  background-color: #cccccc;
-  color: #000000;
-}
 
 .dark-mode .login-form {
   background-color: #ffffff;
@@ -167,7 +140,7 @@
 }
 
 .registro-link {
-  margin-top: 30px; 
+  margin-top: 30px;
   font-size: 0.95rem;
   text-align: center;
   color: inherit;
@@ -181,4 +154,274 @@
 
 .registro-link a:hover {
   text-decoration: underline;
+}
+
+/* 🌙 Modo oscuro para el contenedor principal */
+.dark-mode .login-container {
+  background-color: #121212;
+  color: #ffffff;
+}
+
+/* 🌙 Formulario login en modo oscuro */
+.dark-mode .login-form {
+  background-color: #1e1e1e;
+  color: #ffffff;
+  border: 2px solid #ffffff; /* borde blanco para destacar */
+}
+
+/* 🌙 Inputs en modo oscuro */
+.dark-mode .input_user {
+  background-color: #2a2a2a;
+  color: #ffffff;
+  border: 1px solid #555555;
+}
+
+/* 🌙 Botón modo oscuro: blanco con texto negro */
+.dark-mode .button-login {
+  background-color: #ffffff;
+  color: #000000;
+  border: 1px solid #ffffff;
+}
+
+.dark-mode .button-login:hover {
+  background-color: #dddddd;
+  color: #000000;
+}
+
+/* 🌙 Títulos */
+.dark-mode .bienvenida,
+.dark-mode .bienvenido {
+  color: #ffffff;
+}
+
+/* 🌙 Enlace al registro */
+.dark-mode .registro-link {
+  color: #ffffff;
+}
+
+.dark-mode .registro-link a {
+  color: #a2c8ff; /* azul claro */
+  text-decoration: underline;
+}
+
+/* 🌙 Alerta de error */
+.dark-mode .alert-danger {
+  background-color: #ffdddd;
+  color: #a10000;
+}
+
+
+/* 🌞 MODO CLARO */
+.light-mode .login-container {
+  background-color: #ffffff;
+  color: #ffffff;
+}
+
+.light-mode .login-form {
+  background-color: #ffffff;
+  color: #000000;
+  border: 2px solid #000000;
+}
+
+.light-mode .input_user {
+  background-color: #ffffff;
+  color: #000000;
+  border: 1px solid #cccccc;
+}
+
+.light-mode .input_user::placeholder {
+  color: #666666;
+}
+
+.light-mode .button-login {
+  background-color: #000000;
+  color: #ffffff;
+  border: 1px solid #000000;
+}
+
+.light-mode .button-login:hover {
+  background-color: #444444;
+  color: #ffffff;
+}
+
+.light-mode .bienvenida,
+.light-mode .bienvenido {
+  color: #ffffff;
+}
+
+.light-mode .registro-link {
+  color: #ffffff;
+}
+
+.light-mode .registro-link a {
+  color: #007bff;
+  text-decoration: none;
+}
+
+.light-mode .registro-link a:hover {
+  text-decoration: underline;
+}
+
+.light-mode .alert-danger {
+  background-color: #ffe5e5;
+  color: #a10000;
+}
+
+
+/* 🌙 MODO OSCURO */
+.dark-mode .login-container {
+  background-color: #121212;
+  color: #ffffff;
+}
+
+.dark-mode .login-form {
+  background-color: #1e1e1e;
+  color: #ffffff;
+  border: 2px solid #ffffff;
+}
+
+.dark-mode .input_user {
+  background-color: #2a2a2a;
+  color: #ffffff;
+  border: 1px solid #555555;
+}
+
+.dark-mode .input_user::placeholder {
+  color: #bbbbbb;
+}
+
+.dark-mode .button-login {
+  background-color: #ffffff;
+  color: #000000;
+  border: 1px solid #ffffff;
+}
+
+.dark-mode .button-login:hover {
+  background-color: #dddddd;
+  color: #000000;
+}
+
+.dark-mode .bienvenida,
+.dark-mode .bienvenido {
+  color: #ffffff;
+}
+
+.dark-mode .registro-link {
+  color: #ffffff;
+}
+
+.dark-mode .registro-link a {
+  color: #a2c8ff;
+  text-decoration: underline;
+}
+
+.dark-mode .alert-danger {
+  background-color: #ffdddd;
+  color: #a10000;
+}
+
+body.light-mode .login-container {
+  background-color: #ffffff;
+  color: #000000;
+}
+
+body.light-mode .login-form {
+  background-color: #ffffff;
+  color: #000000;
+  border: 2px solid #000000;
+}
+
+body.light-mode .input_user {
+  background-color: #ffffff;
+  color: #000000;
+  border: 1px solid #cccccc;
+}
+
+body.light-mode .input_user::placeholder {
+  color: #666666;
+}
+
+body.light-mode .button-login {
+  background-color: #000000;
+  color: #ffffff;
+  border: 1px solid #000000;
+}
+
+body.light-mode .button-login:hover {
+  background-color: #444444;
+  color: #ffffff;
+}
+
+body.light-mode .bienvenida,
+body.light-mode .bienvenido {
+  color: #000000;
+}
+
+body.light-mode .registro-link {
+  color: #000000;
+}
+
+body.light-mode .registro-link a {
+  color: #007bff;
+  text-decoration: none;
+}
+
+body.light-mode .registro-link a:hover {
+  text-decoration: underline;
+}
+
+body.light-mode .alert-danger {
+  background-color: #ffe5e5;
+  color: #a10000;
+}
+
+body.dark-mode .login-container {
+  background-color: #121212;
+  color: #ffffff;
+}
+
+body.dark-mode .login-form {
+  background-color: #1e1e1e;
+  color: #ffffff;
+  border: 2px solid #ffffff;
+}
+
+body.dark-mode .input_user {
+  background-color: #2a2a2a;
+  color: #ffffff;
+  border: 1px solid #555555;
+}
+
+body.dark-mode .input_user::placeholder {
+  color: #bbbbbb;
+}
+
+body.dark-mode .button-login {
+  background-color: #ffffff;
+  color: #000000;
+  border: 1px solid #ffffff;
+}
+
+body.dark-mode .button-login:hover {
+  background-color: #dddddd;
+  color: #000000;
+}
+
+body.dark-mode .bienvenida,
+body.dark-mode .bienvenido {
+  color: #ffffff;
+}
+
+body.dark-mode .registro-link {
+  color: #ffffff;
+}
+
+body.dark-mode .registro-link a {
+  color: #a2c8ff;
+  text-decoration: underline;
+}
+
+body.dark-mode .alert-danger {
+  background-color: #ffdddd;
+  color: #a10000;
 }

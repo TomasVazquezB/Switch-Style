@@ -174,3 +174,63 @@ footer nav {
   color: white;
   font-size: 0.9rem;
 }
+
+/* Fondo y texto global del footer */
+.light-mode .footer {
+  background-color: #000000;
+  color: #000000;
+}
+
+.dark-mode .footer {
+  background-color: #ffffff;
+  color: #000000;
+}
+
+/* Íconos sociales */
+.light-mode .social-icon {
+  color: #ffffff;
+}
+
+.dark-mode .social-icon {
+  color: #000000;
+}
+
+/* Texto de contacto */
+.light-mode .contact-text,
+.light-mode .footer-text,
+.light-mode .social-text {
+  color: #ffffff;
+}
+
+.dark-mode .contact-text,
+.dark-mode .footer-text,
+.dark-mode .social-text {
+  color: #000000;
+}
+
+/* Íconos de contacto */
+.light-mode .contact-icon {
+  color: #ffffff;
+}
+
+.dark-mode .contact-icon {
+  color: #000000;
+}
+
+/* Ícono de sonrisa */
+.light-mode .smile-icon {
+  color: #ffffff;
+}
+
+.dark-mode .smile-icon {
+  color: #000000;
+}
+
+/* Enlace "¿Querés conocernos?" */
+.light-mode .quienes-link {
+  color: #ffffff;
+}
+
+.dark-mode .quienes-link {
+  color: #000000;
+}

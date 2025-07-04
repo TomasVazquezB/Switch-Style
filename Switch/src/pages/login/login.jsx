@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { loginUsuario } from '../usuarios/usuarios';
+import api from '../../api/axios';
 import './login.css';
+import Cookies from 'js-cookie';
+import loginImage from '../../assets/login.jpg'; // Ajustá esta ruta según tu estructura
 
 export function LoginPage() {
     const [formData, setFormData] = useState({ identificador: '', contrasena: '' });
@@ -9,45 +11,59 @@ export function LoginPage() {
     const [isDarkMode, setIsDarkMode] = useState(false);
     const navigate = useNavigate();
 
-    useEffect(() => {
-        const checkDarkMode = () => {
-            const bodyDark = document.body.classList.contains('dark');
-            const htmlDark = document.documentElement.classList.contains('dark');
-            const systemDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-            return bodyDark || htmlDark || systemDark;
-        };
-
-        const updateMode = () => {setIsDarkMode(checkDarkMode());};
-        updateMode();
-
-        const observer = new MutationObserver(updateMode);
-        observer.observe(document.body, { attributes: true, attributeFilter: ['class']});
-        observer.observe(document.documentElement, { attributes: true, attributeFilter: ['class']});
-
-        const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
-        mediaQuery.addEventListener('change', updateMode);
-
-        return () => {observer.disconnect(); mediaQuery.removeEventListener('change', updateMode);};}, []);
-
-    const handleChange = (e) => {setFormData({ ...formData, [e.target.name]: e.target.value });};
-
-    const handleSubmit = (e) => {e.preventDefault();
-        loginUsuario(formData.identificador, formData.contrasena)
-            .then(usuario => {
-                if (usuario.rol === 'admin') {
-                    alert(`Bienvenido Administrador ${usuario.nombre}`);
-                    navigate('/admin');
-                } else {
-                    alert(`Bienvenido Usuario ${usuario.nombre}`);
-                    navigate('/');
-                }
-            })
-            .catch(error => setError(error.message));
+    const handleChange = (e) => {
+        setFormData({ ...formData, [e.target.name]: e.target.value });
     };
 
+
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        setError(null);
+    
+        try {
+            await api.get('/sanctum/csrf-cookie');
+            const csrfToken = Cookies.get('XSRF-TOKEN');
+    
+            const response = await api.post(
+                '/api/login',
+                {
+                    email: formData.identificador,
+                    password: formData.contrasena,
+                },
+                {
+                    headers: {
+                        'X-XSRF-TOKEN': decodeURIComponent(csrfToken),
+                    },
+                }
+            );
+    
+            const user = response.data;
+            localStorage.setItem('usuario', JSON.stringify(user));
+            window.dispatchEvent(new Event('usuario-actualizado'));
+    
+            alert(`Bienvenido ${user.Nombre || ''}`);
+    
+            // 🔀 Redirección según tipo de usuario
+            if (user.Tipo_Usuario === 'Admin') {
+                window.location.href = 'http://127.0.0.1:8000/admin';  // Laravel panel admin
+            } else {
+                navigate('/'); // Home con perfil visible
+            }
+    
+        } catch (err) {
+            console.error(err);
+            setError(err.response?.data?.message || 'Error al iniciar sesión.');
+        }
+    };
+    
+
     return (
-        <div className={`login-container ${isDarkMode ? 'dark-mode' : ''}`}>
-            <div className="image-container"><img src="../src/assets/login.jpg" alt="Imagen" className="login-image"/></div>
+        <div className="login-container">
+
+            <div className="image-container">
+                <img src="../src/assets/login.jpg" alt="Imagen" className="login-image" />
+            </div>
 
             <div className="login-box">
                 <div className="login-form">
@@ -57,26 +73,30 @@ export function LoginPage() {
                         <input
                             type="text"
                             name="identificador"
-                            className="form-control input_user"
-                            required
                             placeholder="Email"
+                            required
                             value={formData.identificador}
-                            onChange={handleChange}/>
+                            onChange={handleChange}
+                            className="form-control input_user"
+                        />
 
                         <input
                             type="password"
                             name="contrasena"
-                            className="form-control input_pass"
-                            required
                             placeholder="Contraseña"
+                            required
                             value={formData.contrasena}
-                            onChange={handleChange}/>
+                            onChange={handleChange}
+                            className="form-control input_user"
+                        />
+
                         {error && <div className="alert alert-danger">{error}</div>}
+
                         <button type="submit" className="button-login">Ingresar</button>
 
                         <p className="registro-link">
-  ¿Todavía no estás registrado? <Link to="/registro">Regístrate aquí</Link>
-</p>
+                            ¿Todavía no estás registrado? <Link to="/registro">Regístrate aquí</Link>
+                        </p>
                     </form>
                 </div>
             </div>

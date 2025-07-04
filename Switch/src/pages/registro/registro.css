@@ -111,18 +111,27 @@
   text-align: center;
 }
 
-/* Aceptación de términos */
+.form-row input[type="text"],
+.form-row input[type="email"],
+.form-row input[type="password"] {
+  flex: 1;
+}
+
+
 .aceptar-terminos {
-  font-size: 1em;
-  color: #333333;
   display: flex;
   align-items: center;
-  justify-content: center;
-  margin-top: 20px;
+  justify-content: center;  
+  gap: 8px;
+  margin-top: 10px;
   margin-bottom: 20px;
-  gap: 10px;
-  text-align: left;
+  width: 100%;        
+  box-sizing: border-box;
 }
+
+
+
+
 
 .aceptar-terminos input {
   width: 20px; 
@@ -130,6 +139,7 @@
   border: 2px solid #000; 
   border-radius: 5px; 
   transition: all 0.3s ease;
+  
 }
 
 .aceptar-terminos input:checked {
@@ -143,39 +153,6 @@
   font-size: 1em; 
 }
 
-/* MODO CLARO */
-.registro-container:not(.dark-mode) .registro-form {
-  background-color: #ffffff;
-  color: #000000;
-  border: 2px solid #000000; /* Se mantiene el borde negro */
-}
-
-.registro-container:not(.dark-mode) .bienvenida {
-  color: #000000;
-}
-
-.registro-container:not(.dark-mode) .bienvenido {
-  color: #6c757d;
-}
-
-.registro-container:not(.dark-mode) .input_user,
-.registro-container:not(.dark-mode) .input_pass,
-.registro-container:not(.dark-mode) .input_confirm_pass {
-  background-color: #ffffff; /* Restituyo el color blanco para los inputs */
-  color: #000000;
-  border: 1px solid #000000; /* Mantengo el borde negro */
-}
-
-.registro-container:not(.dark-mode) .button-registro {
-  background-color: #000000;
-  color: #ffffff;
-  border: 1px solid #000000;
-}
-
-.registro-container:not(.dark-mode) .button-registro:hover {
-  background-color: #333333;
-  color: #ffffff;
-}
 
 /* MODO OSCURO */
 .dark-mode .registro-form {
@@ -228,4 +205,102 @@
     max-width: 90%;
     padding: 20px;
   }
+}
+
+body.light-mode .registro-container {
+  background-color: #ffffff;
+  color: #000000;
+}
+
+body.light-mode .registro-form {
+  background-color: #ffffff;
+  color: #000000;
+  border: 2px solid #000000;
+}
+
+body.light-mode .bienvenida,
+body.light-mode .bienvenido {
+  color: #000000;
+}
+
+body.light-mode .input_user,
+body.light-mode .input_pass,
+body.light-mode .input_confirm_pass {
+  background-color: #ffffff;
+  color: #000000;
+  border: 1px solid #000000;
+}
+
+body.light-mode .input_user::placeholder,
+body.light-mode .input_pass::placeholder,
+body.light-mode .input_confirm_pass::placeholder {
+  color: #555555;
+}
+
+body.light-mode .button-registro {
+  background-color: #000000;
+  color: #ffffff;
+  border: 1px solid #000000;
+}
+
+body.light-mode .button-registro:hover {
+  background-color: #333333;
+  color: #ffffff;
+}
+
+body.light-mode .aceptar-terminos input {
+  accent-color: #000000;
+}
+
+body.light-mode .aceptar-terminos span {
+  color: #000000;
+}
+
+body.dark-mode .registro-container {
+  background-color: #121212;
+  color: #ffffff;
+}
+
+body.dark-mode .registro-form {
+  background-color: #1e1e1e;
+  color: #ffffff;
+  border: 2px solid #ffffff;
+}
+
+body.dark-mode .bienvenida,
+body.dark-mode .bienvenido {
+  color: #ffffff;
+}
+
+body.dark-mode .input_user,
+body.dark-mode .input_pass,
+body.dark-mode .input_confirm_pass {
+  background-color: #2a2a2a;
+  color: #ffffff;
+  border: 1px solid #555555;
+}
+
+body.dark-mode .input_user::placeholder,
+body.dark-mode .input_pass::placeholder,
+body.dark-mode .input_confirm_pass::placeholder {
+  color: #bbbbbb;
+}
+
+body.dark-mode .button-registro {
+  background-color: #ffffff;
+  color: #000000;
+  border: 1px solid #ffffff;
+}
+
+body.dark-mode .button-registro:hover {
+  background-color: #dddddd;
+  color: #000000;
+}
+
+body.dark-mode .aceptar-terminos input {
+  accent-color: #ffffff;
+}
+
+body.dark-mode .aceptar-terminos span {
+  color: #ffffff;
 }

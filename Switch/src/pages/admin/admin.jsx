@@ -1,56 +1,55 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './admin.css';
+import { fetchUsuarios, eliminarUsuario } from '../../services/firebaseAdmin'; // <-- Ajustá el path si está en otra carpeta
 
 const AdminPage = () => {
-    const [usuariosList, setUsuariosList] = useState([{ id: 1, nombre: 'Tomas', apellido: 'Vazquez Brouver', email: 'tomas.vazquez@davinci.edu.ar', usuario: 'tomas', rol: 'admin' },]);
-
-    const [paquetesList, setPaquetesList] = useState([
-        { id: 1, nombre: '', descripcion: '' },
-        { id: 2, nombre: '', descripcion: '' },
-        { id: 3, nombre: '', descripcion: '' },
+    const [usuariosList, setUsuariosList] = useState([]);
+    const [productosList, setProductosList] = useState([
+        { id: 1, nombre: 'Producto A', descripcion: 'Descripción del Producto A' },
+        { id: 2, nombre: 'Producto B', descripcion: 'Descripción del Producto B' },
+        { id: 3, nombre: 'Producto C', descripcion: 'Descripción del Producto C' },
     ]);
 
-    const [actividadesList, setActividadesList] = useState([
-        { id: 1, nombre: '', descripcion: '' },
-        { id: 2, nombre: '', descripcion: '' },
-        { id: 3, nombre: '', descripcion: '' },
-    ]);
+    useEffect(() => {
+        const cargarUsuarios = async () => {
+            const usuarios = await fetchUsuarios();
+            setUsuariosList(usuarios);
+        };
+        cargarUsuarios();
+    }, []);
+
 
     const [formDataUsuario, setFormDataUsuario] = useState({
         id: '',
         nombre: '',
         apellido: '',
         email: '',
-        usuario: '',
-        rol: 'usuario' 
+        rol: 'usuario'
     });
 
-    const [formDataPaquete, setFormDataPaquete] = useState({
+    const [formDataProducto, setFormDataProducto] = useState({
         id: '',
         nombre: '',
         descripcion: ''
     });
 
-    const [formDataActividad, setFormDataActividad] = useState({
-        id: '',
-        nombre: '',
-        descripcion: ''
-    });
+    const [showModal, setShowModal] = useState(false);
+    const [showEditModal, setShowEditModal] = useState(false);
+    const [currentItem, setCurrentItem] = useState(null);
+    const [successMessage, setSuccessMessage] = useState('');
 
-    const handleChangeUsuario = (e) => {setFormDataUsuario({...formDataUsuario,[e.target.name]: e.target.value});};
+    const handleChangeUsuario = (e) => { setFormDataUsuario({ ...formDataUsuario, [e.target.name]: e.target.value }); };
+    const handleChangeProducto = (e) => { setFormDataProducto({ ...formDataProducto, [e.target.name]: e.target.value }); };
 
-    const handleChangePaquete = (e) => {setFormDataPaquete({...formDataPaquete,[e.target.name]: e.target.value});};
-
-    const handleChangeActividad = (e) => {setFormDataActividad({...formDataActividad,[e.target.name]: e.target.value});};
-
-    const handleSubmitUsuario = (e) => {e.preventDefault();
+    const handleSubmitUsuario = (e) => {
+        e.preventDefault();
         const newUsuario = {
             id: usuariosList.length + 1,
             nombre: formDataUsuario.nombre,
             apellido: formDataUsuario.apellido,
             email: formDataUsuario.email,
-            usuario: formDataUsuario.usuario,
-            rol: formDataUsuario.rol
+            rol: formDataUsuario.rol,
+            favoritos: []
         };
         setUsuariosList([...usuariosList, newUsuario]);
         setFormDataUsuario({
@@ -58,55 +57,84 @@ const AdminPage = () => {
             nombre: '',
             apellido: '',
             email: '',
-            usuario: '',
-            rol: 'usuario' 
+            rol: 'usuario'
         });
     };
 
-    const handleSubmitPaquete = (e) => {e.preventDefault();
-        const newPaquete = {
-            id: paquetesList.length + 1, 
-            nombre: formDataPaquete.nombre,
-            descripcion: formDataPaquete.descripcion
+    const handleSubmitProducto = (e) => {
+        e.preventDefault();
+        const newProducto = {
+            id: productosList.length + 1,
+            nombre: formDataProducto.nombre,
+            descripcion: formDataProducto.descripcion
         };
-        setPaquetesList([...paquetesList, newPaquete]);
-        setFormDataPaquete({
+        setProductosList([...productosList, newProducto]);
+        setFormDataProducto({
             id: '',
             nombre: '',
             descripcion: ''
         });
     };
 
-    const handleSubmitActividad = (e) => {e.preventDefault();
-        const newActividad = {
-            id: actividadesList.length + 1, 
-            nombre: formDataActividad.nombre,
-            descripcion: formDataActividad.descripcion
-        };
-        setActividadesList([...actividadesList, newActividad]);
-        setFormDataActividad({
-            id: '',
-            nombre: '',
-            descripcion: ''
-        });
+    const mostrarModal = (item, tipo) => {
+        setCurrentItem({ item, tipo });
+        setShowModal(true);
     };
 
-    const eliminarUsuario = (id) => {const updatedUsuarios = usuariosList.filter(usuario => usuario.id !== id); setUsuariosList(updatedUsuarios);};
+    const mostrarEditModal = (item, tipo) => {
+        setCurrentItem({ item, tipo });
+        setShowEditModal(true);
+    };
 
-    const eliminarPaquete = (id) => {const updatedPaquetes = paquetesList.filter(paquete => paquete.id !== id); setPaquetesList(updatedPaquetes);};
+    const cerrarModal = () => {
+        setShowModal(false);
+        setShowEditModal(false);
+        setCurrentItem(null);
+    };
 
-    const eliminarActividad = (id) => {const updatedActividades = actividadesList.filter(actividad => actividad.id !== id); setActividadesList(updatedActividades);};
+    const confirmarEliminacion = async () => {
+        if (currentItem.tipo === 'usuario') {
+            await eliminarUsuario(currentItem.item.id);
+            const updatedUsuarios = await fetchUsuarios();
+            setUsuariosList(updatedUsuarios);
+            setSuccessMessage('Usuario eliminado con éxito.');
+        } else if (currentItem.tipo === 'producto') {
+            const updatedProductos = productosList.filter(producto => producto.id !== currentItem.item.id);
+            setProductosList(updatedProductos);
+            setSuccessMessage('Producto eliminado con éxito.');
+        }
+        setShowModal(false);
+    };
+
+
+    const confirmarEdicion = () => {
+        if (currentItem.tipo === 'usuario') {
+            const updatedUsuarios = usuariosList.map(usuario =>
+                usuario.id === currentItem.item.id ? { ...usuario, ...formDataUsuario } : usuario
+            );
+            setUsuariosList(updatedUsuarios);
+            setSuccessMessage('Usuario editado con éxito.');
+        } else if (currentItem.tipo === 'producto') {
+            const updatedProductos = productosList.map(producto =>
+                producto.id === currentItem.item.id ? { ...producto, ...formDataProducto } : producto
+            );
+            setProductosList(updatedProductos);
+            setSuccessMessage('Producto editado con éxito.');
+        }
+        setShowEditModal(false);
+    };
 
     return (
         <div className="admin-container">
-            <div className="row">
+            <div>
                 <div className="col admin-content">
                     <h1 className="admin-title">¡Bienvenido, Administrador!</h1>
-                    <p className="admin-text">Esta es la página de administrador. Aquí puedes gestionar usuarios y otras funciones administrativas.</p>
-                    <br/>
+                    <p className="admin-text">Esta es la página de administrador. Aquí puedes gestionar usuarios, productos.</p>
+                    <br />
+
                     <div className="form-registro-usuario">
                         <h3>Alta/Baja/Modificación de Usuarios</h3>
-                        <br/>
+                        <br />
                         <form onSubmit={handleSubmitUsuario}>
                             <div className="form-row">
                                 <input type="text" name="nombre" placeholder="Nombre" value={formDataUsuario.nombre} onChange={handleChangeUsuario} />
@@ -114,7 +142,6 @@ const AdminPage = () => {
                             </div>
                             <div className="form-row">
                                 <input type="email" name="email" placeholder="Email" value={formDataUsuario.email} onChange={handleChangeUsuario} />
-                                <input type="text" name="usuario" placeholder="Usuario" value={formDataUsuario.usuario} onChange={handleChangeUsuario} />
                             </div>
                             <div className="form-row">
                                 <select name="rol" value={formDataUsuario.rol} onChange={handleChangeUsuario}>
@@ -127,8 +154,10 @@ const AdminPage = () => {
                             </div>
                         </form>
                     </div>
-                    <br/>
-                    <br/>
+
+                    <br />
+
+                    <br />
                     <div className="usuarios-section">
                         <h3>Usuarios</h3>
                         <table className="table">
@@ -138,7 +167,6 @@ const AdminPage = () => {
                                     <th>Nombre</th>
                                     <th>Apellido</th>
                                     <th>Email</th>
-                                    <th>Usuario</th>
                                     <th>Rol</th>
                                     <th>Acciones</th>
                                 </tr>
@@ -150,35 +178,36 @@ const AdminPage = () => {
                                         <td>{usuario.nombre}</td>
                                         <td>{usuario.apellido}</td>
                                         <td>{usuario.email}</td>
-                                        <td>{usuario.usuario}</td>
                                         <td>{usuario.rol}</td>
                                         <td>
-                                            <button className="boton-editar">Editar</button>
-                                            <button className="boton-eliminar" onClick={() => eliminarUsuario(usuario.id)}>Eliminar</button>
+                                            <button className="boton-editar" onClick={() => mostrarEditModal(usuario, 'usuario')}>Editar</button>
+                                            <button className="boton-eliminar" onClick={() => mostrarModal(usuario, 'usuario')}>Eliminar</button>
                                         </td>
                                     </tr>
                                 ))}
                             </tbody>
                         </table>
                     </div>
-                    <br/>   
 
-                    <div className="form-paquetes-actividades">
-                        <h3>Alta/Baja/Modificación</h3>
-                        <br/>
-                        <form onSubmit={handleSubmitPaquete}>
+                    <div className="form-registro-usuario">
+                        <h3>Alta/Baja/Modificación de Productos</h3>
+                        <br />
+                        <form onSubmit={handleSubmitProducto}>
                             <div className="form-row">
-                                <input type="text" name="nombre" placeholder="Nombre del Paquete" value={formDataPaquete.nombre} onChange={handleChangePaquete}/>
-                                <textarea name="descripcion" placeholder="Descripción del Paquete" value={formDataPaquete.descripcion} onChange={handleChangePaquete}></textarea>
+                                <input type="text" name="nombre" placeholder="Nombre del Producto" value={formDataProducto.nombre} onChange={handleChangeProducto} />
                             </div>
                             <div className="form-row">
-                                <button type="submit" className="btn btn-primary">Guardar Paquete</button>
+                                <textarea name="descripcion" placeholder="Descripción del Producto" value={formDataProducto.descripcion} onChange={handleChangeProducto} />
+                            </div>
+                            <div className="form-row">
+                                <button type="submit" className="btn btn-primary">Registrar Producto</button>
                             </div>
                         </form>
                     </div>
-                    <br/>
-                    <div className="paquetes-section">
-                        <h3>Paquetes</h3>
+
+                    <br />
+                    <div className="productos-section">
+                        <h3>Productos</h3>
                         <table className="table">
                             <thead>
                                 <tr>
@@ -189,66 +218,53 @@ const AdminPage = () => {
                                 </tr>
                             </thead>
                             <tbody>
-                                {paquetesList.map(paquete => (
-                                    <tr key={paquete.id}>
-                                        <td>{paquete.id}</td>
-                                        <td>{paquete.nombre}</td>
-                                        <td>{paquete.descripcion}</td>
+                                {productosList.map(producto => (
+                                    <tr key={producto.id}>
+                                        <td>{producto.id}</td>
+                                        <td>{producto.nombre}</td>
+                                        <td>{producto.descripcion}</td>
                                         <td>
-                                            <button className="boton-editar">Editar</button>
-                                            <button className="boton-eliminar" onClick={() => eliminarPaquete(paquete.id)}>Eliminar</button>
+                                            <button className="boton-editar" onClick={() => mostrarEditModal(producto, 'producto')}>Editar</button>
+                                            <button className="boton-eliminar" onClick={() => mostrarModal(producto, 'producto')}>Eliminar</button>
                                         </td>
                                     </tr>
                                 ))}
                             </tbody>
                         </table>
                     </div>
-                    <br/>
-           
-                    <div className="form-paquetes-actividades">
-                        <h3>Alta/Baja/Modificación de Actividades</h3>
-                        <br/>
-                        <form onSubmit={handleSubmitActividad}>
-                            <div className="form-row">
-                                <input type="text" name="nombre" placeholder="Nombre de la Actividad" value={formDataActividad.nombre} onChange={handleChangeActividad}/>
-                                <textarea name="descripcion" placeholder="Descripción de la Actividad" value={formDataActividad.descripcion} onChange={handleChangeActividad}></textarea>
+
+                    {successMessage && <div className="success-message">{successMessage}</div>}
+
+                    {showModal && (
+                        <div className="modal-overlay">
+                            <div className="modal-content">
+                                <h2>Confirmación de Eliminación</h2>
+                                <p>¿Estás seguro de que deseas eliminar este {currentItem.tipo === 'usuario' ? 'usuario' : 'producto'}?</p>
+                                <div>
+                                    <button className="btn btn-danger" onClick={confirmarEliminacion}>Confirmar</button>
+                                    <button className="btn btn-secondary" onClick={cerrarModal}>Cancelar</button>
+                                </div>
                             </div>
-                            <div className="form-row">
-                                <button type="submit" className="btn btn-primary">Guardar Actividad</button>
+                        </div>
+                    )}
+
+                    {showEditModal && (
+                        <div className="modal-overlay">
+                            <div className="modal-content">
+                                <h2>Confirmación de Edición</h2>
+                                <p>¿Estás seguro de que deseas editar este {currentItem.tipo === 'usuario' ? 'usuario' : 'producto'}?</p>
+                                <div>
+                                    <button className="btn btn-success" onClick={confirmarEdicion}>Confirmar</button>
+                                    <button className="btn btn-secondary" onClick={cerrarModal}>Cancelar</button>
+                                </div>
                             </div>
-                        </form>
-                    </div>
-                    <br/>
-                    <div className="actividades-section">
-                        <h3>Actividades</h3>
-                        <table className="table">
-                            <thead>
-                                <tr>
-                                    <th>ID</th>
-                                    <th>Nombre</th>
-                                    <th>Descripción</th>
-                                    <th>Acciones</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {actividadesList.map(actividad => (
-                                    <tr key={actividad.id}>
-                                        <td>{actividad.id}</td>
-                                        <td>{actividad.nombre}</td>
-                                        <td>{actividad.descripcion}</td>
-                                        <td>
-                                            <button className="boton-editar">Editar</button>
-                                            <button className="boton-eliminar" onClick={() => eliminarActividad(actividad.id)}>Eliminar</button>
-                                        </td>
-                                    </tr>
-                                ))}
-                            </tbody>
-                        </table>
-                    </div>
+                        </div>
+                    )}
+
                 </div>
             </div>
         </div>
     );
-}
+};
 
 export default AdminPage;
