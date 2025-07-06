@@ -18,6 +18,7 @@ import Favoritos from './pages/favoritos/favoritos.jsx';
 import TestLaravel from './pages/TestLaravel.jsx';
 import PerfilUsuario from './pages/Perfil/PerfilUsuario.jsx';
 import ErrorBoundary from './components/Error/ErrorBoundary';
+import Busqueda from './pages/busqueda/Busqueda.jsx';
 import { ToastContainer } from 'react-toastify';
 import { PayPalScriptProvider } from "@paypal/react-paypal-js";
 import 'react-toastify/dist/ReactToastify.css';
@@ -52,6 +53,7 @@ function App() {
         <main className="app-content">
           <ErrorBoundary>
             <Routes>
+              <Route path="/buscar" element={<Busqueda />} />
               <Route path="/" element={<PageTitle title="Switch Style"><Home darkMode={darkMode} /></PageTitle>} />
               <Route path="/FAQ" element={<PageTitle title="Preguntas Frecuentes"><FAQPage /></PageTitle>} />
               <Route path="/quienessomos" element={<PageTitle title="Quiénes Somos"><QuienesSomosPage /></PageTitle>} />
@@ -67,6 +69,7 @@ function App() {
               <Route path="/producto/:tipo/:productoId" element={<Productos />} />
               <Route path="/favoritos" element={<PageTitle title="Favoritos"><Favoritos /></PageTitle>} />
               <Route path="/perfil" element={<PageTitle title="Perfil"><PerfilUsuario /></PageTitle>} />
+              
             </Routes>
           </ErrorBoundary>
         </main>
