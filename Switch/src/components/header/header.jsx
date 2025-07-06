@@ -25,12 +25,16 @@ const Header = ({ toggleTheme, darkMode }) => {
         }, 2000);
     };
 
+    const [searchQuery, setSearchQuery] = useState('');
+
     const handleSearch = (e) => {
         e.preventDefault();
-        if (searchTerm.trim() !== '') {
-            navigate(`/busqueda?query=${encodeURIComponent(searchTerm)}`);
+        if (searchQuery.trim()) {
+            navigate(`/buscar?q=${encodeURIComponent(searchQuery)}`);
         }
     };
+
+
 
 
     const handleProfileClick = () => setShowProfileMenu(!showProfileMenu);
@@ -112,17 +116,20 @@ const Header = ({ toggleTheme, darkMode }) => {
                         </Nav>
 
                         <div className="search-container">
-                            <input
-                                className="search-input"
-                                type="search"
-                                placeholder="Buscar por producto, categoría o marca"
-                                value={searchTerm}
-                                onChange={(e) => setSearchTerm(e.target.value)}
-                            />
+                            <form className="search-container" onSubmit={handleSearch}>
+                                <input
+                                    className="search-input"
+                                    type="search"
+                                    placeholder="Buscar por producto, categoría o marca"
+                                    aria-label="Search"
+                                    value={searchQuery}
+                                    onChange={(e) => setSearchQuery(e.target.value)}
+                                />
+                                <button className="search-btn" type="submit">
+                                    <FaSearch />
+                                </button>
+                            </form>
 
-                            <button className="search-btn" onClick={handleSearch}>
-                                <FaSearch />
-                            </button>
 
                             <Nav.Link as={NavLink} to="/favoritos" className="icon-separator">
                                 <FaHeart className={`navbar-icon ${darkMode ? 'text-white' : 'text-dark'}`} />

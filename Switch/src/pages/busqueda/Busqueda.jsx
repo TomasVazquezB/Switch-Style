@@ -1,28 +1,57 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { useLocation } from 'react-router-dom';
+import ProductoItem from '../../components/Productoitem/ProductoItem';
 
 const Busqueda = () => {
-  const [productos, setProductos] = useState([]);
   const location = useLocation();
+  const navigate = useNavigate();
   const query = new URLSearchParams(location.search).get('q');
+
+  const [resultados, setResultados] = useState([]);
+  const [favoritos, setFavoritos] = useState(() => {
+    const stored = localStorage.getItem("favoritos");
+    return stored ? JSON.parse(stored) : [];
+  });
+
+  const toggleFavorito = (id) => {
+    setFavoritos((prev) => {
+      let nuevos;
+      if (prev.includes(id)) {
+        nuevos = prev.filter((favId) => favId !== id);
+      } else {
+        nuevos = [...prev, id];
+      }
+      localStorage.setItem("favoritos", JSON.stringify(nuevos));
+      return nuevos;
+    });
+  };
 
   useEffect(() => {
     if (query) {
       axios.get(`http://127.0.0.1:8000/api/producto/buscar?q=${query}`)
-        .then(response => setProductos(response.data))
-        .catch(error => console.error('Error al buscar:', error));
+        .then(res => setResultados(res.data))
+        .catch(err => console.error('Error al buscar:', err));
     }
   }, [query]);
 
   return (
-    <div className="container mt-4">
-      <h2>Resultados para: "{query}"</h2>
-      <ul>
-        {productos.map(prod => (
-          <li key={prod.id}>{prod.titulo}</li>
+    <div className="content">
+      <h2 className="text-xl font-bold mb-4">RESULTADOS PARA: "{query.toUpperCase()}"</h2>
+      <div className="product-grid">
+        {resultados.map((item) => (
+          <ProductoItem
+            key={item.id}
+            id={item.id}
+            img={item.ruta_imagen}
+            nombre={item.titulo}
+            precio={item.precio}
+            tipo="ropa"
+            esFavorito={favoritos.includes(item.id)}
+            onToggleFavorito={() => toggleFavorito(item.id)}
+          />
         ))}
-      </ul>
+      </div>
     </div>
   );
 };
