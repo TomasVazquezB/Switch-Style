@@ -42,6 +42,4 @@ class User extends Authenticatable
     {
         return $this->Correo_Electronico;
     }
-
-    
 }
