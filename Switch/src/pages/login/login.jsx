@@ -1,68 +1,71 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import api from '../../api/axios';
 import './login.css';
-import Cookies from 'js-cookie';
-import loginImage from '../../assets/login.jpg'; // Ajustá esta ruta según tu estructura
+import loginImage from '../../assets/login.jpg';
 
 export function LoginPage() {
     const [formData, setFormData] = useState({ identificador: '', contrasena: '' });
     const [error, setError] = useState(null);
-    const [isDarkMode, setIsDarkMode] = useState(false);
     const navigate = useNavigate();
 
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
     };
 
-
-
     const handleSubmit = async (e) => {
         e.preventDefault();
         setError(null);
-    
+
         try {
-            await api.get('/sanctum/csrf-cookie');
-            const csrfToken = Cookies.get('XSRF-TOKEN');
-    
+            // 1. Obtener cookie CSRF desde Laravel
+            await api.get('/sanctum/csrf-cookie', { withCredentials: true });
+
+            // 2. Extraer token de la cookie
+            const csrfToken = decodeURIComponent(
+                document.cookie
+                    .split('; ')
+                    .find(row => row.startsWith('XSRF-TOKEN='))
+                    ?.split('=')[1] || ''
+            );
+
+            // 3. Enviar datos con los nombres correctos que Laravel espera
             const response = await api.post(
                 '/api/login',
                 {
-                    email: formData.identificador,
-                    password: formData.contrasena,
+                    email: formData.identificador,      // ✅ nombre correcto
+                    password: formData.contrasena       // ✅ nombre correcto
                 },
                 {
                     headers: {
-                        'X-XSRF-TOKEN': decodeURIComponent(csrfToken),
+                        'X-XSRF-TOKEN': csrfToken
                     },
+                    withCredentials: true
                 }
             );
-    
-            const user = response.data;
+
+            const user = response.data.user;
             localStorage.setItem('usuario', JSON.stringify(user));
             window.dispatchEvent(new Event('usuario-actualizado'));
-    
-            alert(`Bienvenido ${user.Nombre || ''}`);
-    
-            // 🔀 Redirección según tipo de usuario
-            if (user.Tipo_Usuario === 'Admin') {
-                window.location.href = 'http://127.0.0.1:8000/admin';  // Laravel panel admin
+
+            alert(`Bienvenido ${user.nombre || ''}`);
+
+            if (user.rol === 'Admin') {
+                window.location.href = 'http://127.0.0.1:8000/admin';
             } else {
-                navigate('/'); // Home con perfil visible
+                navigate('/');
             }
-    
+
         } catch (err) {
             console.error(err);
             setError(err.response?.data?.message || 'Error al iniciar sesión.');
         }
     };
-    
 
     return (
         <div className="login-container">
-
             <div className="image-container">
-                <img src="../src/assets/login.jpg" alt="Imagen" className="login-image" />
+                <img src={loginImage} alt="Imagen" className="login-image" />
             </div>
 
             <div className="login-box">

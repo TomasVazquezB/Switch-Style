@@ -19,6 +19,7 @@ const Carrito = () => {
     const [productos, setProductos] = useState([]);
     const [accesorios, setAccesorios] = useState([]);
     const [moneda, setMoneda] = useState("$");
+    const [preferenceId, setPreferenceId] = useState(null);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -35,6 +36,34 @@ const Carrito = () => {
         };
         fetchData();
     }, []);
+
+    useEffect(() => {
+        if (carritoData.length === 0) return;
+
+        const generarPreferenceId = async () => {
+            try {
+                const items = carritoData.map(item => ({
+                    title: item.titulo || "Producto",
+                    quantity: item.cantidad || 1,
+                    unit_price: parseFloat(item.precio || 0),
+                }));
+
+                const response = await fetch('http://localhost:4000/create_preference', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ items })
+                });
+
+                const data = await response.json();
+                setPreferenceId(data.preferenceId);
+            } catch (error) {
+                console.error("Error al generar preferencia:", error);
+                toast.error("No se pudo generar el link de MercadoPago");
+            }
+        };
+
+        generarPreferenceId();
+    }, [carritoData]);
 
     const buscarProducto = (item) => {
         const fuente = item.tipo === 'accesorio' ? accesorios : productos;
@@ -111,7 +140,7 @@ const Carrito = () => {
 
             <div className="order-summary">
                 <h3>Order Summary</h3>
-                <br></br>
+                <br />
                 <div className="summary-line">
                     <span>Subtotal</span>
                     <span>{moneda}{calcularTotal()}</span>
@@ -125,16 +154,17 @@ const Carrito = () => {
                     <span>{moneda}0.00</span>
                 </div>
                 <div className="total">
-                    
-                    <span>Order Total </span>
+                    <span>Order Total</span>
                     <span>{moneda}{calcularTotal()}</span>
                 </div>
                 <div className="pay-buttons">
                     <PayPalButtons style={{ layout: 'vertical' }} />
-                    <Wallet
-                        initialization={{ preferenceId: "YOUR_PREFERENCE_ID" }}
-                        customization={{ texts: { valueProp: 'smart_option' } }}
-                    />
+                    {preferenceId && (
+                        <Wallet
+                            initialization={{ preferenceId }}
+                            customization={{ texts: { valueProp: 'smart_option' } }}
+                        />
+                    )}
                 </div>
             </div>
         </div>

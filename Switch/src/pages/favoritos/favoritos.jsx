@@ -1,42 +1,97 @@
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import axios from 'axios';
+import api from '../../api/axios';
 import './Favoritos.css';
 
 const Favoritos = () => {
+    const [user, setUser] = useState(null);
     const [favoritos, setFavoritos] = useState([]);
     const [ropaFavorita, setRopaFavorita] = useState([]);
     const [accesoriosFavoritos, setAccesoriosFavoritos] = useState([]);
+    const navigate = useNavigate();
 
     useEffect(() => {
-        const fav = JSON.parse(localStorage.getItem('favoritos')) || [];
-        setFavoritos(fav);
+        const verificarSesion = async () => {
+            try {
+                // ⚠️ 1. CSRF Cookie (importante para que Laravel acepte la sesión)
+                await api.get('/sanctum/csrf-cookie');
+
+                // ⚠️ 2. Obtener usuario autenticado
+                const res = await api.get('/api/user', { withCredentials: true });
+
+                // Guardar usuario si autenticado
+                if (res?.data?.id) {
+                    setUser(res.data);
+                } else {
+                    throw new Error();
+                }
+            } catch {
+                toast.warning("Debés iniciar sesión para ver tus favoritos");
+                navigate('/login');
+            }
+        };
+
+        verificarSesion();
+    }, []);
+
+
+    useEffect(() => {
+        if (!user) return;
 
         const fetchFavoritos = async () => {
             try {
+                const favoritosRes = await api.get('/api/favoritos');
+                setFavoritos(favoritosRes.data);
+
                 const [ropaRes, accRes] = await Promise.all([
-                    axios.get("http://localhost:8000/api/ropa"),
-                    axios.get("http://localhost:8000/api/accesorios")
+                    api.get("/api/ropa"),
+                    api.get("/api/accesorios")
                 ]);
 
-                setRopaFavorita(ropaRes.data.filter(p => fav.includes(p.id)));
-                setAccesoriosFavoritos(accRes.data.filter(p => fav.includes(p.id)));
+                const ropa = ropaRes.data.filter(p =>
+                    favoritosRes.data.some(f => f.favoritable_type === 'App\\Models\\Ropa' && f.favoritable_id === p.id)
+                );
+
+                const accesorios = accRes.data.filter(p =>
+                    favoritosRes.data.some(f => f.favoritable_type === 'App\\Models\\Accesorio' && f.favoritable_id === p.id)
+                );
+
+                const favoritosConId = favoritosRes.data.map(f => ({
+                    ...f,
+                    tipo: f.favoritable_type.includes('Ropa') ? 'ropa' : 'accesorio',
+                }));
+
+                ropa.forEach(p => {
+                    const fav = favoritosConId.find(f => f.favoritable_id === p.id && f.tipo === 'ropa');
+                    p.favorito_id = fav?.id;
+                });
+
+                accesorios.forEach(p => {
+                    const fav = favoritosConId.find(f => f.favoritable_id === p.id && f.tipo === 'accesorio');
+                    p.favorito_id = fav?.id;
+                });
+
+                setRopaFavorita(ropa);
+                setAccesoriosFavoritos(accesorios);
             } catch (err) {
-                toast.error("Error al cargar favoritos.");
+                toast.error("Error al cargar tus favoritos");
             }
         };
 
         fetchFavoritos();
-    }, []);
+    }, [user]);
 
-    const handleQuitar = (id) => {
-        const nuevos = favoritos.filter(f => f !== id);
-        localStorage.setItem('favoritos', JSON.stringify(nuevos));
-        setFavoritos(nuevos);
-        setRopaFavorita(prev => prev.filter(p => p.id !== id));
-        setAccesoriosFavoritos(prev => prev.filter(p => p.id !== id));
-        toast.info("Producto quitado de favoritos 🤍");
+    const handleQuitar = async (favoritoId) => {
+        try {
+            await api.delete(`/api/favoritos/${favoritoId}`);
+            setFavoritos(prev => prev.filter(f => f.id !== favoritoId));
+            setRopaFavorita(prev => prev.filter(p => p.favorito_id !== favoritoId));
+            setAccesoriosFavoritos(prev => prev.filter(p => p.favorito_id !== favoritoId));
+            toast.info("Producto quitado de favoritos 🤍");
+        } catch {
+            toast.error("No se pudo quitar el favorito");
+        }
     };
 
     const renderTarjetas = (lista, tipo) => (
@@ -59,7 +114,7 @@ const Favoritos = () => {
                         </Link>
 
                         <button
-                            onClick={() => handleQuitar(producto.id)}
+                            onClick={() => handleQuitar(producto.favorito_id)}
                             className="favoritos-page-remove"
                         >
                             <svg
@@ -88,15 +143,17 @@ const Favoritos = () => {
             <h2 className="favoritos-page-title-main">Mis Favoritos</h2>
             <hr className="mb-6" />
 
-            {favoritos.length === 0 ? (
+            {(ropaFavorita.length === 0 && accesoriosFavoritos.length === 0) ? (
                 <p className="text-gray-600">No tenés productos favoritos aún.</p>
             ) : (
                 <>
                     {ropaFavorita.length > 0 && renderTarjetas(ropaFavorita, 'ropa')}
-                    <br></br>
-                    <hr className="mb-6" />
-                    <br></br>
-                    {accesoriosFavoritos.length > 0 && renderTarjetas(accesoriosFavoritos, 'accesorio')}
+                    {accesoriosFavoritos.length > 0 && (
+                        <>
+                            <br /><hr className="mb-6" /><br />
+                            {renderTarjetas(accesoriosFavoritos, 'accesorio')}
+                        </>
+                    )}
                 </>
             )}
         </div>
