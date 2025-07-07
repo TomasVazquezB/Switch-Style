@@ -4,21 +4,26 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Producto;
+use App\Models\Accesorio;
+use App\Models\Ropa;
 
 class ProductoController extends Controller
 {
     public function buscar(Request $request)
     {
-        $query = $request->input('q');
+        $query = $request->query('q');
 
-        if (!$query) {
-            return response()->json(['error' => 'No se proporcionó término de búsqueda'], 400);
-        }
-
-        $productos = Producto::where('titulo', 'like', "%{$query}%")
-            ->orWhere('descripcion', 'like', "%{$query}%")
+        $ropaResultados = \App\Models\Ropa::where('titulo', 'LIKE', "%$query%")
+            ->orWhere('descripcion', 'LIKE', "%$query%")
             ->get();
 
-        return response()->json($productos);
+        $accesorioResultados = \App\Models\Accesorio::where('titulo', 'LIKE', "%$query%")
+            ->orWhere('descripcion', 'LIKE', "%$query%")
+            ->get();
+
+        $resultados = $ropaResultados->concat($accesorioResultados)->values();
+
+        return response()->json($resultados);
     }
+
 }
