@@ -29,7 +29,7 @@ RUN composer install --no-dev --optimize-autoloader || exit 1 && \
     php artisan route:cache || exit 1 && \
     php artisan view:cache || exit 1
 
-# Exponer puerto 80
+
 EXPOSE 80
 
 CMD ["apache2-foreground"]
