@@ -9,7 +9,7 @@ use App\Models\User;
 
 class AuthController extends Controller
 {
-   public function login(Request $request)
+    public function login(Request $request)
 {
     $request->validate([
         'email'    => 'required|email',
@@ -19,13 +19,21 @@ class AuthController extends Controller
     $user = User::where('Correo_Electronico', $request->email)->first();
 
     if (!$user || !Hash::check($request->password, $user->Contraseña)) {
-        return back()->withErrors(['email' => 'Credenciales inválidas']);
+        return response()->json(['message' => 'Credenciales inválidas'], 401);
     }
 
     Auth::login($user);
     $request->session()->regenerate();
 
-    return redirect()->intended('/inicio'); // ✅ Redirige al dashboard o página inicial
+    return response()->json([
+        'message' => 'Login exitoso',
+        'user' => [
+            'id' => $user->ID_Usuario,
+            'nombre' => $user->Nombre,
+            'correo' => $user->Correo_Electronico,
+            'rol' => $user->Tipo_Usuario,
+        ],
+    ]);
 }
 
      public function register(Request $request)

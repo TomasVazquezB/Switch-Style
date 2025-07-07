@@ -22,6 +22,8 @@ Route::middleware('guest')->group(function () {
     Route::post('/login', [AuthenticatedSessionController::class, 'store']);
 });
 
+Route::post('/api/login', [AuthController::class, 'login']);
+
 Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])->middleware('auth')->name('logout');
 
 Route::get('/dashboard', fn() => view('dashboard'))->middleware('auth')->name('dashboard');

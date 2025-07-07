@@ -19,11 +19,8 @@ import TestLaravel from './pages/TestLaravel.jsx';
 import PerfilUsuario from './pages/Perfil/PerfilUsuario.jsx';
 import ErrorBoundary from './components/Error/ErrorBoundary';
 import Busqueda from './pages/busqueda/Busqueda.jsx';
-
 import { ToastContainer } from 'react-toastify';
 import { PayPalScriptProvider } from "@paypal/react-paypal-js";
-
-
 import 'react-toastify/dist/ReactToastify.css';
 import '/index.css';
 
@@ -45,6 +42,9 @@ function App() {
   }, [darkMode]);
 
   const toggleTheme = () => setDarkMode(prev => !prev);
+
+
+
 
   return (
     <PayPalScriptProvider options={{ clientId: "AbSH4YtXgr7HDRqfrLVMI8GJRF_iOK10cGwbs_NiwJN96bDp6GcZsOERyV4T29kvRE1o2D--KJAXFJE3" }}>
@@ -69,6 +69,7 @@ function App() {
               <Route path="/producto/:tipo/:productoId" element={<Productos />} />
               <Route path="/favoritos" element={<PageTitle title="Favoritos"><Favoritos /></PageTitle>} />
               <Route path="/perfil" element={<PageTitle title="Perfil"><PerfilUsuario /></PageTitle>} />
+              
             </Routes>
           </ErrorBoundary>
         </main>
