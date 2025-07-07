@@ -46,7 +46,7 @@ const ProductoItem = ({ id, img, nombre, precio, tipo }) => {
             >
                 <div className="overflow-hidden rounded-t-lg h-[600px]">
                     <img
-                        src={img}
+                        src={img?.startsWith('http') ? img : `http://127.0.0.1:8000/storage/${img}`}
                         alt={nombre}
                         className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
                         onError={(e) => (e.target.style.display = 'none')}

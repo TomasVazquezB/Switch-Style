@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Ropa;
+use App\Models\Accesorio;
 use App\Models\Imagen;
 use App\Models\Categoria;
 use App\Models\Genero;
@@ -46,14 +47,21 @@ class RopaController extends Controller
 
     public function buscar(Request $request)
     {
-        $q = $request->query('q');
+        $query = $request->query('q');
 
-        $resultados = Ropa::where('titulo', 'LIKE', "%$q%")
-            ->orWhere('descripcion', 'LIKE', "%$q%")
+        $ropaResultados = \App\Models\Ropa::where('titulo', 'LIKE', "%$query%")
+            ->orWhere('descripcion', 'LIKE', "%$query%")
             ->get();
+
+        $accesorioResultados = \App\Models\Accesorio::where('titulo', 'LIKE', "%$query%")
+            ->orWhere('descripcion', 'LIKE', "%$query%")
+            ->get();
+
+        $resultados = $ropaResultados->concat($accesorioResultados)->values();
 
         return response()->json($resultados);
     }
+
 
     public function create()
     {
