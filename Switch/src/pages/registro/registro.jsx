@@ -44,7 +44,7 @@ export function RegistroPage() {
                         <h1 className="bienvenida">Registrarse</h1>
                         <h3 className="informacion-registro">Registrate para unirte a nuestra comunidad</h3>
                         <div className="form-row">
-                            <div className="input-group mb-3 col-6">
+                            <div className="input-group  col-6">
                                 <input 
                                     type="text" 
                                     name="nombre" 
@@ -55,7 +55,7 @@ export function RegistroPage() {
                                     onChange={handleChange} 
                                 />
                             </div>
-                            <div className="input-group mb-3 col-6">
+                            <div className="input-group  col-6">
                                 <input 
                                     type="text" 
                                     name="apellido" 
@@ -68,7 +68,7 @@ export function RegistroPage() {
                             </div>
                         </div>
                         <div className="form-row">
-                            <div className="input-group mb-3 col-12">
+                            <div className="input-group  col-12">
                                 <input 
                                     type="email" 
                                     name="email" 
@@ -81,7 +81,7 @@ export function RegistroPage() {
                             </div>
                         </div>
                         <div className="form-row">
-                            <div className="input-group mb-3 col-6">
+                            <div className="input-group  col-6">
                                 <input 
                                     type="password" 
                                     name="contrasena" 

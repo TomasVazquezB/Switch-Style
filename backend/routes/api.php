@@ -7,6 +7,10 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AccesorioController;
 use App\Http\Controllers\CarritoController;
 use App\Http\Controllers\FirebaseController;
+use App\Http\Controllers\ProductoController;
+
+Route::get('/producto/buscar', [ProductoController::class, 'buscar']);
+Route::get('/ropa/buscar', [RopaController::class, 'buscar']);
 
 Route::post('/firebase/add-user', [FirebaseController::class, 'addUser']);
 Route::get('/firebase/get-users', [FirebaseController::class, 'getUsers']);

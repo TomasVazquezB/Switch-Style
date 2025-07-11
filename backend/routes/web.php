@@ -10,6 +10,7 @@ use App\Http\Controllers\ImagenAccesorioController;
 use App\Http\Middleware\TipoUsuario;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\FirebaseController;
+use App\Services\FirebaseService;
 
 Route::get('/', fn() => redirect()->route('inicio'));
 
@@ -59,5 +60,9 @@ Route::middleware('auth')->group(function () {
 
     
 });
+
+ Route::get('/test-firebase', function (FirebaseService $firebase) {
+    return response()->json(['message' => 'Servicio de Firebase cargado correctamente.']);
+}); 
 
 require __DIR__.'/auth.php';

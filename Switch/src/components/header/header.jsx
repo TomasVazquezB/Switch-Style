@@ -14,23 +14,7 @@ const Header = ({ toggleTheme, darkMode }) => {
     const [showProfileMenu, setShowProfileMenu] = useState(false);
     const navigate = useNavigate();
 
-    /* useEffect(() => {
-        const storedUser = localStorage.getItem('usuario');
-        if (storedUser) {
-            setUsuario(JSON.parse(storedUser));
-        }
-        document.body.classList.add(isDarkMode ? 'dark-mode' : 'light-mode');
-        localStorage.setItem('darkMode', isDarkMode.toString());
-
-
-    }, [isDarkMode]); */
-
-    /* useEffect(() => {
-        const savedMode = localStorage.getItem('darkMode');
-        setIsDarkMode(savedMode === 'true');
-    }, []); */
-
-    /*  const toggleDarkMode = () => setIsDarkMode(!isDarkMode); */
+    const [searchTerm, setSearchTerm] = useState('');
 
     const handleClick = (e) => {
         const links = document.querySelectorAll('.nav-link');
@@ -40,6 +24,18 @@ const Header = ({ toggleTheme, darkMode }) => {
             e.target.classList.remove('clicked');
         }, 2000);
     };
+
+    const [searchQuery, setSearchQuery] = useState('');
+
+    const handleSearch = (e) => {
+        e.preventDefault();
+        if (searchQuery.trim()) {
+            navigate(`/buscar?q=${encodeURIComponent(searchQuery)}`);
+        }
+    };
+
+
+
 
     const handleProfileClick = () => setShowProfileMenu(!showProfileMenu);
 
@@ -120,10 +116,21 @@ const Header = ({ toggleTheme, darkMode }) => {
                         </Nav>
 
                         <div className="search-container">
-                            <input className="search-input" type="search" placeholder="Buscar por producto, categoría o marca" aria-label="Search" />
-                            <button className="search-btn">
-                                <FaSearch />
-                            </button>
+                            <form className="search-container" onSubmit={handleSearch}>
+                                <input
+                                    className="search-input"
+                                    type="search"
+                                    placeholder="Buscar por producto, categoría o marca"
+                                    aria-label="Search"
+                                    value={searchQuery}
+                                    onChange={(e) => setSearchQuery(e.target.value)}
+                                />
+                                <button className="search-btn" type="submit">
+                                    <FaSearch />
+                                </button>
+                            </form>
+
+
                             <Nav.Link as={NavLink} to="/favoritos" className="icon-separator">
                                 <FaHeart className={`navbar-icon ${darkMode ? 'text-white' : 'text-dark'}`} />
                             </Nav.Link>
