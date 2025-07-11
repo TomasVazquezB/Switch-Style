@@ -2,24 +2,20 @@ services:
   - type: web
     name: laravel-backend
     env: docker
-    region: oregon  # o la región que prefieras
+    region: oregon
     plan: free
     branch: main
-    dockerfilePath: backend/Dockerfile  # Apunta a la ubicación correcta del Dockerfile
-    dockerContext: backend  # Contexto de Docker también en la carpeta backend
-
-    buildCommand: ""  # vacío porque ya está configurado en el Dockerfile
-    startCommand: ""  # Laravel servirá desde Apache, ya configurado
-
+    dockerfilePath: backend/Dockerfile
+    dockerContext: backend
+    buildCommand: ""   # queda vacío, porque Dockerfile ya hace todo
+    startCommand: ""
     envVars:
       - key: APP_ENV
         value: production
-
       - key: APP_KEY
-        value: base64:TU_APP_KEY  # reemplázalo por tu APP_KEY real
-
+        value: base64:TU_APP_KEY_REAL
       - key: FIREBASE_CREDENTIALS_JSON
-        sync: false  # lo cargas desde el panel web por seguridad
+        sync: false
 
       # si usas base de datos externa:
       # - key: DB_CONNECTION
