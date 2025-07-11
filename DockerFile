@@ -1,21 +1,32 @@
 FROM php:8.2-apache
 
-RUN apt-get update && apt-get install -y libzip-dev zip unzip git curl libpng-dev libonig-dev libxml2-dev libssl-dev pkg-config libgrpc-dev protobuf-compiler
+# Actualizar e instalar dependencias necesarias para grpc y otras extensiones
+RUN apt-get update && apt-get install -y \
+    libzip-dev zip unzip git curl libpng-dev libonig-dev libxml2-dev libssl-dev pkg-config libgrpc-dev protobuf-compiler \
+    && pecl install grpc \
+    && docker-php-ext-enable grpc
 
+# Instalar extensiones PHP requeridas
 RUN docker-php-ext-install pdo pdo_mysql zip exif pcntl bcmath gd opcache soap intl
 
-RUN pecl install grpc && docker-php-ext-enable grpc
-
+# Habilitar mod_rewrite de Apache
 RUN a2enmod rewrite
 
 WORKDIR /var/www/html
 
+# Copiar composer.lock y composer.json para instalar dependencias
 COPY composer.lock composer.json /var/www/html/
+
+# Instalar Composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+
+# Instalar dependencias PHP con composer
 RUN composer install --no-dev --optimize-autoloader --no-interaction
 
+# Copiar el resto del código
 COPY . /var/www/html
 
+# Permisos para storage y bootstrap/cache
 RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
 
 EXPOSE 80
