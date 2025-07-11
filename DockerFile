@@ -2,10 +2,8 @@ FROM php:8.2-apache
 
 RUN apt-get update && apt-get install -y libzip-dev zip unzip git curl libpng-dev libonig-dev libxml2-dev libssl-dev pkg-config libgrpc-dev protobuf-compiler
 
-# Instalar extensiones PHP necesarias
 RUN docker-php-ext-install pdo pdo_mysql zip exif pcntl bcmath gd opcache soap intl
 
-# Instalar PECL y la extensión grpc
 RUN pecl install grpc && docker-php-ext-enable grpc
 
 RUN a2enmod rewrite
