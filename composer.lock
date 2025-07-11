@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "685e3a77b85015bd3e339a462b3c4534",
+    "content-hash": "29301d4e3bbf07dffc87a58915547fd0",
     "packages": [
         {
             "name": "beste/clock",
@@ -1031,7 +1031,7 @@
         },
         {
             "name": "google/cloud-firestore",
-            "version": "v1.51.0",
+            "version": "dev-main",
             "source": {
                 "type": "git",
                 "url": "https://github.com/googleapis/google-cloud-php-firestore.git",
@@ -1061,6 +1061,7 @@
             "suggest": {
                 "ext-protobuf": "Provides a significant increase in throughput over the pure PHP protobuf implementation. See https://cloud.google.com/php/grpc for installation instructions."
             },
+            "default-branch": true,
             "type": "library",
             "extra": {
                 "component": {
@@ -9750,7 +9751,9 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": {},
+    "stability-flags": {
+        "google/cloud-firestore": 20
+    },
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
