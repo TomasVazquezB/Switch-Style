@@ -52,6 +52,8 @@ const MainAccesorios = () => {
         ? Math.max(...productos.map((p) => p.precio || 0))
         : 350;
 
+    
+
     return (
         <div className="content">
             <section className="sidebar fixed top-0 left-0 h-screen overflow-y-auto bg-white border-r px-4 py-6">
@@ -88,16 +90,22 @@ const MainAccesorios = () => {
                 </div>
 
                 <div className="product-grid">
-                    {filtroProductos.map((item) => (
-                        <ProductoItem
-                            key={item.id}
-                            id={item.id}
-                            img={item.ruta_imagen}
-                            nombre={item.titulo}
-                            precio={item.precio}
-                            tipo="accesorios"
-                        />
-                    ))}
+                    {filtroProductos.map((item) => {
+                        const imageUrl = item.ruta_imagen?.startsWith('http')
+                            ? item.ruta_imagen
+                            : `http://127.0.0.1:8000/storage/${item.ruta_imagen}`;
+
+                        return (
+                            <ProductoItem
+                                key={item.id}
+                                id={item.id}
+                                img={imageUrl}
+                                nombre={item.titulo}
+                                precio={item.precio}
+                                tipo="accesorios"
+                            />
+                        );
+                    })}
                 </div>
             </div>
         </div>

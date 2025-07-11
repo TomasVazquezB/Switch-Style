@@ -5,8 +5,8 @@ RUN apt-get update && apt-get install -y \
     git curl zip unzip libpng-dev libonig-dev libxml2-dev libzip-dev \
     libssl-dev libcurl4-openssl-dev pkg-config libprotobuf-dev protobuf-compiler \
     && docker-php-ext-install pdo pdo_mysql mbstring zip exif pcntl \
-    && pecl install grpc \
-    && docker-php-ext-enable grpc \
+    && pecl install grpc protobuf \
+    && docker-php-ext-enable grpc protobuf \
     && curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer \
     && a2enmod rewrite
 
@@ -21,12 +21,14 @@ WORKDIR /var/www/html
 RUN chown -R www-data:www-data /var/www/html \
     && chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache
 
-# Instalar dependencias de Composer y optimizar Laravel
-RUN composer install --no-dev --optimize-autoloader \
-    && php artisan config:clear \
-    && php artisan config:cache \
-    && php artisan route:cache \
-    && php artisan view:cache
+RUN pecl install grpc protobuf && docker-php-ext-enable grpc protobuf
 
-# Exponer puerto 80
+# Instalar dependencias de Composer y optimizar Laravel
+RUN composer install --no-dev --optimize-autoloader || exit 1 && \
+    php artisan config:cache || exit 1 && \
+    php artisan route:cache || exit 1 && \
+    php artisan view:cache || exit 1
+
 EXPOSE 80
+
+CMD ["apache2-foreground"]
