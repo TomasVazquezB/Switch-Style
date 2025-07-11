@@ -7,6 +7,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AccesorioController;
 use App\Http\Controllers\CarritoController;
 use App\Http\Controllers\FirebaseController;
+use App\Http\Controllers\ProductoController;  
 
 Route::post('/firebase/add-user', [FirebaseController::class, 'addUser']);
 Route::get('/firebase/get-users', [FirebaseController::class, 'getUsers']);
@@ -30,3 +31,6 @@ Route::middleware('auth:sanctum')->get('/user', fn () => auth()->user());
 // Accesorios
 Route::get('/accesorios', [AccesorioController::class, 'apiIndex']);
 Route::get('/accesorios/{id}', [AccesorioController::class, 'apiShow']);
+
+// Productos con Firebase
+Route::apiResource('productos', ProductoController::class);

@@ -7,9 +7,10 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use Kreait\Laravel\Firebase\Facades\Firebase;
 
-class MigrateAndUploadOptimized extends Command
+class ExportMySQLToJson extends Command
 {
-    protected $signature = 'migrate:upload-firestore-optimized';
+    // Cambié el nombre del comando para que refleje exportación
+    protected $signature = 'export:mysql-to-firestore';
     protected $description = 'Exporta tablas MySQL y sube a Firestore con relaciones anidadas y batches optimizados';
 
     // Tablas planas (sin relaciones)

@@ -4,11 +4,12 @@ namespace App\Services;
 
 use Kreait\Firebase\Factory;
 use Kreait\Firebase\Auth;
+use Google\Cloud\Firestore\FirestoreClient;
 
 class FirebaseService
 {
-    protected $auth;
-    protected $firestore;
+    protected Auth $auth;
+    protected FirestoreClient $firestore;
 
     public function __construct()
     {
@@ -22,7 +23,7 @@ class FirebaseService
             ->withServiceAccount($firebaseCredentials);
 
         $this->auth = $factory->createAuth();
-        $this->firestore = $factory->createFirestore();
+        $this->firestore = $factory->createFirestore()->database();
     }
 
     public function getAuth(): Auth
@@ -30,8 +31,33 @@ class FirebaseService
         return $this->auth;
     }
 
-    public function getFirestore() // Devuelve instancia de Google\Cloud\Firestore\FirestoreClient
+    public function getFirestore(): FirestoreClient
     {
-        return $this->firestore->database(); // Este es el objeto real que tiene ->collection()
+        return $this->firestore;
+    }
+
+    public function getCollection(string $collectionName)
+    {
+        return $this->firestore->collection($collectionName);
+    }
+
+    public function getDocument(string $collectionName, string $documentId)
+    {
+        return $this->firestore->collection($collectionName)->document($documentId);
+    }
+
+    public function setDocument(string $collectionName, string $documentId, array $data)
+    {
+        $this->firestore->collection($collectionName)->document($documentId)->set($data);
+    }
+
+    public function addDocument(string $collectionName, array $data)
+    {
+        $this->firestore->collection($collectionName)->add($data);
+    }
+
+    public function deleteDocument(string $collectionName, string $documentId)
+    {
+        $this->firestore->collection($collectionName)->document($documentId)->delete();
     }
 }
