@@ -2,7 +2,7 @@
 
 return [
     'credentials' => [
-        'file' => env('FIREBASE_CREDENTIALS') ?: (app()->environment('production') ? '/tmp/firebase_credentials.json' : base_path('firebase_credentials.json')),
+        'file' => env('FIREBASE_CREDENTIALS') ?: (env('APP_ENV') === 'production' ? '/tmp/firebase_credentials.json' : base_path('firebase_credentials.json')),
     ],
 
     'firestore' => [
