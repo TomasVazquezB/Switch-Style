@@ -9,9 +9,6 @@ use App\Http\Controllers\CarritoController;
 use App\Http\Controllers\FirebaseController;
 use App\Http\Controllers\ProductoController;  
 
-Route::post('/firebase/add-user', [FirebaseController::class, 'addUser']);
-Route::get('/firebase/get-users', [FirebaseController::class, 'getUsers']);
-
 // Test
 Route::get('/test', fn () => response()->json(['message' => 'API funcionando correctamente']));
 
@@ -33,4 +30,10 @@ Route::get('/accesorios', [AccesorioController::class, 'apiIndex']);
 Route::get('/accesorios/{id}', [AccesorioController::class, 'apiShow']);
 
 // Productos con Firebase
+Route::post('/firebase/add-user', [FirebaseController::class, 'addUser']);
+Route::get('/firebase/get-users', [FirebaseController::class, 'getUsers']);
 Route::apiResource('productos', ProductoController::class);
+Route::middleware('firebase')->group(function () {
+    Route::post('/usuarios', [UserController::class, 'store']);
+    Route::get('/perfil', [UserController::class, 'perfil']);
+});
