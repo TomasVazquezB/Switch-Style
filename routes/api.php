@@ -34,6 +34,6 @@ Route::post('/firebase/add-user', [FirebaseController::class, 'addUser']);
 Route::get('/firebase/get-users', [FirebaseController::class, 'getUsers']);
 Route::apiResource('productos', ProductoController::class);
 Route::middleware('firebase')->group(function () {
-    Route::post('/usuarios', [UserController::class, 'store']);
-    Route::get('/perfil', [UserController::class, 'perfil']);
+     Route::get('/perfil', [UserController::class, 'perfil']);
+    Route::post('/usuarios/firebase', [UserController::class, 'storeDesdeFirebase']);
 });
