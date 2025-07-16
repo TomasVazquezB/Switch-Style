@@ -14,6 +14,12 @@ use Kreait\Firebase\Auth; // IMPORTANTE para el test
 Route::get('/test', fn () => response()->json(['message' => 'API funcionando correctamente']));
 Route::get('/ping', fn() => response()->json(['message' => 'pong']));
 
+// Obtener usuarios de Firebase Auth
+Route::get('/firebase/list-auth-users', [FirebaseController::class, 'listAuthUsers']);
+
+// Obtener usuarios de Firestore
+Route::get('/firebase/get-users', [FirebaseController::class, 'getUsers']);
+
 // Test para verificar conexión con Firebase y listar usuarios
 Route::get('/firebase-test', function () {
     try {
@@ -63,4 +69,6 @@ Route::apiResource('productos', ProductoController::class);
 Route::middleware('firebase.auth')->group(function () {
     Route::get('/perfil', [UserController::class, 'perfil']);
     Route::post('/usuarios/firebase', [UserController::class, 'storeDesdeFirebase']);
+    Route::get('/firebase/test', [FirebaseController::class, 'testConnection']);
+
 });

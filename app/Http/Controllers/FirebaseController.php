@@ -67,11 +67,66 @@ class FirebaseController extends Controller
                 }
             }
 
-            return response()->json($users);
+            return response()->json([
+                'message' => 'Usuarios de Firestore obtenidos',
+                'users' => $users,
+            ]);
 
         } catch (\Throwable $e) {
             return response()->json([
                 'error' => 'Error fetching users',
+                'message' => $e->getMessage()
+            ], 500);
+        }
+    }
+
+    // Nuevo método para listar usuarios de Firebase Authentication
+    public function listAuthUsers()
+    {
+        try {
+            $users = [];
+            // Listamos los primeros 1000 usuarios (máximo permitido por página)
+            $page = $this->auth->listUsers();
+
+            foreach ($page as $user) {
+                $users[] = [
+                    'uid' => $user->uid,
+                    'email' => $user->email,
+                    'displayName' => $user->displayName,
+                ];
+            }
+
+            return response()->json([
+                'message' => 'Usuarios de Firebase Auth obtenidos',
+                'users' => $users,
+            ]);
+        } catch (\Throwable $e) {
+            return response()->json([
+                'error' => 'Error al obtener usuarios de Firebase Auth',
+                'message' => $e->getMessage(),
+            ], 500);
+        }
+    }
+
+    // Método para testear conexión con un usuario de ejemplo
+    public function testConnection()
+    {
+        try {
+            // Cambiar por un email válido que exista en Firebase Auth para test
+            $email = 'email-que-existe@tu-dominio.com';
+
+            $user = $this->auth->getUserByEmail($email);
+
+            return response()->json([
+                'message' => 'Conexión a Firebase exitosa',
+                'uid' => $user->uid,
+                'email' => $user->email,
+                'name' => $user->displayName,
+            ]);
+
+        } catch (\Throwable $e) {
+            return response()->json([
+                'error' => 'Error conectando a Firebase',
                 'message' => $e->getMessage()
             ], 500);
         }
