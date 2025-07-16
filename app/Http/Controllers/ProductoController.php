@@ -14,7 +14,6 @@ class ProductoController extends Controller
         $this->firebase = $firebase;
     }
 
-    // Listar todos los productos
     public function index()
     {
         $firestore = $this->firebase->getFirestore();
@@ -33,7 +32,6 @@ class ProductoController extends Controller
         return response()->json($productos);
     }
 
-    // Crear un nuevo producto
     public function store(Request $request)
     {
         $data = $request->validate([
@@ -48,7 +46,6 @@ class ProductoController extends Controller
         return response()->json(['message' => 'Producto creado correctamente']);
     }
 
-    // Actualizar producto por id
     public function update(Request $request, $id)
     {
         $data = $request->validate([
@@ -63,7 +60,6 @@ class ProductoController extends Controller
         return response()->json(['message' => 'Producto actualizado correctamente']);
     }
 
-    // Borrar producto por id
     public function destroy($id)
     {
         $firestore = $this->firebase->getFirestore();

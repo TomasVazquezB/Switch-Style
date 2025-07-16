@@ -19,37 +19,21 @@ class FirebaseController extends Controller
 
     public function addUser(Request $request)
     {
-        $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|email',
-            'password' => 'required|min:6',
-        ]);
+        $validated = $request->validate(['name' => 'required|string|max:255','email' => 'required|email','password' => 'required|min:6',]);
 
         try {
-            $user = $this->auth->createUser([
-                'email' => $validated['email'],
-                'password' => $validated['password'],
-                'displayName' => $validated['name'],
-            ]);
+            $user = $this->auth->createUser(['email' => $validated['email'],'password' => $validated['password'],'displayName' => $validated['name'],]);
 
             if (empty($user->uid)) {
                 return response()->json(['error' => 'No se pudo obtener el UID del usuario'], 500);
             }
             $uid = $user->uid;
-
-            $this->firestore->collection($this->collectionName)->document($uid)->set([
-                'name' => $validated['name'],
-                'email' => $validated['email'],
-                'created_at' => now()->toDateTimeString(),
-            ]);
+            $this->firestore->collection($this->collectionName)->document($uid)->set(['name' => $validated['name'],'email' => $validated['email'],'created_at' => now()->toDateTimeString(),]);
 
             return response()->json(['message' => 'User added successfully', 'uid' => $uid]);
 
         } catch (\Throwable $e) {
-            return response()->json([
-                'error' => 'Error adding user',
-                'message' => $e->getMessage()
-            ], 500);
+            return response()->json(['error' => 'Error adding user','message' => $e->getMessage()], 500);
         }
     }
 
@@ -67,16 +51,10 @@ class FirebaseController extends Controller
                 }
             }
 
-            return response()->json([
-                'message' => 'Usuarios de Firestore obtenidos',
-                'users' => $users,
-            ]);
+            return response()->json(['message' => 'Usuarios de Firestore obtenidos','users' => $users,]);
 
         } catch (\Throwable $e) {
-            return response()->json([
-                'error' => 'Error fetching users',
-                'message' => $e->getMessage()
-            ], 500);
+            return response()->json(['error' => 'Error fetching users','message' => $e->getMessage()], 500);
         }
     }
 
@@ -88,24 +66,13 @@ class FirebaseController extends Controller
 
             do {
                 foreach ($page as $user) {
-                    $users[] = [
-                        'uid' => $user->uid,
-                        'email' => $user->email,
-                        'displayName' => $user->displayName,
-                    ];
+                    $users[] = ['uid' => $user->uid,'email' => $user->email,'displayName' => $user->displayName,];
                 }
                 $page = $page->nextPage();
             } while ($page !== null);
-
-            return response()->json([
-                'message' => 'Usuarios de Firebase Auth obtenidos',
-                'users' => $users,
-            ]);
+            return response()->json(['message' => 'Usuarios de Firebase Auth obtenidos','users' => $users,]);
         } catch (\Throwable $e) {
-            return response()->json([
-                'error' => 'Error al obtener usuarios de Firebase Auth',
-                'message' => $e->getMessage(),
-            ], 500);
+            return response()->json(['error' => 'Error al obtener usuarios de Firebase Auth','message' => $e->getMessage(),], 500);
         }
     }
 
@@ -113,21 +80,12 @@ class FirebaseController extends Controller
     {
         try {
             $email = 'email-que-existe@tu-dominio.com';
-
             $user = $this->auth->getUserByEmail($email);
 
-            return response()->json([
-                'message' => 'Conexión a Firebase exitosa',
-                'uid' => $user->uid,
-                'email' => $user->email,
-                'name' => $user->displayName,
-            ]);
+            return response()->json(['message' => 'Conexión a Firebase exitosa','uid' => $user->uid,'email' => $user->email,'name' => $user->displayName,]);
 
         } catch (\Throwable $e) {
-            return response()->json([
-                'error' => 'Error conectando a Firebase',
-                'message' => $e->getMessage()
-            ], 500);
+            return response()->json(['error' => 'Error conectando a Firebase','message' => $e->getMessage()], 500);
         }
     }
 }

@@ -9,11 +9,9 @@ use Kreait\Laravel\Firebase\Facades\Firebase;
 
 class ExportMySQLToJson extends Command
 {
-    // Cambié el nombre del comando para que refleje exportación
     protected $signature = 'export:mysql-to-firestore';
     protected $description = 'Exporta tablas MySQL y sube a Firestore con relaciones anidadas y batches optimizados';
 
-    // Tablas planas (sin relaciones)
     protected $tablasPlanas = [
         'accesorios', 'cache', 'cache_locks', 'categorias', 'generos', 'imagenes',
         'imagenes_accesorios', 'migrations', 'passworld_reset_tokens',
@@ -35,13 +33,11 @@ class ExportMySQLToJson extends Command
 
         $this->info("¡Migración y subida completa!");
     }
-
-    // Método para subir tablas simples, en chunks y batches
     protected function uploadTablePlain($firestore, $tabla)
     {
         $this->info("Procesando tabla: {$tabla}");
 
-        $chunkSize = 500; // max batch size Firestore
+        $chunkSize = 500; 
         $query = DB::table($tabla);
 
         $query->chunk($chunkSize, function ($items) use ($firestore, $tabla) {
@@ -63,31 +59,27 @@ class ExportMySQLToJson extends Command
         });
     }
 
-    // Método para subir usuarios con relaciones anidadas: valoracion y suscripcion
     protected function uploadUsuariosConRelaciones($firestore)
     {
-        $chunkSize = 200; // más pequeño por datos anidados
+        $chunkSize = 200; 
 
         DB::table('usuario')->orderBy('id')->chunk($chunkSize, function ($usuarios) use ($firestore) {
 
             $batch = $firestore->batch();
 
-            foreach ($usuarios as $usuario) {
-                $userData = (array) $usuario;
+            foreach ($usuarios as $usuario) {$userData = (array) $usuario;
 
-                // Obtener valoraciones para este usuario
                 $valoraciones = DB::table('valoracion')
                     ->where('usuario_id', $usuario->id)
                     ->get()
                     ->map(function ($v) {
                         $vArray = (array) $v;
-                        unset($vArray['usuario_id']); // no repetir FK
-                        unset($vArray['id']); // opcional, para que firestore genere ID
+                        unset($vArray['usuario_id']); 
+                        unset($vArray['id']); 
                         return $vArray;
                     })
                     ->toArray();
 
-                // Obtener suscripciones para este usuario
                 $suscripciones = DB::table('suscripcion')
                     ->where('usuario_id', $usuario->id)
                     ->get()
@@ -99,11 +91,9 @@ class ExportMySQLToJson extends Command
                     })
                     ->toArray();
 
-                // Añadir relaciones anidadas
                 $userData['valoraciones'] = $valoraciones;
                 $userData['suscripciones'] = $suscripciones;
 
-                // Eliminar id para usarlo como docId
                 $docId = (string) $userData['id'];
                 unset($userData['id']);
 

@@ -7,9 +7,7 @@ use Illuminate\Console\Scheduling\Schedule;
 
 class Kernel extends ConsoleKernel
 {
-    protected $commands = [
-        \App\Console\Commands\ExportMySQLToJson::class,
-    ];
+    protected $commands = [\App\Console\Commands\ExportMySQLToJson::class,];
 
     protected function schedule(Schedule $schedule)
     {
