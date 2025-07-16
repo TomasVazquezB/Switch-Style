@@ -80,21 +80,23 @@ class FirebaseController extends Controller
         }
     }
 
-    // Nuevo método para listar usuarios de Firebase Authentication
+    // Método para listar todos los usuarios de Firebase Authentication con paginación
     public function listAuthUsers()
     {
         try {
             $users = [];
-            // Listamos los primeros 1000 usuarios (máximo permitido por página)
-            $page = $this->auth->listUsers();
+            $page = $this->auth->listUsers(1000); // Lista hasta 1000 usuarios por página (máximo permitido)
 
-            foreach ($page as $user) {
-                $users[] = [
-                    'uid' => $user->uid,
-                    'email' => $user->email,
-                    'displayName' => $user->displayName,
-                ];
-            }
+            do {
+                foreach ($page as $user) {
+                    $users[] = [
+                        'uid' => $user->uid,
+                        'email' => $user->email,
+                        'displayName' => $user->displayName,
+                    ];
+                }
+                $page = $page->nextPage();
+            } while ($page !== null);
 
             return response()->json([
                 'message' => 'Usuarios de Firebase Auth obtenidos',
