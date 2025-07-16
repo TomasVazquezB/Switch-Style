@@ -9,22 +9,16 @@ class FirebaseController extends Controller
 {
     protected $firestore;
     protected $auth;
+    protected $collectionName = 'user';  // Cambiar aquí si tu colección es otra
 
-    /**
-     * Inyecta el servicio FirebaseService
-     */
     public function __construct(FirebaseService $firebaseService)
     {
         $this->firestore = $firebaseService->getFirestore();
         $this->auth = $firebaseService->getAuth();
     }
 
-    /**
-     * Crea un usuario en Firebase Auth y lo guarda en Firestore
-     */
     public function addUser(Request $request)
     {
-        // Validación básica, sin 'unique' en SQL porque estamos con Firestore
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|email',
@@ -32,21 +26,18 @@ class FirebaseController extends Controller
         ]);
 
         try {
-            // Crear usuario en Firebase Authentication
             $user = $this->auth->createUser([
                 'email' => $validated['email'],
                 'password' => $validated['password'],
                 'displayName' => $validated['name'],
             ]);
 
-            // Obtener UID directamente (es propiedad, no método)
             if (empty($user->uid)) {
                 return response()->json(['error' => 'No se pudo obtener el UID del usuario'], 500);
             }
             $uid = $user->uid;
 
-            // Guardar datos adicionales en Firestore, colección 'users', documento con uid de Firebase Auth
-            $this->firestore->collection('users')->document($uid)->set([
+            $this->firestore->collection($this->collectionName)->document($uid)->set([
                 'name' => $validated['name'],
                 'email' => $validated['email'],
                 'created_at' => now()->toDateTimeString(),
@@ -55,7 +46,6 @@ class FirebaseController extends Controller
             return response()->json(['message' => 'User added successfully', 'uid' => $uid]);
 
         } catch (\Throwable $e) {
-            // Devolver error en caso de fallo
             return response()->json([
                 'error' => 'Error adding user',
                 'message' => $e->getMessage()
@@ -63,13 +53,10 @@ class FirebaseController extends Controller
         }
     }
 
-    /**
-     * Obtiene todos los usuarios guardados en Firestore en la colección 'users'
-     */
     public function getUsers()
     {
         try {
-            $documents = $this->firestore->collection('users')->documents();
+            $documents = $this->firestore->collection($this->collectionName)->documents();
             $users = [];
 
             foreach ($documents as $doc) {
