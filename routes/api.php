@@ -12,6 +12,7 @@ use Kreait\Firebase\Auth; // IMPORTANTE para el test
 
 // Test básico para saber si la API funciona
 Route::get('/test', fn () => response()->json(['message' => 'API funcionando correctamente']));
+Route::get('/ping', fn() => response()->json(['message' => 'pong']));
 
 // Test para verificar conexión con Firebase y listar usuarios
 Route::get('/firebase-test', function () {
