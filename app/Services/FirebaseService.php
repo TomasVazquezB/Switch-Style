@@ -5,7 +5,7 @@ namespace App\Services;
 use Kreait\Firebase\Factory;
 use Kreait\Firebase\Firestore;
 
-class FirestoreService
+class FirebaseService
 {
     protected Firestore $firestore;
 

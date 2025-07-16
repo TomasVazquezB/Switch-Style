@@ -9,7 +9,7 @@ class FirebaseController extends Controller
 {
     protected $firestore;
     protected $auth;
-    protected $collectionName = 'user';  // Cambiar aquí si tu colección es otra
+    protected $collectionName = 'user';  
 
     public function __construct(FirebaseService $firebaseService)
     {
@@ -80,12 +80,11 @@ class FirebaseController extends Controller
         }
     }
 
-    // Método para listar todos los usuarios de Firebase Authentication con paginación
     public function listAuthUsers()
     {
         try {
             $users = [];
-            $page = $this->auth->listUsers(1000); // Lista hasta 1000 usuarios por página (máximo permitido)
+            $page = $this->auth->listUsers(1000); 
 
             do {
                 foreach ($page as $user) {
@@ -110,11 +109,9 @@ class FirebaseController extends Controller
         }
     }
 
-    // Método para testear conexión con un usuario de ejemplo
     public function testConnection()
     {
         try {
-            // Cambiar por un email válido que exista en Firebase Auth para test
             $email = 'email-que-existe@tu-dominio.com';
 
             $user = $this->auth->getUserByEmail($email);
