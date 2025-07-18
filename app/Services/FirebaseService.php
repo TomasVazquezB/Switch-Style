@@ -1,44 +1,33 @@
 <?php
-
 namespace App\Services;
 
 use Kreait\Firebase\Factory;
-use Kreait\Firebase\Firestore;
+use Kreait\Firebase\Auth;
+use Google\Cloud\Firestore\FirestoreClient;
 
 class FirebaseService
 {
-    protected Firestore $firestore;
+    protected $firestore;
+    protected $auth;
 
     public function __construct()
     {
-        $factory = (new Factory)
-            ->withServiceAccount(env('GOOGLE_APPLICATION_CREDENTIALS'));
-        
-        $this->firestore = $factory->createFirestore();
+        $factory = (new Factory)->withServiceAccount(env('GOOGLE_APPLICATION_CREDENTIALS'));
+
+        // Firestore Client (Google Cloud)
+        $this->firestore = $factory->createFirestore()->database();
+
+        // Auth client from Kreait
+        $this->auth = $factory->createAuth();
     }
 
-    public function collection(string $name)
+    public function getFirestore()
     {
-        return $this->firestore->database()->collection($name);
+        return $this->firestore;
     }
 
-    public function getDocument(string $collectionName, string $documentId)
+    public function getAuth()
     {
-        return $this->collection($collectionName)->document($documentId);
-    }
-
-    public function setDocument(string $collectionName, string $documentId, array $data)
-    {
-        $this->getDocument($collectionName, $documentId)->set($data);
-    }
-
-    public function addDocument(string $collectionName, array $data)
-    {
-        $this->collection($collectionName)->add($data);
-    }
-
-    public function deleteDocument(string $collectionName, string $documentId)
-    {
-        $this->getDocument($collectionName, $documentId)->delete();
+        return $this->auth;
     }
 }

@@ -34,11 +34,7 @@ class ProductoController extends Controller
 
     public function store(Request $request)
     {
-        $data = $request->validate([
-            'nombre' => 'required|string',
-            'precio' => 'required|numeric',
-            'descripcion' => 'nullable|string',
-        ]);
+        $data = $request->validate(['nombre' => 'required|string','precio' => 'required|numeric','descripcion' => 'nullable|string',]);
 
         $this->firestore->collection('productos')->add($data);
 
@@ -47,12 +43,7 @@ class ProductoController extends Controller
 
     public function update(Request $request, $id)
     {
-        $data = $request->validate([
-            'nombre' => 'sometimes|string',
-            'precio' => 'sometimes|numeric',
-            'descripcion' => 'nullable|string',
-        ]);
-
+        $data = $request->validate(['nombre' => 'sometimes|string','precio' => 'sometimes|numeric','descripcion' => 'nullable|string',]);
         $document = $this->firestore->collection('productos')->document($id);
         $document->set($data, ['merge' => true]);
 

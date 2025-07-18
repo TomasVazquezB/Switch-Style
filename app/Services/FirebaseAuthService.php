@@ -17,9 +17,9 @@ class FirebaseAuthService
     {
         try {
             $verifiedIdToken = $this->auth->verifyIdToken($idToken);
-            return $verifiedIdToken->claims()->get('sub'); // UID usuario Firebase
+            return $verifiedIdToken->claims()->get('sub'); 
         } catch (\Exception $e) {
-            return null; // Token inválido
+            return null; 
         }
     }
 }

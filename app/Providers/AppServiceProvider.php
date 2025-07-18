@@ -8,9 +8,6 @@ use Kreait\Firebase\Auth as FirebaseAuth;
 
 class AppServiceProvider extends ServiceProvider
 {
-    /**
-     * Register any application services.
-     */
     public function register(): void
     {
         $this->app->singleton(FirebaseAuth::class, function () {
@@ -23,9 +20,6 @@ class AppServiceProvider extends ServiceProvider
         });
     }
 
-    /**
-     * Bootstrap any application services.
-     */
     public function boot(): void
     {
         if (app()->environment('production')) {

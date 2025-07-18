@@ -12,7 +12,7 @@ class Kernel extends HttpKernel
 
     protected $middlewareGroups = [
         'web' => [
-           \App\Http\Middleware\EncryptCookies::class,
+        //    \App\Http\Middleware\EncryptCookies::class,
             \Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse::class,
             \Illuminate\Session\Middleware\StartSession::class,
             \Illuminate\View\Middleware\ShareErrorsFromSession::class,
@@ -31,8 +31,8 @@ class Kernel extends HttpKernel
     ];
 
     protected $middlewareAliases = [
-    'auth' => \App\Http\Middleware\Authenticate::class,
-    'guest' => \App\Http\Middleware\RedirectIfAuthenticated::class,
+    // 'auth' => \App\Http\Middleware\Authenticate::class,
+    // 'guest' => \App\Http\Middleware\RedirectIfAuthenticated::class,
     'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
     'tipo_usuario' => \App\Http\Middleware\TipoUsuario::class,
     'firebase' => \App\Http\Middleware\FirebaseAuth::class,  
