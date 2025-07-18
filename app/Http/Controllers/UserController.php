@@ -5,10 +5,17 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
-use App\Services\FirestoreService;
+use Kreait\Firebase\Contract\Firestore;
 
 class UserController extends Controller
 {
+    protected $firestore;
+
+    public function __construct(Firestore $firestore)
+    {
+        $this->firestore = $firestore->database();
+    }
+
     // 🔵 CRUD Web (Admin)
     public function index()
     {
@@ -37,12 +44,11 @@ class UserController extends Controller
             'Tipo_Usuario' => $request->Tipo_Usuario,
         ]);
 
-        // Firestore opcional: sincronizar
-        $firestore = new FirestoreService();
-        $firestore->collection('usuarios')->document((string)$user->id)->set([
+        $this->firestore->collection('usuarios')->document((string)$user->id)->set([
             'uid' => (string)$user->id,
             'nombre' => $user->name,
             'email' => $user->Correo_Electronico,
+            'tipo_usuario' => $user->Tipo_Usuario
         ]);
 
         return redirect()->route('admin.usuarios.index')->with('success', 'Usuario creado correctamente.');
@@ -67,12 +73,10 @@ class UserController extends Controller
             'Tipo_Usuario' => $request->Tipo_Usuario,
         ]);
 
-        // Firestore update
-        $firestore = new FirestoreService();
-        $doc = $firestore->collection('usuarios')->document((string)$user->id);
-        $doc->set([
+        $this->firestore->collection('usuarios')->document((string)$user->id)->set([
             'nombre' => $user->name,
             'email' => $user->Correo_Electronico,
+            'tipo_usuario' => $user->Tipo_Usuario
         ], ['merge' => true]);
 
         return redirect()->route('admin.usuarios.index')->with('success', 'Usuario actualizado.');
@@ -82,38 +86,36 @@ class UserController extends Controller
     {
         $user->delete();
 
-        $firestore = new FirestoreService();
-        $doc = $firestore->collection('usuarios')->document((string)$user->id);
-        $doc->delete();
+        $this->firestore->collection('usuarios')->document((string)$user->id)->delete();
 
         return redirect()->route('admin.usuarios.index')->with('success', 'Usuario eliminado.');
     }
 
-    // 🔶 Perfil desde Firebase
     public function perfil(Request $request)
     {
-        $firebaseUid = $request->get('firebase_uid');
+        $uid = $request->get('firebase_uid');
 
-        if (!$firebaseUid) {
-            return response()->json(['error' => 'Token Firebase inválido o no presente'], 400);
+        if (!$uid) {
+            return response()->json(['error' => 'Token inválido o UID no presente'], 400);
         }
 
-        $firestore = new FirestoreService();
-        $doc = $firestore->collection('usuarios')->document($firebaseUid)->snapshot();
+        $snapshot = $this->firestore->collection('usuarios')->document($uid)->snapshot();
 
-        if (!$doc->exists()) {
+        if (!$snapshot->exists()) {
             return response()->json(['error' => 'Usuario no encontrado en Firestore'], 404);
         }
 
+        $data = $snapshot->data();
+
         return response()->json([
-            'uid' => $firebaseUid,
-            'nombre' => $doc->data()['nombre'] ?? null,
-            'email' => $doc->data()['email'] ?? null,
+            'uid' => $uid,
+            'nombre' => $data['nombre'] ?? null,
+            'email' => $data['email'] ?? null,
+            'tipo_usuario' => $data['tipo_usuario'] ?? 'free',
             'message' => 'Perfil obtenido con éxito'
         ]);
     }
 
-    // 🟨 Crear usuario desde App Móvil
     public function storeDesdeFirebase(Request $request)
     {
         $firebaseUid = $request->get('firebase_uid');
@@ -124,13 +126,11 @@ class UserController extends Controller
             return response()->json(['error' => 'UID Firebase requerido'], 400);
         }
 
-        // Verificar si ya existe en SQL
         $existing = User::where('firebase_uid', $firebaseUid)->first();
         if ($existing) {
             return response()->json(['message' => 'El usuario ya existe en SQL']);
         }
 
-        // Crear en SQL
         $user = User::create([
             'name' => $nombre,
             'Correo_Electronico' => $email,
@@ -139,12 +139,11 @@ class UserController extends Controller
             'firebase_uid' => $firebaseUid,
         ]);
 
-        // Crear en Firestore
-        $firestore = new FirestoreService();
-        $firestore->collection('usuarios')->document($firebaseUid)->set([
+        $this->firestore->collection('usuarios')->document($firebaseUid)->set([
             'uid' => $firebaseUid,
             'nombre' => $nombre,
             'email' => $email,
+            'tipo_usuario' => 'free'
         ]);
 
         return response()->json(['message' => "Usuario sincronizado con UID: $firebaseUid"]);

@@ -2,16 +2,13 @@
 
 namespace App\Models;
 
-use App\Services\FirestoreService;
-use Google\Cloud\Firestore\DocumentReference;
-
 class UserFirestore
 {
     protected static string $collection = 'usuarios';
 
     protected static function firestore()
     {
-        return new FirestoreService();
+        return app('firebase.firestore')->database();
     }
 
     public static function create(array $data)
@@ -19,35 +16,27 @@ class UserFirestore
         return static::firestore()->collection(static::$collection)->add($data);
     }
 
-    public static function findByUID(string $uid): ?DocumentReference
+    public static function findByUID(string $uid)
     {
-        $docs = static::firestore()
-            ->collection(static::$collection)
-            ->where('uid', '=', $uid)
-            ->documents();
-
-        if ($docs->isEmpty()) {
-            return null;
-        }
-
-        return $docs->rows()[0];
+        $doc = static::firestore()->collection(static::$collection)->document($uid);
+        return $doc->snapshot()->exists() ? $doc : null;
     }
 
     public static function updateByUID(string $uid, array $data): bool
     {
-        $doc = static::findByUID($uid);
-        if (!$doc) return false;
+        $doc = static::firestore()->collection(static::$collection)->document($uid);
+        if (!$doc->snapshot()->exists()) return false;
 
-        $doc->reference()->update($data);
+        $doc->set($data, ['merge' => true]);
         return true;
     }
 
     public static function deleteByUID(string $uid): bool
     {
-        $doc = static::findByUID($uid);
-        if (!$doc) return false;
+        $doc = static::firestore()->collection(static::$collection)->document($uid);
+        if (!$doc->snapshot()->exists()) return false;
 
-        $doc->reference()->delete();
+        $doc->delete();
         return true;
     }
 }

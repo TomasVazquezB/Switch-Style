@@ -2,26 +2,26 @@
 
 namespace App\Http\Controllers;
 
-use App\Services\FirebaseService;
 use Illuminate\Http\Request;
+use Kreait\Firebase\Contract\Firestore;
 
 class ProductoController extends Controller
 {
-    protected $firebase;
+    protected $firestore;
 
-    public function __construct(FirebaseService $firebase)
+    public function __construct(Firestore $firestore)
     {
-        $this->firebase = $firebase;
+        $this->firestore = $firestore->database();
     }
 
     public function index()
     {
-        $firestore = $this->firebase->getFirestore();
-        $productosRef = $firestore->collection('productos');
-        $snapshot = $productosRef->documents();
+        $productosRef = $this->firestore->collection('productos');
+        $documents = $productosRef->documents();
 
         $productos = [];
-        foreach ($snapshot as $document) {
+
+        foreach ($documents as $document) {
             if ($document->exists()) {
                 $producto = $document->data();
                 $producto['id'] = $document->id();
@@ -40,10 +40,9 @@ class ProductoController extends Controller
             'descripcion' => 'nullable|string',
         ]);
 
-        $firestore = $this->firebase->getFirestore();
-        $firestore->collection('productos')->add($data);
+        $this->firestore->collection('productos')->add($data);
 
-        return response()->json(['message' => 'Producto creado correctamente']);
+        return response()->json(['message' => 'Producto creado correctamente'], 201);
     }
 
     public function update(Request $request, $id)
@@ -54,16 +53,16 @@ class ProductoController extends Controller
             'descripcion' => 'nullable|string',
         ]);
 
-        $firestore = $this->firebase->getFirestore();
-        $firestore->collection('productos')->document($id)->set($data, ['merge' => true]);
+        $document = $this->firestore->collection('productos')->document($id);
+        $document->set($data, ['merge' => true]);
 
         return response()->json(['message' => 'Producto actualizado correctamente']);
     }
 
     public function destroy($id)
     {
-        $firestore = $this->firebase->getFirestore();
-        $firestore->collection('productos')->document($id)->delete();
+        $document = $this->firestore->collection('productos')->document($id);
+        $document->delete();
 
         return response()->json(['message' => 'Producto eliminado correctamente']);
     }

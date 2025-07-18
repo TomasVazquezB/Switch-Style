@@ -23,8 +23,9 @@ return [
         ],
     ],
 
+    // 🔥 Firebase config
     'firebase' => [
-    'credentials' => storage_path('app/firebase/firebase_credentials.json'),
-],
+        'credentials' => storage_path('app/firebase/firebase_credentials.json'),
+    ],
 
 ];
