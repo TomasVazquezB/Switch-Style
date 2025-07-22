@@ -39,14 +39,10 @@ const lastAddedImages = [
 ];
 const cardsPerSlide = 7;
 
-
-
-
 const Home = ({ darkMode }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const { producto } = useContext(DataContext);
   const navigate = useNavigate();
-
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -88,7 +84,6 @@ const Home = ({ darkMode }) => {
       });
   };
 
-
   const handlePrev = () => {
     setCurrentIndex((prevIndex) => (prevIndex - cardsPerSlide + lastAddedImages.length) % lastAddedImages.length);
   };
@@ -96,7 +91,6 @@ const Home = ({ darkMode }) => {
   const handleNext = () => {
     setCurrentIndex((prevIndex) => (prevIndex + cardsPerSlide) % lastAddedImages.length);
   };
-
 
   return (
     <ErrorBoundary>
@@ -198,8 +192,6 @@ const Home = ({ darkMode }) => {
           </div>
         )}
 
-
-
         <div className="download-section">
           <hr className="black-line" />
           <div className="download-row">
@@ -209,7 +201,6 @@ const Home = ({ darkMode }) => {
                 <FaApple size={40} />
                 <p>App Store</p>
               </a>
-
               <a className="store-icon" href="https://play.google.com/store/apps/details?id=com.switchstyle.app" target="_blank" rel="noopener noreferrer">
                 <FaGooglePlay size={40} />
                 <p>Play Store</p>
