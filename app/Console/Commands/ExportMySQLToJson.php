@@ -25,6 +25,7 @@ class ExportMySQLToJson extends Command
 
         $this->info("¡Migración y subida completa!");
     }
+    
     protected function uploadTablePlain($firestore, $tabla)
     {
         $this->info("Procesando tabla: {$tabla}");

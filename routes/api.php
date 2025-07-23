@@ -10,12 +10,10 @@ use App\Http\Controllers\FirebaseController;
 use App\Http\Controllers\ProductoController;
 use App\Services\FirebaseService;
 
-// 🔹 Firebase SDK Test
 Route::get('/firebase/list-auth-users', [FirebaseController::class, 'listAuthUsers']);
 Route::get('/firebase/get-users', [FirebaseController::class, 'getUsers']);
 Route::get('/firebase/test', [FirebaseController::class, 'testConnection']);
 
-// 🔹 Diagnóstico: conexión Firestore y Auth con FirebaseService
 Route::get('/firebase/check', function (FirebaseService $firebaseService) {
     try {
         $firestore = $firebaseService->getFirestore();
@@ -29,39 +27,26 @@ Route::get('/firebase/check', function (FirebaseService $firebaseService) {
         $users = $auth->listUsers(1);
         $count = iterator_count($users);
 
-        return response()->json([
-            'message' => '✅ Firebase conectado correctamente',
-            'firestore_test_document' => 'test-check',
-            'firebase_auth_sample_users_count' => $count,
-        ]);
+        return response()->json(['message' => '✅ Firebase conectado correctamente','firestore_test_document' => 'test-check','firebase_auth_sample_users_count' => $count,]);
     } catch (\Throwable $e) {
-        return response()->json([
-            'error' => 'Error conectando a Firebase',
-            'message' => $e->getMessage(),
-            'trace' => $e->getTraceAsString(),
-        ], 500);
+        return response()->json(['error' => 'Error conectando a Firebase','message' => $e->getMessage(),'trace' => $e->getTraceAsString(),], 500);
     }
 });
 
-// 🔹 Productos
 Route::apiResource('productos', ProductoController::class);
 
-// 🔹 Ropa
 Route::get('/ropa', [RopaController::class, 'apiIndex']);
 Route::get('/ropa/{id}', [RopaController::class, 'apiShow']);
 
-// 🔹 Accesorios
 Route::get('/accesorios', [AccesorioController::class, 'apiIndex']);
+
 Route::get('/accesorios/{id}', [AccesorioController::class, 'apiShow']);
 
-// 🔹 Usuarios (SQL, Web Admin)
 Route::get('/usuario', [UserController::class, 'index']);
 
-// 🔹 Registro/Login desde App
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
 
-// 🔐 Protegido por Firebase Bearer Token Middleware
 Route::middleware('firebase')->group(function () {
     Route::post('/logout', fn () => response()->json(['message' => 'Logout correcto']));
     
@@ -76,17 +61,11 @@ Route::middleware('firebase')->group(function () {
             return response()->json(['error' => 'Usuario no encontrado en Firestore'], 404);
         }
 
-        return response()->json([
-            'uid' => $uid,
-            'nombre' => $doc->data()['nombre'] ?? null,
-            'email' => $doc->data()['email'] ?? null,
-            'tipo_usuario' => $doc->data()['tipo_usuario'] ?? 'free',
-        ]);
+        return response()->json(['uid' => $uid,'nombre' => $doc->data()['nombre'] ?? null,'email' => $doc->data()['email'] ?? null,'tipo_usuario' => $doc->data()['tipo_usuario'] ?? 'free',]);
     });
 
     Route::get('/perfil', [UserController::class, 'perfil']);
     Route::post('/usuarios/firebase', [UserController::class, 'storeDesdeFirebase']);
 });
 
-// 🔹 Crear usuarios manualmente desde Laravel
 Route::post('/firebase/add-user', [FirebaseController::class, 'addUser']);

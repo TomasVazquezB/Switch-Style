@@ -13,7 +13,6 @@ class FirebaseService
     public function __construct()
     {
         $factory = (new Factory)->withServiceAccount(env('GOOGLE_APPLICATION_CREDENTIALS'));
-
         $this->firestore = $factory->createFirestore()->database();
         $this->auth = $factory->createAuth();
     }

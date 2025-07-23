@@ -25,8 +25,7 @@ class LoginRequest extends FormRequest
     {
         $this->ensureIsNotRateLimited();
 
-        if (! Auth::attempt(['Correo_Electronico' => $this->Correo_Electronico,'password' => $this->password,
-        ], $this->boolean('remember'))) {
+        if (! Auth::attempt(['Correo_Electronico' => $this->Correo_Electronico,'password' => $this->password,], $this->boolean('remember'))) {
             RateLimiter::hit($this->throttleKey());
             throw ValidationException::withMessages(['Correo_Electronico' => trans('auth.failed'),]);
         }
@@ -41,9 +40,7 @@ class LoginRequest extends FormRequest
         }
 
         event(new Lockout($this));
-
         $seconds = RateLimiter::availableIn($this->throttleKey());
-
         throw ValidationException::withMessages(['Correo_Electronico' => trans('auth.throttle', ['seconds' => $seconds,'minutes' => ceil($seconds / 60),]),
         ]);
     }

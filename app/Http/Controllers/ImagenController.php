@@ -22,7 +22,6 @@ class ImagenController extends Controller
     public function setAsPrincipal(Imagen $imagen)
     {
         $ropa = $imagen->ropa;
-
         $ropa->update(['ruta_imagen' => $imagen->ruta]);
 
         return redirect()->route('ropas.edit', $ropa->id)->with('success', 'Imagen establecida como principal.');
