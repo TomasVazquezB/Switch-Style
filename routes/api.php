@@ -8,6 +8,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AccesorioController;
 use App\Http\Controllers\FirebaseController;
 use App\Http\Controllers\ProductoController;
+use App\Services\FirebaseService;
 
 // 🔹 Test y Diagnóstico
 Route::get('/test', fn () => response()->json(['message' => 'API funcionando correctamente']));
@@ -17,12 +18,32 @@ Route::get('/firebase/list-auth-users', [FirebaseController::class, 'listAuthUse
 Route::get('/firebase/get-users', [FirebaseController::class, 'getUsers']);
 Route::get('/firebase/test', [FirebaseController::class, 'testConnection']);
 
-// 🔹 Diagnóstico: conexión Firestore
-Route::get('/firebase/check', function () {
-    $firestore = app('firebase.firestore')->database();
-    $firestore->collection('usuarios')->document('test-check')->set(['nombre' => 'Prueba Check','email' => 'check@example.com',
-    ]);
-    return '✅ Firestore conectado correctamente.';
+// 🔹 Diagnóstico: conexión Firestore y Auth con FirebaseService
+Route::get('/firebase/check', function (FirebaseService $firebaseService) {
+    try {
+        // Probar Firestore: escribir un documento temporal
+        $firestore = $firebaseService->getFirestore();
+        $firestore->collection('usuarios')->document('test-check')->set([
+            'nombre' => 'Prueba Check',
+            'email' => 'check@example.com',
+            'timestamp' => now()->toDateTimeString(),
+        ]);
+
+        // Probar Firebase Auth: listar un usuario
+        $auth = $firebaseService->getAuth();
+        $users = $auth->listUsers(1);
+
+        return response()->json([
+            'message' => '✅ Firebase conectado correctamente',
+            'firestore_test_document' => 'test-check',
+            'firebase_auth_sample_users_count' => iterator_count($users),
+        ]);
+    } catch (\Throwable $e) {
+        return response()->json([
+            'error' => 'Error conectando a Firebase',
+            'message' => $e->getMessage(),
+        ], 500);
+    }
 });
 
 // 🔹 Productos
@@ -47,18 +68,23 @@ Route::post('/login', [AuthController::class, 'login']);
 Route::middleware('firebase')->group(function () {
     Route::post('/logout', fn () => response()->json(['message' => 'Logout correcto']));
     
-    Route::get('/user', function (Request $request) {
+    Route::get('/user', function (Request $request, FirebaseService $firebaseService) {
         $uid = $request->get('firebase_uid');
         if (!$uid) return response()->json(['error' => 'UID Firebase no presente'], 400);
 
-        $firestore = app('firebase.firestore')->database();
+        $firestore = $firebaseService->getFirestore();
         $doc = $firestore->collection('usuarios')->document($uid)->snapshot();
 
         if (!$doc->exists()) {
             return response()->json(['error' => 'Usuario no encontrado en Firestore'], 404);
         }
 
-        return response()->json(['uid' => $uid,'nombre' => $doc->data()['nombre'] ?? null,'email' => $doc->data()['email'] ?? null,'tipo_usuario' => $doc->data()['tipo_usuario'] ?? 'free',]);
+        return response()->json([
+            'uid' => $uid,
+            'nombre' => $doc->data()['nombre'] ?? null,
+            'email' => $doc->data()['email'] ?? null,
+            'tipo_usuario' => $doc->data()['tipo_usuario'] ?? 'free',
+        ]);
     });
 
     Route::get('/perfil', [UserController::class, 'perfil']);

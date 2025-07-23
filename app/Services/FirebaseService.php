@@ -14,10 +14,7 @@ class FirebaseService
     {
         $factory = (new Factory)->withServiceAccount(env('GOOGLE_APPLICATION_CREDENTIALS'));
 
-        // Firestore Client (Google Cloud)
         $this->firestore = $factory->createFirestore()->database();
-
-        // Auth client from Kreait
         $this->auth = $factory->createAuth();
     }
 

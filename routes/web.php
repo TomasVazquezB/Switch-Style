@@ -15,7 +15,6 @@ Route::get('/', fn() => redirect()->route('inicio'));
 
 Route::get('/inicio', fn() => view('inicio'))->middleware('auth')->name('inicio');
 
-// Autenticación
 Route::middleware('guest')->group(function () {
     Route::get('/login', [AuthenticatedSessionController::class, 'create'])->name('login');
     Route::post('/login', [AuthenticatedSessionController::class, 'store']);
