@@ -6,13 +6,11 @@ use App\Http\Controllers\RopaController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AccesorioController;
-use App\Http\Controllers\CarritoController;
 use App\Http\Controllers\FirebaseController;
 use App\Http\Controllers\ProductoController;
 
 // 🔹 Test y Diagnóstico
 Route::get('/test', fn () => response()->json(['message' => 'API funcionando correctamente']));
-Route::get('/ping', fn () => response()->json(['message' => 'pong']));
 
 // 🔹 Firebase SDK Test
 Route::get('/firebase/list-auth-users', [FirebaseController::class, 'listAuthUsers']);
@@ -22,9 +20,7 @@ Route::get('/firebase/test', [FirebaseController::class, 'testConnection']);
 // 🔹 Diagnóstico: conexión Firestore
 Route::get('/firebase/check', function () {
     $firestore = app('firebase.firestore')->database();
-    $firestore->collection('usuarios')->document('test-check')->set([
-        'nombre' => 'Prueba Check',
-        'email' => 'check@example.com',
+    $firestore->collection('usuarios')->document('test-check')->set(['nombre' => 'Prueba Check','email' => 'check@example.com',
     ]);
     return '✅ Firestore conectado correctamente.';
 });
@@ -62,12 +58,7 @@ Route::middleware('firebase')->group(function () {
             return response()->json(['error' => 'Usuario no encontrado en Firestore'], 404);
         }
 
-        return response()->json([
-            'uid' => $uid,
-            'nombre' => $doc->data()['nombre'] ?? null,
-            'email' => $doc->data()['email'] ?? null,
-            'tipo_usuario' => $doc->data()['tipo_usuario'] ?? 'free',
-        ]);
+        return response()->json(['uid' => $uid,'nombre' => $doc->data()['nombre'] ?? null,'email' => $doc->data()['email'] ?? null,'tipo_usuario' => $doc->data()['tipo_usuario'] ?? 'free',]);
     });
 
     Route::get('/perfil', [UserController::class, 'perfil']);

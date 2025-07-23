@@ -23,7 +23,6 @@ class ImagenController extends Controller
     {
         $ropa = $imagen->ropa;
 
-        // Actualiza ruta_imagen en la prenda
         $ropa->update(['ruta_imagen' => $imagen->ruta]);
 
         return redirect()->route('ropas.edit', $ropa->id)->with('success', 'Imagen establecida como principal.');
