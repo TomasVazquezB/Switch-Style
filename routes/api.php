@@ -9,44 +9,51 @@ use App\Http\Controllers\AccesorioController;
 use App\Http\Controllers\CarritoController;
 use App\Http\Controllers\FirebaseController;
 use App\Http\Controllers\ProductoController;
-use Kreait\Firebase\Auth;
 
-// ✅ Test API
+// 🔹 Test y Diagnóstico
 Route::get('/test', fn () => response()->json(['message' => 'API funcionando correctamente']));
-Route::get('/ping', fn() => response()->json(['message' => 'pong']));
+Route::get('/ping', fn () => response()->json(['message' => 'pong']));
 
-// ✅ Firebase SDK Tests
+// 🔹 Firebase SDK Test
 Route::get('/firebase/list-auth-users', [FirebaseController::class, 'listAuthUsers']);
 Route::get('/firebase/get-users', [FirebaseController::class, 'getUsers']);
 Route::get('/firebase/test', [FirebaseController::class, 'testConnection']);
 
-// ✅ Ropa
+// 🔹 Diagnóstico: conexión Firestore
+Route::get('/firebase/check', function () {
+    $firestore = app('firebase.firestore')->database();
+    $firestore->collection('usuarios')->document('test-check')->set([
+        'nombre' => 'Prueba Check',
+        'email' => 'check@example.com',
+    ]);
+    return '✅ Firestore conectado correctamente.';
+});
+
+// 🔹 Productos
+Route::apiResource('productos', ProductoController::class);
+
+// 🔹 Ropa
 Route::get('/ropa', [RopaController::class, 'apiIndex']);
 Route::get('/ropa/{id}', [RopaController::class, 'apiShow']);
 
-// ✅ Accesorios
+// 🔹 Accesorios
 Route::get('/accesorios', [AccesorioController::class, 'apiIndex']);
 Route::get('/accesorios/{id}', [AccesorioController::class, 'apiShow']);
 
-// ✅ Usuarios Web (SQL)
+// 🔹 Usuarios (SQL, Web Admin)
 Route::get('/usuario', [UserController::class, 'index']);
 
-// ✅ Autenticación con Firebase
+// 🔹 Registro/Login desde App
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
 
-// ✅ Reemplazo Firebase: Logout y Perfil
-Route::middleware('firebase.auth')->group(function () {
-    Route::post('/logout', function () {
-        // Logout frontend sólo debe borrar token, no requiere backend
-        return response()->json(['message' => 'Logout correcto']);
-    });
-
+// 🔐 Protegido por Firebase Bearer Token Middleware
+Route::middleware('firebase')->group(function () {
+    Route::post('/logout', fn () => response()->json(['message' => 'Logout correcto']));
+    
     Route::get('/user', function (Request $request) {
         $uid = $request->get('firebase_uid');
-        if (!$uid) {
-            return response()->json(['error' => 'UID Firebase no presente'], 400);
-        }
+        if (!$uid) return response()->json(['error' => 'UID Firebase no presente'], 400);
 
         $firestore = app('firebase.firestore')->database();
         $doc = $firestore->collection('usuarios')->document($uid)->snapshot();
@@ -59,7 +66,7 @@ Route::middleware('firebase.auth')->group(function () {
             'uid' => $uid,
             'nombre' => $doc->data()['nombre'] ?? null,
             'email' => $doc->data()['email'] ?? null,
-            'tipo_usuario' => $doc->data()['tipo_usuario'] ?? null,
+            'tipo_usuario' => $doc->data()['tipo_usuario'] ?? 'free',
         ]);
     });
 
@@ -67,17 +74,5 @@ Route::middleware('firebase.auth')->group(function () {
     Route::post('/usuarios/firebase', [UserController::class, 'storeDesdeFirebase']);
 });
 
-// ✅ Productos
-Route::apiResource('productos', ProductoController::class);
-
-// ✅ Añadir usuarios a Firebase desde Laravel Web
+// 🔹 Crear usuarios manualmente desde Laravel
 Route::post('/firebase/add-user', [FirebaseController::class, 'addUser']);
-
-Route::get('/firebase/check', function () {
-    $firestore = app('firebase.firestore')->database();
-    $firestore->collection('usuarios')->document('test-check')->set([
-        'nombre' => 'Prueba Check',
-        'email' => 'check@example.com'
-    ]);
-    return '✅ Firestore conectado correctamente.';
-});
