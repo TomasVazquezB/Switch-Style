@@ -10,9 +10,6 @@ use App\Http\Controllers\FirebaseController;
 use App\Http\Controllers\ProductoController;
 use App\Services\FirebaseService;
 
-// 🔹 Test y Diagnóstico
-Route::get('/test', fn () => response()->json(['message' => 'API funcionando correctamente']));
-
 // 🔹 Firebase SDK Test
 Route::get('/firebase/list-auth-users', [FirebaseController::class, 'listAuthUsers']);
 Route::get('/firebase/get-users', [FirebaseController::class, 'getUsers']);
@@ -21,7 +18,6 @@ Route::get('/firebase/test', [FirebaseController::class, 'testConnection']);
 // 🔹 Diagnóstico: conexión Firestore y Auth con FirebaseService
 Route::get('/firebase/check', function (FirebaseService $firebaseService) {
     try {
-        // Probar Firestore: escribir un documento temporal
         $firestore = $firebaseService->getFirestore();
         $firestore->collection('usuarios')->document('test-check')->set([
             'nombre' => 'Prueba Check',
@@ -29,19 +25,20 @@ Route::get('/firebase/check', function (FirebaseService $firebaseService) {
             'timestamp' => now()->toDateTimeString(),
         ]);
 
-        // Probar Firebase Auth: listar un usuario
         $auth = $firebaseService->getAuth();
         $users = $auth->listUsers(1);
+        $count = iterator_count($users);
 
         return response()->json([
             'message' => '✅ Firebase conectado correctamente',
             'firestore_test_document' => 'test-check',
-            'firebase_auth_sample_users_count' => iterator_count($users),
+            'firebase_auth_sample_users_count' => $count,
         ]);
     } catch (\Throwable $e) {
         return response()->json([
             'error' => 'Error conectando a Firebase',
             'message' => $e->getMessage(),
+            'trace' => $e->getTraceAsString(),
         ], 500);
     }
 });
