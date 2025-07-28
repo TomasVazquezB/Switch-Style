@@ -11,36 +11,33 @@ import banner1 from '../../assets/banner1.jpg';
 import banner2 from '../../assets/banner2.jpg';
 import banner3 from '../../assets/banner3.jpg';
 
-import DB1 from '../../assets/DB1.JPG';
-import DB2 from '../../assets/DB2.JPG';
-import DB3 from '../../assets/DB3.JPG';
-import DB4 from '../../assets/DB4.JPG';
-import DB5 from '../../assets/DB5.JPG';
-import DB6 from '../../assets/DB6.JPG';
-import DB7 from '../../assets/DB7.PNG';
+import DB1 from '../../assets/p_img27.png';
+import DB2 from '../../assets/p_img46.png';
+import DB3 from '../../assets/p_img44.png';
+import DB4 from '../../assets/p_img23.png';
+import DB5 from '../../assets/p_img26.png';
+import DB6 from '../../assets/p_img25.png';
+import DB7 from '../../assets/p_img32.png';
 
 const carouselImages = [banner1, banner2, banner3];
 const cardImages = [DB1, DB2, DB3, DB4, DB5, DB6, DB7];
 const lastAddedImages = [
-  'https://picsum.photos/400/300?random=1',
-  'https://picsum.photos/400/300?random=2',
-  'https://picsum.photos/400/300?random=3',
-  'https://picsum.photos/400/300?random=4',
-  'https://picsum.photos/400/300?random=5',
-  'https://picsum.photos/400/300?random=6',
-  'https://picsum.photos/400/300?random=7',
-  'https://picsum.photos/400/300?random=8',
-  'https://picsum.photos/400/300?random=9',
-  'https://picsum.photos/400/300?random=10',
-  'https://picsum.photos/400/300?random=11',
-  'https://picsum.photos/400/300?random=12',
-  'https://picsum.photos/400/300?random=13',
-  'https://picsum.photos/400/300?random=14',
+ '../../assets/p_img1.png',
+  '../../assets/p_img2.png',
+  '../../assets/p_img3.png',
+  '../../assets/p_img4.png',
+  '../../assets/p_img5.png',
+  '../../assets/p_img6.png',
+  '../../assets/p_img7.png',
+  '../../assets/p_img8.png',
+  '../../assets/p_img9.png',
+  '../../assets/p_img10.png',
+  '../../assets/p_img11.png',
+  '../../assets/p_img12.png',
+  '../../assets/p_img13.png',
+  '../../assets/p_img14.png',
 ];
 const cardsPerSlide = 7;
-
-
-
 
 const Home = ({ darkMode }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -199,27 +196,21 @@ const Home = ({ darkMode }) => {
         )}
 
 
-
-        <div className="download-section">
-          <hr className="black-line" />
-          <div className="download-row">
-            <p className="download-text">Descarga la aplicación y únete a la experiencia Switch Style</p>
-            <div className="download-icons">
-              <a className="store-icon" href="https://apps.apple.com/app/id000000000" target="_blank" rel="noopener noreferrer">
-                <FaApple size={40} />
-                <p>App Store</p>
-              </a>
-
-              <a className="store-icon" href="https://play.google.com/store/apps/details?id=com.switchstyle.app" target="_blank" rel="noopener noreferrer">
-                <FaGooglePlay size={40} />
-                <p>Play Store</p>
-              </a>
-
-            </div>
-          </div>
-          <br />
+     <div className="download-section">
+     <hr className="black-line" />
+    <div className="download-row">
+    <p className="download-text">Descarga la aplicación y únete a la experiencia Switch Style</p>
+      <div className="download-icons">
+        <div className="store-icon">
+          <FaApple size={40} />
+          <FaGooglePlay size={40} />
         </div>
+      <a href="/Switch Style.apk" download className="download-button">Descargar APP</a>
       </div>
+  </div>
+  <br />
+</div>
+</div>
     </ErrorBoundary>
   );
 };

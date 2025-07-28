@@ -79,9 +79,9 @@ const Carrito = () => {
     return (
         <div className="cart-container">
             <div className="cart-items">
-                <h2>Shopping Cart</h2>
+                <h2>Carrito de Compras</h2>
                 {carritoData.length === 0 ? (
-                    <p className="text-gray-500">Tu carrito está vacío.</p>
+                    <p className="text-gray-500">Tu carrito está vacío</p>
                 ) : (
                     carritoData.map((item, index) => {
                         const producto = buscarProducto(item);
@@ -110,23 +110,23 @@ const Carrito = () => {
             </div>
 
             <div className="order-summary">
-                <h3>Order Summary</h3>
+                <h3>Resumen de la Compra</h3>
                 <br></br>
                 <div className="summary-line">
                     <span>Subtotal</span>
                     <span>{moneda}{calcularTotal()}</span>
                 </div>
                 <div className="summary-line">
-                    <span>Shipping estimate</span>
+                    <span>Estimacion de Envio</span>
                     <span>{moneda}0.00</span>
                 </div>
                 <div className="summary-line">
-                    <span>Tax estimate</span>
+                    <span>Estimacion de Impuestos</span>
                     <span>{moneda}0.00</span>
                 </div>
                 <div className="total">
                     
-                    <span>Order Total </span>
+                    <span>Total</span>
                     <span>{moneda}{calcularTotal()}</span>
                 </div>
                 <div className="pay-buttons">

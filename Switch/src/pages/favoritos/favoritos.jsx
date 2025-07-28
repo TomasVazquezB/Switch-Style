@@ -23,7 +23,7 @@ const Favoritos = () => {
                 setRopaFavorita(ropaRes.data.filter(p => fav.includes(p.id)));
                 setAccesoriosFavoritos(accRes.data.filter(p => fav.includes(p.id)));
             } catch (err) {
-                toast.error("Error al cargar favoritos.");
+                toast.error("Error al cargar favoritos");
             }
         };
 
@@ -89,7 +89,7 @@ const Favoritos = () => {
             <hr className="mb-6" />
 
             {favoritos.length === 0 ? (
-                <p className="text-gray-600">No tenés productos favoritos aún.</p>
+                <p className="text-gray-600">No tenés productos favoritos aún</p>
             ) : (
                 <>
                     {ropaFavorita.length > 0 && renderTarjetas(ropaFavorita, 'ropa')}

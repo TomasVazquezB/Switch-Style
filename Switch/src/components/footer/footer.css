@@ -73,7 +73,7 @@ footer nav {
   font-size: 28px; 
   transition: transform 0.3s; 
   cursor: pointer; 
-  margin-right: 10px;
+  margin-right: 4px;
 }
 
 .social-icon:hover {
@@ -83,7 +83,7 @@ footer nav {
 .social-text {
   color: white;
   font-size: 1.2rem;
-  margin-left: 8px;
+  margin-left: 5px;
 }
 
 .contact-info {

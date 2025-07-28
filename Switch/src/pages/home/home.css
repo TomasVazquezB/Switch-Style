@@ -369,7 +369,7 @@ html {
   margin-bottom: 0px;
   justify-content: space-between;
   align-items: center;
-  padding-top: 4px;
+  padding-top: 5px;
   padding-bottom: 0px;
   width: 100%;
 }
@@ -382,6 +382,25 @@ html {
 .home-index.dark .download-section {
   background-color: #000000;
   color: white;
+}
+
+.download-button {
+  text-decoration: none;
+  padding: 10px 12px;
+  background-color: black;
+  color: white;
+  font-weight: bold;
+  border-radius: 6px;
+  display: flex;
+  transition: background-color 0.3s;
+  margin-left: -28px;     /* muy leve empuje interno si es necesario */
+  margin-right: 15px;    /* más separación del borde derecho */
+  margin-top: 0px;
+  margin-bottom: 0px;
+}
+
+.download-button:hover {
+  background-color: #333;
 }
 
 .download-text {
@@ -399,24 +418,34 @@ html {
 
 .download-icons {
   display: flex;
-  justify-content: right;
-  gap: 40px;
+  flex-direction: column;
+  padding: 10px;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 16px; /* espacio entre íconos y botón */
+  margin-left: 10px;    /* más separación del borde izquierdo */
+  margin-top: 0px;     /* baja más los íconos desde la línea */
 }
 
 .store-icon {
   display: flex;
-  flex-direction: column;
-  align-items: center;
+  flex-direction: row;
+  gap: 16px;
+  pointer-events: none;
+  margin-bottom: -25px; /* <-- este es el toque que faltaba */
 }
 
 .store-icon svg {
-  font-size: 36px;
-  margin-bottom: 5px;
+  width: 34px;
+  height: 38px;
+  display: block;
+  color: black;
 }
 
 .store-icon p {
-  margin: 8px;
-  font-size: 1.02rem;
+  margin-top: 5px;
+  font-weight: bold;
+  pointer-events: none;
 }
 
 .carousel-indicators {
@@ -748,19 +777,14 @@ html {
   }
 
   .download-icons {
-    flex-direction: column;
+    flex-direction: row; /* antes era column */
+    flex-wrap: wrap;
     justify-content: center;
-    gap: 10px;
+    gap: 20px;
   }
 
-  .store-icon {
-    margin-bottom: 20px;
-  }
-
-  .download-text {
-    text-align: center;
-    width: 100%;
-    margin-bottom: 10px;
+   .store-icon {
+    margin-bottom: 0;
   }
 
   .card-container {
