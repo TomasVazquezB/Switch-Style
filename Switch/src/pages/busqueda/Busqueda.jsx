@@ -43,7 +43,6 @@ const Busqueda = () => {
                     const imageUrl = item.ruta_imagen?.startsWith('http')
                         ? item.ruta_imagen
                         : `http://127.0.0.1:8000/storage/${item.ruta_imagen}`;
-
                     return (
                         <ProductoItem
                             key={item.id}
@@ -51,7 +50,9 @@ const Busqueda = () => {
                             img={imageUrl}
                             nombre={item.titulo}
                             precio={item.precio}
-                            tipo={item.tipo || "ropa"}
+                            tipo="ropa"
+                            esFavorito={favoritos.includes(item.id)}
+                            onToggleFavorito={() => toggleFavorito(item.id)}
                         />
                     );
                 })}

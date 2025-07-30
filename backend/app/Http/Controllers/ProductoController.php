@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Kreait\Firebase\Contract\Firestore;
+use App\Models\Producto;
+
 
 class ProductoController extends Controller
 {
@@ -56,5 +58,18 @@ class ProductoController extends Controller
         $document->delete();
 
         return response()->json(['message' => 'Producto eliminado correctamente']);
+    }
+
+        $query = $request->input('q');
+
+        if (!$query) {
+            return response()->json(['error' => 'No se proporcionó término de búsqueda'], 400);
+        }
+
+        $productos = Producto::where('titulo', 'like', "%{$query}%")
+            ->orWhere('descripcion', 'like', "%{$query}%")
+            ->get();
+
+        return response()->json($productos);
     }
 }

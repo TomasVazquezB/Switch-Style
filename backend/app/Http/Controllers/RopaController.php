@@ -44,6 +44,18 @@ class RopaController extends Controller
         ]);
     }
 
+    public function buscar(Request $request)
+    {
+        $q = $request->query('q');
+
+        $resultados = Ropa::where('titulo', 'LIKE', "%$q%")
+            ->orWhere('descripcion', 'LIKE', "%$q%")
+            ->get();
+
+        return response()->json($resultados);
+    }
+
+
     public function create()
     {
         return view('ropas.create', [
