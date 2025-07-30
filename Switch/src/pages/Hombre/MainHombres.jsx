@@ -167,9 +167,9 @@ const MainHombres = () => {
             onChange={(e) => setSortTipo(e.target.value)}
             className="border border-gray-300 text-sm px-2 py-1 rounded"
           >
-            <option value="relavente">Sort by: Relevante</option>
-            <option value="low-high">Sort by: Low to High</option>
-            <option value="high-low">Sort by: High to Low</option>
+            <option value="relavente">Ordenar por: Relevante</option>
+            <option value="low-high">Ordenar por: de menor a mayor</option>
+            <option value="high-low">Ordenar por: mayor a menor</option>
           </select>
         </div>
 
