@@ -1,37 +1,29 @@
 <?php
-
 namespace App\Services;
 
 use Kreait\Firebase\Factory;
 use Kreait\Firebase\Auth;
+use Google\Cloud\Firestore\FirestoreClient;
 
 class FirebaseService
 {
-    protected $auth;
     protected $firestore;
+    protected $auth;
 
     public function __construct()
     {
-        $firebaseCredentials = config('firebase.credentials.file');
-
-        if (!file_exists($firebaseCredentials)) {
-            throw new \Exception("Archivo de credenciales Firebase no encontrado en: $firebaseCredentials");
-        }
-
-        $factory = (new Factory)
-            ->withServiceAccount($firebaseCredentials);
-
+        $factory = (new Factory)->withServiceAccount(env('GOOGLE_APPLICATION_CREDENTIALS'));
+        $this->firestore = $factory->createFirestore()->database();
         $this->auth = $factory->createAuth();
-        $this->firestore = $factory->createFirestore();
     }
 
-    public function getAuth(): Auth
+    public function getFirestore()
+    {
+        return $this->firestore;
+    }
+
+    public function getAuth()
     {
         return $this->auth;
-    }
-
-    public function getFirestore() // Devuelve instancia de Google\Cloud\Firestore\FirestoreClient
-    {
-        return $this->firestore->database(); // Este es el objeto real que tiene ->collection()
     }
 }

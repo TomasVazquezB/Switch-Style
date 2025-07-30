@@ -34,9 +34,6 @@ const Header = ({ toggleTheme, darkMode }) => {
         }
     };
 
-
-
-
     const handleProfileClick = () => setShowProfileMenu(!showProfileMenu);
 
     const handleLogout = () => {
@@ -60,8 +57,6 @@ const Header = ({ toggleTheme, darkMode }) => {
         window.addEventListener('usuario-actualizado', actualizarUsuario);
         return () => window.removeEventListener('usuario-actualizado', actualizarUsuario);
     }, []);
-
-
 
     const goToCart = () => navigate('/carrito');
 
@@ -129,7 +124,6 @@ const Header = ({ toggleTheme, darkMode }) => {
                                     <FaSearch />
                                 </button>
                             </form>
-
 
                             <Nav.Link as={NavLink} to="/favoritos" className="icon-separator">
                                 <FaHeart className={`navbar-icon ${darkMode ? 'text-white' : 'text-dark'}`} />

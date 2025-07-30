@@ -55,6 +55,7 @@ class RopaController extends Controller
         return response()->json($resultados);
     }
 
+
     public function create()
     {
         return view('ropas.create', [

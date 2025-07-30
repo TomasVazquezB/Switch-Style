@@ -369,7 +369,7 @@ html {
   margin-bottom: 0px;
   justify-content: space-between;
   align-items: center;
-  padding-top: 4px;
+  padding-top: 5px;
   padding-bottom: 0px;
   width: 100%;
 }
@@ -382,6 +382,25 @@ html {
 .home-index.dark .download-section {
   background-color: #000000;
   color: white;
+}
+
+.download-button {
+  text-decoration: none;
+  padding: 10px 12px;
+  background-color: black;
+  color: white;
+  font-weight: bold;
+  border-radius: 6px;
+  display: flex;
+  transition: background-color 0.3s;
+  margin-left: -28px;     /* muy leve empuje interno si es necesario */
+  margin-right: 15px;    /* más separación del borde derecho */
+  margin-top: 0px;
+  margin-bottom: 0px;
+}
+
+.download-button:hover {
+  background-color: #333;
 }
 
 .download-text {
@@ -399,24 +418,34 @@ html {
 
 .download-icons {
   display: flex;
-  justify-content: right;
-  gap: 40px;
+  flex-direction: column;
+  padding: 10px;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 16px; /* espacio entre íconos y botón */
+  margin-left: 10px;    /* más separación del borde izquierdo */
+  margin-top: 0px;     /* baja más los íconos desde la línea */
 }
 
 .store-icon {
   display: flex;
-  flex-direction: column;
-  align-items: center;
+  flex-direction: row;
+  gap: 16px;
+  pointer-events: none;
+  margin-bottom: -25px; /* <-- este es el toque que faltaba */
 }
 
 .store-icon svg {
-  font-size: 36px;
-  margin-bottom: 5px;
+  width: 34px;
+  height: 38px;
+  display: block;
+  color: black;
 }
 
 .store-icon p {
-  margin: 8px;
-  font-size: 1.02rem;
+  margin-top: 5px;
+  font-weight: bold;
+  pointer-events: none;
 }
 
 .carousel-indicators {
@@ -601,60 +630,103 @@ html {
 .last-added-section {
   margin-top: 40px;
   position: relative;
+  animation: fadeInSlide 1s ease-in-out;
 }
 
 .carousel-cards-wrapper {
   display: flex;
   overflow: hidden;
   position: relative;
+  padding: 20px 0;
+  border-radius: 12px;
 }
 
 .carousel-cards-track {
   display: flex;
-  transition: transform 0.5s ease-in-out;
+  transition: transform 0.6s ease-in-out;
 }
 
 .carousel-card-home {
+  flex: 0 0 calc(100% / 3); /* ajusta según cardsPerSlide */
   width: 33.333%;
-  padding: 10px;
+  padding: 15px;
   box-sizing: border-box;
+  transition: transform 0.4s ease, box-shadow 0.4s ease;
 }
 
 .carousel-card-home img {
   width: 100%;
+  border-radius: 12px;
   height: auto;
-  border-radius: 8px;
+  object-fit: cover;
+  transition: transform 0.4s ease;
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.1);
+}
+
+.carousel-card-home:hover img {
+  transform: scale(1.04);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.25);
 }
 
 .carousel-cards-btn {
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: rgba(0, 0, 0, 0.6);
   color: white;
-  padding: 10px;
+  padding: 12px;
   border: none;
-  font-size: 20px;
+  border-radius: 50%;
+  font-size: 22px;
   cursor: pointer;
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  z-index: 1;
+  z-index: 10;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  transition: background-color 0.3s ease;
 }
 
 .carousel-cards-btn:hover {
-  background-color: rgba(0, 0, 0, 0.8);
+  background-color: rgba(0, 0, 0, 0.85);
 }
 
 .carousel-cards-btn:first-of-type {
-  left: 0;
+  left: 10px;
 }
 
 .carousel-cards-btn:last-of-type {
-  right: 0;
+  right: 10px;
 }
 
 .mas-buscado {
   text-align: center;
-  font-size: 2rem;
-  margin-bottom: 30px;
+  font-size: 2.2rem;
+  margin-bottom: 25px;
+  font-weight: bold;
+  letter-spacing: 0.5px;
+  color: var(--text-color, #111);
+}
+
+/* === ANIMACIÓN ENTRADA === */
+@keyframes fadeInSlide {
+  0% {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* === RESPONSIVE === */
+@media (max-width: 768px) {
+  .carousel-card-home {
+    flex: 0 0 100%;
+  }
+
+  .carousel-cards-btn {
+    padding: 10px;
+    font-size: 18px;
+  }
 }
 
 .carousel-cards-wrapper {
@@ -748,19 +820,14 @@ html {
   }
 
   .download-icons {
-    flex-direction: column;
+    flex-direction: row; /* antes era column */
+    flex-wrap: wrap;
     justify-content: center;
-    gap: 10px;
+    gap: 20px;
   }
 
-  .store-icon {
-    margin-bottom: 20px;
-  }
-
-  .download-text {
-    text-align: center;
-    width: 100%;
-    margin-bottom: 10px;
+   .store-icon {
+    margin-bottom: 0;
   }
 
   .card-container {

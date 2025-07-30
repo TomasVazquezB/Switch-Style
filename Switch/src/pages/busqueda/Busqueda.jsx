@@ -37,7 +37,7 @@ const Busqueda = () => {
 
     return (
         <div className="content">
-            <h2 className="text-xl font-bold mb-4">RESULTADOS PARA: "{query.toUpperCase()}"</h2>
+            <h2 className="text-xl font-bold mb-4">Resultados Para: "{query.toUpperCase()}"</h2>
             <div className="product-grid">
                 {resultados.map((item) => {
                     const imageUrl = item.ruta_imagen?.startsWith('http')
