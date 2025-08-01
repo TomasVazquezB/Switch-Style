@@ -17,7 +17,7 @@ const PerfilUsuario = () => {
         <div className="perfil-header">
           <img src="/default-avatar.png" alt="Avatar" className="avatar" />
           <div>
-            <h2>Hola, {usuario.nombre}</h2>
+            <h2>Hola{usuario.nombre}</h2>
             <p className="tipo">Tipo de cuenta: {usuario.rol}</p>
           </div>
         </div>

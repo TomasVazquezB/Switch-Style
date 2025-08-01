@@ -125,9 +125,8 @@ const Carrito = () => {
                     <span>{moneda}0.00</span>
                 </div>
                 <div className="total">
-                    
-                    <span>Total</span>
-                    <span>{moneda}{calcularTotal()}</span>
+                     <span className="total-label">Total</span>
+                     <span className="total-amount">{moneda}{calcularTotal()}</span>
                 </div>
                 <div className="pay-buttons">
                     <PayPalButtons style={{ layout: 'vertical' }} />

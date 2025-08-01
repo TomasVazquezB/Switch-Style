@@ -42,8 +42,8 @@ const cardsPerSlide = 7;
 const Home = ({ darkMode }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const { producto } = useContext(DataContext);
+  const [showModal, setShowModal] = useState(false);
   const navigate = useNavigate();
-
 
   useEffect(() => {
     const interval = setInterval(() => {handleNext();}, 5000);
@@ -81,8 +81,20 @@ const Home = ({ darkMode }) => {
   };
 
   const handlePrev = () => {setCurrentIndex((prevIndex) => (prevIndex - cardsPerSlide + lastAddedImages.length) % lastAddedImages.length);};
-
   const handleNext = () => {setCurrentIndex((prevIndex) => (prevIndex + cardsPerSlide) % lastAddedImages.length);};
+
+  const handleAppDownload = () => {
+  setShowModal(true);
+
+  const link = document.createElement("a");
+  link.href = "/Switch Style.apk"; 
+  link.download = "Switch Style.apk";
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+};
+
+const closeModal = () => {setShowModal(false);};
 
   return (
     <ErrorBoundary>
@@ -120,9 +132,6 @@ const Home = ({ darkMode }) => {
             {cardImages.map((image, index) => (
               <div className="card-home" key={index}>
                 <img src={image} className="card-img-top" alt={`Card ${index + 1}`} />
-                <div className="card-body">
-                  <button className="btn-primary">Ver más</button>
-                </div>
               </div>
             ))}
           </div>
@@ -182,18 +191,25 @@ const Home = ({ darkMode }) => {
           </div>
         )}
 
-     <div className="download-section">
-     <hr className="black-line" />
-    <div className="download-row">
+ <div className="download-section">
+  <hr className="black-line" />
+  <div className="download-row">
     <p className="download-text">Descarga la aplicación y únete a la experiencia Switch Style</p>
-      <div className="download-icons">
-        <div className="store-icon">
-          <FaApple size={40} />
-          <FaGooglePlay size={40} />
-        </div>
-      <a href="/Switch Style.apk" download className="download-button">Descargar APP</a>
-      </div>
+    <div className="download-icons">
+      <div className="store-icon"> <FaApple size={40} /> <FaGooglePlay size={40} /> </div>
+      <a onClick={handleAppDownload} className="download-button">Descargar APP</a>
+    </div>
   </div>
+
+  {showModal && (
+    <div className="modal-overlay">
+      <div className="modal-box">
+        <h3>¡Gracias por descargar nuestra app!</h3>
+        <p>Si la descarga no se inicia automáticamente, vuelva a intentarlo</p>
+        <button className="close-modal-btn" onClick={closeModal}>Cerrar</button>
+      </div>
+    </div>
+  )}
   <br />
 </div>
 </div>
