@@ -45,7 +45,6 @@ const Home = ({ darkMode }) => {
   const [showModal, setShowModal] = useState(false);
   const navigate = useNavigate();
 
-
   useEffect(() => {
     const interval = setInterval(() => {handleNext();}, 5000);
     return () => clearInterval(interval);}, [currentIndex]);
@@ -82,7 +81,6 @@ const Home = ({ darkMode }) => {
   };
 
   const handlePrev = () => {setCurrentIndex((prevIndex) => (prevIndex - cardsPerSlide + lastAddedImages.length) % lastAddedImages.length);};
-
   const handleNext = () => {setCurrentIndex((prevIndex) => (prevIndex + cardsPerSlide) % lastAddedImages.length);};
 
   const handleAppDownload = () => {
@@ -96,9 +94,7 @@ const Home = ({ darkMode }) => {
   document.body.removeChild(link);
 };
 
-const closeModal = () => {
-  setShowModal(false);
-};
+const closeModal = () => {setShowModal(false);};
 
   return (
     <ErrorBoundary>
@@ -136,9 +132,6 @@ const closeModal = () => {
             {cardImages.map((image, index) => (
               <div className="card-home" key={index}>
                 <img src={image} className="card-img-top" alt={`Card ${index + 1}`} />
-                <div className="card-body">
-                  <button className="btn-primary">Ver más</button>
-                </div>
               </div>
             ))}
           </div>
@@ -203,10 +196,7 @@ const closeModal = () => {
   <div className="download-row">
     <p className="download-text">Descarga la aplicación y únete a la experiencia Switch Style</p>
     <div className="download-icons">
-      <div className="store-icon">
-        <FaApple size={40} />
-        <FaGooglePlay size={40} />
-      </div>
+      <div className="store-icon"> <FaApple size={40} /> <FaGooglePlay size={40} /> </div>
       <a onClick={handleAppDownload} className="download-button">Descargar APP</a>
     </div>
   </div>

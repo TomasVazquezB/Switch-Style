@@ -40,7 +40,6 @@
     --background-color: #ffffff;
     --text-color: #000000;
     --primary-color: #007bff;
-    /* Agrega más variables si es necesario */
   }
   
   body.dark-mode {

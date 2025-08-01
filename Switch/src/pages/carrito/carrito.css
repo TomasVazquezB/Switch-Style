@@ -229,8 +229,21 @@ h2 {
 .order-summary .total {
   border-top: 1px solid #ccc;
   padding-top: 1rem;
+  margin-top: 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   font-weight: bold;
   font-size: 1.1rem;
+  color: #111;
+}
+
+.total-label {
+  margin-right: 10px;
+}
+
+.total-amount {
+  margin-left: 10px;
 }
 
 /* PayPal & MP */
