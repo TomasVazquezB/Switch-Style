@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import axios from 'axios';
-import './Favoritos.css';
+import './favoritos.css';
 
 const Favoritos = () => {
     const [favoritos, setFavoritos] = useState([]);
