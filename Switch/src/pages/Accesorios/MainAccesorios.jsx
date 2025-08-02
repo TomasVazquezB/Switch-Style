@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import ProductoItem from '../../components/Productoitem/ProductoItem';
 import axios from 'axios';
-import './MainAccesorios.css'; // reutilizamos el mismo CSS
+import './MainAccesorios.css';
 
 const MainAccesorios = () => {
     const [productos, setProductos] = useState([]);
@@ -15,14 +15,11 @@ const MainAccesorios = () => {
             const res = await axios.get('http://127.0.0.1:8000/api/accesorios');
             setProductos(res.data);
             setFiltroProductos(res.data);
-        } catch (error) {
-            console.error("Error al obtener accesorios:", error);
+        } catch (error) {console.error("Error al obtener accesorios:", error);
         }
     };
 
-    useEffect(() => {
-        fetchAccesorios();
-    }, []);
+    useEffect(() => {fetchAccesorios();}, []);
 
     const aplicarFiltros = () => {
         let temp = [...productos];
@@ -32,27 +29,20 @@ const MainAccesorios = () => {
 
     const ordenar = () => {
         const ordenados = [...filtroProductos];
-        if (sortTipo === 'low-high') {
-            ordenados.sort((a, b) => a.precio - b.precio);
-        } else if (sortTipo === 'high-low') {
-            ordenados.sort((a, b) => b.precio - a.precio);
+        if (sortTipo === 'low-high') {ordenados.sort((a, b) => a.precio - b.precio);
+        } else if (sortTipo === 'high-low') {ordenados.sort((a, b) => b.precio - a.precio);
         }
         setFiltroProductos(ordenados);
     };
 
-    useEffect(() => {
-        aplicarFiltros();
-    }, [precioMax]);
+    useEffect(() => {aplicarFiltros();
+     }, [precioMax]);
 
     useEffect(() => {
         ordenar();
     }, [sortTipo]);
 
-    const maxPrice = productos.length > 0
-        ? Math.max(...productos.map((p) => p.precio || 0))
-        : 350;
-
-    
+    const maxPrice = productos.length > 0 ? Math.max(...productos.map((p) => p.precio || 0)) : 350;
 
     return (
         <div className="content">
@@ -79,10 +69,7 @@ const MainAccesorios = () => {
 
             <div className="main pl-[220px] px-8 py-6">
                 <div className="flex justify-end mb-2">
-                    <select
-                        onChange={(e) => setSortTipo(e.target.value)}
-                        className="border border-gray-300 text-sm px-2 py-1 rounded"
-                    >
+            <select onChange={(e) => setSortTipo(e.target.value)} className="border border-gray-300 text-sm px-2 py-1 rounded">
                           <option value="relavente">Ordenar por: Relevante</option>
                           <option value="low-high">Ordenar por: de menor a mayor</option>
                           <option value="high-low">Ordenar por: mayor a menor</option>
@@ -91,9 +78,7 @@ const MainAccesorios = () => {
 
                 <div className="product-grid">
                     {filtroProductos.map((item) => {
-                        const imageUrl = item.ruta_imagen?.startsWith('http')
-                            ? item.ruta_imagen
-                            : `http://127.0.0.1:8000/storage/${item.ruta_imagen}`;
+                        const imageUrl = item.ruta_imagen?.startsWith('http') ? item.ruta_imagen : `http://127.0.0.1:8000/storage/${item.ruta_imagen}`;
 
                         return (
                             <ProductoItem

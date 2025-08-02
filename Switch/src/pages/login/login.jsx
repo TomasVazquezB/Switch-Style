@@ -3,7 +3,7 @@ import { useNavigate, Link } from 'react-router-dom';
 import api from '../../api/axios';
 import './login.css';
 import Cookies from 'js-cookie';
-import loginImage from '../../assets/login.jpg'; // Ajustá esta ruta según tu estructura
+import loginImage from '../../assets/login.jpg'; 
 
 export function LoginPage() {
     const [formData, setFormData] = useState({ identificador: '', contrasena: '' });
@@ -11,11 +11,8 @@ export function LoginPage() {
     const [isDarkMode, setIsDarkMode] = useState(false);
     const navigate = useNavigate();
 
-    const handleChange = (e) => {
-        setFormData({ ...formData, [e.target.name]: e.target.value });
-    };
-
-
+    const handleChange = (e) => {setFormData({ ...formData, [e.target.name]: e.target.value });
+};
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -24,16 +21,13 @@ export function LoginPage() {
         try {
             await api.get('/sanctum/csrf-cookie');
             const csrfToken = Cookies.get('XSRF-TOKEN');
-    
-            const response = await api.post(
-                '/api/login',
+            const response = await api.post('/api/login',
                 {
                     email: formData.identificador,
                     password: formData.contrasena,
                 },
                 {
-                    headers: {
-                        'X-XSRF-TOKEN': decodeURIComponent(csrfToken),
+                    headers: {'X-XSRF-TOKEN': decodeURIComponent(csrfToken),
                     },
                 }
             );
@@ -44,11 +38,9 @@ export function LoginPage() {
     
             alert(`Bienvenido ${user.Nombre || ''}`);
     
-            // 🔀 Redirección según tipo de usuario
-            if (user.Tipo_Usuario === 'Admin') {
-                window.location.href = 'http://127.0.0.1:8000/admin';  // Laravel panel admin
+            if (user.Tipo_Usuario === 'Admin') {window.location.href = 'http://127.0.0.1:8000/admin'; 
             } else {
-                navigate('/'); // Home con perfil visible
+                navigate('/'); 
             }
     
         } catch (err) {
@@ -57,10 +49,8 @@ export function LoginPage() {
         }
     };
     
-
     return (
         <div className="login-container">
-
             <div className="image-container">
                 <img src="../src/assets/login.jpg" alt="Imagen" className="login-image" />
             </div>
@@ -91,12 +81,8 @@ export function LoginPage() {
                         />
 
                         {error && <div className="alert alert-danger">{error}</div>}
-
                         <button type="submit" className="button-login">Ingresar</button>
-
-                        <p className="registro-link">
-                            ¿Todavía no estás registrado? <Link to="/registro">Regístrate aquí</Link>
-                        </p>
+                        <p className="registro-link"> ¿Todavía no estás registrado? <Link to="/registro">Regístrate aquí</Link></p>
                     </form>
                 </div>
             </div>

@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { PayPalButtons } from "@paypal/react-paypal-js";
-import { Wallet } from "@mercadopago/sdk-react";
 import { toast } from 'react-toastify';
 import './carrito.css';
 
@@ -29,16 +28,14 @@ const Carrito = () => {
                 ]);
                 setProductos(await ropaRes.json());
                 setAccesorios(await accesoriosRes.json());
-            } catch (error) {
-                console.error("Error al obtener productos o accesorios:", error);
+            } catch (error) {console.error("Error al obtener productos o accesorios:", error);
             }
         };
         fetchData();
     }, []);
 
-    const buscarProducto = (item) => {
-        const fuente = item.tipo === 'accesorio' ? accesorios : productos;
-        return fuente.find(p => p.id === item.producto_id);
+    const buscarProducto = (item) => {const fuente = item.tipo === 'accesorio' ? accesorios : productos;
+    return fuente.find(p => p.id === item.producto_id);
     };
 
     const calcularTotal = () => {
@@ -58,9 +55,8 @@ const Carrito = () => {
         if (tallaData) stockDisponible = tallaData.pivot?.cantidad || 1;
 
         if (nuevaCantidad < 1) return;
-        if (nuevaCantidad > stockDisponible) {
-            toast.error(`Stock máximo disponible: ${stockDisponible}`);
-            return;
+        if (nuevaCantidad > stockDisponible) {toast.error(`Stock máximo disponible: ${stockDisponible}`);
+        return;
         }
 
         const actualizado = [...carritoData];
@@ -128,12 +124,7 @@ const Carrito = () => {
                      <span className="total-label">Total</span>
                      <span className="total-amount">{moneda}{calcularTotal()}</span>
                 </div>
-                <div className="pay-buttons">
-                    <PayPalButtons style={{ layout: 'vertical' }} />
-                    <Wallet
-                        initialization={{ preferenceId: "YOUR_PREFERENCE_ID" }}
-                        customization={{ texts: { valueProp: 'smart_option' } }}
-                    />
+                <div className="pay-buttons"><PayPalButtons style={{ layout: 'vertical' }}/>
                 </div>
             </div>
         </div>

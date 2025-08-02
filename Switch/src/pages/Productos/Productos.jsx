@@ -3,7 +3,6 @@ import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import { PayPalButtons } from "@paypal/react-paypal-js";
-import { Wallet } from "@mercadopago/sdk-react";
 import './Productos.css';
 
 const Productos = () => {
@@ -33,13 +32,10 @@ const Productos = () => {
         const endpoint = tipo.includes('accesorio') ? 'accesorios' : 'ropa';
         const url = `http://127.0.0.1:8000/api/${endpoint}/${productoId}`;
         axios.get(url)
-            .then(res => {
-                setProductoData(res.data);
-                if (res.data.imagenes?.length > 0) {
-                    setImg(`http://127.0.0.1:8000/storage/${res.data.imagenes[0].ruta}`);
+            .then(res => {setProductoData(res.data);
+                if (res.data.imagenes?.length > 0) {setImg(`http://127.0.0.1:8000/storage/${res.data.imagenes[0].ruta}`);
                 }
-                if (tipo.includes('accesorio')) {
-                    setStockDisponible(res.data.stock || 0);
+                if (tipo.includes('accesorio')) {setStockDisponible(res.data.stock || 0);
                 }
             })
             .catch(() => toast.error("Producto no encontrado"));
@@ -48,8 +44,7 @@ const Productos = () => {
     const toggleFavorito = () => {
         setFavoritos((prev) => {
             let nuevos;
-            if (prev.includes(productoData.id)) {
-                nuevos = prev.filter((id) => id !== productoData.id);
+            if (prev.includes(productoData.id)) {nuevos = prev.filter((id) => id !== productoData.id);
             } else {
                 nuevos = [...prev, productoData.id];
             }
@@ -66,21 +61,18 @@ const Productos = () => {
     };
 
     const handleAgregarAlCarrito = () => {
-        if (!talla && tipo.includes('ropa')) return toast.error('Seleccione una talla.');
-        if (cantidad < 1 || cantidad > stockDisponible) return toast.error('Cantidad inválida.');
+        if (!talla && tipo.includes('ropa')) return toast.error('Seleccione una talla');
+        if (cantidad < 1 || cantidad > stockDisponible) return toast.error('Cantidad inválida');
 
         const nuevoItem = {
             producto_id: productoData.id,
             titulo: productoData.titulo,
             precio: productoData.precio,
-            ruta_imagen: productoData.imagenes?.[0]?.ruta
-                ? `http://127.0.0.1:8000/storage/${productoData.imagenes[0].ruta}`
-                : '',
+            ruta_imagen: productoData.imagenes?.[0]?.ruta ? `http://127.0.0.1:8000/storage/${productoData.imagenes[0].ruta}` : '',
             talla: tipo.includes('ropa') ? talla : null,
             cantidad
         };
 
-        // ✅ Carga segura del carrito
         let carritoExistente;
         try {
             const guardado = JSON.parse(localStorage.getItem("carrito"));
@@ -89,12 +81,9 @@ const Productos = () => {
             carritoExistente = [];
         }
 
-        const index = carritoExistente.findIndex(
-            (item) => item.producto_id === nuevoItem.producto_id && item.talla === nuevoItem.talla
-        );
+        const index = carritoExistente.findIndex((item) => item.producto_id === nuevoItem.producto_id && item.talla === nuevoItem.talla);
 
-        if (index >= 0) {
-            carritoExistente[index].cantidad += cantidad;
+        if (index >= 0) {carritoExistente[index].cantidad += cantidad;
         } else {
             carritoExistente.push(nuevoItem);
         }
@@ -104,21 +93,11 @@ const Productos = () => {
         setTimeout(() => navigate('/carrito'), 1000);
     };
 
-
     const generarPreferencia = () => {
         if (!talla && tipo.includes('ropa')) return toast.error('Seleccione una talla.');
-        const producto = {
-            title: productoData.titulo,
-            quantity: cantidad,
-            currency_id: "ARS",
-            unit_price: productoData.precio
-        };
+        const producto = {title: productoData.titulo, quantity: cantidad, currency_id: "ARS",unit_price: productoData.precio};
 
-        fetch("http://localhost:4000/create_preference", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ items: [producto] })
-        })
+        fetch("http://localhost:4000/create_preference", {method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ items: [producto] })})
             .then(res => res.json())
             .then(data => {
                 setPreferenceId(data.preferenceId);
@@ -162,26 +141,10 @@ const Productos = () => {
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
                     <div>
                         <h2 style={{ fontSize: '2rem', fontWeight: 'bold' }}>{productoData.titulo}</h2>
-                        <p style={{ fontSize: '1.5rem', fontWeight: 'bold', color: '#15803d', marginTop: '1rem' }}>
-                            ${Number(productoData.precio).toFixed(2)}
-                        </p>
-                        <button
-                            onClick={toggleFavorito}
-                            style={{
-                                marginTop: '0.5rem',
-                                background: 'none',
-                                border: 'none',
-                                cursor: 'pointer',
-                                fontSize: '1.2rem',
-                                color: favoritos.includes(productoData.id) ? 'red' : '#888'
-                            }}
-                        >
-                            {favoritos.includes(productoData.id) ? '❤️ Quitar de favoritos' : '🤍 Agregar a favoritos'}
-                        </button>
+                        <p style={{ fontSize: '1.5rem', fontWeight: 'bold', color: '#15803d', marginTop: '1rem' }}>${Number(productoData.precio).toFixed(2)}</p>
+                        <button onClick={toggleFavorito} style={{marginTop: '0.5rem',background: 'none',border: 'none',cursor: 'pointer',fontSize: '1.2rem',color: favoritos.includes(productoData.id) ? 'red' : '#888'}}>{favoritos.includes(productoData.id) ? '❤️ Quitar de favoritos' : '🤍 Agregar a favoritos'}</button>
                         {tipo.includes('accesorio') && (
-                            <p style={{ fontSize: '1rem', marginTop: '0.5rem', color: sinStock ? 'red' : '#555' }}>
-                                {sinStock ? 'Sin stock disponible' : `Stock disponible: ${stockDisponible}`}
-                            </p>
+                            <p style={{ fontSize: '1rem', marginTop: '0.5rem', color: sinStock ? 'red' : '#555' }}>{sinStock ? 'Sin stock disponible' : `Stock disponible: ${stockDisponible}`}</p>
                         )}
                     </div>
 
@@ -190,21 +153,13 @@ const Productos = () => {
                             <p style={{ fontWeight: 500, marginBottom: '0.5rem' }}>Tallas disponibles:</p>
                             <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
                                 {productoData.tallas.map((t, index) => (
-                                    <button
-                                        key={index}
-                                        onClick={() => handleSeleccionTalla(t.nombre)}
-                                        className={`talla-btn ${talla === t.nombre ? 'active' : ''}`}
-                                    >
-                                        {t.nombre}
-                                    </button>
+                                    <button key={index} onClick={() => handleSeleccionTalla(t.nombre)} className={`talla-btn ${talla === t.nombre ? 'active' : ''}`}>{t.nombre}</button>
                                 ))}
                             </div>
 
                             {talla && (
                                 <div className="mt-4">
-                                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                                        Cantidad (Stock disponible: {stockDisponible})
-                                    </label>
+                                    <label className="block text-sm font-medium text-gray-700 mb-1">Cantidad (Stock disponible: {stockDisponible})</label>
                                     <input
                                         type="number"
                                         min="1"
@@ -268,7 +223,6 @@ const Productos = () => {
                                 }
                             />
                             <div style={{ marginTop: '1rem' }}>
-                                <Wallet initialization={{ preferenceId }} />
                             </div>
                         </div>
                     )}

@@ -12,7 +12,6 @@ const MainHombres = () => {
   const [precioMin] = useState(100);
   const [precioMax, setPrecioMax] = useState(350);
 
-  // FAVORITOS
   const [favoritos, setFavoritos] = useState(() => {
     const stored = localStorage.getItem("favoritos");
     return stored ? JSON.parse(stored) : [];
@@ -21,8 +20,7 @@ const MainHombres = () => {
   const toggleFavorito = (id) => {
     setFavoritos((prev) => {
       let nuevos;
-      if (prev.includes(id)) {
-        nuevos = prev.filter((favId) => favId !== id);
+      if (prev.includes(id)) {nuevos = prev.filter((favId) => favId !== id);
       } else {
         nuevos = [...prev, id];
       }
@@ -38,8 +36,7 @@ const MainHombres = () => {
       });
       setProductos(res.data);
       setFiltroProductos(res.data);
-    } catch (error) {
-      console.error("Error al obtener productos:", error);
+    } catch (error) {console.error("Error al obtener productos:", error);
     }
   };
 
@@ -49,16 +46,14 @@ const MainHombres = () => {
 
   const toggleSubCategoria = (e) => {
     const value = e.target.value;
-    if (subCategoria.includes(value)) {
-      setSubCategoria(prev => prev.filter(item => item !== value));
+    if (subCategoria.includes(value)) {setSubCategoria(prev => prev.filter(item => item !== value));
     } else {
       setSubCategoria(prev => [...prev, value]);
     }
   };
 
   const toggleTallaManual = (size) => {
-    if (tallas.includes(size)) {
-      setTallas(prev => prev.filter(t => t !== size));
+    if (tallas.includes(size)) {setTallas(prev => prev.filter(t => t !== size));
     } else {
       setTallas(prev => [...prev, size]);
     }
@@ -67,25 +62,20 @@ const MainHombres = () => {
   const applyFiltro = () => {
     let temp = [...productos];
 
-    if (subCategoria.length > 0) {
-      temp = temp.filter(item => subCategoria.includes(item.categoria?.nombre));
-    }
+    if (subCategoria.length > 0) {temp = temp.filter(item => subCategoria.includes(item.categoria?.nombre));}
 
-    if (tallas.length > 0) {
-      temp = temp.filter(item => {
+    if (tallas.length > 0) {temp = temp.filter(item => {
         return item.tallas?.some(t => tallas.includes(t.nombre));
       });
     }
 
     temp = temp.filter(item => item.precio >= precioMin && item.precio <= precioMax);
-
     setFiltroProductos(temp);
   };
 
   const ordenar = () => {
     const ordenados = [...filtroProductos];
-    if (sortTipo === 'low-high') {
-      ordenados.sort((a, b) => a.precio - b.precio);
+    if (sortTipo === 'low-high') {ordenados.sort((a, b) => a.precio - b.precio);
     } else if (sortTipo === 'high-low') {
       ordenados.sort((a, b) => b.precio - a.precio);
     }
@@ -100,11 +90,7 @@ const MainHombres = () => {
     ordenar();
   }, [sortTipo]);
 
-  const maxPrice = productos.length > 0
-    ? Math.max(...productos.map((p) => p.precio || 0))
-    : 350;
-
-
+  const maxPrice = productos.length > 0 ? Math.max(...productos.map((p) => p.precio || 0)) : 350;
 
   return (
     <div className="content">
@@ -120,28 +106,16 @@ const MainHombres = () => {
           </div>
 
           <hr className="my-4" />
-
           <div className="mb-4">
             <h4 className="mb-3">TALLA</h4>
             <div className="flex flex-wrap gap-3 text-sm font-light text-gray-700">
               {["S", "M", "L", "XL"].map((size) => (
-                <button
-                  key={size}
-                  type="button"
-                  onClick={() => toggleTallaManual(size)}
-                  className={`px-4 py-2 border rounded-full text-sm transition-colors duration-200 ${tallas.includes(size)
-                    ? 'bg-black text-white border-black hover:bg-gray-800'
-                    : 'bg-white text-black border-gray-400 hover:bg-gray-100'
-                    }`}
-                >
-                  {size}
-                </button>
+                <button key={size} type="button" onClick={() => toggleTallaManual(size)} className={`px-4 py-2 border rounded-full text-sm transition-colors duration-200 ${tallas.includes(size) ? 'bg-black text-white border-black hover:bg-gray-800' : 'bg-white text-black border-gray-400 hover:bg-gray-100'}`}>{size}</button>
               ))}
             </div>
           </div>
 
           <hr className="my-4" />
-
           <div className="mb-4">
             <h4>PRECIO</h4>
             <div className="range">
@@ -163,10 +137,7 @@ const MainHombres = () => {
 
       <div className="main pl-[2200px] px-8 py-6">
         <div className="flex justify-end mb-2">
-          <select
-            onChange={(e) => setSortTipo(e.target.value)}
-            className="border border-gray-300 text-sm px-2 py-1 rounded"
-          >
+          <select onChange={(e) => setSortTipo(e.target.value)} className="border border-gray-300 text-sm px-2 py-1 rounded">
             <option value="relavente">Ordenar por: Relevante</option>
             <option value="low-high">Ordenar por: de menor a mayor</option>
             <option value="high-low">Ordenar por: mayor a menor</option>
@@ -175,15 +146,13 @@ const MainHombres = () => {
 
         <div className="product-grid">
           {filtroProductos.map((item) => {
-            const imageUrl = item.ruta_imagen?.startsWith('http')
-              ? item.ruta_imagen
-              : `http://127.0.0.1:8000/storage/${item.ruta_imagen}`;
+            const imageUrl = item.ruta_imagen?.startsWith('http') ? item.ruta_imagen : `http://127.0.0.1:8000/storage/${item.ruta_imagen}`;
 
             return (
               <ProductoItem
                 key={item.id}
                 id={item.id}
-                img={imageUrl} // ✅ URL corregida
+                img={imageUrl} 
                 nombre={item.titulo}
                 precio={item.precio}
                 tipo="ropa"
@@ -192,7 +161,6 @@ const MainHombres = () => {
               />
             );
           })}
-
         </div>
       </div>
     </div>
