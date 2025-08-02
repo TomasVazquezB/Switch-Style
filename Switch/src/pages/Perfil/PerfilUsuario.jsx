@@ -22,14 +22,14 @@ const PerfilUsuario = () => {
           </div>
         </div>
 
-        <hr />
+        <hr/>
 
         <div className="perfil-info">
           <p><strong>📧 Email:</strong> {usuario.correo}</p>
           <p><strong>👤 Nombre:</strong> {usuario.nombre}</p>
         </div>
 
-        <hr />
+        <hr/>
 
         <div className="perfil-links">
           <button onClick={() => window.location.href = '/pedidos'}>🧾 Mis pedidos</button>
@@ -37,15 +37,13 @@ const PerfilUsuario = () => {
           <button onClick={() => window.location.href = '/faq'}>❓ Preguntas Frecuentes</button>
         </div>
 
-        <hr />
+        <hr/>
 
         <button className="cerrar-sesion" onClick={() => {
           localStorage.removeItem('usuario');
           localStorage.removeItem('isLoggedIn');
           window.location.href = '/';
-        }}>
-          Cerrar sesión
-        </button>
+        }}>Cerrar sesión </button>
       </div>
     </div>
   );

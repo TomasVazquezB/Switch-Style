@@ -1,19 +1,16 @@
 @import "tailwindcss";
 
-/* Contenedor principal */
 body {
   font-family: 'Inter', sans-serif;
   background-color: #f9fafb;
 }
 
-/* Título del carrito */
 h2 {
   font-size: 2rem;
   font-weight: 700;
   margin-bottom: 2.5rem;
 }
 
-/* Producto individual */
 .product-item {
   display: flex;
   align-items: center;
@@ -45,7 +42,6 @@ h2 {
   color: #4b5563;
 }
 
-/* Botones cantidad */
 .quantity-controls {
   display: flex;
   align-items: center;
@@ -64,7 +60,6 @@ h2 {
   background-color: #d1d5db;
 }
 
-/* Resumen */
 .summary-box {
   background-color: #f3f4f6;
   padding: 1.5rem;
@@ -92,7 +87,6 @@ h2 {
   font-size: 1rem;
 }
 
-/* Botón Checkout */
 .checkout-button {
   width: 100%;
   background-color: #6366f1;
@@ -108,33 +102,25 @@ h2 {
   background-color: #4f46e5;
 }
 
-/* Contenedor general del carrito */
 .cart-container {
   display: flex;
   flex-direction: row;
   justify-content: center;
   align-items: flex-start;
   max-width: 1180px;
-  /* Aumentado desde 960px */
   margin: 3rem auto;
   padding: 0 1rem;
   gap: 3rem;
-  /* Más espacio entre columnas */
   flex-wrap: wrap;
 }
 
-/* Columna de productos */
 .cart-items {
   flex: 1 1 600px;
-  /* Aumentado desde 500px */
   max-width: 640px;
-  /* Aumentado desde 520px */
 }
 
-/* Columna resumen */
 .order-summary {
   flex: 0 1 380px;
-  /* Aumentado desde 320px */
   max-width: 380px;
   background: #f9f9f9;
   padding: 2rem;
@@ -142,7 +128,6 @@ h2 {
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
 }
 
-/* Producto individual */
 .cart-product {
   display: flex;
   gap: 1.5rem;
@@ -174,7 +159,6 @@ h2 {
   font-size: 0.9rem;
 }
 
-/* Botones cantidad */
 .cart-qty-controls {
   display: flex;
   align-items: center;
@@ -190,7 +174,6 @@ h2 {
   padding: 0.2rem;
 }
 
-/* Botón eliminar */
 .remove-btn {
   color: red;
   font-size: 0.85rem;
@@ -198,18 +181,12 @@ h2 {
   margin-left: auto;
 }
 
-/* Columna resumen */
 .order-summary {
   font-size: 1.2rem;
-  /* Aumenta el tamaño del texto */
   padding: 2rem;
-  /* Más espacio interno */
   width: 500px;
-  /* Más ancho del box */
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  /* Mejora visual */
   border-radius: 0.75rem;
-  /* Bordes más suaves */
 }
 
 .order-summary h2,
@@ -246,7 +223,6 @@ h2 {
   margin-left: 10px;
 }
 
-/* PayPal & MP */
 .pay-buttons {
   margin-top: 1.5rem;
 }
