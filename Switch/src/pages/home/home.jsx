@@ -201,15 +201,15 @@ const closeModal = () => {setShowModal(false);};
     </div>
   </div>
 
-  {showModal && (
-    <div className="modal-overlay">
-      <div className="modal-box">
-        <h3>¡Gracias por descargar nuestra app!</h3>
-        <p>Si la descarga no se inicia automáticamente, vuelva a intentarlo</p>
-        <button className="close-modal-btn" onClick={closeModal}>Cerrar</button>
-      </div>
+ {showModal && (
+  <div className={`modal-overlay ${darkMode ? 'dark' : 'light'}`}>
+    <div className={`modal-box ${darkMode ? 'dark' : 'light'}`}>
+      <h3>¡Gracias por descargar nuestra app!</h3>
+      <p>Si la descarga no se inicia automáticamente, vuelva a intentarlo</p>
+      <button className="close-modal-btn" onClick={closeModal}>Cerrar</button>
     </div>
-  )}
+  </div>
+)}
   <br />
 </div>
 </div>

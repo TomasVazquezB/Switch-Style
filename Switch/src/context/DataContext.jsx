@@ -42,9 +42,7 @@ const DataProvider = ({ children }) => {
   }, []);
 
   return (
-    <DataContext.Provider value={{ productos, usuarios, loading, error }}>
-      {children}
-    </DataContext.Provider>
+    <DataContext.Provider value={{ productos, usuarios, loading, error }}>{children}</DataContext.Provider>
   );
 };
 
