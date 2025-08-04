@@ -86,7 +86,6 @@ html {
   display: none !important;
 }
 
-
 .carousel-wrapper .control-next {
   right: 25px;
 }
@@ -216,15 +215,6 @@ html {
   animation: slideInLine 1s ease-in-out;
 }
 
-@keyframes slideInLine {
-  from {
-    width: 0;
-  }
-  to {
-    width: 60%;
-  }
-}
-
 .card-container {
   display: flex;
   justify-content: center;
@@ -255,30 +245,6 @@ html {
 .card-home:hover {
   transform: translateY(-8px) scale(1.03);
   box-shadow: 0 12px 30px rgba(255, 78, 80, 0.4);
-}
-
-/* Animaciones */
-@keyframes fadeInCard {
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-/* Responsive */
-@media (max-width: 768px) {
-  .mas-buscado {
-    font-size: 2rem;
-  }
-
-  .card-container {
-    gap: 20px;
-  }
-
-  .card-home {
-    width: 90%;
-    max-width: 300px;
-  }
 }
 
 .card-img-top {
@@ -884,6 +850,59 @@ html {
   transform: scale(1.05);
 }
 
+.modal-box.light {
+  background-color: #ffffff;
+  color: #111111;
+}
+
+.modal-box.dark {
+  background-color: #1e1e1e;
+  color: #ffffff;
+}
+
+.modal-box.dark h3 {
+  color: #ffffff;
+}
+
+.modal-box.dark p {
+  color: #dddddd;
+}
+
+.modal-box.light h3 {
+  color: #222222;
+}
+
+.modal-box.light p {
+  color: #444444;
+}
+
+.black-line {
+  border: none;
+  height: 1px;
+  background-color: #000000;
+  opacity: 1;
+  margin: 40px 0 20px;
+}
+
+.download-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.download-text {
+  font-size: 16px;
+  font-weight: bold;
+  margin: 0;
+}
+
+.download-section .download-icons {
+  display: flex;
+  gap: 40px;
+}
+
 @keyframes fadeIn {
   from {
     background: rgba(0, 0, 0, 0);
@@ -924,9 +943,29 @@ html {
   }
 }
 
+@keyframes fadeInCard {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideInLine {
+  from {
+    width: 0;
+  }
+  to {
+    width: 60%;
+  }
+}
+
 @media (max-width: 768px) {
   .carousel-card-home {
     width: 100%;
+  }
+
+   .mas-buscado {
+    font-size: 2rem;
   }
 
   .service-section {
@@ -940,7 +979,7 @@ html {
   }
 
   .download-icons {
-    flex-direction: row; /* antes era column */
+    flex-direction: row; 
     flex-wrap: wrap;
     justify-content: center;
     gap: 20px;
@@ -971,34 +1010,8 @@ html {
   .carousel-cards-btn {
     padding: 10px;
     font-size: 18px;
+
+    
+
   }
-}
-
-.black-line {
-  border: none;
-  height: 1px;
-  background-color: #000000;
-  opacity: 1;
-  margin: 40px 0 20px;
-}
-
-
-
-.download-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 20px;
-  flex-wrap: wrap;
-}
-
-.download-text {
-  font-size: 16px;
-  font-weight: bold;
-  margin: 0;
-}
-
-.download-section .download-icons {
-  display: flex;
-  gap: 40px;
 }

@@ -3,7 +3,7 @@ import './quienessomos.css';
 
 export function QuienesSomosPage({ darkMode }) {
   return (
-    <div className={`container-quienessomos ${darkMode ? 'dark' : 'light'}`}>
+ <div className={`container-quienessomos ${darkMode ? 'dark' : 'light'}`}>
       <div className="content">
         <h1 className="quienessomos">¿Quiénes Somos?</h1>
         <p className="info"> Un equipo apasionado por innovar y crear soluciones que mejoren el mundo. Descubre al equipo que está detrás de esta visión</p>
@@ -14,7 +14,7 @@ export function QuienesSomosPage({ darkMode }) {
             <p className="team-role">Fundador</p>
           </div>
           <div className="team-card">
-            <img src="src/assets/.jpg" alt="Joaquin Cardozo" className="team-img" />
+            <img src="src/assets/Joaquin.jpg" alt="Joaquin Cardozo" className="team-img" />
             <h3 className="team-name">Joaquin Cardozo</h3>
             <p className="team-role">Cofundador</p>
           </div>
