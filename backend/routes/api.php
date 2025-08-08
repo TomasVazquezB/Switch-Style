@@ -17,12 +17,7 @@ Route::get('/firebase/test', [FirebaseController::class, 'testConnection']);
 Route::get('/firebase/check', function (FirebaseService $firebaseService) {
     try {
         $firestore = $firebaseService->getFirestore();
-        $firestore->collection('usuarios')->document('test-check')->set([
-            'nombre' => 'Prueba Check',
-            'email' => 'check@example.com',
-            'timestamp' => now()->toDateTimeString(),
-        ]);
-
+        $firestore->collection('usuarios')->document('test-check')->set(['nombre' => 'Prueba Check', 'email' => 'check@example.com','timestamp' => now()->toDateTimeString(),]);
         $auth = $firebaseService->getAuth();
         $users = $auth->listUsers(1);
         $count = iterator_count($users);
@@ -39,7 +34,6 @@ Route::get('/ropa', [RopaController::class, 'apiIndex']);
 Route::get('/ropa/{id}', [RopaController::class, 'apiShow']);
 
 Route::get('/accesorios', [AccesorioController::class, 'apiIndex']);
-
 Route::get('/accesorios/{id}', [AccesorioController::class, 'apiShow']);
 
 Route::get('/usuario', [UserController::class, 'index']);
