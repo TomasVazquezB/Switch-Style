@@ -36,6 +36,7 @@
   .app-content {
     flex-grow: 1;
   }
+  
   :root {
     --background-color: #ffffff;
     --text-color: #000000;

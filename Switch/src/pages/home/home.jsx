@@ -191,8 +191,9 @@ const closeModal = () => {setShowModal(false);};
           </div>
         )}
 
+<br />
  <div className="download-section">
-  <hr className="black-line" />
+  {/* <hr className="black-line" /> */}
   <div className="download-row">
     <p className="download-text">Descarga la aplicación y únete a la experiencia Switch Style</p>
     <div className="download-icons">

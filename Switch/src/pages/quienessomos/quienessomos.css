@@ -1,8 +1,49 @@
+/* ------------------- VARIABLES DE COLOR ------------------- */
+:root {
+  --bg-color: #ffffff;
+  --text-color: #1e1e1e;
+  --h1-color: #000000;
+  --p-color: #444444;
+  --card-bg: #f3f3f3;
+  --card-text: #1e1e1e;
+  --card-shadow: rgba(0, 0, 0, 0.08);
+  --card-hover-shadow: rgba(0, 0, 0, 0.2);
+}
+
+.dark {
+  --bg-color: #121212;
+  --text-color: #ffffff;
+  --h1-color: #ffffff;
+  --p-color: #cccccc;
+  --card-bg: #1e1e1e;
+  --card-text: #ffffff;
+  --card-shadow: rgba(255, 255, 255, 0.05);
+  --card-hover-shadow: rgba(255, 255, 255, 0.15);
+}
+
+.container-quienessomos .quienessomos {
+  color: var(--h1-color);
+}
+
+.container-quienessomos .info {
+  color: var(--p-color);
+}
+html.dark .container-quienessomos .quienessomos {
+  color: var(--h1-color) !important;
+}
+
+html.dark .container-quienessomos .info {
+  color: var(--p-color) !important;
+}
+
+/* ------------------- ESTILOS ------------------- */
 .container-quienessomos {
   min-height: 10vh;
-  padding: 0px;
+  padding: 0;
   text-align: center;
   transition: background-color 0.4s ease, color 0.4s ease;
+  background-color: var(--bg-color);
+  color: var(--text-color);
 }
 
 .content {
@@ -16,8 +57,9 @@
   font-weight: 700;
   letter-spacing: 2px;
   margin-bottom: 30px;
-  transition: color 0.4s ease;
   margin-top: -30px;
+  transition: color 0.4s ease;
+  color: var(--h1-color);
 }
 
 .info {
@@ -27,6 +69,7 @@
   margin-left: auto;
   margin-right: auto;
   transition: color 0.4s ease;
+  color: var(--p-color);
 }
 
 .team-cards {
@@ -44,7 +87,9 @@
   position: relative;
   text-align: center;
   transition: background-color 0.4s ease, color 0.4s ease, transform 0.3s ease, box-shadow 0.4s ease;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  background-color: var(--card-bg);
+  color: var(--card-text);
+  box-shadow: 0 4px 12px var(--card-shadow);
   opacity: 0;
   animation: fadeInUp 0.6s ease forwards;
 }
@@ -55,6 +100,7 @@
 
 .team-card:hover {
   transform: translateY(-10px);
+  box-shadow: 0 12px 24px var(--card-hover-shadow);
 }
 
 .team-img {
@@ -72,68 +118,13 @@
   font-weight: 600;
   margin-bottom: 7px;
   transition: color 0.3s ease;
+  color: var(--card-text);
 }
 
 .team-role {
   font-size: 1em;
   transition: color 0.3s ease;
-}
-
-.container-quienessomos.dark {
-  background-color: #121212;
-  color: #ffffff;
-}
-
-.container-quienessomos.dark .quienessomos {
-  color: #ffffff !important;
-}
-.container-quienessomos.dark .info  {
-  color: #cccccc !important;
-}
-
-.container-quienessomos.dark .team-name,
-.container-quienessomos.dark .team-role {
-  color: #ffffff;
-}
-
-.container-quienessomos.dark .team-card {
-  background-color: #1e1e1e;
-  box-shadow: 0 12px 24px rgba(255, 255, 255, 0.05);
-}
-
-.container-quienessomos.dark .team-card:hover {
-  box-shadow: 0 12px 24px rgba(255, 255, 255, 0.15);
-}
-
-.container-quienessomos.light {
-  background-color: #ffffff;
-  color: #1e1e1e;
-}
-
-.container-quienessomos.light .quienessomos {
-  color: #222222;
-}
-
-.container-quienessomos.light .info {
-  color: #444444;
-}
-
-.container-quienessomos.light .team-card {
-  background-color: #f3f3f3;
-  color: #1e1e1e;
-  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.08);
-}
-
-.container-quienessomos.light .team-card:hover {
-  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
-}
-
-.container-quienessomos.light .team-name {
-  color: #222222;
-}
-
-.container-quienessomos.light .team-role {
-  color: #555555;
+  color: var(--card-text);
 }
 
 @keyframes fadeInUp {
