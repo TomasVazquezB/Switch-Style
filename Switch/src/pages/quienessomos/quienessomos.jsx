@@ -1,12 +1,20 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import './quienessomos.css';
 
 export function QuienesSomosPage({ darkMode }) {
+  useEffect(() => {
+    if (darkMode) {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+  }, [darkMode]);
+
   return (
- <div className={`container-quienessomos ${darkMode ? 'dark' : 'light'}`}>
+    <div className="container-quienessomos">
       <div className="content">
         <h1 className="quienessomos">¿Quiénes Somos?</h1>
-        <p className="info"> Un equipo apasionado por innovar y crear soluciones que mejoren el mundo. Descubre al equipo que está detrás de esta visión</p>
+        <p className="info">Un equipo apasionado por innovar y crear soluciones que mejoren el mundo. Descubre al equipo que está detrás de esta visión</p>
         <div className="team-cards">
           <div className="team-card">
             <img src="src/assets/Tomas.jpg" alt="Tomas Vazquez" className="team-img" />
