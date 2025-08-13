@@ -1,14 +1,14 @@
 .faq-page {
-  padding: 2rem;
+  padding: 4rem;
   font-family: 'Inter', sans-serif;
   transition: background-color 0.4s ease, color 0.4s ease;
-  min-height: 100vh;
+  min-height: 0vh;
 }
 
 .titulo-faq {
   text-align: center;
-  margin-bottom: 2rem; 
-  font-size: 2rem;
+  margin-bottom: 3rem; 
+  font-size: 2.5rem;
   font-weight: 600;
   transition: color 0.3s;
 }
@@ -71,43 +71,29 @@ body.dark-mode .faq-respuesta {
   display: flex;
   align-items: flex-start;
   gap: 1rem;
-  padding: 1.5rem;
-  border-radius: 12px;
+  padding: 1.3rem;
+  border-radius: 14px;
   border: 1px solid;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
   transition: background-color 0.3s, border-color 0.3s, color 0.3s;
-  cursor: pointer;
-  margin-bottom: 1.5rem; 
-}
-
-.faq-item:hover {
-  transform: scale(1.05);
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
-  transition: all 0.3s ease;
+  cursor: default; 
+  margin-bottom: 1.4rem; 
 }
 
 .faq-icon {
-  font-size: 1.5rem;
+  font-size: 2rem;
   font-weight: bold;
   flex-shrink: 0;
-  margin-top: 0.2rem;
+  margin-top: 0rem;
 }
 
 .faq-pregunta {
   margin: 0;
   font-size: 1.1rem;
-  font-weight: 600;
+  font-weight: 500;
 }
 
 .faq-respuesta {
   margin: 0.5rem 0 0;
   font-size: 0.95rem;
-}
-
-body.light-mode .faq-item:hover {
-  background-color: #444444; 
-}
-
-body.dark-mode .faq-item:hover {
-  background-color: #1a1a1a;
 }

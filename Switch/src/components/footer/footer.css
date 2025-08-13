@@ -32,8 +32,8 @@ footer nav {
   align-items: center;
   justify-content: flex-start;
   width: 100%;
-  gap: 6px; 
-  margin-top: 10px;
+  gap: 5px; 
+  margin-top: 4px;
 }
 
 .smile-icon {
@@ -67,13 +67,12 @@ footer nav {
   color: white;
 }
 
-
 .social-icon {
   color: white;
   font-size: 28px; 
   transition: transform 0.3s; 
   cursor: pointer; 
-  margin-right: 4px;
+  margin-right: 2px;
 }
 
 .social-icon:hover {
@@ -90,8 +89,8 @@ footer nav {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: 4px;
-  margin-top: -14px;
+  gap: 3px;
+  margin-top: -13px;
   width: 100%;
 }
 
@@ -99,7 +98,7 @@ footer nav {
   display: flex;
   align-items: center;
   gap: 10px;
-  margin-bottom: 8px;
+  margin-bottom: 7px;
   color: white;
 }
 
@@ -111,7 +110,7 @@ footer nav {
 
 .footer-text {
   font-weight: 600;
-  font-size: 14rem;
+  font-size: 12rem;
   color: #ffffff;
   margin: 0px;
   text-align: center;
@@ -136,8 +135,8 @@ footer nav {
   background-color: transparent;
   border: 2px solid white;
   border-radius: 6px;
-  padding: 6px;
-  font-size: 18px;
+  padding: 3px;
+  font-size: 14px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -175,7 +174,6 @@ footer nav {
   font-size: 0.9rem;
 }
 
-/* Fondo y texto global del footer */
 .light-mode .footer {
   background-color: #000000;
   color: #000000;

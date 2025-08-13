@@ -128,6 +128,7 @@ const closeModal = () => {setShowModal(false);};
 
         <div>
           <h2 className="mas-buscado">Lo más buscado</h2>
+          <br />
           <div className="card-container">
             {cardImages.map((image, index) => (
               <div className="card-home" key={index}>

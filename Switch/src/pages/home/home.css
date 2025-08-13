@@ -199,7 +199,7 @@ html {
   font-size: 2.5rem;
   font-weight: 800;
   color: #000000; 
-  margin-top: 20px;
+  margin-top: 10px;
   position: relative;
 }
 
@@ -351,7 +351,7 @@ html {
 }
 
 .service-section {
-  margin-top: 50px;
+  margin-top: 40px;
   display: flex;
   justify-content: center;
 }
@@ -388,7 +388,12 @@ html {
 }
 
 .download-section {
+  position: relative;
+  display: block;
+  flex-direction: column;
+  box-sizing: border-box;
   margin-top: 0px;
+  z-index: 1;
   margin-bottom: 0px;
   justify-content: space-between;
   align-items: center;
@@ -403,7 +408,7 @@ html {
 }
 
 .home-index.dark .download-section {
-  background-color: #000000;
+  background-color: #121212;
   color: white;
 }
 
@@ -660,7 +665,7 @@ html {
   display: flex;
   overflow: hidden;
   position: relative;
-  padding: 20px 0;
+  padding: 13px 20px;
   border-radius: 12px;
 }
 
@@ -722,7 +727,8 @@ html {
 .mas-buscado {
   text-align: center;
   font-size: 2.2rem;
-  margin-bottom: 25px;
+  margin-bottom: 10px;
+  margin-top: 10px;
   font-weight: bold;
   letter-spacing: 0.5px;
   color: var(--text-color, #111);
