@@ -69,14 +69,17 @@
 .input_user,
 .input_pass,
 .input_confirm_pass {
-  color: #000000;
-  border: 1px solid #000000;
-  padding: 8px; /* antes 10px */
+  background-color: #ffffff; /* Fondo blanco para todos */
+  color: #000000;            /* Texto negro */
+  border: 1px solid #aaaaaa; /* Borde gris oscuro/negro */
+  padding: 8px;
   border-radius: 5px;
   width: 100%;
-  margin-bottom: 12px; /* antes 15px */
+  margin-bottom: 12px;
   font-size: 0.95em;
+  box-sizing: border-box;    /* Evita que el padding cambie el ancho */
 }
+
 
 /* Botón de registro */
 .button-registro {
@@ -226,7 +229,7 @@ body.light-mode .input_pass,
 body.light-mode .input_confirm_pass {
   background-color: #ffffff;
   color: #000000;
-  border: 1px solid #000000;
+  border: 1px solid #aaaaaa;
 }
 
 body.light-mode .input_user::placeholder,

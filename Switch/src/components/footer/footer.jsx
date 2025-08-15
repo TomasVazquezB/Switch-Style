@@ -14,9 +14,7 @@ const Footer = () => {
     <footer className="footer footer-center bg-base-200/60 rounded-sm p-4">
       <nav className="footer-nav">
         <FaRegSmileWink className="smile-icon" />
-        <Link to="/quienessomos" onClick={scrollToQuienesSomos} className="quienes-link">
-          ¿Querés conocernos?
-        </Link>
+        <Link to="/quienessomos" onClick={scrollToQuienesSomos} className="quienes-link">¿Querés conocernos?</Link>
       </nav>
 
       <nav>

@@ -101,17 +101,7 @@ const closeModal = () => {setShowModal(false);};
       <div className={`home-index ${darkMode ? 'dark' : 'light'}`}>
         <div id="varkalaCarousel" className="carousel slide varkala-carousel" data-bs-ride="carousel" data-bs-interval="5000">
           <div className="carousel-wrapper">
-            <Carousel
-              autoPlay
-              infiniteLoop
-              interval={5000}
-              showThumbs={false}
-              showStatus={false}
-              showIndicators={true}
-              swipeable
-              emulateTouch
-              stopOnHover
-              dynamicHeight={false}>
+            <Carousel autoPlay infiniteLoop interval={5000} showThumbs={false} showStatus={false} showIndicators={true} swipeable emulateTouch stopOnHover dynamicHeight={false}>
               {carouselImages.map((image, index) => (
                 <div key={index}>
                   <img src={image} alt={`Slide ${index + 1}`} />
@@ -127,6 +117,7 @@ const closeModal = () => {setShowModal(false);};
         </div>
 
         <div>
+          <br />
           <h2 className="mas-buscado">Lo más buscado</h2>
           <br />
           <div className="card-container">
@@ -141,19 +132,19 @@ const closeModal = () => {setShowModal(false);};
         <div className="service-section">
           <div className="service-box">
             <div className="service-item">
-              <FaSyncAlt size={40} />
+              <FaSyncAlt size={45} />
               <br />
               <h3 className="service-title">Nuevos productos cada día</h3>
               <p className="service-description">Todos los días publicamos miles de artículos nuevos</p>
             </div>
             <div className="service-item">
-              <FaTruck size={40} />
+              <FaTruck size={45} />
               <br />
               <h3 className="service-title">Entregas en 72 horas</h3>
               <p className="service-description">Tu pedido será entregado un plazo máximo de 72 horas</p>
             </div>
             <div className="service-item">
-              <FaUndo size={40} />
+              <FaUndo size={45} />
               <br />
               <h3 className="service-title">14 días de devolución</h3>
               <p className="service-description">Si no estás satisfecho con tu compra, tienes 14 días para devolver tu pedido</p>

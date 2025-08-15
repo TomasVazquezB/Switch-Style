@@ -36,7 +36,6 @@ function App() {
       document.body.classList.remove('dark-mode');
       document.body.classList.add('light-mode');
     }
-
     localStorage.setItem('darkMode', darkMode);
   }, [darkMode]);
 
@@ -76,7 +75,7 @@ function App() {
 
 function PageTitle({ title, children }) {
   const location = useLocation();
-  useEffect(() => {document.title = title;}, [location, title]);
+  useEffect(() => { document.title = title; }, [location, title]);
   return <>{children}</>;
 }
 
