@@ -12,11 +12,11 @@
 
 .dark {
   --bg-color: #121212;
-  --text-color: #ffffff;
+  --text-color: #000000;
   --h1-color: #ffffff;
   --p-color: #cccccc;
-  --card-bg: #1e1e1e;
-  --card-text: #ffffff;
+  --card-bg: #000000;
+  --card-text: #050505;
   --card-shadow: rgba(255, 255, 255, 0.05);
   --card-hover-shadow: rgba(255, 255, 255, 0.15);
 }

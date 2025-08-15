@@ -11,7 +11,7 @@ html, body {
 
 .footer {
   background-color: #111; 
-  padding: 15px 30px;
+  padding: 14px 20px;
   color: white;
   font-family: 'Segoe UI', sans-serif;
   width: 100%;
@@ -33,27 +33,28 @@ footer nav {
   justify-content: flex-start;
   width: 100%;
   gap: 5px; 
-  margin-top: 4px;
+  margin-top: -2px;
 }
 
 .smile-icon {
   margin-right: 5px; 
   color: white;
+  font-size: 1.3rem;
 }
 
 .quienes-link {
   color: white;
-  font-size: 1.0rem;
+  font-size: 1rem;
   text-decoration: none; 
   color: inherit; 
-  font-weight: bold; 
+  font-weight: 500; 
   cursor: pointer; 
 }
 
 .social-icons {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 6px;
   justify-content: flex-end;
 }
 
@@ -69,7 +70,7 @@ footer nav {
 
 .social-icon {
   color: white;
-  font-size: 28px; 
+  font-size: 33px; 
   transition: transform 0.3s; 
   cursor: pointer; 
   margin-right: 2px;
@@ -81,35 +82,36 @@ footer nav {
 
 .social-text {
   color: white;
-  font-size: 1.2rem;
-  margin-left: 5px;
+  font-size: 1.1rem;
+  margin-left: 4px;
+  font-weight: 600;
 }
 
 .contact-info {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: 3px;
-  margin-top: -13px;
+  gap: 6px;
+  margin-top: -5px;
   width: 100%;
 }
 
 .contact-item {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 4px;
   margin-bottom: 7px;
   color: white;
 }
 
 .contact-icon {
-  font-size: 1.2rem;
-  margin-right: 10px;
+  font-size: 1.3rem;
+  margin-right: 8px;
   color: white;
 }
 
 .footer-text {
-  font-weight: 600;
+  font-weight: 500;
   font-size: 12rem;
   color: #ffffff;
   margin: 0px;
@@ -121,6 +123,7 @@ footer nav {
 .contact-text {
   color: white;
   font-size: 0.95rem;
+  font-weight: 500;
 }
 
 .footer-content {
@@ -167,11 +170,11 @@ footer nav {
   position: absolute;
   left: 50%;
   transform: translateX(-50%);
-  top: 50%;
+  top: 40%;
   transform: translate(-50%, -50%);
   margin: 0;
   color: white;
-  font-size: 0.9rem;
+  font-size: 1rem;
 }
 
 .light-mode .footer {
