@@ -1,6 +1,5 @@
 import React, { useRef } from 'react';
 import { Link } from 'react-router-dom';
-import Typography from '@mui/material/Typography';
 import { FaPhoneAlt, FaEnvelope, FaInstagram, FaRegSmileWink } from 'react-icons/fa';
 import './footer.css';
 

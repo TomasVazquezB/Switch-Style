@@ -32,14 +32,14 @@ footer nav {
   align-items: center;
   justify-content: flex-start;
   width: 100%;
-  gap: 5px; 
-  margin-top: -2px;
+  gap: 3px; 
+  margin-top: -3px;
 }
 
 .smile-icon {
-  margin-right: 5px; 
+  margin-right: 4px; 
   color: white;
-  font-size: 1.3rem;
+  font-size: 1.4rem;
 }
 
 .quienes-link {
@@ -54,7 +54,7 @@ footer nav {
 .social-icons {
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 3px;
   justify-content: flex-end;
 }
 
@@ -73,7 +73,7 @@ footer nav {
   font-size: 33px; 
   transition: transform 0.3s; 
   cursor: pointer; 
-  margin-right: 2px;
+  margin-right: 3px;
 }
 
 .social-icon:hover {
@@ -82,8 +82,8 @@ footer nav {
 
 .social-text {
   color: white;
-  font-size: 1.1rem;
-  margin-left: 4px;
+  font-size: 1.3rem;
+  margin-left: 3px;
   font-weight: 600;
 }
 
@@ -91,22 +91,22 @@ footer nav {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: 6px;
-  margin-top: -5px;
+  gap: 7px;
+  margin-top: -12px;
   width: 100%;
 }
 
 .contact-item {
   display: flex;
   align-items: center;
-  gap: 4px;
+  gap: 2px;
   margin-bottom: 7px;
   color: white;
 }
 
 .contact-icon {
   font-size: 1.3rem;
-  margin-right: 8px;
+  margin-right: 7px;
   color: white;
 }
 
