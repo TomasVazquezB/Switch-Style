@@ -117,7 +117,6 @@ const closeModal = () => {setShowModal(false);};
         </div>
 
         <div>
-          <br />
           <h2 className="mas-buscado">Lo más buscado</h2>
           <br />
           <div className="card-container">
@@ -153,7 +152,7 @@ const closeModal = () => {setShowModal(false);};
         </div>
 
         <div className="last-added-section">
-          <h2 className="mas-buscado">Últimas Prendas Añadidas</h2>
+          <h2 className="ultimas-prendas">Últimas Prendas Añadidas</h2>
           <div className="carousel-cards-wrapper">
             <button className="carousel-cards-btn" onClick={handlePrev}><FaChevronLeft /></button>
             <div className="carousel-cards-track" style={{ transform: `translateX(-${(currentIndex / lastAddedImages.length) * 100}%)` }}>
