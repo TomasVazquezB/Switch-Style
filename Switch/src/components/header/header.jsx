@@ -27,10 +27,8 @@ const Header = ({ toggleTheme, darkMode }) => {
 
     const [searchQuery, setSearchQuery] = useState('');
 
-    const handleSearch = (e) => {
-        e.preventDefault();
-        if (searchQuery.trim()) {
-            navigate(`/buscar?q=${encodeURIComponent(searchQuery)}`);
+    const handleSearch = (e) => {e.preventDefault();
+        if (searchQuery.trim()) {navigate(`/buscar?q=${encodeURIComponent(searchQuery)}`);
         }
     };
 
@@ -46,14 +44,13 @@ const Header = ({ toggleTheme, darkMode }) => {
     useEffect(() => {
         const actualizarUsuario = () => {
             const userData = localStorage.getItem('usuario');
-            if (userData) {
-                setUsuario(JSON.parse(userData));
+            if (userData) {setUsuario(JSON.parse(userData));
             } else {
                 setUsuario(null);
             }
         };
 
-        actualizarUsuario(); // inicial
+        actualizarUsuario(); 
         window.addEventListener('usuario-actualizado', actualizarUsuario);
         return () => window.removeEventListener('usuario-actualizado', actualizarUsuario);
     }, []);
@@ -67,8 +64,7 @@ const Header = ({ toggleTheme, darkMode }) => {
         body.classList.remove('dark-mode', 'light-mode');
         navbars.forEach(nav => nav.classList.remove('navbar-light-mode'));
 
-        if (darkMode) {
-            body.classList.add('dark-mode');
+        if (darkMode) {body.classList.add('dark-mode');
         } else {
             body.classList.add('light-mode');
             navbars.forEach(nav => nav.classList.add('navbar-light-mode'));
@@ -76,8 +72,7 @@ const Header = ({ toggleTheme, darkMode }) => {
     }, [darkMode]);
 
 
-    const getLinkClass = (isActive) =>
-        `nav-link ${darkMode ? 'text-white' : 'text-dark'} ${isActive ? 'active-link' : ''}`;
+    const getLinkClass = (isActive) =>`nav-link ${darkMode ? 'text-white' : 'text-dark'} ${isActive ? 'active-link' : ''}`;
 
     return (
         <>
@@ -88,9 +83,7 @@ const Header = ({ toggleTheme, darkMode }) => {
 
             <Navbar expand="lg" className={`navbar-top ${darkMode ? 'bg-dark' : 'bg-light'}`}>
                 <Container fluid>
-                    <Navbar.Brand as={NavLink} to="/" onClick={() => navigate('/')}>
-                        <img src="../src/assets/LOGO.png" width="90" height="50" className="d-inline-block align-top" alt="Logo" />
-                    </Navbar.Brand>
+    <Navbar.Brand as={NavLink} to="/" onClick={() => navigate('/')}> <img src="../src/assets/LOGO.png" width="90" height="50" className="d-inline-block align-top" alt="Logo" /></Navbar.Brand>
 
                     <Navbar.Toggle aria-controls="navbarNav" />
                     <Navbar.Collapse id="navbarNav">
@@ -98,28 +91,16 @@ const Header = ({ toggleTheme, darkMode }) => {
                             <div className="mode-switch">
                                 <BsMoon className={`mode-icon ${darkMode ? 'active' : 'inactive'}`} />
                                 <label className="switch">
-                                    <input
-                                        type="checkbox"
-                                        onChange={toggleTheme} // Usar la función que viene del `App.jsx`
-                                        checked={darkMode}     // Mostrar el estado desde `App.jsx`
-                                    />
+                                    <input type="checkbox" onChange={toggleTheme} checked={darkMode}/>
                                     <span className="slider"></span>
                                 </label>
-
                                 <BsSun className={`mode-icon ${darkMode ? 'inactive' : 'active'}`} />
                             </div>
                         </Nav>
 
                         <div className="search-container">
                             <form className="search-container" onSubmit={handleSearch}>
-                                <input
-                                    className="search-input"
-                                    type="search"
-                                    placeholder="Buscar por producto, categoría o marca"
-                                    aria-label="Search"
-                                    value={searchQuery}
-                                    onChange={(e) => setSearchQuery(e.target.value)}
-                                />
+                                <input className="search-input" type="search" placeholder="Buscar por producto, categoría o marca" aria-label="Search" value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)}/>
                                 <button className="search-btn" type="submit">
                                     <FaSearch />
                                 </button>
@@ -136,79 +117,24 @@ const Header = ({ toggleTheme, darkMode }) => {
                         <Nav className="ms-auto">
                             {usuario ? (
                                 <div className="profile-container">
-                                    <img
-                                        src={usuario.foto || '/default-avatar.png'}
-                                        alt="Perfil"
-                                        className="w-8 h-8 rounded-full cursor-pointer"
-                                        onClick={handleProfileClick}
-                                    />
+                                    <img src={usuario.foto || '/default-avatar.png'} alt="Perfil" className="w-8 h-8 rounded-full cursor-pointer" onClick={handleProfileClick}/>
                                     {showProfileMenu && (
                                         <div className="profile-menu">
-                                            <div className="px-4 py-2 border-b border-gray-200 text-sm font-medium">
-                                                Hola, {usuario.nombre}
-                                            </div>
-                                            <NavLink
-                                                to="/perfil"
-                                                className={({ isActive }) =>
-                                                    `block px-4 py-2 text-sm ${darkMode ? 'text-white hover:bg-gray-700' : 'text-gray-800 hover:bg-gray-100'
-                                                    }`
-                                                }
-                                            >
-                                                Mi Perfil
-                                            </NavLink>
-                                            <NavLink
-                                                to="/pedidos"
-                                                className={({ isActive }) =>
-                                                    `block px-4 py-2 text-sm ${darkMode ? 'text-white hover:bg-gray-700' : 'text-gray-800 hover:bg-gray-100'
-                                                    }`
-                                                }
-                                            >
-                                                Mis pedidos
-                                            </NavLink>
-                                            <NavLink
-                                                to="/favoritos"
-                                                className={({ isActive }) =>
-                                                    `block px-4 py-2 text-sm ${darkMode ? 'text-white hover:bg-gray-700' : 'text-gray-800 hover:bg-gray-100'
-                                                    }`
-                                                }
-                                            >
-                                                Mis favoritos
-                                            </NavLink>
-                                            <NavLink
-                                                to="/FAQ"
-                                                className={({ isActive }) =>
-                                                    `block px-4 py-2 text-sm ${darkMode ? 'text-white hover:bg-gray-700' : 'text-gray-800 hover:bg-gray-100'
-                                                    }`
-                                                }
-                                            >
-                                                FAQ
-                                            </NavLink>
+                                            <div className="px-4 py-2 border-b border-gray-200 text-sm font-medium">Hola, {usuario.nombre}</div>
+                                            <NavLink to="/perfil" className={({ isActive }) => `block px-4 py-2 text-sm ${darkMode ? 'text-white hover:bg-gray-700' : 'text-gray-800 hover:bg-gray-100'}`}>Mi Perfil</NavLink>
+                                            <NavLink to="/pedidos" className={({ isActive }) => `block px-4 py-2 text-sm ${darkMode ? 'text-white hover:bg-gray-700' : 'text-gray-800 hover:bg-gray-100'}`}>Mis pedidos</NavLink>
+                                            <NavLink to="/favoritos" className={({ isActive }) => `block px-4 py-2 text-sm ${darkMode ? 'text-white hover:bg-gray-700' : 'text-gray-800 hover:bg-gray-100'}`}>Mis favoritos</NavLink>
+                                            <NavLink to="/FAQ" className={({ isActive }) => `block px-4 py-2 text-sm ${darkMode ? 'text-white hover:bg-gray-700' : 'text-gray-800 hover:bg-gray-100'}`}>FAQ</NavLink>
 
-                                            {usuario.rol === 'Admin' && (
-                                                <NavLink to="/admin" className={({ isActive }) => getLinkClass(isActive)}>Panel Admin</NavLink>
-                                            )}
+                                            {usuario.rol === 'Admin' && (<NavLink to="/admin" className={({ isActive }) => getLinkClass(isActive)}>Panel Admin</NavLink>)}
                                             <button onClick={handleLogout}>Cerrar sesión</button>
                                         </div>
                                     )}
                                 </div>
                             ) : (
                                 <>
-                                    <Nav.Link
-                                        as={NavLink}
-                                        to="/registro"
-                                        onClick={handleClick}
-                                        className={({ isActive }) => getLinkClass(isActive)}
-                                    >
-                                        Registro
-                                    </Nav.Link>
-                                    <Nav.Link
-                                        as={NavLink}
-                                        to="/login"
-                                        onClick={handleClick}
-                                        className={({ isActive }) => getLinkClass(isActive)}
-                                    >
-                                        Login
-                                    </Nav.Link>
+                                    <Nav.Link as={NavLink} to="/registro" onClick={handleClick} className={({ isActive }) => getLinkClass(isActive)}>Registro</Nav.Link>
+                                    <Nav.Link as={NavLink} to="/login" onClick={handleClick} className={({ isActive }) => getLinkClass(isActive)}>Login</Nav.Link>
                                 </>
                             )}
                         </Nav>
@@ -220,13 +146,7 @@ const Header = ({ toggleTheme, darkMode }) => {
                 <Container fluid>
                     <Nav className="me-auto" style={{ justifyContent: 'space-evenly', width: '100%' }}>
                         <div className="nav-dropdown">
-                            <Nav.Link
-                                as={NavLink}
-                                to="/MainHombres"
-                                className={({ isActive }) => getLinkClass(isActive)}
-                            >
-                                Hombres
-                            </Nav.Link>
+                            <Nav.Link as={NavLink} to="/MainHombres" className={({ isActive }) => getLinkClass(isActive)}>Hombres</Nav.Link>
                             <div className="dropdown-menu">
                                 <NavLink to="/ropa/hombres/remeras" className={({ isActive }) => getLinkClass(isActive)}>Remeras</NavLink>
                                 <NavLink to="/ropa/hombres/pantalones" className={({ isActive }) => getLinkClass(isActive)}>Pantalones</NavLink>
@@ -234,13 +154,7 @@ const Header = ({ toggleTheme, darkMode }) => {
                             </div>
                         </div>
                         <div className="nav-dropdown">
-                            <Nav.Link
-                                as={NavLink}
-                                to="/MainMujeres"
-                                className={({ isActive }) => getLinkClass(isActive)}
-                            >
-                                Mujeres
-                            </Nav.Link>
+                            <Nav.Link as={NavLink} to="/MainMujeres" className={({ isActive }) => getLinkClass(isActive)}>Mujeres</Nav.Link>
                             <div className="dropdown-menu">
                                 <NavLink to="/ropa/mujeres/remeras" className={({ isActive }) => getLinkClass(isActive)}>Remeras</NavLink>
                                 <NavLink to="/ropa/mujeres/pantalones" className={({ isActive }) => getLinkClass(isActive)}>Pantalones</NavLink>
@@ -248,13 +162,7 @@ const Header = ({ toggleTheme, darkMode }) => {
                             </div>
                         </div>
                         <div className="nav-dropdown">
-                            <Nav.Link
-                                as={NavLink}
-                                to="/MainKids"
-                                className={({ isActive }) => getLinkClass(isActive)}
-                            >
-                                Chicos
-                            </Nav.Link>
+                            <Nav.Link as={NavLink} to="/MainKids" className={({ isActive }) => getLinkClass(isActive)}>Chicos</Nav.Link>
                             <div className="dropdown-menu">
                                 <NavLink to="/ropa/kids/remeras" className={({ isActive }) => getLinkClass(isActive)}>Remeras</NavLink>
                                 <NavLink to="/ropa/kids/pantalones" className={({ isActive }) => getLinkClass(isActive)}>Pantalones</NavLink>
@@ -262,13 +170,7 @@ const Header = ({ toggleTheme, darkMode }) => {
                             </div>
                         </div>
                         <div className="nav-dropdown">
-                            <Nav.Link
-                                as={NavLink}
-                                to="/accesorios"
-                                className={({ isActive }) => getLinkClass(isActive)}
-                            >
-                                Accesorios
-                            </Nav.Link>
+                            <Nav.Link as={NavLink} to="/accesorios" className={({ isActive }) => getLinkClass(isActive)}>Accesorios</Nav.Link>
                             <div className="dropdown-menu">
                                 <NavLink to="/accesorios/cadenas" className={({ isActive }) => getLinkClass(isActive)}>Cadenas</NavLink>
                                 <NavLink to="/accesorios/anillos" className={({ isActive }) => getLinkClass(isActive)}>Anillos</NavLink>
