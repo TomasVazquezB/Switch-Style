@@ -47,25 +47,26 @@ html.dark .container-quienessomos .info {
 }
 
 .content {
-  max-width: 1200px;
+  max-width: 1300px;
   margin: 0 auto;
   padding: 20px;
 }
 
 .quienessomos {
   font-size: 2.5em;
-  font-weight: 700;
+  font-weight: 600;
   letter-spacing: 2px;
-  margin-bottom: 30px;
-  margin-top: -30px;
+  margin-bottom: 25px;
+  margin-top: -25px;
   transition: color 0.4s ease;
   color: var(--h1-color);
 }
 
 .info {
-  font-size: 1.1em;
+  font-size: 1.2em;
   margin-bottom: 10px;
-  max-width: 1200px;
+  margin-top: 35px;
+  max-width: 1800px;
   margin-left: auto;
   margin-right: auto;
   transition: color 0.4s ease;
@@ -75,15 +76,15 @@ html.dark .container-quienessomos .info {
 .team-cards {
   display: flex;
   justify-content: center;
-  gap: 40px;
+  gap: 90px;
   flex-wrap: wrap;
-  margin-top: 100px;
+  margin-top: 75px;
 }
 
 .team-card {
-  border-radius: 20px;
-  padding: 40px 20px 10px;
-  width: 370px;
+  border-radius: 25px;
+  padding: 30px 20px 10px;
+  width: 480px;
   position: relative;
   text-align: center;
   transition: background-color 0.4s ease, color 0.4s ease, transform 0.3s ease, box-shadow 0.4s ease;
@@ -104,25 +105,25 @@ html.dark .container-quienessomos .info {
 }
 
 .team-img {
-  width: 200px;
-  height: 200px;
+  width: 230px;
+  height: 230px;
   border-radius: 100%;
   object-fit: cover;
-  margin: -70px auto 15px;
-  border: 4px solid white;
+  margin: -60px auto 15px;
+  border: 3px solid white;
   background-color: #ccc;
 }
 
 .team-name {
-  font-size: 1.4em;
+  font-size: 1.5em;
   font-weight: 600;
-  margin-bottom: 7px;
+  margin-bottom: 8px;
   transition: color 0.3s ease;
   color: var(--card-text);
 }
 
 .team-role {
-  font-size: 1em;
+  font-size: 1.1em;
   transition: color 0.3s ease;
   color: var(--card-text);
 }

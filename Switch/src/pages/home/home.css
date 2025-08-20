@@ -195,7 +195,7 @@ html {
 
 .mas-buscado {
   text-align: center;
-  margin-bottom: 5px;
+  margin-bottom: 1px;
   font-size: 2.2rem;
   font-weight: 800;
   color: #000000; 
@@ -360,7 +360,9 @@ html {
   display: flex;
   justify-content: space-between;
   background-color: inherit;
-  padding: 4px;
+  padding: -0px;
+  margin-top: 7px;
+  margin-bottom: 7px;
   border-radius: 25px;
   box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
   flex-wrap: wrap;
@@ -375,7 +377,7 @@ html {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 20px;
+  padding: 15px -0px 3px 50px;
   border-radius: 20px;
   transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
 }
@@ -564,6 +566,9 @@ html {
   color: #f0f0f0;
 }
 
+.dark .ultimas-prendas {
+  color: #f0f0f0;
+}
 .dark .card-home,
 .dark .service-item,
 .dark .download-section {
@@ -693,8 +698,12 @@ html {
   display: flex;
   overflow: hidden;
   position: relative;
-  padding: 13px 20px;
-  border-radius: 12px;
+  padding: 16px 25px;
+  border-radius: 13px;
+  margin-top: -10px;
+  margin-bottom: -20px;
+  top: -1px;
+  margin: -10px 0px -20px 0px ;
 }
 
 .carousel-cards-track {
@@ -705,14 +714,14 @@ html {
 .carousel-card-home {
   flex: 0 0 calc(100% / 3); 
   width: 33.333%;
-  padding: 15px;
+  padding: 13px;
   box-sizing: border-box;
   transition: transform 0.4s ease, box-shadow 0.4s ease;
 }
 
 .carousel-card-home img {
   width: 100%;
-  border-radius: 12px;
+  border-radius: 14px;
   height: auto;
   object-fit: cover;
   transition: transform 0.4s ease;
@@ -759,7 +768,7 @@ html {
   margin-top: 7px;
   font-weight: bold;
   letter-spacing: 0.5px;
-  color: var(--text-color, #111);
+  color: var(--text-color, #000000);
 }
 
 .carousel-cards-wrapper {
@@ -789,6 +798,10 @@ html {
 }
 
 .home-index.dark .mas-buscado {
+  color: white;
+}
+
+.home-index.dark .ultimas-prendas {
   color: white;
 }
 
@@ -823,6 +836,11 @@ html {
 .home-index.light .mas-buscado {
   color: black;
 }
+
+.home-index.light .ultimas-prendas {
+  color: black;
+}
+
 
 .home-index.light .service-description,
 .home-index.light .service-title,
@@ -1002,6 +1020,9 @@ html {
     font-size: 2rem;
   }
 
+.ultimas-prendas{
+    font-size: 2rem;
+    }
   .service-section {
     flex-direction: column;
     align-items: center;

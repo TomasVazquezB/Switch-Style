@@ -5,8 +5,7 @@ import './footer.css';
 
 const Footer = () => {
   const quienesSomosRef = useRef(null);
-  const scrollToQuienesSomos = () => {
-    quienesSomosRef.current?.scrollIntoView({ behavior: 'smooth' });
+  const scrollToQuienesSomos = () => {quienesSomosRef.current?.scrollIntoView({ behavior: 'smooth' });
   };
 
   return (
@@ -19,13 +18,8 @@ const Footer = () => {
       <nav>
         <div className="social-icons">
           <div className="icons-inline">
-            <a
-              href="https://www.instagram.com/switchstyle25/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="social-icon"
-            >
-              <FaInstagram size={30} />
+            <a href="https://www.instagram.com/switch_style25/" target="_blank" rel="noopener noreferrer" className="social-icon">
+              <FaInstagram size={30}/>
             </a>
           </div>
           <span className="social-text">Switch Style</span>
@@ -44,9 +38,7 @@ const Footer = () => {
       </nav>
 
       <aside>
-        <span color="white" className="footer-text">
-          © 2024-2025 Switch Style | Todos los derechos reservados
-        </span>
+        <span color="white" className="footer-text">© 2024-2025 Switch Style | Todos los derechos reservados</span>
       </aside>
     </footer>
   );

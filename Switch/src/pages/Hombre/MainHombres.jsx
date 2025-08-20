@@ -31,17 +31,14 @@ const MainHombres = () => {
 
   const fetchProductos = async () => {
     try {
-      const res = await axios.get('http://127.0.0.1:8000/api/ropa', {
-        params: { genero: 'Hombre' }
-      });
+      const res = await axios.get('http://127.0.0.1:8000/api/ropa', {params: { genero: 'Hombre' }});
       setProductos(res.data);
       setFiltroProductos(res.data);
     } catch (error) {console.error("Error al obtener productos:", error);
     }
   };
 
-  useEffect(() => {
-    fetchProductos();
+  useEffect(() => {fetchProductos();
   }, []);
 
   const toggleSubCategoria = (e) => {
@@ -108,9 +105,7 @@ const MainHombres = () => {
           <hr className="my-4" />
           <div className="mb-4">
             <h4 className="mb-3">TALLA</h4>
-            <div className="flex flex-wrap gap-3 text-sm font-light text-gray-700">
-              {["S", "M", "L", "XL"].map((size) => (
-                <button key={size} type="button" onClick={() => toggleTallaManual(size)} className={`px-4 py-2 border rounded-full text-sm transition-colors duration-200 ${tallas.includes(size) ? 'bg-black text-white border-black hover:bg-gray-800' : 'bg-white text-black border-gray-400 hover:bg-gray-100'}`}>{size}</button>
+            <div className="flex flex-wrap gap-3 text-sm font-light text-gray-700">{["S", "M", "L", "XL"].map((size) => (<button key={size} type="button" onClick={() => toggleTallaManual(size)} className={`px-4 py-2 border rounded-full text-sm transition-colors duration-200 ${tallas.includes(size) ? 'bg-black text-white border-black hover:bg-gray-800' : 'bg-white text-black border-gray-400 hover:bg-gray-100'}`}>{size}</button>
               ))}
             </div>
           </div>
@@ -120,15 +115,7 @@ const MainHombres = () => {
             <h4>PRECIO</h4>
             <div className="range">
               <span>${precioMin}</span>
-              <input
-                type="range"
-                min={precioMin}
-                max={maxPrice}
-                step="10"
-                value={precioMax}
-                onChange={(e) => setPrecioMax(e.target.value)}
-                className="w-full"
-              />
+              <input type="range" min={precioMin} max={maxPrice} step="10" value={precioMax} onChange={(e) => setPrecioMax(e.target.value)} className="w-full"/>
               <span>${precioMax}</span>
             </div>
           </div>
@@ -149,16 +136,7 @@ const MainHombres = () => {
             const imageUrl = item.ruta_imagen?.startsWith('http') ? item.ruta_imagen : `http://127.0.0.1:8000/storage/${item.ruta_imagen}`;
 
             return (
-              <ProductoItem
-                key={item.id}
-                id={item.id}
-                img={imageUrl} 
-                nombre={item.titulo}
-                precio={item.precio}
-                tipo="ropa"
-                esFavorito={favoritos.includes(item.id)}
-                onToggleFavorito={() => toggleFavorito(item.id)}
-              />
+              <ProductoItem key={item.id} id={item.id} img={imageUrl} nombre={item.titulo} precio={item.precio} tipo="ropa" esFavorito={favoritos.includes(item.id)} onToggleFavorito={() => toggleFavorito(item.id)}/>
             );
           })}
         </div>

@@ -14,7 +14,7 @@ export function QuienesSomosPage({ darkMode }) {
     <div className="container-quienessomos">
       <div className="content">
         <h1 className="quienessomos">¿Quiénes Somos?</h1>
-        <p className="info">Un equipo apasionado por innovar y crear soluciones que mejoren el mundo. Descubre al equipo que está detrás de esta visión</p>
+        <p className="info">Somos un equipo apasionado por innovar y crear soluciones que mejoren el mundo. Descubre al equipo que está detrás de esta visión</p>
         <div className="team-cards">
           <div className="team-card">
             <img src="src/assets/Tomas.jpg" alt="Tomas Vazquez" className="team-img" />
