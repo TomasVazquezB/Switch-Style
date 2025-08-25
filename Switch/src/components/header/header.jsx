@@ -124,8 +124,7 @@ const Header = ({ toggleTheme, darkMode }) => {
                                             <NavLink to="/perfil" className={({ isActive }) => `block px-4 py-2 text-sm ${darkMode ? 'text-white hover:bg-gray-700' : 'text-gray-800 hover:bg-gray-100'}`}>Mi Perfil</NavLink>
                                             <NavLink to="/pedidos" className={({ isActive }) => `block px-4 py-2 text-sm ${darkMode ? 'text-white hover:bg-gray-700' : 'text-gray-800 hover:bg-gray-100'}`}>Mis pedidos</NavLink>
                                             <NavLink to="/favoritos" className={({ isActive }) => `block px-4 py-2 text-sm ${darkMode ? 'text-white hover:bg-gray-700' : 'text-gray-800 hover:bg-gray-100'}`}>Mis favoritos</NavLink>
-                                            <NavLink to="/FAQ" className={({ isActive }) => `block px-4 py-2 text-sm ${darkMode ? 'text-white hover:bg-gray-700' : 'text-gray-800 hover:bg-gray-100'}`}>FAQ</NavLink>
-
+                                           
                                             {usuario.rol === 'Admin' && (<NavLink to="/admin" className={({ isActive }) => getLinkClass(isActive)}>Panel Admin</NavLink>)}
                                             <button onClick={handleLogout}>Cerrar sesión</button>
                                         </div>

@@ -34,21 +34,43 @@ footer nav {
   width: 100%;
   gap: 3px; 
   margin-top: -3px;
+  margin-left: -6px;
 }
 
 .smile-icon {
   margin-right: 4px; 
-  color: white;
   font-size: 1.4rem;
+  margin-left: -2px;
 }
 
 .quienes-link {
-  color: white;
   font-size: 1rem;
-  text-decoration: none; 
-  color: inherit; 
   font-weight: 500; 
+  text-decoration: none; 
   cursor: pointer; 
+  transition: color 0.3s ease;
+}
+
+.footer-faq {
+  margin-top: 13px; 
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  margin-left: -12px;
+}
+
+.faq-icon {
+  margin-right: 0px;
+  font-size: 1.4rem;
+  margin: 0;
+}
+
+.faq-link {
+  font-size: 1rem;
+  font-weight: 500;
+  text-decoration: none;
+  cursor: pointer;
+  color: inherit;
 }
 
 .social-icons {
@@ -65,11 +87,12 @@ footer nav {
 
 .social-text {
   font-weight: bold;
-  color: white;
+  font-size: 1.3rem;
+  margin-left: 3px;
+  font-weight: 600;
 }
 
 .social-icon {
-  color: white;
   font-size: 33px; 
   transition: transform 0.3s; 
   cursor: pointer; 
@@ -78,13 +101,6 @@ footer nav {
 
 .social-icon:hover {
   transform: scale(1.2); 
-}
-
-.social-text {
-  color: white;
-  font-size: 1.3rem;
-  margin-left: 3px;
-  font-weight: 600;
 }
 
 .contact-info {
@@ -101,27 +117,34 @@ footer nav {
   align-items: center;
   gap: 2px;
   margin-bottom: 7px;
-  color: white;
 }
 
-.contact-icon {
+.contact-number {
   font-size: 1.3rem;
   margin-right: 7px;
-  color: white;
+  margin-top: 4px;
+}
+
+.contact-email {
+  font-size: 1.3rem;
+  margin-right: 7px;
+  margin-top: 4px;
 }
 
 .footer-text {
   font-weight: 500;
-  font-size: 12rem;
-  color: #ffffff;
+  font-size: 1rem;
   margin: 0px;
   text-align: center;
   width: 100%;
   white-space: nowrap;
+  position: absolute;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  top: 40%;
 }
 
 .contact-text {
-  color: white;
   font-size: 0.95rem;
   font-weight: 500;
 }
@@ -134,9 +157,8 @@ footer nav {
 }
 
 .footer-icons a {
-  color: white;
   background-color: transparent;
-  border: 2px solid white;
+  border: 2px solid currentColor;
   border-radius: 6px;
   padding: 3px;
   font-size: 14px;
@@ -166,72 +188,44 @@ footer nav {
   flex: 1;
 }
 
-.footer-text {
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
-  top: 40%;
-  transform: translate(-50%, -50%);
-  margin: 0;
-  color: white;
-  font-size: 1rem;
-}
-
+/* -------- MODO CLARO -------- */
 .light-mode .footer {
   background-color: #000000;
-  color: #000000;
+  color: #ffffff;
 }
 
+.light-mode .social-icon,
+.light-mode .contact-icon,
+.light-mode .smile-icon,
+.light-mode .faq-icon {
+  color: #ffffff;
+}
+
+.light-mode .contact-text,
+.light-mode .footer-text,
+.light-mode .social-text,
+.light-mode .quienes-link,
+.light-mode .faq-link {
+  color: #ffffff;
+}
+
+/* -------- MODO OSCURO -------- */
 .dark-mode .footer {
   background-color: #ffffff;
   color: #000000;
 }
 
-/* Íconos sociales */
-.light-mode .social-icon {
-  color: #ffffff;
-}
-
-.dark-mode .social-icon {
+.dark-mode .social-icon,
+.dark-mode .contact-icon,
+.dark-mode .smile-icon,
+.dark-mode .faq-icon {
   color: #000000;
-}
-
-/* Texto de contacto */
-.light-mode .contact-text,
-.light-mode .footer-text,
-.light-mode .social-text {
-  color: #ffffff;
 }
 
 .dark-mode .contact-text,
 .dark-mode .footer-text,
-.dark-mode .social-text {
-  color: #000000;
-}
-
-/* Íconos de contacto */
-.light-mode .contact-icon {
-  color: #ffffff;
-}
-
-.dark-mode .contact-icon {
-  color: #000000;
-}
-
-/* Ícono de sonrisa */
-.light-mode .smile-icon {
-  color: #ffffff;
-}
-
-.dark-mode .smile-icon {
-  color: #000000;
-}
-
-/* Enlace "¿Querés conocernos?" */
-.light-mode .quienes-link {
-  color: #ffffff;
-}
-
-.dark-mode .quienes-link {
+.dark-mode .social-text,
+.dark-mode .quienes-link,
+.dark-mode .faq-link {
   color: #000000;
 }
