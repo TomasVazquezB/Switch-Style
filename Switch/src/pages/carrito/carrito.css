@@ -1,5 +1,9 @@
 @import "tailwindcss";
 
+.carrito-vacio {
+  color: #fff; /* o un gris suave como #ccc */
+}
+
 body {
   font-family: 'Inter', sans-serif;
   background-color: #f9fafb;
