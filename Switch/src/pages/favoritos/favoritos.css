@@ -5,11 +5,26 @@
     font-family: 'Inter', sans-serif;
 }
 
+.light-mode .text-gray-600 {
+  color: #000000; 
+}
+
+.dark-mode .text-gray-600 {
+  color: #ffffff; 
+}
+
 .favoritos-page-title-main {
-    font-size: 2rem;
-    font-weight: 700;
-    color: #111827;
-    margin-bottom: 1.5rem;
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+}
+
+.light-mode .favoritos-page-title-main {
+  color: #111827; 
+}
+
+.dark-mode .favoritos-page-title-main {
+  color: #ffffff;
 }
 
 .favoritos-page-grid {

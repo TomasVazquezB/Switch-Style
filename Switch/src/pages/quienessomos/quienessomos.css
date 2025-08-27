@@ -1,49 +1,20 @@
-/* ------------------- VARIABLES DE COLOR ------------------- */
-:root {
-  --bg-color: #ffffff;
-  --text-color: #1e1e1e;
-  --h1-color: #000000;
-  --p-color: #444444;
-  --card-bg: #f3f3f3;
-  --card-text: #1e1e1e;
-  --card-shadow: rgba(0, 0, 0, 0.08);
-  --card-hover-shadow: rgba(0, 0, 0, 0.2);
-}
-
-.dark {
-  --bg-color: #121212;
-  --text-color: #000000;
-  --h1-color: #ffffff;
-  --p-color: #cccccc;
-  --card-bg: #000000;
-  --card-text: #050505;
-  --card-shadow: rgba(255, 255, 255, 0.05);
-  --card-hover-shadow: rgba(255, 255, 255, 0.15);
-}
-
-.container-quienessomos .quienessomos {
-  color: var(--h1-color);
-}
-
-.container-quienessomos .info {
-  color: var(--p-color);
-}
-html.dark .container-quienessomos .quienessomos {
-  color: var(--h1-color) !important;
-}
-
-html.dark .container-quienessomos .info {
-  color: var(--p-color) !important;
-}
-
-/* ------------------- ESTILOS ------------------- */
 .container-quienessomos {
   min-height: 10vh;
   padding: 0;
   text-align: center;
   transition: background-color 0.4s ease, color 0.4s ease;
-  background-color: var(--bg-color);
-  color: var(--text-color);
+  background-color: #ffffff; 
+  color: #1e1e1e; 
+}
+
+.container-quienessomos.light-mode {
+  background-color: #ffffff;
+  color: #1e1e1e;
+}
+
+.container-quienessomos.dark-mode {
+  background-color: #121212;
+  color: #000000;
 }
 
 .content {
@@ -59,7 +30,14 @@ html.dark .container-quienessomos .info {
   margin-bottom: 25px;
   margin-top: -25px;
   transition: color 0.4s ease;
-  color: var(--h1-color);
+  color: #000000; 
+}
+.quienessomos .white-mode {
+  color: #000000; 
+}
+
+.quienessomos.dark-mode {
+  color: #ffffff; 
 }
 
 .info {
@@ -70,7 +48,15 @@ html.dark .container-quienessomos .info {
   margin-left: auto;
   margin-right: auto;
   transition: color 0.4s ease;
-  color: var(--p-color);
+  color: #444444; 
+}
+
+.info.white-mode {
+  color: #000000; 
+}
+
+.info.dark-mode {
+  color: #ffffff; 
 }
 
 .team-cards {
@@ -88,11 +74,23 @@ html.dark .container-quienessomos .info {
   position: relative;
   text-align: center;
   transition: background-color 0.4s ease, color 0.4s ease, transform 0.3s ease, box-shadow 0.4s ease;
-  background-color: var(--card-bg);
-  color: var(--card-text);
-  box-shadow: 0 4px 12px var(--card-shadow);
+  background-color: #f3f3f3; 
+  color: #1e1e1e; 
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
   opacity: 0;
   animation: fadeInUp 0.6s ease forwards;
+}
+
+.team-card .white-mode {
+  background-color: #f3f3f3; 
+  color: #1e1e1e; 
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.team-card.dark-mode {
+  background-color: #000000; 
+  color: #050505; 
+  box-shadow: 0 4px 12px rgba(255, 255, 255, 0.05);
 }
 
 .team-card:nth-child(1) { animation-delay: 0.2s; }
@@ -101,7 +99,11 @@ html.dark .container-quienessomos .info {
 
 .team-card:hover {
   transform: translateY(-10px);
-  box-shadow: 0 12px 24px var(--card-hover-shadow);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2); 
+}
+
+.team-card.dark-mode:hover {
+  box-shadow: 0 12px 24px rgba(255, 255, 255, 0.15); 
 }
 
 .team-img {
@@ -119,13 +121,27 @@ html.dark .container-quienessomos .info {
   font-weight: 600;
   margin-bottom: 8px;
   transition: color 0.3s ease;
-  color: var(--card-text);
+}
+
+.team-name .white-mode {
+  color: #000000; /* texto nombre card modo claro */
+}
+
+.team-name.dark-mode {
+  color: #ffffff; /* texto nombre card modo oscuro */
 }
 
 .team-role {
   font-size: 1.1em;
   transition: color 0.3s ease;
-  color: var(--card-text);
+}
+
+.team.role .white-mode {
+  color: #000000; /* texto rol card modo claro */
+}
+
+.team-role.dark-mode {
+  color: #ffffff; /* texto rol card modo oscuro */
 }
 
 @keyframes fadeInUp {

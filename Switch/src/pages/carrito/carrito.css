@@ -1,18 +1,24 @@
 @import "tailwindcss";
 
-.carrito-vacio {
-  color: #fff; /* o un gris suave como #ccc */
+.light-mode .carrito-vacio {
+  color: #000000; 
+}
+
+.dark-mode .carrito-vacio {
+  color: #ffffff; 
 }
 
 body {
   font-family: 'Inter', sans-serif;
   background-color: #f9fafb;
+  transition: background-color 0.4s ease, color 0.4s ease;
 }
 
 h2 {
   font-size: 2rem;
   font-weight: 700;
   margin-bottom: 2.5rem;
+  transition: color 0.3s;
 }
 
 .product-item {
@@ -39,11 +45,13 @@ h2 {
   font-size: 1rem;
   font-weight: 600;
   color: #111827;
+  transition: color 0.3s;
 }
 
 .product-price {
   font-size: 0.875rem;
   color: #4b5563;
+  transition: color 0.3s;
 }
 
 .quantity-controls {
@@ -75,6 +83,7 @@ h2 {
   font-size: 1.125rem;
   font-weight: 600;
   margin-bottom: 1rem;
+  transition: color 0.3s;
 }
 
 .summary-line {
@@ -82,6 +91,7 @@ h2 {
   justify-content: space-between;
   font-size: 0.875rem;
   margin-bottom: 0.5rem;
+  transition: color 0.3s;
 }
 
 .summary-total {
@@ -130,73 +140,18 @@ h2 {
   padding: 2rem;
   border-radius: 8px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
-}
-
-.cart-product {
-  display: flex;
-  gap: 1.5rem;
-  align-items: center;
-  border-bottom: 1px solid #ccc;
-  padding: 1.5rem 0;
-}
-
-
-.cart-product img {
-  width: 100px;
-  height: 100px;
-  object-fit: cover;
-  border-radius: 0.5rem;
-}
-
-.cart-product-info {
-  flex-grow: 1;
-}
-
-.cart-product-info h4 {
-  font-size: 1.1rem;
-  font-weight: 600;
-  margin-bottom: 0.3rem;
-}
-
-.cart-product-info p {
-  color: #555;
-  font-size: 0.9rem;
-}
-
-.cart-qty-controls {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  margin-top: 0.5rem;
-}
-
-.cart-qty-controls input {
-  width: 50px;
-  text-align: center;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  padding: 0.2rem;
-}
-
-.remove-btn {
-  color: red;
-  font-size: 0.85rem;
-  cursor: pointer;
-  margin-left: auto;
-}
-
-.order-summary {
   font-size: 1.2rem;
-  padding: 2rem;
   width: 500px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   border-radius: 0.75rem;
+  transition: background-color 0.4s ease, color 0.4s ease;
 }
 
 .order-summary h2,
 .order-summary h3,
 .order-summary p {
   font-size: 2rem;
+  transition: color 0.3s;
 }
 
 .order-summary .summary-line {
@@ -205,6 +160,7 @@ h2 {
   margin-bottom: 0.7rem;
   font-size: 0.95rem;
   color: #444;
+  transition: color 0.3s;
 }
 
 .order-summary .total {
@@ -217,6 +173,7 @@ h2 {
   font-weight: bold;
   font-size: 1.1rem;
   color: #111;
+  transition: color 0.3s;
 }
 
 .total-label {
@@ -229,4 +186,48 @@ h2 {
 
 .pay-buttons {
   margin-top: 1.5rem;
+}
+
+body.light-mode {
+  background-color: #ffffff;
+  color: #000000;
+}
+
+body.light-mode h2,
+body.light-mode h3,
+body.light-mode .product-title,
+body.light-mode .product-price,
+body.light-mode .summary-line,
+body.light-mode .total-label,
+body.light-mode .total-amount {
+  color: #000000; 
+}
+
+body.light-mode .order-summary {
+  background: #f9fafb;
+  color: #000000;
+}
+
+body.dark-mode {
+  background-color: #121212;
+  color: #ffffff;
+}
+
+body.dark-mode h2,
+body.dark-mode h3,
+body.dark-mode .product-title,
+body.dark-mode .product-price,
+body.dark-mode .summary-line,
+body.dark-mode .total-label,
+body.dark-mode .total-amount {
+  color: #ffffff;
+}
+
+body.dark-mode .order-summary {
+  background: #1f1f1f;
+  color: #ffffff;
+}
+
+body.dark-mode .summary-line span {
+  color: #ffffff;
 }
