@@ -26,16 +26,16 @@ export function FAQPage() {
   ];
 
   return (
-    <div className="faq-page">
-      <div className="faq-container">
-        <h1 className="titulo-faq">Preguntas Frecuentes</h1>
-        <div className="faq-list">
+    <div className="pyr-page">
+      <div className="pyr-container">
+        <h1 className="pyr-faq">Preguntas Frecuentes</h1>
+        <div className="pyr-list">
           {faqs.map((item, index) => (
-            <div className="faq-item" key={index}>
-              <div className="faq-icon">{item.icono}</div>
+            <div className="pyr-item" key={index}>
+              <div className="pyr-icon">{item.icono}</div>
               <div>
-                <p className="faq-pregunta">{item.pregunta}</p>
-                <p className="faq-respuesta">{item.respuesta}</p>
+                <p className="pyr-pregunta">{item.pregunta}</p>
+                <p className="pyr-respuesta">{item.respuesta}</p>
               </div>
             </div>
           ))}

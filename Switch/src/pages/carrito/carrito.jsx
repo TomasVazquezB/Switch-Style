@@ -75,9 +75,9 @@ const Carrito = () => {
     return (
         <div className="cart-container">
             <div className="cart-items">
-                <h2>Carrito de Compras</h2>
+                <h2 className="carrito-vacio">Carrito de Compras</h2>
                 {carritoData.length === 0 ? (
-                    <p className="text-gray-500">Tu carrito está vacío</p>
+                    <p className="carrito-vacio">Tu carrito está vacío</p>
                 ) : (
                     carritoData.map((item, index) => {
                         const producto = buscarProducto(item);

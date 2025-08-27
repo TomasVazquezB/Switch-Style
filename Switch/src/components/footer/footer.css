@@ -188,7 +188,6 @@ footer nav {
   flex: 1;
 }
 
-/* -------- MODO CLARO -------- */
 .light-mode .footer {
   background-color: #000000;
   color: #ffffff;
@@ -197,7 +196,8 @@ footer nav {
 .light-mode .social-icon,
 .light-mode .contact-icon,
 .light-mode .smile-icon,
-.light-mode .faq-icon {
+.light-mode .faq-icon 
+.light-mode .faq-link {
   color: #ffffff;
 }
 
@@ -209,7 +209,6 @@ footer nav {
   color: #ffffff;
 }
 
-/* -------- MODO OSCURO -------- */
 .dark-mode .footer {
   background-color: #ffffff;
   color: #000000;
@@ -218,7 +217,8 @@ footer nav {
 .dark-mode .social-icon,
 .dark-mode .contact-icon,
 .dark-mode .smile-icon,
-.dark-mode .faq-icon {
+.dark-mode .faq-icon 
+.dark-mode .faq-link {
   color: #000000;
 }
 
