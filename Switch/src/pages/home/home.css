@@ -2,25 +2,28 @@ body,
 html {
   margin: 0;
   padding: 0;
-  height: 100%;
+  font-family: 'Inter', sans-serif;
+  scroll-behavior: smooth;
+  background: var(--bg-color);
+  color: var(--text-color);
+  transition: background 0.4s ease, color 0.4s ease;
 }
 
 .home-index {
-  font-family: Arial, sans-serif;
-  padding: 0px 0px 0px 0px;
+  padding: 0;
   display: flex;
   flex-direction: column;
-  min-height: 50vh;
+  min-height: 100vh;
 }
 
 .home-index.light {
-  background-color: white;
-  color: black;
+  background: linear-gradient(135deg, #ffffff, #f9f9f9);
+  color: #111;
 }
 
 .home-index.dark {
-  background-color: #121212;
-  color: white;
+  background: linear-gradient(135deg, #121212, #1b1b1b);
+  color: #e5e5e5;
 }
 
 .carousel-inner img {
@@ -37,7 +40,7 @@ html {
   background: transparent;
   width: 100%;
   margin-top: 0;
-  margin-bottom: 30px;
+  margin-bottom: 27px;
 }
 
 .varkala-carousel .carousel-inner {
@@ -50,7 +53,7 @@ html {
 }
 
 .carousel .slide img {
-  max-height: 350px;
+  max-height: 330px;
   width: 100%;
   object-fit: cover;
   object-position: center;
@@ -195,9 +198,9 @@ html {
 
 .mas-buscado {
   text-align: center;
-  margin-bottom: 1px;
-  font-size: 2.2rem;
-  font-weight: 800;
+  margin-bottom: -6px;
+  font-size: 2rem;
+  font-weight: 600;
   color: #000000; 
   margin-top: 10px;
   position: relative;
@@ -223,16 +226,14 @@ html {
 }
 
 .card-home {
-  background: linear-gradient(145deg, #1c1c1c, #2a2a2a);
-  border-radius: 15px;
-  padding: 1px;
-  flex: 1 1 200px;
-  max-width: 210px;
-  margin: 10px;
-  background-color: #1a1a1a;
-  border: 2px solid #333;
+  background: linear-gradient(145deg, #1e1e1e, #2a2a2a);
+  border-radius: 20px;
+  padding: 0;
+  flex: 1 1 240px;
+  max-width: 220px;
+  margin: 15px;
   overflow: hidden;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
   display: flex;
   flex-direction: column;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
@@ -243,18 +244,16 @@ html {
 }
 
 .card-home:hover {
-  transform: translateY(-8px) scale(1.03);
-  box-shadow: 0 12px 30px rgba(255, 78, 80, 0.4);
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2);
 }
 
 .card-img-top {
-  width: 200%;
-  height: 200px;
-  object-fit: contain;
-  display: flex;
-  background-color: #fff;
-  border-top-left-radius: 8px;
-  border-top-right-radius: 8px;
+  width: 100%;
+  height: 220px;
+  object-fit: cover;
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
 }
 
 .card-body {
@@ -351,7 +350,7 @@ html {
 }
 
 .service-section {
-  margin-top: 25px;
+  margin-top: 20px;
   display: flex;
   justify-content: center;
 }
@@ -360,9 +359,9 @@ html {
   display: flex;
   justify-content: space-between;
   background-color: inherit;
-  padding: -0px;
-  margin-top: 7px;
-  margin-bottom: 7px;
+  padding: 0px;
+  margin-top: 12px;
+  margin-bottom: 0px;
   border-radius: 25px;
   box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
   flex-wrap: wrap;
@@ -377,7 +376,7 @@ html {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 15px -0px 3px 50px;
+  padding: 23px 0px 0px 60px;
   border-radius: 20px;
   transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
 }
@@ -528,14 +527,6 @@ html {
   display: flex;
   justify-content: center;
   align-items: center;
-}
-
-.cards-carousel-wrapper {
-  display: flex;
-  justify-content: center;
-  gap: 30px;
-  padding: 30px 10px;
-  flex-wrap: wrap;
 }
 
 .last-added-section h2.mas-buscado {
@@ -698,12 +689,12 @@ html {
   display: flex;
   overflow: hidden;
   position: relative;
-  padding: 16px 25px;
+  padding: 13px 80px;
   border-radius: 13px;
-  margin-top: -10px;
-  margin-bottom: -20px;
-  top: -1px;
-  margin: -10px 0px -20px 0px ;
+  margin-top: 0px;
+  margin-bottom: 0px;
+  top: 0px;
+  margin: -10px 0px -18px 0px ;
 }
 
 .carousel-cards-track {
@@ -1003,12 +994,8 @@ html {
 }
 
 @keyframes slideInLine {
-  from {
-    width: 0;
-  }
-  to {
-    width: 60%;
-  }
+  from { width: 0; }
+  to { width: 60px; }
 }
 
 @media (max-width: 768px) {
@@ -1065,8 +1052,6 @@ html {
   .carousel-cards-btn {
     padding: 10px;
     font-size: 18px;
-
-    
 
   }
 }
