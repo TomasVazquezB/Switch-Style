@@ -154,7 +154,7 @@ const closeModal = () => {setShowModal(false);};
         <div className="last-added-section">
           <h2 className="ultimas-prendas">Últimas Prendas Añadidas</h2>
           <div className="carousel-cards-wrapper">
-            <button className="carousel-cards-btn" onClick={handlePrev}><FaChevronLeft /></button>
+            <button className="carousel-cards-btn" onClick={handlePrev}><FaChevronLeft/></button>
             <div className="carousel-cards-track" style={{ transform: `translateX(-${(currentIndex / lastAddedImages.length) * 100}%)` }}>
               {lastAddedImages.map((img, idx) => (
                 <div className="carousel-card-home" key={idx} style={{ flex: `0 0 calc(100% / ${cardsPerSlide})` }}>
@@ -182,7 +182,7 @@ const closeModal = () => {setShowModal(false);};
           </div>
         )}
 
-<br />
+  <br />
  <div className="download-section">
   {/* <hr className="black-line" /> */}
   <div className="download-row">
@@ -202,7 +202,7 @@ const closeModal = () => {setShowModal(false);};
     </div>
   </div>
 )}
-  <br />
+<br />
 </div>
 </div>
     </ErrorBoundary>
