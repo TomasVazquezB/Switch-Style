@@ -40,7 +40,6 @@
   display: block;
   width: 100%;
   margin: 10px 0;
-  background: #f4f4f4;
   border: none;
   padding: 12px;
   border-radius: 6px;
@@ -62,3 +61,16 @@
   margin-top: 10px;
   cursor: pointer;
 }
+
+
+/* body.light-mode .perfil-card,
+body.light-mode .perfil-card,
+body.light-mode .perfil-card button {
+  color: #000000 !important;
+}
+*/
+
+body.dark-mode .perfil-card h2
+{
+  color: #000000 !important;
+} 
