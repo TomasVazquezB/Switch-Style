@@ -71,15 +71,13 @@ const Header = ({ toggleTheme, darkMode }) => {
         }
     }, [darkMode]);
 
-
     const getLinkClass = (isActive) =>`nav-link ${darkMode ? 'text-white' : 'text-dark'} ${isActive ? 'active-link' : ''}`;
 
     return (
         <>
-            <div className={`offer-bar ${darkMode ? 'bg-ultra-light' : 'bg-ultra-dark'} text-center pt-4 pb-2`}>
-                <p className="offer-bar-text">¡Suscribite para obtener ofertas unicas y obten un 15% en tu primer compra!</p>
+        <div className={`offer-bar ${darkMode ? 'bg-ultra-light' : 'bg-ultra-dark'} text-center pt-4 pb-2`}>
+            <p className="offer-bar-text">¡Suscribite para obtener ofertas unicas y obten un 15% en tu primer compra!</p>
             </div>
-
             <Navbar expand="lg" className={`navbar-top ${darkMode ? 'bg-dark' : 'bg-light'}`}>
                 <Container fluid>
     <Navbar.Brand as={NavLink} to="/" onClick={() => navigate('/')}> <img src="../src/assets/LOGO.png" width="90" height="50" className="d-inline-block align-top" alt="Logo" /></Navbar.Brand>
@@ -123,8 +121,7 @@ const Header = ({ toggleTheme, darkMode }) => {
                                             <NavLink to="/perfil" className={({ isActive }) => `block px-4 py-2 text-sm ${darkMode ? 'text-white hover:bg-gray-700' : 'text-gray-800 hover:bg-gray-100'}`}>Mi Perfil</NavLink>
                                             <NavLink to="/pedidos" className={({ isActive }) => `block px-4 py-2 text-sm ${darkMode ? 'text-white hover:bg-gray-700' : 'text-gray-800 hover:bg-gray-100'}`}>Mis pedidos</NavLink>
                                             <NavLink to="/favoritos" className={({ isActive }) => `block px-4 py-2 text-sm ${darkMode ? 'text-white hover:bg-gray-700' : 'text-gray-800 hover:bg-gray-100'}`}>Mis favoritos</NavLink>
-                                           
-                                            {usuario.rol === 'Admin' && (<NavLink to="/admin" className={({ isActive }) => getLinkClass(isActive)}>Panel Admin</NavLink>)}
+                                            {usuario.rol === 'Admin' && (<NavLink to="/admin" className={({ isActive }) => getLinkClass(isActive)}>Panel de Administrador</NavLink>)}
                                             <button onClick={handleLogout}>Cerrar sesión</button>
                                         </div>
                                     )}
