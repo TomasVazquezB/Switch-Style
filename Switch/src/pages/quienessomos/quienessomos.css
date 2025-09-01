@@ -32,13 +32,7 @@
   transition: color 0.4s ease;
   color: #000000; 
 }
-.quienessomos .white-mode {
-  color: #000000; 
-}
 
-.quienessomos.dark-mode {
-  color: #ffffff; 
-}
 
 .info {
   font-size: 1.2em;
@@ -51,13 +45,18 @@
   color: #444444; 
 }
 
-.info.white-mode {
-  color: #000000; 
+/* 🔆 Modo claro */
+body.light-mode .quienessomos,
+body.light-mode .info {
+  color: #000000 !important;
 }
 
-.info.dark-mode {
-  color: #ffffff; 
+/* 🌙 Modo oscuro */
+body.dark-mode .quienessomos,
+body.dark-mode .info {
+  color: #ffffff !important;
 }
+
 
 .team-cards {
   display: flex;
@@ -123,7 +122,7 @@
   transition: color 0.3s ease;
 }
 
-.team-name .white-mode {
+.team-name.white-mode {
   color: #000000; /* texto nombre card modo claro */
 }
 
