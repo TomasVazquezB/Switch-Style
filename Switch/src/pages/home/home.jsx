@@ -166,31 +166,17 @@ const closeModal = () => {setShowModal(false);};
           </div>
         </div>
 
-        {producto && producto.length > 0 && (
-          <div className="productos-section">
-            <h2>Productos Recientes</h2>
-            <div className="productos-container">
-              {producto.map((item) => (
-                <div className="producto-card" key={item.id}>
-                  <img src={item.imagen} alt={item.nombre} className="producto-img" />
-                  <h3>{item.nombre}</h3>
-                  <p>{item.descripcion}</p>
-                  <p>${item.precio}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-        )}
-
-  <br />
- <div className="download-section">
+ <br />
   <div className="download-row">
+    <br />
+    <br />
     <p className="download-text">Descarga la aplicación y únete a la experiencia Switch Style</p>
     <div className="download-icons">
       <div className="store-icon"> <FaApple size={40} /> <FaGooglePlay size={40} /> </div>
       <a onClick={handleAppDownload} className="download-button">Descargar APP</a>
     </div>
   </div>
+  
 
  {showModal && (
   <div className={`modal-overlay ${darkMode ? 'dark' : 'light'}`}>
@@ -202,7 +188,6 @@ const closeModal = () => {setShowModal(false);};
   </div>
 )}
 <br />
-</div>
 </div>
     </ErrorBoundary>
   );
