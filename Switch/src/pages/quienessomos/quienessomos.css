@@ -32,13 +32,6 @@
   transition: color 0.4s ease;
   color: #000000; 
 }
-.quienessomos .white-mode {
-  color: #000000; 
-}
-
-.quienessomos.dark-mode {
-  color: #ffffff; 
-}
 
 .info {
   font-size: 1.2em;
@@ -51,12 +44,14 @@
   color: #444444; 
 }
 
-.info.white-mode {
-  color: #000000; 
+body.light-mode .quienessomos,
+body.light-mode .info {
+  color: #000000 !important;
 }
 
-.info.dark-mode {
-  color: #ffffff; 
+body.dark-mode .quienessomos,
+body.dark-mode .info {
+  color: #ffffff !important;
 }
 
 .team-cards {
@@ -97,15 +92,6 @@
 .team-card:nth-child(2) { animation-delay: 0.4s; }
 .team-card:nth-child(3) { animation-delay: 0.6s; }
 
-.team-card:hover {
-  transform: translateY(-10px);
-  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2); 
-}
-
-.team-card.dark-mode:hover {
-  box-shadow: 0 12px 24px rgba(255, 255, 255, 0.15); 
-}
-
 .team-img {
   width: 230px;
   height: 230px;
@@ -123,12 +109,12 @@
   transition: color 0.3s ease;
 }
 
-.team-name .white-mode {
-  color: #000000; /* texto nombre card modo claro */
+.team-name.white-mode {
+  color: #000000; 
 }
 
 .team-name.dark-mode {
-  color: #ffffff; /* texto nombre card modo oscuro */
+  color: #ffffff; 
 }
 
 .team-role {
@@ -137,11 +123,11 @@
 }
 
 .team.role .white-mode {
-  color: #000000; /* texto rol card modo claro */
+  color: #000000; 
 }
 
 .team-role.dark-mode {
-  color: #ffffff; /* texto rol card modo oscuro */
+  color: #ffffff; 
 }
 
 @keyframes fadeInUp {

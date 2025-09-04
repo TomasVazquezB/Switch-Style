@@ -80,7 +80,7 @@ const Header = ({ toggleTheme, darkMode }) => {
             </div>
             <Navbar expand="lg" className={`navbar-top ${darkMode ? 'bg-dark' : 'bg-light'}`}>
                 <Container fluid>
-    <Navbar.Brand as={NavLink} to="/" onClick={() => navigate('/')}> <img src="../src/assets/LOGO.png" width="90" height="50" className="d-inline-block align-top" alt="Logo" /></Navbar.Brand>
+    <Navbar.Brand as={NavLink} to="/" onClick={() => navigate('/')}> <img src="https://res.cloudinary.com/switchstyle/image/upload/v1756993378/Logo%20Switch%20Style.png" width="90" height="50" className="d-inline-block align-top" alt="Logo" /></Navbar.Brand>
 
                     <Navbar.Toggle aria-controls="navbarNav" />
                     <Navbar.Collapse id="navbarNav">

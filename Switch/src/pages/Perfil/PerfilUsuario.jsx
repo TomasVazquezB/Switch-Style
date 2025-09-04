@@ -34,7 +34,6 @@ const PerfilUsuario = () => {
         <div className="perfil-links">
           <button onClick={() => window.location.href = '/pedidos'}>🧾 Mis pedidos</button>
           <button onClick={() => window.location.href = '/favoritos'}>❤️ Mis favoritos</button>
-          <button onClick={() => window.location.href = '/faq'}>❓ Preguntas Frecuentes</button>
         </div>
 
         <hr/>

@@ -113,12 +113,12 @@ html {
   color: black;
 }
 
-.home-index.light .download-section {
+.home-index.light .download-row {
   background-color: #ffffff;
   color: #0e0d0d;
 }
 
-.home-index.dark .download-section {
+.home-index.dark .download-row {
   background-color: #121212;
   color: white;
 }
@@ -508,10 +508,14 @@ html {
   animation: fadeInSlide 1s ease-in-out;
 }
 
+.light-mode .last-added-section {
+  color: #ffffff;
+}
+
 .ultimas-prendas {
   text-align: center;
   font-size: 2.2rem;
-  margin-bottom: 7px;
+  margin-bottom: 13px;
   margin-top: 7px;
   font-weight: bold;
   letter-spacing: 0.5px;
@@ -522,7 +526,7 @@ html {
   display: flex;
   overflow: hidden;
   position: relative;
-  padding: 13px 15px;
+  padding: 13px 14px;
   border-radius: 13px;
   margin-top: 0px;
   margin-bottom: 0px;
@@ -644,7 +648,7 @@ html {
 }
 .dark .card-home,
 .dark .service-item,
-.dark .download-section {
+.dark .download-row {
   background-color: #1e1e1e;
   color: #f0f0f0;
 }
@@ -792,18 +796,18 @@ html {
   color: #444444;
 }
 
-.download-section {
+.download-row {
   position: relative;
   display: block;
   flex-direction: column;
   box-sizing: border-box;
   margin-top: 0px;
   z-index: 1;
-  margin-bottom: 0px;
+  margin-bottom: -16px;
   justify-content: space-between;
   align-items: center;
-  padding-top: 0px;
-  padding-bottom: 0px;
+  padding-top: -10px;
+  padding-bottom: 10px;
   width: 100%;
 }
 
@@ -828,35 +832,34 @@ html {
 
 .download-text {
   font-size: 16px;
-  margin-bottom: 10px;
-  margin-top: 0px;
   font-weight: bold;
   justify-content: left;
   display: flex;
   flex-direction: column;
   padding: 10px;
-  margin-left: 10px;
-  margin-right: 10px;
-  margin: 0;
+  margin: 0px  0px -80px 4px;
+  flex: 1;
 }
 
 .download-icons {
   display: flex;
   flex-direction: column;
-  padding: 0px;
+  padding: 10px;
   justify-content: center;
-  align-items: flex-start;
+  align-items: end;
   gap: 16px; 
   margin-left: 0px;    
-  margin-top: 0px;    
+  margin-top: 0px; 
+  margin: 5px 0px -10px 0px;   
 }
 
 .store-icon {
   display: flex;
   flex-direction: row;
+  align-items: end;
   gap: 16px;
   pointer-events: none;
-  margin-bottom: -30px; 
+  margin: 0px 45px -30px 0px;
 }
 
 .store-icon svg {
@@ -872,15 +875,7 @@ html {
   pointer-events: none;
 }
 
-.download-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 20px;
-  flex-wrap: wrap;
-}
-
-.download-section .download-icons {
+.download-row .download-icons {
   display: flex;
   gap: 40px;
 }

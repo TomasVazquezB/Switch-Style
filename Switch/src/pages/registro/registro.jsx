@@ -23,7 +23,7 @@ export function RegistroPage() {
     return (
         <div className="registro-container">
             <div className="image-container">
-                <img src="../src/assets/registro.jpg" alt="Imagen" className="registro-image" />
+                <img src="https://res.cloudinary.com/switchstyle/image/upload/v1756993810/registro_i9jpqb.jpg" alt="Imagen" className="registro-image" />
             </div>
             <div className="registro-box">
                 <div className="registro-form">
