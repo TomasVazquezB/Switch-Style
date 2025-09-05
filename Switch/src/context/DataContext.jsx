@@ -41,9 +41,7 @@ const DataProvider = ({ children }) => {
     fetchData();
   }, []);
 
-  return (
-    <DataContext.Provider value={{ productos, usuarios, loading, error }}>{children}</DataContext.Provider>
-  );
+  return (<DataContext.Provider value={{ productos, usuarios, loading, error }}>{children}</DataContext.Provider>);
 };
 
 export { DataContext, DataProvider };

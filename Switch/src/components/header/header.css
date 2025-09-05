@@ -191,6 +191,11 @@
   color: rgb(0, 0, 0); 
 }
 
+.carrito {
+  margin: 0px 10px 0px 0px;
+  position: relative;
+}
+
 .profile-container {
   position: relative;
 }
@@ -220,30 +225,11 @@
   background-color: #f0f0f0;
 }
 
-.search-container {
-  position: relative;
-  display: flex;
-  align-items: center;
-}
-
-.search-input {
-  width: 650px; 
-  font-size: 1rem; 
-  padding: 14px 55px 12px 40px; 
-  border-radius: 25px; 
-  border: 3px solid #9b9999; 
-  outline: none; 
-  transition: border-color 0.3s ease;
-}
-
-.search-input:focus {
-  border-color: #5a5f64; 
-}
-
 .search-btn {
   position: absolute;
+  margin-left: 1765px;
   left: 22px; 
-  top: 50%; 
+  top: 34px; 
   transform: translateY(-50%); 
   border: none;
   background-color: transparent;
