@@ -121,30 +121,12 @@ const ShopContextProvider = (props) => {
     useEffect(() => {localStorage.setItem('favoritos', JSON.stringify(favoritos));
     }, [favoritos]);
 
-    const toggleFavorito = (productoId) => {setFavoritos(prev => prev.includes(productoId) ? prev.filter(id => id !== productoId) : [...prev, productoId]
-        );
+    const toggleFavorito = (productoId) => {setFavoritos(prev => prev.includes(productoId) ? prev.filter(id => id !== productoId) : [...prev, productoId]);
     };
 
     const esFavorito = (productoId) => favoritos.includes(productoId);
 
-    const value = {
-        moneda,
-        delivery_fee,
-        productos,
-        navigate,
-        search, setSearch,
-        showSearch, setShowSearch,
-        agregarAlCarrito,
-        quitarDelCarrito,
-        updateCantidad,
-        carritoItems,
-        getCarritoCount,
-        getCarritoCantidad,
-        limpiarCarrito,
-        favoritos,
-        toggleFavorito,
-        esFavorito
-    };
+    const value = {moneda,delivery_fee,productos,navigate,search, setSearch,showSearch, setShowSearch,agregarAlCarrito,quitarDelCarrito,updateCantidad,carritoItems,getCarritoCount,getCarritoCantidad,limpiarCarrito,favoritos,toggleFavorito,esFavorito};
 
     return (
         <ShopContext.Provider value={value}>{props.children}</ShopContext.Provider>

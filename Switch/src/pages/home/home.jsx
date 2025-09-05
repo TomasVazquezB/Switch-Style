@@ -60,14 +60,7 @@ const Home = ({ darkMode }) => {
     fetch('http://127.0.0.1:8000/api/producto', {
       method: 'POST',
       headers: {'Content-Type': 'application/json',},
-      body: JSON.stringify({
-        Nombre: 'Campera Switch',
-        Descripción: 'Campera estilo urbano',
-        Precio: 299.99,
-        Tipo: 'Casual',
-        Imagen: 'campera.jpg',
-        ID_Tienda: 1
-      }),
+      body: JSON.stringify({Nombre: 'Campera Switch', Descripción: 'Campera estilo urbano', Precio: 299.99, Tipo: 'Casual', Imagen: 'campera.jpg', ID_Tienda: 1}),
     })
       .then(res => res.json())
       .then(data => {
@@ -118,11 +111,11 @@ const closeModal = () => {setShowModal(false);};
 
         <div>
           <h2 className="mas-buscado">Lo más buscado</h2>
-          <br />
+          <br/>
           <div className="card-container">
             {cardImages.map((image, index) => (
               <div className="card-home" key={index}>
-                <img src={image} className="card-img-top" alt={`Card ${index + 1}`} />
+                <img src={image} className="card-img-top" alt={`Card ${index + 1}`}/>
               </div>
             ))}
           </div>
@@ -131,20 +124,20 @@ const closeModal = () => {setShowModal(false);};
         <div className="service-section">
           <div className="service-box">
             <div className="service-item">
-              <FaSyncAlt size={45} />
-              <br />
+              <FaSyncAlt size={45}/>
+              <br/>
               <h3 className="service-title">Nuevos productos cada día</h3>
               <p className="service-description">Todos los días publicamos miles de artículos nuevos</p>
             </div>
             <div className="service-item">
-              <FaTruck size={45} />
-              <br />
+              <FaTruck size={45}/>
+              <br/>
               <h3 className="service-title">Entregas en 72 horas</h3>
               <p className="service-description">Tu pedido será entregado un plazo máximo de 72 horas</p>
             </div>
             <div className="service-item">
-              <FaUndo size={45} />
-              <br />
+              <FaUndo size={45}/>
+              <br/>
               <h3 className="service-title">14 días de devolución</h3>
               <p className="service-description">Si no estás satisfecho con tu compra, tienes 14 días para devolver tu pedido</p>
             </div>
@@ -155,29 +148,28 @@ const closeModal = () => {setShowModal(false);};
           <h2 className="ultimas-prendas">Últimas Prendas Añadidas</h2>
           <div className="carousel-cards-wrapper">
             <button className="carousel-cards-btn" onClick={handlePrev}><FaChevronLeft/></button>
-            <div className="carousel-cards-track" style={{ transform: `translateX(-${(currentIndex / lastAddedImages.length) * 100}%)` }}>
+            <div className="carousel-cards-track" style={{ transform: `translateX(-${(currentIndex / lastAddedImages.length) * 100}%)`}}>
               {lastAddedImages.map((img, idx) => (
                 <div className="carousel-card-home" key={idx} style={{ flex: `0 0 calc(100% / ${cardsPerSlide})` }}>
                   <img src={img} alt={`Prenda ${idx + 1}`} />
                 </div>
               ))}
             </div>
-            <button className="carousel-cards-btn" onClick={handleNext}><FaChevronRight /></button>
+            <button className="carousel-cards-btn" onClick={handleNext}><FaChevronRight/></button>
           </div>
         </div>
 
- <br />
+ <br/>
   <div className="download-row">
-    <br />
-    <br />
+    <br/>
+    <br/>
     <p className="download-text">Descarga la aplicación y únete a la experiencia Switch Style</p>
     <div className="download-icons">
-      <div className="store-icon"> <FaApple size={40} /> <FaGooglePlay size={40} /> </div>
+      <div className="store-icon"><FaApple size={40}/><FaGooglePlay size={40}/></div>
       <a onClick={handleAppDownload} className="download-button">Descargar APP</a>
     </div>
   </div>
   
-
  {showModal && (
   <div className={`modal-overlay ${darkMode ? 'dark' : 'light'}`}>
     <div className={`modal-box ${darkMode ? 'dark' : 'light'}`}>
@@ -187,7 +179,7 @@ const closeModal = () => {setShowModal(false);};
     </div>
   </div>
 )}
-<br />
+<br/>
 </div>
     </ErrorBoundary>
   );

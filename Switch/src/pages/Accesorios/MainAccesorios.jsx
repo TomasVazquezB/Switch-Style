@@ -52,15 +52,7 @@ const MainAccesorios = () => {
                         <h4 className="mb-3">PRECIO</h4>
                         <div className="range">
                             <span>${precioMin}</span>
-                            <input
-                                type="range"
-                                min={precioMin}
-                                max={maxPrice}
-                                step="10"
-                                value={precioMax}
-                                onChange={(e) => setPrecioMax(e.target.value)}
-                                className="w-full"
-                            />
+                            <input type="range" min={precioMin} max={maxPrice} step="10" value={precioMax} onChange={(e) => setPrecioMax(e.target.value)} className="w-full"/>
                             <span>${precioMax}</span>
                         </div>
                     </div>
@@ -81,14 +73,7 @@ const MainAccesorios = () => {
                         const imageUrl = item.ruta_imagen?.startsWith('http') ? item.ruta_imagen : `http://127.0.0.1:8000/storage/${item.ruta_imagen}`;
 
                         return (
-                            <ProductoItem
-                                key={item.id}
-                                id={item.id}
-                                img={imageUrl}
-                                nombre={item.titulo}
-                                precio={item.precio}
-                                tipo="accesorios"
-                            />
+                            <ProductoItem key={item.id} id={item.id} img={imageUrl} nombre={item.titulo} precio={item.precio} tipo="accesorios"/>
                         );
                     })}
                 </div>
