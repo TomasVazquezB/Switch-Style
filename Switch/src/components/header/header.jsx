@@ -5,7 +5,7 @@ import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import { NavLink, useNavigate } from "react-router-dom";
-import { FaSearch, FaHeart, FaShoppingCart, FaUser } from "react-icons/fa";
+import { FaSearch, FaShoppingCart, FaUser } from "react-icons/fa";
 import { BsMoon, BsSun } from "react-icons/bs";
 
 const Header = ({ toggleTheme, darkMode }) => {
@@ -132,7 +132,7 @@ const Header = ({ toggleTheme, darkMode }) => {
 
 <Container fluid>
           <Nav
-            className="me-auto"
+            className="navbar-ropa"
             style={{ justifyContent: "space-evenly", width: "100%" }}
           >
             <div className="nav-dropdown">
@@ -254,21 +254,20 @@ const Header = ({ toggleTheme, darkMode }) => {
           </Nav>
         </Container>
 
-            <div className="search-container">
-              <form className="search-container" onSubmit={handleSearch}>
-                {/* <input
-                  className="search-input"
-                  type="search"
-                  placeholder="Buscar por producto, categoría o marca"
-                  aria-label="Search"
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                /> */}
-                <button className="search-btn" type="submit">
-                  <FaSearch size = {19} />
-                </button>
-              </form>
-
+<div className="search-bar">
+  <form onSubmit={handleSearch} className="search-form">
+    <input
+      type="text"
+      placeholder="Buscar"
+      value={searchQuery}
+      onChange={(e) => setSearchQuery(e.target.value)}
+      className="search-input"
+    />
+    <button type="submit" className="search-icon-btn">
+      <FaSearch size={18}/>
+    </button>
+  </form>
+</div>            
               <Nav.Link onClick={goToCart} className="carrito">
                 <FaShoppingCart size = {21}
                   className={`navbar-icon ${
@@ -276,7 +275,6 @@ const Header = ({ toggleTheme, darkMode }) => {
                   }`}
                 />
               </Nav.Link>
-            </div>
 
             <Nav className="ms-auto">
               {usuario ? (
