@@ -1,4 +1,3 @@
-/* Fuente principal */
 @font-face {
   font-family: 'Lemon Milk';
   src: url('/fonts/LEMONMILK-Regular.otf') format('opentype'); 
@@ -6,7 +5,6 @@
   font-style: normal;
 }
 
-/* Reset y base */
 * {
   font-family: 'Lemon Milk', sans-serif;
   margin: 0;
@@ -29,7 +27,6 @@ body {
   transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-/* Wrapper principal */
 .app-wrapper {
   display: flex;
   flex-direction: column;
@@ -40,7 +37,6 @@ body {
   flex-grow: 1;
 }
 
-/* Variables globales */
 :root {
   --background-color: #ffffff;
   --text-color: #000000;
@@ -51,7 +47,6 @@ body {
   --icon-color: #000000;
 }
 
-/* Modo oscuro */
 body.dark-mode {
   --background-color: #121212;
   --text-color: #f5f5f5;
@@ -62,27 +57,23 @@ body.dark-mode {
   --icon-color: #f5f5f5;
 }
 
-/* Estilos que usan variables */
 body {
   background-color: var(--background-color);
   color: var(--text-color);
 }
 
-/* Header */
 header, .navbar-top {
   background-color: var(--header-bg);
   color: var(--text-color);
   transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-/* Footer */
 footer {
   background-color: var(--footer-bg);
   color: var(--text-color);
   transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-/* Links e iconos */
 a, .icon, .navbar-link {
   color: var(--link-color);
   transition: color 0.3s ease;
@@ -93,14 +84,12 @@ a, .icon, .navbar-link {
   transition: color 0.3s ease;
 }
 
-/* Otras secciones */
 .card, .service-box, .download-section {
   background-color: var(--header-bg);
   color: var(--text-color);
   transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-/* Inputs y botones */
 input, textarea, select, button {
   background-color: var(--background-color);
   color: var(--text-color);
@@ -108,7 +97,6 @@ input, textarea, select, button {
   transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
 }
 
-/* Placeholder */
 input::placeholder, textarea::placeholder {
   color: rgba(0,0,0,0.5);
 }

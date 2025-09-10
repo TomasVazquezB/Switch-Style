@@ -25,8 +25,8 @@ const PerfilUsuario = () => {
         <hr/>
 
         <div className="perfil-info">
-          <p><strong>📧 Email:</strong> {usuario.correo}</p>
           <p><strong>👤 Nombre:</strong> {usuario.nombre}</p>
+          <p><strong>📧 Email:</strong> {usuario.correo}</p>
         </div>
 
         <hr/>

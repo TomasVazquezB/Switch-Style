@@ -24,7 +24,7 @@ const Footer = () => {
         <div className="social-icons">
           <div className="icons-inline">
             <a href="https://www.instagram.com/switch_style25/" target="_blank" rel="noopener noreferrer" className="social-icon">
-              <FaInstagram size={30} />
+              <FaInstagram size={30}/>
             </a>
           </div>
           <span className="social-text">Switch Style</span>

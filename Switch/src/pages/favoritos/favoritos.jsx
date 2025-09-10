@@ -68,7 +68,7 @@ const Favoritos = () => {
                 <>
                     {ropaFavorita.length > 0 && renderTarjetas(ropaFavorita, 'ropa')}
                     <br></br>
-                    <hr className="mb-6" />
+                    <hr className="mb-6"/>
                     <br></br>
                     {accesoriosFavoritos.length > 0 && renderTarjetas(accesoriosFavoritos, 'accesorio')}
                 </>

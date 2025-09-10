@@ -57,11 +57,7 @@ const Home = ({ darkMode }) => {
   }, []);
 
   const crearProductoDePrueba = () => {
-    fetch('http://127.0.0.1:8000/api/producto', {
-      method: 'POST',
-      headers: {'Content-Type': 'application/json',},
-      body: JSON.stringify({Nombre: 'Campera Switch', Descripción: 'Campera estilo urbano', Precio: 299.99, Tipo: 'Casual', Imagen: 'campera.jpg', ID_Tienda: 1}),
-    })
+    fetch('http://127.0.0.1:8000/api/producto', {method: 'POST', headers: {'Content-Type': 'application/json',},body: JSON.stringify({Nombre: 'Campera Switch', Descripción: 'Campera estilo urbano', Precio: 299.99, Tipo: 'Casual', Imagen: 'campera.jpg', ID_Tienda: 1}),})
       .then(res => res.json())
       .then(data => {
         console.log('Producto insertado correctamente:', data);
@@ -94,18 +90,32 @@ const closeModal = () => {setShowModal(false);};
       <div className={`home-index ${darkMode ? 'dark' : 'light'}`}>
         <div id="varkalaCarousel" className="carousel slide varkala-carousel" data-bs-ride="carousel" data-bs-interval="5000">
           <div className="carousel-wrapper">
-            <Carousel autoPlay infiniteLoop interval={5000} showThumbs={false} showStatus={false} showIndicators={true} swipeable emulateTouch stopOnHover dynamicHeight={false}>
-              {carouselImages.map((image, index) => (
-                <div key={index}>
-                  <img src={image} alt={`Slide ${index + 1}`} />
-                  <div className="hero-text-zara">
-                    <h1 className="title">Últimas novedades</h1>
-                    <p className="description">Descubre las nuevas tendencias del momento con súper ofertas de lanzamiento</p>
-                    <button className="btn-discover" onClick={() => navigate('/MainMujeres')}>Descubre lo nuevo</button>
-                  </div>
-                </div>
-              ))}
-            </Carousel>
+          <Carousel autoPlay infiniteLoop interval={5000} showThumbs={false} showStatus={false} showIndicators={true} swipeable emulateTouch stopOnHover dynamicHeight={false}>
+  <div>
+    <img src={banner1} alt="Slide 1"/>
+    <div className="hero-text-zara">
+      <h1 className="title">Últimas novedades</h1>
+      <p className="description">Descubre las nuevas tendencias del momento con súper ofertas de lanzamiento</p>
+      <button className="btn-discover" onClick={() => navigate('/MainMujeres')}>Descubre lo nuevo</button>
+    </div>
+  </div>
+  <div>
+    <img src={banner2} alt="Slide 2"/>
+    <div className="hero-text-zara">
+      <h1 className="title">¿Tenés dudas?</h1>
+      <p className="description">Visitá nuestra sección de Preguntas Frecuentes y resolvé tus inquietudes al instante</p>
+      <button className="btn-discover" onClick={() => navigate('/faq')}>Ver Preguntas Frecuentes</button>
+    </div>
+  </div>
+  <div>
+    <img src={banner3} alt="Slide 3"/>
+    <div className="hero-text-zara">
+      <h1 className="title">¡Únete a la Comunidad Switch Style!</h1>
+      <p className="description">Registrate hoy y obtené un descuento especial por formar parte de la comunidad Switch Style</p>
+      <button className="btn-discover" onClick={() => navigate('/registro')}>Registrarme</button>
+    </div>
+  </div>
+</Carousel>
           </div>
         </div>
 
@@ -115,7 +125,7 @@ const closeModal = () => {setShowModal(false);};
           <div className="card-container">
             {cardImages.map((image, index) => (
               <div className="card-home" key={index}>
-                <img src={image} className="card-img-top" alt={`Card ${index + 1}`}/>
+              <img src={image} className="card-img-top" alt={`Card ${index + 1}`}/>
               </div>
             ))}
           </div>
