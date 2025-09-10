@@ -12,7 +12,8 @@ return new class extends Migration
    public function up()
 {
     Schema::table('accesorios', function (Blueprint $table) {
-        $table->integer('stock')->default(0)->after('precio');
+    // $table->integer('stock')->default(0);
+
     });
 }
 

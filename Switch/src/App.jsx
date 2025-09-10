@@ -15,7 +15,6 @@ import MainKidsPage from './pages/Kids/MainKids.jsx';
 import MainAccesorios from './pages/Accesorios/MainAccesorios.jsx';
 import Productos from './pages/Productos/Productos.jsx';
 import Favoritos from './pages/favoritos/favoritos.jsx';
-import TestLaravel from './pages/TestLaravel.jsx';
 import PerfilUsuario from './pages/Perfil/PerfilUsuario.jsx';
 import ErrorBoundary from './components/Error/ErrorBoundary';
 import Busqueda from './pages/busqueda/Busqueda.jsx';
@@ -37,14 +36,10 @@ function App() {
       document.body.classList.remove('dark-mode');
       document.body.classList.add('light-mode');
     }
-
     localStorage.setItem('darkMode', darkMode);
   }, [darkMode]);
 
   const toggleTheme = () => setDarkMode(prev => !prev);
-
-
-
 
   return (
     <PayPalScriptProvider options={{ clientId: "AbSH4YtXgr7HDRqfrLVMI8GJRF_iOK10cGwbs_NiwJN96bDp6GcZsOERyV4T29kvRE1o2D--KJAXFJE3" }}>
@@ -59,7 +54,6 @@ function App() {
               <Route path="/quienessomos" element={<PageTitle title="Quiénes Somos"><QuienesSomosPage /></PageTitle>} />
               <Route path="/login" element={<PageTitle title="Login"><LoginPage /></PageTitle>} />
               <Route path="/admin" element={<PageTitle title="Admin"><AdminPage /></PageTitle>} />
-              <Route path="/test-backend" element={<TestLaravel />} />
               <Route path="/registro" element={<PageTitle title="Registro"><RegistroPage /></PageTitle>} />
               <Route path="/carrito" element={<PageTitle title="Carrito"><CarritoPage /></PageTitle>} />
               <Route path="/MainHombres" element={<PageTitle title="Hombres"><MainHombresPage /></PageTitle>} />
@@ -69,7 +63,6 @@ function App() {
               <Route path="/producto/:tipo/:productoId" element={<Productos />} />
               <Route path="/favoritos" element={<PageTitle title="Favoritos"><Favoritos /></PageTitle>} />
               <Route path="/perfil" element={<PageTitle title="Perfil"><PerfilUsuario /></PageTitle>} />
-              
             </Routes>
           </ErrorBoundary>
         </main>
@@ -82,9 +75,7 @@ function App() {
 
 function PageTitle({ title, children }) {
   const location = useLocation();
-  useEffect(() => {
-    document.title = title;
-  }, [location, title]);
+  useEffect(() => { document.title = title; }, [location, title]);
   return <>{children}</>;
 }
 

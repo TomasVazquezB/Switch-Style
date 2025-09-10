@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import './admin.css';
-import { fetchUsuarios, eliminarUsuario } from '../../services/firebaseAdmin'; // <-- Ajustá el path si está en otra carpeta
 
 const AdminPage = () => {
     const [usuariosList, setUsuariosList] = useState([]);

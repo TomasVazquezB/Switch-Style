@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { PayPalButtons } from "@paypal/react-paypal-js";
-import { Wallet } from "@mercadopago/sdk-react";
 import { toast } from 'react-toastify';
 import './carrito.css';
 
@@ -29,16 +28,14 @@ const Carrito = () => {
                 ]);
                 setProductos(await ropaRes.json());
                 setAccesorios(await accesoriosRes.json());
-            } catch (error) {
-                console.error("Error al obtener productos o accesorios:", error);
+            } catch (error) {console.error("Error al obtener productos o accesorios:", error);
             }
         };
         fetchData();
     }, []);
 
-    const buscarProducto = (item) => {
-        const fuente = item.tipo === 'accesorio' ? accesorios : productos;
-        return fuente.find(p => p.id === item.producto_id);
+    const buscarProducto = (item) => {const fuente = item.tipo === 'accesorio' ? accesorios : productos;
+    return fuente.find(p => p.id === item.producto_id);
     };
 
     const calcularTotal = () => {
@@ -58,9 +55,8 @@ const Carrito = () => {
         if (tallaData) stockDisponible = tallaData.pivot?.cantidad || 1;
 
         if (nuevaCantidad < 1) return;
-        if (nuevaCantidad > stockDisponible) {
-            toast.error(`Stock máximo disponible: ${stockDisponible}`);
-            return;
+        if (nuevaCantidad > stockDisponible) {toast.error(`Stock máximo disponible: ${stockDisponible}`);
+        return;
         }
 
         const actualizado = [...carritoData];
@@ -79,9 +75,9 @@ const Carrito = () => {
     return (
         <div className="cart-container">
             <div className="cart-items">
-                <h2>Shopping Cart</h2>
+                <h2 className="carrito-vacio">Carrito de Compras</h2>
                 {carritoData.length === 0 ? (
-                    <p className="text-gray-500">Tu carrito está vacío.</p>
+                    <p className="carrito-vacio">Tu carrito está vacío</p>
                 ) : (
                     carritoData.map((item, index) => {
                         const producto = buscarProducto(item);
@@ -110,31 +106,25 @@ const Carrito = () => {
             </div>
 
             <div className="order-summary">
-                <h3>Order Summary</h3>
+                <h3>Resumen de la Compra</h3>
                 <br></br>
                 <div className="summary-line">
                     <span>Subtotal</span>
                     <span>{moneda}{calcularTotal()}</span>
                 </div>
                 <div className="summary-line">
-                    <span>Shipping estimate</span>
+                    <span>Estimacion de Envio</span>
                     <span>{moneda}0.00</span>
                 </div>
                 <div className="summary-line">
-                    <span>Tax estimate</span>
+                    <span>Estimacion de Impuestos</span>
                     <span>{moneda}0.00</span>
                 </div>
                 <div className="total">
-                    
-                    <span>Order Total </span>
-                    <span>{moneda}{calcularTotal()}</span>
+                     <span className="total-label">Total</span>
+                     <span className="total-amount">{moneda}{calcularTotal()}</span>
                 </div>
-                <div className="pay-buttons">
-                    <PayPalButtons style={{ layout: 'vertical' }} />
-                    <Wallet
-                        initialization={{ preferenceId: "YOUR_PREFERENCE_ID" }}
-                        customization={{ texts: { valueProp: 'smart_option' } }}
-                    />
+                <div className="pay-buttons"><PayPalButtons style={{ layout: 'vertical' }}/>
                 </div>
             </div>
         </div>

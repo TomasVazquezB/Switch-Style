@@ -13,19 +13,16 @@ const ShopContextProvider = (props) => {
     const [search, setSearch] = useState('');
     const [showSearch, setShowSearch] = useState(false);
 
-    // ✅ CARRITO con localStorage
     const [carritoItems, setCarritoItems] = useState(() => {
         const dataGuardada = localStorage.getItem('carrito');
         return dataGuardada ? JSON.parse(dataGuardada) : {};
     });
 
-    useEffect(() => {
-        localStorage.setItem('carrito', JSON.stringify(carritoItems));
+    useEffect(() => {localStorage.setItem('carrito', JSON.stringify(carritoItems));
     }, [carritoItems]);
 
     const agregarAlCarrito = async (itemId, talla) => {
-        if (!talla) {
-            toast.error('Seleccione talla del producto');
+        if (!talla) {toast.error('Seleccione talla del producto');
             return;
         }
 
@@ -59,7 +56,6 @@ const ShopContextProvider = (props) => {
             if (Object.keys(carritoData[itemId]).length === 0) {
                 delete carritoData[itemId];
             }
-
             setCarritoItems(carritoData);
         }
     };
@@ -81,7 +77,6 @@ const ShopContextProvider = (props) => {
             carritoData[itemId][talla] = cantidad;
             toast.success('Cantidad actualizada');
         }
-
         setCarritoItems(carritoData);
     };
 
@@ -118,49 +113,23 @@ const ShopContextProvider = (props) => {
         toast.info("Carrito vaciado");
     };
 
-    // ✅ FAVORITOS con localStorage
     const [favoritos, setFavoritos] = useState(() => {
         const favsGuardados = localStorage.getItem('favoritos');
         return favsGuardados ? JSON.parse(favsGuardados) : [];
     });
 
-    useEffect(() => {
-        localStorage.setItem('favoritos', JSON.stringify(favoritos));
+    useEffect(() => {localStorage.setItem('favoritos', JSON.stringify(favoritos));
     }, [favoritos]);
 
-    const toggleFavorito = (productoId) => {
-        setFavoritos(prev =>
-            prev.includes(productoId)
-                ? prev.filter(id => id !== productoId)
-                : [...prev, productoId]
-        );
+    const toggleFavorito = (productoId) => {setFavoritos(prev => prev.includes(productoId) ? prev.filter(id => id !== productoId) : [...prev, productoId]);
     };
 
     const esFavorito = (productoId) => favoritos.includes(productoId);
 
-    const value = {
-        moneda,
-        delivery_fee,
-        productos,
-        navigate,
-        search, setSearch,
-        showSearch, setShowSearch,
-        agregarAlCarrito,
-        quitarDelCarrito,
-        updateCantidad,
-        carritoItems,
-        getCarritoCount,
-        getCarritoCantidad,
-        limpiarCarrito,
-        favoritos,
-        toggleFavorito,
-        esFavorito
-    };
+    const value = {moneda,delivery_fee,productos,navigate,search, setSearch,showSearch, setShowSearch,agregarAlCarrito,quitarDelCarrito,updateCantidad,carritoItems,getCarritoCount,getCarritoCantidad,limpiarCarrito,favoritos,toggleFavorito,esFavorito};
 
     return (
-        <ShopContext.Provider value={value}>
-            {props.children}
-        </ShopContext.Provider>
+        <ShopContext.Provider value={value}>{props.children}</ShopContext.Provider>
     );
 };
 

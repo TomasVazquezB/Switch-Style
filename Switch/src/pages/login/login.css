@@ -17,7 +17,7 @@
 }
 
 .login-image {
-  width: 100%;
+  width: 90%;
   max-width: none;
   height: 100%;
   object-fit: cover;
@@ -36,35 +36,33 @@
 
 .login-form {
   width: 100%;
-  max-width: 700px; /* antes era 600px */
-  padding: 40px; /* más espacio interior */
+  max-width: 700px; 
+  padding: 40px; 
   border-radius: 10px;
   text-align: center;
   transition: background-color 0.4s ease, color 0.4s ease, border 0.4s ease;
 }
 
 .bienvenida {
-  font-size: 2em; /* más grande */
+  font-size: 2em; 
   margin-bottom: 15px;
   font-weight: bold;
 }
 
 .bienvenido {
   font-size: 1.3em;
-  margin-bottom: 35px; /* más separación */
+  margin-bottom: 35px; 
   text-align: center;
 }
 
-
 .input_user,
 .input_pass {
-  padding: 15px; /* más relleno */
+  padding: 15px; 
   border-radius: 6px;
   width: 100%;
   background-color: white;
   font-size: 1rem;
 }
-
 
 .button-login {
   padding: 12px 20px;
@@ -72,10 +70,9 @@
   cursor: pointer;
   border-radius: 6px;
   width: 100%;
-  margin-top: 25px; /* más espacio respecto al input */
+  margin-top: 25px; 
   transition: background-color 0.3s ease, color 0.3s ease;
 }
-
 
 .button-login:hover {
   background-color: #333333;
@@ -86,7 +83,6 @@
   color: #ff0000;
   font-weight: bold;
 }
-
 
 .dark-mode .login-form {
   background-color: #ffffff;
@@ -155,27 +151,23 @@
   text-decoration: underline;
 }
 
-/* 🌙 Modo oscuro para el contenedor principal */
 .dark-mode .login-container {
   background-color: #121212;
   color: #ffffff;
 }
 
-/* 🌙 Formulario login en modo oscuro */
 .dark-mode .login-form {
   background-color: #1e1e1e;
   color: #ffffff;
-  border: 2px solid #ffffff; /* borde blanco para destacar */
+  border: 2px solid #ffffff; 
 }
 
-/* 🌙 Inputs en modo oscuro */
 .dark-mode .input_user {
   background-color: #2a2a2a;
   color: #ffffff;
   border: 1px solid #555555;
 }
 
-/* 🌙 Botón modo oscuro: blanco con texto negro */
 .dark-mode .button-login {
   background-color: #ffffff;
   color: #000000;
@@ -187,30 +179,25 @@
   color: #000000;
 }
 
-/* 🌙 Títulos */
 .dark-mode .bienvenida,
 .dark-mode .bienvenido {
   color: #ffffff;
 }
 
-/* 🌙 Enlace al registro */
 .dark-mode .registro-link {
   color: #ffffff;
 }
 
 .dark-mode .registro-link a {
-  color: #a2c8ff; /* azul claro */
+  color: #a2c8ff; 
   text-decoration: underline;
 }
 
-/* 🌙 Alerta de error */
 .dark-mode .alert-danger {
   background-color: #ffdddd;
   color: #a10000;
 }
 
-
-/* 🌞 MODO CLARO */
 .light-mode .login-container {
   background-color: #ffffff;
   color: #ffffff;
@@ -266,8 +253,6 @@
   color: #a10000;
 }
 
-
-/* 🌙 MODO OSCURO */
 .dark-mode .login-container {
   background-color: #121212;
   color: #ffffff;

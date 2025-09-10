@@ -2,20 +2,43 @@ body,
 html {
   margin: 0;
   padding: 0;
-  height: 100%;
+  font-family: 'Inter', sans-serif;
+  scroll-behavior: smooth;
+  background: var(--bg-color);
+  color: var(--text-color);
+  transition: background 0.4s ease, color 0.4s ease;
+}
+
+* {
+  transition: color 0.3s ease, background-color 0.3s ease,
+  box-shadow 0.3s ease, transform 0.3s ease;
 }
 
 .home-index {
-  font-family: Arial, sans-serif;
-  padding: 0px 0px 0px 0px;
+  padding: 0;
   display: flex;
   flex-direction: column;
-  min-height: 50vh;
+  min-height: 100vh;
 }
 
 .home-index.light {
-  background-color: white;
-  color: black;
+  background: linear-gradient(135deg, #ffffff, #f9f9f9);
+  color: #111;
+}
+
+.home-index.dark {
+  background: linear-gradient(135deg, #121212, #1b1b1b);
+  color: #e5e5e5;
+}
+
+.home-index.dark .service-title,
+.home-index.dark .service-description {
+  color: #f0f0f0;
+}
+
+.home-index.light .service-title,
+.home-index.light .service-description {
+  color: #121212;
 }
 
 .home-index.dark {
@@ -23,34 +46,116 @@ html {
   color: white;
 }
 
-.carousel-inner img {
-  width: 100%;
-  height: auto;
+.home-index.dark .hero-text-zara {
+  color: white;
 }
 
-.carousel {
-  margin-bottom: 30px;
-  margin-top: -100px;
+.home-index.dark .btn-discover {
+  background-color: #000000;
+  color: white;
+}
+
+.home-index.dark .carousel-cards-btn {
+  background-color: rgba(255, 255, 255, 0.5);
+}
+
+.home-index.dark .carousel-cards-btn:hover {
+  background-color: rgba(255, 255, 255, 0.8);
+}
+
+.home-index.dark .mas-buscado {
+  color: white;
+}
+
+.home-index.dark .ultimas-prendas {
+  color: white;
+}
+
+.home-index.dark .service-description,
+.home-index.dark .service-title,
+.home-index.dark .download-text {
+  color: white;
+}
+
+.home-index.light {
+  background-color: white;
+  color: black;
+}
+
+.home-index.light .hero-text-zara {
+  color: black;
+}
+
+.home-index.light .btn-discover {
+  background-color: #000000;
+  color: white;
+}
+
+.home-index.light .carousel-cards-btn {
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.home-index.light .carousel-cards-btn:hover {
+  background-color: rgba(0, 0, 0, 0.8);
+}
+
+.home-index.light .mas-buscado {
+  color: black;
+}
+
+.home-index.light .ultimas-prendas {
+  color: black;
+}
+
+.home-index.light .service-description,
+.home-index.light .service-title,
+.home-index.light .download-text {
+  color: black;
+}
+
+.home-index.light .download-row {
+  background-color: #ffffff;
+  color: #0e0d0d;
+}
+
+.home-index.dark .download-row {
+  background-color: #121212;
+  color: white;
+}
+
+.home-index.dark .service-box {
+    background-color: #1e1e1e;
+}
+
+.home-index.dark .service-box,
+.home-index.dark .service-box .service-item,
+.home-index.dark .service-box .service-title,
+.home-index.dark .service-box .service-description {
+    background-color: #1e1e1e;
+    color: #f0f0f0;
 }
 
 .varkala-carousel {
   background: transparent;
   width: 100%;
   margin-top: 0;
-  margin-bottom: 30px;
+  margin-bottom: 27px;
 }
 
 .varkala-carousel .carousel-inner {
   width: 100%;
-  height: 350px;
+  height: 500px;
 }
 
 .varkala-carousel .carousel-item {
   height: 350px;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
 }
 
 .carousel .slide img {
-  max-height: 480px;
+  max-height: 330px;
   width: 100%;
   object-fit: cover;
   object-position: center;
@@ -86,15 +191,8 @@ html {
   display: none !important;
 }
 
-
 .carousel-wrapper .control-next {
   right: 25px;
-}
-
-.varkala-carousel .carousel-item {
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
 }
 
 .varkala-carousel .carousel-item img {
@@ -126,6 +224,7 @@ html {
   margin-top: 15px;
   background-color: black;
   color: white;
+  cursor: pointer;
   padding: 10px 20px;
   border: none;
   font-weight: bold;
@@ -155,21 +254,6 @@ html {
   color: white;
 }
 
-.btn-discover {
-  margin-top: 15px;
-  background-color: black;
-  color: white;
-  padding: 10px 20px;
-  border: none;
-  font-weight: bold;
-  text-transform: uppercase;
-  transition: background-color 0.3s ease;
-}
-
-.btn-discover:hover {
-  background-color: #333;
-}
-
 .carousel-control-prev-icon,
 .carousel-control-next-icon {
   background-color: black;
@@ -190,31 +274,82 @@ html {
   display: none;
 }
 
+.hero-carousel-zara {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 50vh;
+}
+
+.subtitle {
+  font-size: 1.2rem;
+  margin-bottom: 10px;
+}
+
+.title {
+  font-size: 3rem;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+.description {
+  font-size: 1.2rem;
+  margin-bottom: 20px;
+}
+
+.hero-image-zara {
+  width: 100vw;
+  height: 480px;
+  position: relative;
+}
+
+.hero-image-zara img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+  image-rendering: auto;
+}
+
 .mas-buscado {
   text-align: center;
-  margin-top: 20px;
-  margin-bottom: 20px;
+  margin-bottom: -6px;
   font-size: 2rem;
-  font-weight: bold;
-  color: #000000;
+  font-weight: 600;
+  color: #000000; 
+  margin-top: 10px;
+  position: relative;
+}
+
+.animated-title::after {
+  content: '';
+  position: absolute;
+  width: 60%;
+  height: 4px;
+  left: 20%;
+  bottom: -10px;
+  background: linear-gradient(to right, #ff4e50, #f9d423);
+  border-radius: 2px;
+  animation: slideInLine 1s ease-in-out;
 }
 
 .card-container {
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
-  gap: 50px;
+  gap: 40px;
 }
 
 .card-home {
-  flex: 1 1 200px;
-  max-width: 200px;
-  margin: 10px;
-  background-color: #1a1a1a;
-  border: 2px solid #333;
-  border-radius: 10px;
+  background: linear-gradient(145deg, #1e1e1e, #2a2a2a);
+  border-radius: 20px;
+  padding: 0;
+  flex: 1 1 240px;
+  max-width: 220px;
+  margin: 15px;
   overflow: hidden;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
   display: flex;
   flex-direction: column;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
@@ -224,14 +359,17 @@ html {
   animation: fadeInUp 0.6s ease forwards;
 }
 
+.card-home:hover {
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2);
+}
+
 .card-img-top {
-  width: 200%;
-  height: 200px;
-  object-fit: contain;
-  display: flex;
-  background-color: #fff;
-  border-top-left-radius: 8px;
-  border-top-right-radius: 8px;
+  width: 100%;
+  height: 220px;
+  object-fit: cover;
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
 }
 
 .card-body {
@@ -315,20 +453,12 @@ html {
   background-color: #222222;
 }
 
-.last-added-section .carousel-item {
-  margin-right: 15px;
-  transition: transform 0.3s ease-in-out;
-}
-
-.last-added-section .carousel-item img {
-  width: 100%;
-  height: auto;
-  object-fit: cover;
-  border-radius: 8px;
+.mas-buscado-section {
+  padding: 60px 20px;
 }
 
 .service-section {
-  margin-top: 50px;
+  margin-top: 20px;
   display: flex;
   justify-content: center;
 }
@@ -337,11 +467,14 @@ html {
   display: flex;
   justify-content: space-between;
   background-color: inherit;
-  padding: 25px;
+  padding: 0px;
+  margin-top: 12px;
+  margin-bottom: 0px;
   border-radius: 25px;
   box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
   flex-wrap: wrap;
-  gap: 120px;
+  gap: 60px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
 }
 
 .service-item {
@@ -351,76 +484,109 @@ html {
   display: flex;
   flex-direction: column;
   align-items: center;
+  padding: 23px 0px 0px 60px;
+  border-radius: 20px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
 }
 
 .service-title {
   font-size: 16px;
   font-weight: bold;
-  margin-bottom: 15px;
+  margin-bottom: 14px;
+  transition: color 0.3s ease;
 }
 
 .service-description {
   font-size: 14px;
   color: #555;
+  transition: color 0.3s ease;
 }
 
-.download-section {
+.last-added-section {
+  margin-top: 40px;
+  position: relative;
+  animation: fadeInSlide 1s ease-in-out;
+}
+
+.light-mode .last-added-section {
+  color: #ffffff;
+}
+
+.ultimas-prendas {
+  text-align: center;
+  font-size: 2.2rem;
+  margin-bottom: 13px;
+  margin-top: 7px;
+  font-weight: bold;
+  letter-spacing: 0.5px;
+  color: var(--text-color, #000000);
+}
+
+.carousel-cards-wrapper {
+  display: flex;
+  overflow: hidden;
+  position: relative;
+  padding: 13px 14px;
+  border-radius: 13px;
   margin-top: 0px;
   margin-bottom: 0px;
-  justify-content: space-between;
-  align-items: center;
-  padding-top: 4px;
-  padding-bottom: 0px;
+  top: 0px;
+  margin: -11px 0px -20px 0px ;
+}
+
+.carousel-cards-track {
+  display: flex;
+  transition: transform 0.6s ease-in-out;
+}
+
+.carousel-card-home {
+  flex: 0 0 calc(100% / 3); 
+  width: 33.333%;
+  padding: 13px;
+  box-sizing: border-box;
+  transition: transform 0.4s ease, box-shadow 0.4s ease;
+}
+
+.carousel-card-home img {
   width: 100%;
+  border-radius: 14px;
+  height: auto;
+  object-fit: cover;
+  transition: transform 0.4s ease;
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.1);
 }
 
-.home-index.light .download-section {
-  background-color: #f7f7f7;
-  color: #0e0d0d;
+.carousel-card-home:hover img {
+  transform: scale(1.04);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.25);
 }
 
-.home-index.dark .download-section {
-  background-color: #000000;
+.carousel-cards-btn {
+  background-color: rgba(0, 0, 0, 0.6);
   color: white;
+  padding: 13px;
+  border: none;
+  border-radius: 50%;
+  font-size: 22px;
+  cursor: pointer;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 10;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  transition: background-color 0.3s ease;
 }
 
-.download-text {
-  font-size: 16px;
-  margin-bottom: 20px;
-  margin-top: 5px;
-  font-weight: bold;
-  justify-content: left;
-  display: flex;
-  flex-direction: column;
-  padding: 10px;
-  margin-left: 10px;
-  margin-right: 10px;
+.carousel-cards-btn:hover {
+  background-color: rgba(0, 0, 0, 0.85);
 }
 
-.download-icons {
-  display: flex;
-  justify-content: right;
-  gap: 40px;
+.carousel-cards-btn:first-of-type {
+  left: 10px;
 }
 
-.store-icon {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.store-icon svg {
-  font-size: 36px;
-  margin-bottom: 5px;
-}
-
-.store-icon p {
-  margin: 8px;
-  font-size: 1.02rem;
-}
-
-.carousel-indicators {
-  display: none !important;
+.carousel-cards-btn:last-of-type {
+  right: 10px;
 }
 
 .card-img-top {
@@ -437,27 +603,25 @@ html {
   justify-content: flex-end;
 }
 
-.carousel .carousel-item {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.cards-carousel-wrapper {
-  display: flex;
-  justify-content: center;
-  gap: 30px;
-  padding: 30px 10px;
-  flex-wrap: wrap;
-}
-
 .last-added-section h2.mas-buscado {
-  margin-bottom: 25px;
+  margin-bottom: 7px;
   padding: 0px;
   font-size: 28px;
   font-weight: bold;
   text-align: center;
   color: #fff;
+}
+
+.last-added-section .carousel-item {
+  margin-right: 15px;
+  transition: transform 0.3s ease-in-out;
+}
+
+.last-added-section .carousel-item img {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  border-radius: 8px;
 }
 
 .cards-carousel-fullwidth {
@@ -479,9 +643,12 @@ html {
   color: #f0f0f0;
 }
 
+.dark .ultimas-prendas {
+  color: #f0f0f0;
+}
 .dark .card-home,
 .dark .service-item,
-.dark .download-section {
+.dark .download-row {
   background-color: #1e1e1e;
   color: #f0f0f0;
 }
@@ -545,184 +712,194 @@ html {
   transition: 0.3s;
 }
 
-.hero-carousel-zara {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 50vh;
-}
-
-.hero-text-zara {
-  position: absolute;
-  color: white;
-  text-align: center;
-  z-index: 2;
-}
-
-.subtitle {
-  font-size: 1.2rem;
-  margin-bottom: 10px;
-}
-
-.title {
-  font-size: 3rem;
-  font-weight: bold;
-  margin-bottom: 20px;
-}
-
-.description {
-  font-size: 1.2rem;
-  margin-bottom: 20px;
-}
-
-.btn-discover {
-  background-color: #000000;
-  color: white;
-  border: none;
-  padding: 10px 20px;
-  cursor: pointer;
-}
-
-.hero-image-zara {
-  width: 100vw;
-  height: 480px;
-  position: relative;
-}
-
-.hero-image-zara img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: center;
-  display: block;
-  image-rendering: auto;
-}
-
-.last-added-section {
-  margin-top: 40px;
-  position: relative;
-}
-
-.carousel-cards-wrapper {
-  display: flex;
-  overflow: hidden;
-  position: relative;
-}
-
-.carousel-cards-track {
-  display: flex;
-  transition: transform 0.5s ease-in-out;
-}
-
-.carousel-card-home {
-  width: 33.333%;
-  padding: 10px;
-  box-sizing: border-box;
-}
-
-.carousel-card-home img {
-  width: 100%;
-  height: auto;
-  border-radius: 8px;
-}
-
-.carousel-cards-btn {
-  background-color: rgba(0, 0, 0, 0.5);
-  color: white;
-  padding: 10px;
-  border: none;
-  font-size: 20px;
-  cursor: pointer;
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  z-index: 1;
-}
-
-.carousel-cards-btn:hover {
-  background-color: rgba(0, 0, 0, 0.8);
-}
-
-.carousel-cards-btn:first-of-type {
-  left: 0;
-}
-
-.carousel-cards-btn:last-of-type {
-  right: 0;
-}
-
-.mas-buscado {
-  text-align: center;
-  font-size: 2rem;
-  margin-bottom: 30px;
-}
-
 .carousel-cards-wrapper {
   animation: autoSlide 10s infinite;
 }
 
-.home-index.dark {
-  background-color: #121212;
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(5px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  animation: fadeIn 0.4s ease-in-out;
+}
+
+.modal-box {
+  background-color: #ffffff;
+  padding: 30px 40px;
+  border-radius: 12px;
+  text-align: center;
+  max-width: 400px;
+  width: 90%;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+  animation: slideUp 0.4s ease-in-out;
+}
+
+.modal-box h3 {
+  font-size: 1.6rem;
+  color: #333;
+  margin-bottom: 15px;
+}
+
+.modal-box p {
+  font-size: 1rem;
+  color: #555;
+  margin-bottom: 25px;
+}
+
+.close-modal-btn {
+  background-color: #000;
   color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 50px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
 }
 
-.home-index.dark .hero-text-zara {
+.close-modal-btn:hover {
+  background-color: #333;
+  transform: scale(1.05);
+}
+
+.modal-box.light {
+  background-color: #ffffff;
+  color: #111111;
+}
+
+.modal-box.dark {
+  background-color: #1e1e1e;
+  color: #ffffff;
+}
+
+.modal-box.dark h3 {
+  color: #ffffff;
+}
+
+.modal-box.dark p {
+  color: #dddddd;
+}
+
+.modal-box.light h3 {
+  color: #222222;
+}
+
+.modal-box.light p {
+  color: #444444;
+}
+
+.download-row {
+  position: relative;
+  display: block;
+  flex-direction: column;
+  box-sizing: border-box;
+  margin-top: 0px;
+  z-index: 1;
+  margin-bottom: -16px;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: -10px;
+  padding-bottom: 10px;
+  width: 100%;
+}
+
+.download-button {
+  text-decoration: none;
+  padding: 10px 10px;
+  background-color: black;
   color: white;
+  font-weight: bold;
+  border-radius: 6px;
+  display: flex;
+  transition: background-color 0.3s;
+  margin-left: -28px;     
+  margin-right: 15px;    
+  margin-top: 0px;
+  margin-bottom: 0px;
 }
 
-.home-index.dark .btn-discover {
-  background-color: #000000;
-  color: white;
+.download-button:hover {
+  background-color: #333;
 }
 
-.home-index.dark .carousel-cards-btn {
-  background-color: rgba(255, 255, 255, 0.5);
+.download-text {
+  font-size: 16px;
+  font-weight: bold;
+  justify-content: left;
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+  margin: 0px  0px -80px 4px;
+  flex: 1;
 }
 
-.home-index.dark .carousel-cards-btn:hover {
-  background-color: rgba(255, 255, 255, 0.8);
+.download-icons {
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+  justify-content: center;
+  align-items: end;
+  gap: 16px; 
+  margin-left: 0px;    
+  margin-top: 0px; 
+  margin: 5px 0px -10px 0px;   
 }
 
-.home-index.dark .mas-buscado {
-  color: white;
+.store-icon {
+  display: flex;
+  flex-direction: row;
+  align-items: end;
+  gap: 16px;
+  pointer-events: none;
+  margin: 0px 45px -30px 0px;
 }
 
-.home-index.dark .service-description,
-.home-index.dark .service-title,
-.home-index.dark .download-text {
-  color: white;
-}
-
-.home-index.light {
-  background-color: white;
+.store-icon svg {
+  width: 34px;
+  height: 37px;
+  display: block;
   color: black;
 }
 
-.home-index.light .hero-text-zara {
-  color: black;
+.store-icon p {
+  margin-top: 0px;
+  font-weight: bold;
+  pointer-events: none;
 }
 
-.home-index.light .btn-discover {
-  background-color: #000000;
-  color: white;
+.download-row .download-icons {
+  display: flex;
+  gap: 40px;
 }
 
-.home-index.light .carousel-cards-btn {
-  background-color: rgba(0, 0, 0, 0.5);
+@keyframes fadeIn {
+  from {
+    background: rgba(0, 0, 0, 0);
+    opacity: 0;
+  }
+  to {
+    background: rgba(0, 0, 0, 0.6);
+    opacity: 1;
+  }
 }
 
-.home-index.light .carousel-cards-btn:hover {
-  background-color: rgba(0, 0, 0, 0.8);
-}
-
-.home-index.light .mas-buscado {
-  color: black;
-}
-
-.home-index.light .service-description,
-.home-index.light .service-title,
-.home-index.light .download-text {
-  color: black;
+@keyframes slideUp {
+  from {
+    transform: translateY(50px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
 }
 
 @keyframes fadeInUp {
@@ -732,10 +909,116 @@ html {
   }
 }
 
+@keyframes fadeInSlide {
+  0% {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInCard {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideInLine {
+  from { width: 0; }
+  to { width: 60px; }
+}
+
+
+@media (max-width: 1024px) {
+  .carousel-card-home {
+    width: 100%;
+  }
+
+  .service-box {
+    flex-direction: column;
+    align-items: center;
+    gap: 25px; /* más aire en tablets */
+    padding: 20px;
+  }
+
+  .mas-buscado {
+    font-size: 2.2rem;
+    text-align: center;
+  }
+
+  .ultimas-prendas {
+    font-size: 2.2rem;
+    text-align: center;
+  }
+
+  .service-section {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .carousel-inner {
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+
+  .download-icons {
+    flex-direction: row; 
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 25px;
+  }
+
+  .store-icon {
+    margin-bottom: 0;
+    max-width: 180px; /* se ajusta a tablets */
+  }
+
+  .card-container {
+    gap: 25px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .card-home {
+    width: 85%; /* un poco más grande que en mobile */
+  }
+
+  .card-img-top {
+    height: 220px;
+  }
+
+  .carousel-card-home {
+    flex: 0 0 100%;
+  }
+
+  .carousel-cards-btn {
+    padding: 12px 18px;
+    font-size: 18px;
+    border-radius: 12px;
+  }
+}
+
 @media (max-width: 768px) {
   .carousel-card-home {
     width: 100%;
   }
+
+   .service-box {
+    flex-direction: column;
+    align-items: center;
+   }
+
+   .mas-buscado {
+    font-size: 2rem;
+  }
+
+.ultimas-prendas{
+    font-size: 2rem;
+    }
 
   .service-section {
     flex-direction: column;
@@ -748,19 +1031,14 @@ html {
   }
 
   .download-icons {
-    flex-direction: column;
+    flex-direction: row; 
+    flex-wrap: wrap;
     justify-content: center;
-    gap: 10px;
+    gap: 20px;
   }
 
-  .store-icon {
-    margin-bottom: 20px;
-  }
-
-  .download-text {
-    text-align: center;
-    width: 100%;
-    margin-bottom: 10px;
+   .store-icon {
+    margin-bottom: 0;
   }
 
   .card-container {
@@ -770,39 +1048,19 @@ html {
 
   .card-home {
     width: 90%;
-    max-width: 100%;
   }
 
   .card-img-top {
     height: 180px;
   }
-}
 
-.black-line {
-  border: none;
-  height: 1px;
-  background-color: #000000;
-  opacity: 1;
-  margin: 40px 0 20px;
-}
+  .carousel-card-home {
+    flex: 0 0 100%;
+  }
 
+  .carousel-cards-btn {
+    padding: 10px;
+    font-size: 18px;
 
-
-.download-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 20px;
-  flex-wrap: wrap;
-}
-
-.download-text {
-  font-size: 16px;
-  font-weight: bold;
-  margin: 0;
-}
-
-.download-section .download-icons {
-  display: flex;
-  gap: 40px;
+  }
 }

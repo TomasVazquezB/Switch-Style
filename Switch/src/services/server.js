@@ -1,4 +1,3 @@
-// server.js
 import express from 'express';
 import cors from 'cors';
 import mercadopago from 'mercadopago';
@@ -9,12 +8,10 @@ const PORT = 4000;
 app.use(cors());
 app.use(express.json());
 
-// ✅ Configura tu access_token de MercadoPago
 mercadopago.configure({
     access_token: 'TEST-69d1d189-3428-4757-b74d-e5ea62900894'
 });
 
-// 📦 Endpoint para crear preferencia
 app.post('/create_preference', async (req, res) => {
     try {
         const { items } = req.body;
@@ -41,7 +38,6 @@ app.post('/create_preference', async (req, res) => {
     }
 });
 
-// Iniciar servidor
 app.listen(PORT, () => {
     console.log(`Servidor backend corriendo en http://localhost:${PORT}`);
 });

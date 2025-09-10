@@ -4,11 +4,7 @@ import './ErrorBoundary.css';
 class ErrorBoundary extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      hasError: false,
-      error: null,
-      errorInfo: null,
-    };
+    this.state = {hasError: false, error: null,errorInfo: null,};
   }
 
   static getDerivedStateFromError(error) {
@@ -16,10 +12,7 @@ class ErrorBoundary extends Component {
   }
 
   componentDidCatch(error, errorInfo) {
-    this.setState({
-      error: error,
-      errorInfo: errorInfo,
-    });
+    this.setState({error: error,errorInfo: errorInfo,});
     console.error("Error:", error);
     console.error("ErrorInfo:", errorInfo);
   }
