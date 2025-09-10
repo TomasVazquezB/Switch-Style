@@ -9,7 +9,7 @@ export const obtenerUsuario = () => {
 
 export const cerrarSesion = () => {
   localStorage.removeItem('usuario');
-  localStorage.removeItem('token'); // por si lo usás luego
+  localStorage.removeItem('token'); 
 };
 
 export const estaAutenticado = () => {

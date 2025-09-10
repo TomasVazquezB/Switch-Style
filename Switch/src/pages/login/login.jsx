@@ -3,7 +3,6 @@ import { useNavigate, Link } from 'react-router-dom';
 import api from '../../api/axios';
 import './login.css';
 import Cookies from 'js-cookie';
-import loginImage from '../../assets/login.jpg'; 
 
 export function LoginPage() {
     const [formData, setFormData] = useState({ identificador: '', contrasena: '' });
@@ -60,26 +59,8 @@ export function LoginPage() {
                     <h1 className="bienvenida">Ingresar</h1>
                     <h3 className="bienvenido">Bienvenido de vuelta</h3>
                     <form onSubmit={handleSubmit}>
-                        <input
-                            type="text"
-                            name="identificador"
-                            placeholder="Email"
-                            required
-                            value={formData.identificador}
-                            onChange={handleChange}
-                            className="form-control input_user"
-                        />
-
-                        <input
-                            type="password"
-                            name="contrasena"
-                            placeholder="Contraseña"
-                            required
-                            value={formData.contrasena}
-                            onChange={handleChange}
-                            className="form-control input_user"
-                        />
-
+                        <input type="text" name="identificador" placeholder="Email" required value={formData.identificador} onChange={handleChange} className="form-control input_user"/>
+                        <input type="password" name="contrasena" placeholder="Contraseña" required value={formData.contrasena} onChange={handleChange} className="form-control input_user"/>
                         {error && <div className="alert alert-danger">{error}</div>}
                         <button type="submit" className="button-login">Ingresar</button>
                         <p className="registro-link"> ¿Todavía no estás registrado? <Link to="/registro">Regístrate aquí</Link></p>

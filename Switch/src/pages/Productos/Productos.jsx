@@ -106,7 +106,7 @@ const Productos = () => {
                 </div>
 
                 <div style={{ backgroundColor: '#f9f9f9', padding: '1rem', borderRadius: '0.75rem' }}>
-                <img src={img} alt="Producto" className="main-image" />
+                <img src={img} alt="Producto" className="main-image"/>
                 </div>
 
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
