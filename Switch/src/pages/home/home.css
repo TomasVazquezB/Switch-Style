@@ -335,7 +335,8 @@ html {
 }
 
 .card-container {
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
   justify-content: center;
   flex-wrap: wrap;
   gap: 40px;
@@ -502,6 +503,11 @@ html {
   transition: color 0.3s ease;
 }
 
+.search-input {
+  width: 100%;
+  max-width: 250%;
+}
+
 .last-added-section {
   margin-top: 40px;
   position: relative;
@@ -646,6 +652,7 @@ html {
 .dark .ultimas-prendas {
   color: #f0f0f0;
 }
+
 .dark .card-home,
 .dark .service-item,
 .dark .download-row {
@@ -932,8 +939,11 @@ html {
   to { width: 60px; }
 }
 
-
 @media (max-width: 1024px) {
+.hero-text-zara {
+  font-size: 2rem;
+}
+
   .carousel-card-home {
     width: 100%;
   }
@@ -941,7 +951,7 @@ html {
   .service-box {
     flex-direction: column;
     align-items: center;
-    gap: 25px; /* más aire en tablets */
+    gap: 25px; 
     padding: 20px;
   }
 
@@ -974,7 +984,7 @@ html {
 
   .store-icon {
     margin-bottom: 0;
-    max-width: 180px; /* se ajusta a tablets */
+    max-width: 180px; 
   }
 
   .card-container {
@@ -984,7 +994,7 @@ html {
   }
 
   .card-home {
-    width: 85%; /* un poco más grande que en mobile */
+    width: 85%; 
   }
 
   .card-img-top {
@@ -1003,6 +1013,10 @@ html {
 }
 
 @media (max-width: 768px) {
+ .hero-text-zara { 
+  font-size: 1.5rem;
+ }
+
   .carousel-card-home {
     width: 100%;
   }
@@ -1063,4 +1077,4 @@ html {
     font-size: 18px;
 
   }
-}
+} 
