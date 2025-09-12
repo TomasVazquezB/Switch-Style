@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { FaChevronLeft, FaChevronRight, FaApple, FaGooglePlay, FaSyncAlt, FaTruck, FaUndo } from 'react-icons/fa';
+import { FaChevronLeft, FaChevronRight, FaSyncAlt, FaTruck, FaUndo } from 'react-icons/fa';
 import './home.css';
 import { Carousel } from 'react-responsive-carousel';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
@@ -71,19 +71,7 @@ const Home = ({ darkMode }) => {
 
   const handlePrev = () => {setCurrentIndex((prevIndex) => (prevIndex - cardsPerSlide + lastAddedImages.length) % lastAddedImages.length);};
   const handleNext = () => {setCurrentIndex((prevIndex) => (prevIndex + cardsPerSlide) % lastAddedImages.length);};
-
-  const handleAppDownload = () => {
-  setShowModal(true);
-
-  const link = document.createElement("a");
-  link.href = "/Switch Style.apk"; 
-  link.download = "Switch Style.apk";
-  document.body.appendChild(link);
-  link.click();
-  document.body.removeChild(link);
-};
-
-const closeModal = () => {setShowModal(false);};
+  const closeModal = () => {setShowModal(false);};
 
   return (
     <ErrorBoundary>
@@ -168,30 +156,8 @@ const closeModal = () => {setShowModal(false);};
             <button className="carousel-cards-btn" onClick={handleNext}><FaChevronRight/></button>
           </div>
         </div>
-
- <br/>
-  <div className="download-row">
-    <br/>
-    <br/>
-    <p className="download-text">Descarga la aplicación y únete a la experiencia Switch Style</p>
-    <div className="download-icons">
-      <div className="store-icon"><FaApple size={40}/><FaGooglePlay size={40}/></div>
-      <a onClick={handleAppDownload} className="download-button">Descargar APP</a>
-    </div>
-  </div>
-  
- {showModal && (
-  <div className={`modal-overlay ${darkMode ? 'dark' : 'light'}`}>
-    <div className={`modal-box ${darkMode ? 'dark' : 'light'}`}>
-      <h3>¡Gracias por descargar nuestra app!</h3>
-      <p>Si la descarga no se inicia automáticamente, vuelva a intentarlo</p>
-      <button className="close-modal-btn" onClick={closeModal}>Cerrar</button>
-    </div>
-  </div>
-)}
-<br/>
 </div>
-    </ErrorBoundary>
+  </ErrorBoundary> 
   );
 };
 
