@@ -78,6 +78,8 @@ footer nav {
   align-items: center;
   gap: 3px;
   justify-content: flex-end;
+  margin-top: -220px;
+  margin-bottom: 7px;
 }
 
 .icons-inline {
@@ -90,6 +92,7 @@ footer nav {
   font-size: 1.3rem;
   margin-left: 3px;
   font-weight: 600;
+  margin-right: -403px;
 }
 
 .social-icon {
@@ -108,8 +111,9 @@ footer nav {
   flex-direction: column;
   align-items: flex-start;
   gap: 7px;
-  margin-top: -12px;
+  margin-top: 13px;
   width: 100%;
+  margin-left: -10px;
 }
 
 .contact-item {
@@ -228,4 +232,164 @@ footer nav {
 .dark-mode .quienes-link,
 .dark-mode .faq-link {
   color: #000000;
+}
+
+.download-row {
+  margin-top: -23px;
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0px;
+  margin-right: -20px;
+}
+
+.download-text {
+  display: flex;
+  flex-direction: column;
+  align-items: center;   
+  text-align: center;    
+  margin: 0px 0px 0px 183px; 
+  margin-top: -40px;
+  margin-bottom: 20px;
+}
+
+.download-text .line1 {
+  font-size: 0.95rem;
+  font-weight: 400;
+}
+
+.light-mode .download-text {
+  color: #ffffff;
+}
+
+.dark-mode .download-text {
+  color: #000000;
+}
+
+.light-mode .line1 {
+  color: #ffffff;
+}
+
+.dark-mode .line1{
+  color: #000000;
+}
+
+.download-icons {
+  display: flex;
+  flex-direction: row;   
+  align-items: center;
+  gap: 15px;             
+  margin-left: 175px;
+}
+
+.download-button {
+  padding: 8px 13px;
+  border-radius: 20px;
+  font-size: 0.95rem;
+  font-weight: bold;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background 0.3s ease, color 0.3s ease;
+  white-space: nowrap;
+  border: none;
+  margin: 0px, 0px, 0px, 0px;
+}
+
+.light-mode .download-button {
+  background-color: #333333; 
+  color: #ffffff;
+}
+
+.light-mode .download-button:hover {
+  background-color: #555555;
+}
+
+.dark-mode .download-button {
+  background-color: #e0e0e0; 
+  color: #000000;
+}
+
+.dark-mode .download-button:hover {
+  background-color: #c2c2c2;
+}
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(5px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  animation: fadeIn 0.4s ease-in-out;
+}
+
+.modal-box {
+  background-color: #ffffff;
+  padding: 30px 40px;
+  border-radius: 12px;
+  text-align: center;
+  max-width: 400px;
+  width: 90%;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+  animation: slideUp 0.4s ease-in-out;
+}
+
+.modal-box h3 {
+  font-size: 1.6rem;
+  color: #333;
+  margin-bottom: 15px;
+}
+
+.modal-box p {
+  font-size: 1rem;
+  color: #555;
+  margin-bottom: 25px;
+}
+
+.close-modal-btn {
+  background-color: #000;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 50px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.close-modal-btn:hover {
+  background-color: #333;
+  transform: scale(1.05);
+}
+
+.modal-box.light {
+  background-color: #ffffff;
+  color: #111111;
+}
+
+.modal-box.dark {
+  background-color: #1e1e1e;
+  color: #ffffff;
+}
+
+.modal-box.dark h3 {
+  color: #ffffff;
+}
+
+.modal-box.dark p {
+  color: #dddddd;
+}
+
+.modal-box.light h3 {
+  color: #222222;
+}
+
+.modal-box.light p {
+  color: #444444;
 }
