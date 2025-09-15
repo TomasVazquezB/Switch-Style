@@ -12,12 +12,9 @@ const Footer = ({ darkMode }) => {
   };
 
   const handleAppDownload = () => {
-    // Abrir modal
     setShowModal(true);
-
-    // Descargar APK
     const link = document.createElement("a");
-    link.href = "/Switch Style.apk"; // Debe estar en /public
+    link.href = "/Switch Style.apk"; 
     link.download = "Switch Style.apk";
     document.body.appendChild(link);
     link.click();
@@ -30,9 +27,7 @@ const Footer = ({ darkMode }) => {
     <footer className="footer footer-center bg-base-200/60 rounded-sm p-4">
       <nav className="footer-nav">
         <FaRegSmileWink className="smile-icon" size={21} />
-        <Link to="/quienessomos" onClick={scrollToQuienesSomos} className="quienes-link">
-          ¿Querés conocernos?
-        </Link>
+        <Link to="/quienessomos" onClick={scrollToQuienesSomos} className="quienes-link">¿Querés conocernos?</Link>
       </nav>
 
       <nav className="footer-faq">
@@ -59,26 +54,20 @@ const Footer = ({ darkMode }) => {
         <div className="social-icons">
           <div className="icons-inline">
             <a href="https://www.instagram.com/switch_style25/" target="_blank" rel="noopener noreferrer" className="social-icon">
-              <FaInstagram size={30} />
+            <FaInstagram size={30} />
             </a>
           </div>
           <span className="social-text">Switch Style</span>
         </div>
 
         <div className="download-row">
-          <div className="download-text">
-            <span className="line1">Descargar la aplicación</span>
-          </div>
-
-          <div className="download-icons">
-            <FaApple size={30} className="store-icon" />
-            <FaGooglePlay size={30} className="store-icon" />
-            <button onClick={handleAppDownload} className="download-button">
-              Descargar APP
-            </button>
-          </div>
-        </div>
-      </nav>
+  <button onClick={handleAppDownload} className="download-button">
+    <FaApple size={24} className="store-icon" />
+    <FaGooglePlay size={24} className="store-icon" />
+    <span className="download-text">Descargar APP</span>
+  </button>
+</div>
+</nav>
 
       {showModal && (
         <div className={`modal-overlay ${darkMode ? 'dark' : 'light'}`}>
