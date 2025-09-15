@@ -33,8 +33,56 @@ footer nav {
   justify-content: flex-start;
   width: 100%;
   gap: 3px; 
-  margin-top: -3px;
+  margin-top: -5px;
   margin-left: -6px;
+}
+
+.footer-text {
+  font-weight: 500;
+  font-size: 1rem;
+  margin: 0px;
+  text-align: center;
+  width: 100%;
+  white-space: nowrap;
+  position: absolute;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  top: 40%;
+}
+
+.footer-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.footer-icons a {
+  background-color: transparent;
+  border: 2px solid currentColor;
+  border-radius: 6px;
+  padding: 3px;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.3s ease;
+}
+
+.footer-icons a:hover {
+  background-color: white;
+  color: black;
+}
+
+.footer .footer-nav,
+.footer .contact-info,
+.footer .social-icons {
+  flex: 1;
+}
+
+.light-mode .footer {
+  background-color: #000000;
+  color: #ffffff;
 }
 
 .smile-icon {
@@ -47,7 +95,6 @@ footer nav {
   font-size: 1rem;
   font-weight: 500; 
   text-decoration: none; 
-  cursor: pointer; 
   transition: color 0.3s ease;
 }
 
@@ -56,7 +103,8 @@ footer nav {
   display: flex;
   align-items: center;
   gap: 9px;
-  margin-left: -12px;
+  margin-left: -13px;
+  cursor: pointer;
 }
 
 .faq-icon {
@@ -78,8 +126,12 @@ footer nav {
   align-items: center;
   gap: 3px;
   justify-content: flex-end;
-  margin-top: -220px;
+  margin-top: -180px;
   margin-bottom: 7px;
+}
+
+.social-icon:hover {
+  transform: scale(1.2); 
 }
 
 .icons-inline {
@@ -92,18 +144,7 @@ footer nav {
   font-size: 1.3rem;
   margin-left: 3px;
   font-weight: 600;
-  margin-right: -403px;
-}
-
-.social-icon {
-  font-size: 33px; 
-  transition: transform 0.3s; 
-  cursor: pointer; 
-  margin-right: 3px;
-}
-
-.social-icon:hover {
-  transform: scale(1.2); 
+  margin-right: -193px;
 }
 
 .contact-info {
@@ -135,66 +176,9 @@ footer nav {
   margin-top: 4px;
 }
 
-.footer-text {
-  font-weight: 500;
-  font-size: 1rem;
-  margin: 0px;
-  text-align: center;
-  width: 100%;
-  white-space: nowrap;
-  position: absolute;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  top: 40%;
-}
-
 .contact-text {
   font-size: 0.95rem;
   font-weight: 500;
-}
-
-.footer-content {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  flex-wrap: wrap;
-}
-
-.footer-icons a {
-  background-color: transparent;
-  border: 2px solid currentColor;
-  border-radius: 6px;
-  padding: 3px;
-  font-size: 14px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: background-color 0.3s ease;
-}
-
-.footer-icons a:hover {
-  background-color: white;
-  color: black;
-}
-
-.footer {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  flex-wrap: wrap;
-  padding: 20px;
-  position: relative;
-}
-
-.footer .footer-nav,
-.footer .contact-info,
-.footer .social-icons {
-  flex: 1;
-}
-
-.light-mode .footer {
-  background-color: #000000;
-  color: #ffffff;
 }
 
 .light-mode .social-icon,
@@ -235,44 +219,13 @@ footer nav {
 }
 
 .download-row {
-  margin-top: -23px;
+  margin-top: -50px;
   text-align: left;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   gap: 0px;
   margin-right: -20px;
-}
-
-.download-text {
-  display: flex;
-  flex-direction: column;
-  align-items: center;   
-  text-align: center;    
-  margin: 0px 0px 0px 183px; 
-  margin-top: -40px;
-  margin-bottom: 20px;
-}
-
-.download-text .line1 {
-  font-size: 0.95rem;
-  font-weight: 400;
-}
-
-.light-mode .download-text {
-  color: #ffffff;
-}
-
-.dark-mode .download-text {
-  color: #000000;
-}
-
-.light-mode .line1 {
-  color: #ffffff;
-}
-
-.dark-mode .line1{
-  color: #000000;
 }
 
 .download-icons {
@@ -284,16 +237,17 @@ footer nav {
 }
 
 .download-button {
-  padding: 8px 13px;
-  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px; 
+  padding: 11px 14px;
+  border-radius: 25px;
   font-size: 0.95rem;
   font-weight: bold;
   cursor: pointer;
-  text-decoration: none;
-  transition: background 0.3s ease, color 0.3s ease;
-  white-space: nowrap;
   border: none;
-  margin: 0px, 0px, 0px, 0px;
+  transition: background 0.3s ease, color 0.3s ease;
 }
 
 .light-mode .download-button {
@@ -314,6 +268,19 @@ footer nav {
   background-color: #c2c2c2;
 }
 
+.download-text {
+  font-size: 0.95rem;
+  font-weight: bold;
+}
+
+.light-mode .download-text {
+  color: #ffffff;
+}
+
+.dark-mode .download-text {
+  color: #000000;
+}
+
 .modal-overlay {
   position: fixed;
   top: 0;
@@ -329,6 +296,14 @@ footer nav {
   animation: fadeIn 0.4s ease-in-out;
 }
 
+.light-mode .modal-overlay {
+  background: rgba(255, 255, 255, 0.6);
+}
+
+.dark-mode .modal-overlay {
+  background: rgba(0, 0, 0, 0.6);
+}
+
 .modal-box {
   background-color: #ffffff;
   padding: 30px 40px;
@@ -340,16 +315,41 @@ footer nav {
   animation: slideUp 0.4s ease-in-out;
 }
 
+.light-mode .modal-box {
+  background-color: #f9f9f9;
+}
+
+.dark-mode .modal-box {
+  background-color: #333333;
+  color: #ffffff;
+}
+
 .modal-box h3 {
   font-size: 1.6rem;
   color: #333;
   margin-bottom: 15px;
 }
 
+.light-mode .modal-box h3 {
+  color: #222222;
+}
+
+.dark-mode .modal-box h3 {
+  color: #ffffff;
+}
+
 .modal-box p {
   font-size: 1rem;
   color: #555;
   margin-bottom: 25px;
+}
+
+.light-mode .modal-box p {
+  color: #444444;
+}
+
+.dark-mode .modal-box p {
+  color: #dddddd;
 }
 
 .close-modal-btn {
@@ -363,33 +363,22 @@ footer nav {
   transition: all 0.3s ease;
 }
 
-.close-modal-btn:hover {
+.light-mode .close-modal-btn {
+  background-color: #333;
+  color: white;
+}
+
+.dark-mode .close-modal-btn {
+  background-color: #ddd;
+  color: #333;
+}
+
+.light-mode .close-modal-btn:hover {
   background-color: #333;
   transform: scale(1.05);
 }
 
-.modal-box.light {
-  background-color: #ffffff;
-  color: #111111;
-}
-
-.modal-box.dark {
-  background-color: #1e1e1e;
-  color: #ffffff;
-}
-
-.modal-box.dark h3 {
-  color: #ffffff;
-}
-
-.modal-box.dark p {
-  color: #dddddd;
-}
-
-.modal-box.light h3 {
-  color: #222222;
-}
-
-.modal-box.light p {
-  color: #444444;
+.dark-mode .close-modal-btn:hover {
+  background-color: #bbb;
+  transform: scale(1.05);
 }
