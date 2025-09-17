@@ -45,9 +45,9 @@ footer nav {
   width: 100%;
   white-space: nowrap;
   position: absolute;
-  left: 50%;
+  margin-left: -0px;
   transform: translate(-50%, -50%);
-  top: 40%;
+  margin-top: -70px;
 }
 
 .footer-content {

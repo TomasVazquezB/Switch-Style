@@ -139,7 +139,6 @@ const Header = ({ toggleTheme, darkMode }) => {
   </form>
 </div>            
             <Nav.Link onClick={goToCart} className="carrito"><FaShoppingCart size = {21} className={`navbar-icon ${darkMode ? "text-white" : "text-dark"}`}/></Nav.Link>
-
             <Nav.Link as={Link} to="/login" onClick={handleClick} className="login-buttom"><FaUser size={20} style={{ marginRight: "8px" }}/></Nav.Link>
             <Nav className="ms-auto">
               {usuario ? (

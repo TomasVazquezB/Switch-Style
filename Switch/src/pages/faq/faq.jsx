@@ -25,12 +25,12 @@ export function FAQPage() {
     },
     {
       pregunta: "¿Cómo funcionan los envíos?",
-      respuesta: "Realizamos envíos a todo el país con empresas reconocidas como Correo Argentino, OCA y Andreani. El tiempo de entrega suele ser entre 48 y 72 horas hábiles. El costo de envío depende de tu ubicación y se calcula automáticamente al momento de la compra",
+      respuesta: "Realizamos envíos a todo el país con empresas reconocidas como Correo Argentino y Andreani. El tiempo de entrega suele ser entre 48 a 72 horas hábiles. El costo de envío depende de la ubicación, se calcula automáticamente al momento de realizar la compra",
       icono: "🚚"
     },
     {
       pregunta: "¿Qué formas de pago aceptan?",
-      respuesta: "Podés pagar con tarjeta de crédito, débito, transferencias bancarias y billeteras virtuales como Mercado Pago",
+      respuesta: "Aceptamos todos los medios de pagos tarjeta de crédito, débito, transferencias bancarias y billeteras virtuales",
       icono: "💳"
     },
     {
@@ -42,12 +42,8 @@ export function FAQPage() {
       pregunta: "¿Qué pasa si el producto que recibo no es lo que esperaba?",
       respuesta: "Si la prenda no coincide con la descripción o tiene algún problema, podés solicitar un cambio o la devolución de tu dinero",
       icono: "❗"
-    },
-    {
-      pregunta: "¿Hay algún beneficio por registrarme?",
-      respuesta: "Sí, registrándote podés acceder a descuentos especiales, guardar tus prendas favoritas y recibir novedades exclusivas",
-      icono: "🎁"
     }
+
   ];
 
   return (

@@ -139,7 +139,7 @@ html {
   background: transparent;
   width: 100%;
   margin-top: 0;
-  margin-bottom: 27px;
+  margin-bottom: 23px;
 }
 
 .varkala-carousel .carousel-inner {
@@ -148,14 +148,14 @@ html {
 }
 
 .varkala-carousel .carousel-item {
-  height: 350px;
+  height: 320px;
   display: flex;
   justify-content: center;
   align-items: flex-start;
 }
 
 .carousel .slide img {
-  max-height: 330px;
+  max-height: 310px;
   width: 100%;
   object-fit: cover;
   object-position: center;
@@ -211,7 +211,7 @@ html {
 
 .carousel-caption {
   background: rgba(0, 0, 0, 0.5);
-  padding: 20px;
+  padding: 0px;
   border-radius: 10px;
 }
 
@@ -221,10 +221,11 @@ html {
 }
 
 .btn-discover {
-  margin-top: 15px;
+  margin-top: 0px;
   background-color: black;
   color: white;
   cursor: pointer;
+  border-radius: 30px;
   padding: 10px 20px;
   border: none;
   font-weight: bold;
