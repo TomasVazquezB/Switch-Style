@@ -139,7 +139,7 @@ html {
   background: transparent;
   width: 100%;
   margin-top: 0;
-  margin-bottom: 27px;
+  margin-bottom: 23px;
 }
 
 .varkala-carousel .carousel-inner {
@@ -148,14 +148,14 @@ html {
 }
 
 .varkala-carousel .carousel-item {
-  height: 350px;
+  height: 320px;
   display: flex;
   justify-content: center;
   align-items: flex-start;
 }
 
 .carousel .slide img {
-  max-height: 330px;
+  max-height: 310px;
   width: 100%;
   object-fit: cover;
   object-position: center;
@@ -211,7 +211,7 @@ html {
 
 .carousel-caption {
   background: rgba(0, 0, 0, 0.5);
-  padding: 20px;
+  padding: 0px;
   border-radius: 10px;
 }
 
@@ -221,10 +221,11 @@ html {
 }
 
 .btn-discover {
-  margin-top: 15px;
+  margin-top: 0px;
   background-color: black;
   color: white;
   cursor: pointer;
+  border-radius: 30px;
   padding: 10px 20px;
   border: none;
   font-weight: bold;
@@ -335,7 +336,8 @@ html {
 }
 
 .card-container {
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
   justify-content: center;
   flex-wrap: wrap;
   gap: 40px;
@@ -502,8 +504,14 @@ html {
   transition: color 0.3s ease;
 }
 
+.search-input {
+  width: 100%;
+  max-width: 250%;
+}
+
 .last-added-section {
   margin-top: 40px;
+  margin-bottom: 30px;
   position: relative;
   animation: fadeInSlide 1s ease-in-out;
 }
@@ -646,6 +654,7 @@ html {
 .dark .ultimas-prendas {
   color: #f0f0f0;
 }
+
 .dark .card-home,
 .dark .service-item,
 .dark .download-row {
@@ -716,169 +725,6 @@ html {
   animation: autoSlide 10s infinite;
 }
 
-.modal-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.6);
-  backdrop-filter: blur(5px);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 1000;
-  animation: fadeIn 0.4s ease-in-out;
-}
-
-.modal-box {
-  background-color: #ffffff;
-  padding: 30px 40px;
-  border-radius: 12px;
-  text-align: center;
-  max-width: 400px;
-  width: 90%;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
-  animation: slideUp 0.4s ease-in-out;
-}
-
-.modal-box h3 {
-  font-size: 1.6rem;
-  color: #333;
-  margin-bottom: 15px;
-}
-
-.modal-box p {
-  font-size: 1rem;
-  color: #555;
-  margin-bottom: 25px;
-}
-
-.close-modal-btn {
-  background-color: #000;
-  color: white;
-  padding: 10px 20px;
-  border: none;
-  border-radius: 50px;
-  font-weight: bold;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-.close-modal-btn:hover {
-  background-color: #333;
-  transform: scale(1.05);
-}
-
-.modal-box.light {
-  background-color: #ffffff;
-  color: #111111;
-}
-
-.modal-box.dark {
-  background-color: #1e1e1e;
-  color: #ffffff;
-}
-
-.modal-box.dark h3 {
-  color: #ffffff;
-}
-
-.modal-box.dark p {
-  color: #dddddd;
-}
-
-.modal-box.light h3 {
-  color: #222222;
-}
-
-.modal-box.light p {
-  color: #444444;
-}
-
-.download-row {
-  position: relative;
-  display: block;
-  flex-direction: column;
-  box-sizing: border-box;
-  margin-top: 0px;
-  z-index: 1;
-  margin-bottom: -16px;
-  justify-content: space-between;
-  align-items: center;
-  padding-top: -10px;
-  padding-bottom: 10px;
-  width: 100%;
-}
-
-.download-button {
-  text-decoration: none;
-  padding: 10px 10px;
-  background-color: black;
-  color: white;
-  font-weight: bold;
-  border-radius: 6px;
-  display: flex;
-  transition: background-color 0.3s;
-  margin-left: -28px;     
-  margin-right: 15px;    
-  margin-top: 0px;
-  margin-bottom: 0px;
-}
-
-.download-button:hover {
-  background-color: #333;
-}
-
-.download-text {
-  font-size: 16px;
-  font-weight: bold;
-  justify-content: left;
-  display: flex;
-  flex-direction: column;
-  padding: 10px;
-  margin: 0px  0px -80px 4px;
-  flex: 1;
-}
-
-.download-icons {
-  display: flex;
-  flex-direction: column;
-  padding: 10px;
-  justify-content: center;
-  align-items: end;
-  gap: 16px; 
-  margin-left: 0px;    
-  margin-top: 0px; 
-  margin: 5px 0px -10px 0px;   
-}
-
-.store-icon {
-  display: flex;
-  flex-direction: row;
-  align-items: end;
-  gap: 16px;
-  pointer-events: none;
-  margin: 0px 45px -30px 0px;
-}
-
-.store-icon svg {
-  width: 34px;
-  height: 37px;
-  display: block;
-  color: black;
-}
-
-.store-icon p {
-  margin-top: 0px;
-  font-weight: bold;
-  pointer-events: none;
-}
-
-.download-row .download-icons {
-  display: flex;
-  gap: 40px;
-}
 
 @keyframes fadeIn {
   from {
@@ -932,8 +778,11 @@ html {
   to { width: 60px; }
 }
 
-
 @media (max-width: 1024px) {
+.hero-text-zara {
+  font-size: 2rem;
+}
+
   .carousel-card-home {
     width: 100%;
   }
@@ -941,7 +790,7 @@ html {
   .service-box {
     flex-direction: column;
     align-items: center;
-    gap: 25px; /* más aire en tablets */
+    gap: 25px; 
     padding: 20px;
   }
 
@@ -965,18 +814,6 @@ html {
     padding-right: 10px;
   }
 
-  .download-icons {
-    flex-direction: row; 
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 25px;
-  }
-
-  .store-icon {
-    margin-bottom: 0;
-    max-width: 180px; /* se ajusta a tablets */
-  }
-
   .card-container {
     gap: 25px;
     justify-content: center;
@@ -984,7 +821,7 @@ html {
   }
 
   .card-home {
-    width: 85%; /* un poco más grande que en mobile */
+    width: 85%; 
   }
 
   .card-img-top {
@@ -1003,6 +840,10 @@ html {
 }
 
 @media (max-width: 768px) {
+ .hero-text-zara { 
+  font-size: 1.5rem;
+ }
+
   .carousel-card-home {
     width: 100%;
   }
@@ -1030,17 +871,6 @@ html {
     padding-right: 5px;
   }
 
-  .download-icons {
-    flex-direction: row; 
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 20px;
-  }
-
-   .store-icon {
-    margin-bottom: 0;
-  }
-
   .card-container {
     gap: 20px;
     justify-content: center;
@@ -1063,4 +893,4 @@ html {
     font-size: 18px;
 
   }
-}
+} 
