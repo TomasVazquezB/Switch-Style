@@ -1,15 +1,22 @@
 import React, { useRef, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link,useNavigate } from 'react-router-dom';
 import { FaPhoneAlt, FaEnvelope, FaInstagram, FaRegSmileWink, FaQuestionCircle, FaApple, FaGooglePlay } from 'react-icons/fa';
 import './footer.css';
 
 const Footer = ({ darkMode }) => {
   const [showModal, setShowModal] = useState(false);
   const quienesSomosRef = useRef(null);
+  const navigate = useNavigate();
 
   const scrollToQuienesSomos = () => {
     quienesSomosRef.current?.scrollIntoView({ behavior: 'smooth' });
   };
+  
+  const goToFAQ = (e) => {
+    e.preventDefault();
+    navigate('/FAQ');
+    window.scrollTo(0, 0);
+  }
 
   const handleAppDownload = () => {
     setShowModal(true);
@@ -22,7 +29,7 @@ const Footer = ({ darkMode }) => {
   };
 
   const closeModal = () => setShowModal(false);
-
+   
   return (
     <footer className="footer footer-center bg-base-200/60 rounded-sm p-4">
       <nav className="footer-nav">
@@ -32,7 +39,7 @@ const Footer = ({ darkMode }) => {
 
       <nav className="footer-faq">
         <FaQuestionCircle className="faq-icon" size={21} />
-        <Link to="/FAQ" className="faq-link">Preguntas Frecuentes</Link>
+        <Link to="/FAQ" onClick ={goToFAQ} className="faq-link">Preguntas Frecuentes</Link>
       </nav>
 
       <nav className="contact-info">

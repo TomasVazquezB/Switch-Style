@@ -7,15 +7,7 @@ const ProductoItem = ({ id, img, nombre, precio, tipo }) => {
     const { moneda } = useContext(ShopContext);
 
     const handleAgregarAlCarrito = () => {
-        const nuevoItem = {
-            producto_id: id,
-            titulo: nombre,
-            precio: precio,
-            ruta_imagen: img ? `http://127.0.0.1:8000/storage/${img}` : '',
-            talla: null,
-            cantidad: 1,
-            tipo
-        };
+        const nuevoItem = {producto_id: id,titulo: nombre,precio: precio,ruta_imagen: img ? `http://127.0.0.1:8000/storage/${img}` : '',talla: null,cantidad: 1,tipo};
 
         try {
             const carritoActual = JSON.parse(localStorage.getItem("carrito")) || [];

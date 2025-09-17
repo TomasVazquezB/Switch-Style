@@ -99,7 +99,7 @@ const Home = ({ darkMode }) => {
     <img src={banner3} alt="Slide 3"/>
     <div className="hero-text-zara">
       <h1 className="title">¡Únete a la Comunidad Switch Style!</h1>
-      <p className="description">Registrate hoy y obtené un descuento especial por formar parte de la comunidad Switch Style</p>
+      <p className="description">Registrate y obtené un descuento especial por formar parte de nuestra comunidad</p>
       <button className="btn-discover" onClick={() => navigate('/registro')}>Registrarme</button>
     </div>
   </div>
@@ -137,7 +137,7 @@ const Home = ({ darkMode }) => {
               <FaUndo size={45}/>
               <br/>
               <h3 className="service-title">14 días de devolución</h3>
-              <p className="service-description">Si no estás satisfecho con tu compra, tienes 14 días para devolver tu pedido</p>
+              <p className="service-description">Si no estás satisfecho con tu compra, tenes 14 días para devolver tu pedido</p>
             </div>
           </div>
         </div>
