@@ -143,7 +143,7 @@ const Home = ({ darkMode }) => {
         </div>
 
         <div className="last-added-section">
-          <h2 className="ultimas-prendas">Últimas Prendas Añadidas</h2>
+          <h2 className="ultimas-prendas">¡Últimas Novedades!</h2>
           <div className="carousel-cards-wrapper">
             <button className="carousel-cards-btn" onClick={handlePrev}><FaChevronLeft/></button>
             <div className="carousel-cards-track" style={{ transform: `translateX(-${(currentIndex / lastAddedImages.length) * 100}%)`}}>

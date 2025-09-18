@@ -1,27 +1,26 @@
 .login-container {
   display: flex;
   flex-wrap: wrap;
-  min-height: calc(100vh - 160px);
-  margin-top: 4px;
-  margin-bottom: 4px;
-  padding: 0 6px;
+  min-height: calc(100vh - 180px);
   justify-content: space-between;
+  margin-top: -170px;
 }
 
-.image-container {
+.image-container-login {
   flex: 0.4;
   display: flex;
   justify-content: flex-start;
   align-items: center;
-  padding-left: 0px;
+  margin-left: 5px;
+  margin-bottom: -65px;
 }
 
 .login-image {
-  width: 90%;
+  width: 80%;
   max-width: none;
   height: 100%;
   object-fit: cover;
-  border-radius: 10px;
+  margin-bottom: 7px;
 }
 
 .login-box {
@@ -29,15 +28,16 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 20px 40px;
+  padding: 40px;
   border-radius: 10px;
-  min-height: calc(100vh - 160px);
+  min-height: calc(100vh - 180px);
 }
 
 .login-form {
   width: 100%;
+  margin-top: 230px;
   max-width: 700px; 
-  padding: 40px; 
+  padding: 30px; 
   border-radius: 10px;
   text-align: center;
   transition: background-color 0.4s ease, color 0.4s ease, border 0.4s ease;
@@ -45,13 +45,13 @@
 
 .bienvenida {
   font-size: 2em; 
-  margin-bottom: 15px;
+  margin-bottom: 13px;
   font-weight: bold;
 }
 
 .bienvenido {
   font-size: 1.3em;
-  margin-bottom: 35px; 
+  margin-bottom: 25px; 
   text-align: center;
 }
 
@@ -65,12 +65,12 @@
 }
 
 .button-login {
-  padding: 12px 20px;
-  font-size: 17px;
+  padding: 10px;
+  font-size: 15px;
   cursor: pointer;
   border-radius: 6px;
   width: 100%;
-  margin-top: 25px; 
+  margin-top: 15px; 
   transition: background-color 0.3s ease, color 0.3s ease;
 }
 
