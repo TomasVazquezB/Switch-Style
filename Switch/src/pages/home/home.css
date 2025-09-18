@@ -330,7 +330,6 @@ html {
   height: 4px;
   left: 20%;
   bottom: -10px;
-  background: linear-gradient(to right, #ff4e50, #f9d423);
   border-radius: 2px;
   animation: slideInLine 1s ease-in-out;
 }

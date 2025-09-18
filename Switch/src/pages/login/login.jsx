@@ -50,7 +50,7 @@ export function LoginPage() {
     
     return (
         <div className="login-container">
-            <div className="image-container">
+            <div className="image-container-login">
                 <img src="https://res.cloudinary.com/switchstyle/image/upload/v1756993827/login_myoobt.jpg" alt="Imagen" className="login-image" />
             </div>
 

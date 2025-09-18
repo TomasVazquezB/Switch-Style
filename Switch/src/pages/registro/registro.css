@@ -2,9 +2,9 @@
   display: flex;
   flex-wrap: wrap;
   min-height: calc(100vh - 120px); 
-  margin-top: 4px;
-  margin-bottom: 3px;
-  padding: 0 4px;
+  margin-top: -180px;
+  margin-bottom: 0px;
+  padding: -50px;
   justify-content: space-between;
 }
 
@@ -13,23 +13,26 @@
   display: flex;
   justify-content: flex-start;
   align-items: center;
-  padding-left: 0px;
+  margin-left: 3px;
+  margin-top: 50px;
+  height: 680px;
 }
 
 .registro-image {
-  width: 85%; 
+  width: 90%; 
   max-width: none;
-  height: 100%;
+  height: 110%;
   object-fit: cover;
-  border-radius: 10px;
-}
+  margin-top: 80px;
+  }
 
 .registro-box {
   flex: 0.6;
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 15px 30px; 
+  padding: -20px; 
+  margin: 0px;
   border-radius: 10px;
   min-height: calc(100vh - 120px);
 }
@@ -37,12 +40,13 @@
 .registro-form {
   width: 100%;
   max-width: 700px; 
-  padding: 30px;    
+  padding: 25px;    
   background-color: white;
   border: 2px solid #000000;
-  border-radius: 10px;
+  border-radius: 20px;
   text-align: center;
   transition: background-color 0.4s ease, color 0.4s ease, border 0.4s ease;
+  margin-top: 200px;
 }
 
 .bienvenida {
@@ -77,12 +81,12 @@
   background-color: #000000;
   color: #ffffff;
   border: 1px solid #000000;
-  padding: 8px 18px; 
+  padding:  8px; 
   font-size: 14px;  
   cursor: pointer;
-  border-radius: 5px;
+  border-radius: 7px;
   width: 100%;
-  margin-top: 15px; 
+  margin-top: 13px; 
   transition: background-color 0.3s ease, color 0.3s ease;
 }
 
@@ -100,7 +104,7 @@
 .informacion-registro {
   color: #000000;
   font-size: 1.2em;
-  margin-bottom: 20px;
+  margin-bottom: 14px;
   text-align: center;
 }
 
@@ -116,7 +120,7 @@
   justify-content: center;
   gap: 6px; 
   margin-top: 8px; 
-  margin-bottom: 12px; 
+  margin-bottom: 10px; 
   width: 100%;
   box-sizing: border-box;
 }
@@ -216,7 +220,7 @@ body.light-mode .input_pass,
 body.light-mode .input_confirm_pass {
   background-color: #ffffff;
   color: #000000;
-  border: 1px solid #aaaaaa;
+  border: 1px solid #cccccc;
 }
 
 body.light-mode .input_user::placeholder,
