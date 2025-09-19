@@ -724,7 +724,6 @@ html {
   animation: autoSlide 10s infinite;
 }
 
-
 @keyframes fadeIn {
   from {
     background: rgba(0, 0, 0, 0);
