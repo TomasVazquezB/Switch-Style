@@ -1,5 +1,5 @@
 import React, { useRef, useState } from 'react';
-import { Link,useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { FaPhoneAlt, FaEnvelope, FaInstagram, FaRegSmileWink, FaQuestionCircle, FaApple, FaGooglePlay } from 'react-icons/fa';
 import './footer.css';
 
@@ -11,7 +11,7 @@ const Footer = ({ darkMode }) => {
   const scrollToQuienesSomos = () => {
     quienesSomosRef.current?.scrollIntoView({ behavior: 'smooth' });
   };
-  
+
   const goToFAQ = (e) => {
     e.preventDefault();
     navigate('/FAQ');
@@ -21,7 +21,7 @@ const Footer = ({ darkMode }) => {
   const handleAppDownload = () => {
     setShowModal(true);
     const link = document.createElement("a");
-    link.href = "/Switch Style.apk"; 
+    link.href = "/Switch Style.apk";
     link.download = "Switch Style.apk";
     document.body.appendChild(link);
     link.click();
@@ -29,7 +29,7 @@ const Footer = ({ darkMode }) => {
   };
 
   const closeModal = () => setShowModal(false);
-   
+
   return (
     <footer className="footer footer-center bg-base-200/60 rounded-sm p-4">
       <nav className="footer-nav">
@@ -39,7 +39,7 @@ const Footer = ({ darkMode }) => {
 
       <nav className="footer-faq">
         <FaQuestionCircle className="faq-icon" size={21} />
-        <Link to="/FAQ" onClick ={goToFAQ} className="faq-link">Preguntas Frecuentes</Link>
+        <Link to="/faq" onClick={goToFAQ} className="faq-link">Preguntas Frecuentes</Link>
       </nav>
 
       <nav className="contact-info">
@@ -61,20 +61,20 @@ const Footer = ({ darkMode }) => {
         <div className="social-icons">
           <div className="icons-inline">
             <a href="https://www.instagram.com/switch_style25/" target="_blank" rel="noopener noreferrer" className="social-icon">
-            <FaInstagram size={30} />
+              <FaInstagram size={30} />
             </a>
           </div>
           <span className="social-text">Switch Style</span>
         </div>
 
         <div className="download-row">
-  <button onClick={handleAppDownload} className="download-button">
-    <FaApple size={24} className="store-icon" />
-    <FaGooglePlay size={24} className="store-icon" />
-    <span className="download-text">Descargar APP</span>
-  </button>
-</div>
-</nav>
+          <button onClick={handleAppDownload} className="download-button">
+            <FaApple size={24} className="store-icon" />
+            <FaGooglePlay size={24} className="store-icon" />
+            <span className="download-text">Descargar APP</span>
+          </button>
+        </div>
+      </nav>
 
       {showModal && (
         <div className={`modal-overlay ${darkMode ? 'dark' : 'light'}`}>

@@ -1,0 +1,56 @@
+/* === overrides.css === */
+/* Importar al FINAL en main.jsx */
+
+/* Navbar fijo temporal */
+.navbar-top {
+  position: fixed !important;
+  top: 0;
+  width: 100%;
+  z-index: 2000;
+}
+
+/* Carita en "¿Querés conocernos?" → opuesta al modo */
+.light-mode .footer-face-icon { color: #000 !important; }
+.dark-mode .footer-face-icon { color: #fff !important; }
+
+/* FAQ, Teléfono, Mail */
+.light-mode .footer-faq-icon,
+.light-mode .footer-phone-icon,
+.light-mode .footer-mail-icon,
+.light-mode .footer-phone-text,
+.light-mode .footer-mail-text {
+  color: #000 !important;
+}
+.dark-mode .footer-faq-icon,
+.dark-mode .footer-phone-icon,
+.dark-mode .footer-mail-icon,
+.dark-mode .footer-phone-text,
+.dark-mode .footer-mail-text {
+  color: #fff !important;
+}
+
+/* Derechos reservados, Instagram, Nombre del sitio */
+.light-mode .footer-copy,
+.light-mode .footer-instagram,
+.light-mode .footer-brand {
+  color: #000 !important;
+}
+.dark-mode .footer-copy,
+.dark-mode .footer-instagram,
+.dark-mode .footer-brand {
+  color: #fff !important;
+}
+
+/* Botón de descarga (invertido al resto del footer) */
+.footer-app-btn {
+  transition: all 0.3s ease !important;
+}
+.light-mode .footer-app-btn {
+  background-color: #000 !important;
+  color: #fff !important;
+}
+.dark-mode .footer-app-btn {
+  background-color: #fff !important;
+  color: #000 !important;
+}
+
