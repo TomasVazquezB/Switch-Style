@@ -119,7 +119,7 @@ public class CatalogoProductos extends AppCompatActivity {
                 default:
                     categoria = "accesorios";
             }
-            int cantidadImagenes = 2 + (pubId % 4); // 2 a 5 imágenes
+            int cantidadImagenes = 2 + (pubId % 4);
             boolean meGusta = (pubId % 3 == 0);
             publicaciones.add(new Publicacion(pubId, cantidadImagenes, meGusta, categoria));
         }
@@ -227,7 +227,7 @@ public class CatalogoProductos extends AppCompatActivity {
                         public boolean onLoadFailed(@Nullable GlideException e, Object model, @NonNull Target<Drawable> target, boolean isFirstResource) {
                             holder.progressBar.setVisibility(View.GONE);
                             Log.e("GlideError", "Error loading image: " + (e != null ? e.getMessage() : "Unknown error"));
-                            return false; // false para que Glide maneje el error y coloque la imagen de error
+                            return false;
                         }
 
                         @Override

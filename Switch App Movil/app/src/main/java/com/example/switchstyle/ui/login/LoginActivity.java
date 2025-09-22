@@ -14,7 +14,6 @@ import com.example.switchstyle.CatalogoProductos;
 import com.example.switchstyle.MainActivity;
 import com.example.switchstyle.R;
 import com.example.switchstyle.Register;
-import com.example.switchstyle.ReiniciarContra;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -50,7 +49,6 @@ public class LoginActivity extends AppCompatActivity {
         email = findViewById(R.id.username);
         password = findViewById(R.id.password);
         Button btn_login = findViewById(R.id.login);
-        Button btn_forgot_password = findViewById(R.id.boton_recuperar);
 
         btn_login.setOnClickListener(view -> {
             String emailUser = email.getText().toString().trim();
@@ -58,16 +56,13 @@ public class LoginActivity extends AppCompatActivity {
             validarCamposYLoguear(emailUser, passUser);
         });
 
-        btn_forgot_password.setOnClickListener(view ->
-                startActivity(new Intent(LoginActivity.this, ReiniciarContra.class)));
-
         navHome = findViewById(R.id.nav_home);
         navRegister = findViewById(R.id.nav_register);
         navCatalogs = findViewById(R.id.nav_catalogs);
 
         navHome.setOnClickListener(v -> {
             startActivity(new Intent(LoginActivity.this, MainActivity.class));
-            finishAffinity(); // Asegura que no haya activities anteriores activas
+            finishAffinity();
         });
 
         navRegister.setOnClickListener(v -> {
@@ -132,6 +127,6 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        finishAffinity(); // Cierra todas las actividades activas
+        finishAffinity();
     }
 }

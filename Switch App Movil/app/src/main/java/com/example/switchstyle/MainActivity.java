@@ -21,16 +21,13 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         mAuth = FirebaseAuth.getInstance();
+        verificarSesion();
 
-        verificarSesion(); // Verificamos si ya hay un usuario logueado
-
-        // Navegación
         LinearLayout navHome = findViewById(R.id.nav_home);
         LinearLayout navRegister = findViewById(R.id.nav_register);
         LinearLayout navCatalogs = findViewById(R.id.nav_catalogs);
 
         navHome.setOnClickListener(v -> {
-            // Acción para Home si tenés alguna
         });
 
         navRegister.setOnClickListener(v ->
@@ -47,6 +44,7 @@ public class MainActivity extends AppCompatActivity {
             } else {
                 setContentView(R.layout.activity_login_validation);
                 setTitle("Acceso restringido");
+
                 Button btnIrLoginDesdeValidacion = findViewById(R.id.btnIrRegistro);
                 btnIrLoginDesdeValidacion.setOnClickListener(view -> {
                     startActivity(new Intent(MainActivity.this, LoginActivity.class));
@@ -59,13 +57,12 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        verificarSesion(); // Por si vuelve del background y hay sesión
+        verificarSesion();
     }
 
     private void verificarSesion() {
         FirebaseUser currentUser = mAuth.getCurrentUser();
         if (currentUser != null) {
-            // Usuario logueado: redirigir directamente
             Intent intent = new Intent(MainActivity.this, CatalogoProductos.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(intent);
@@ -76,6 +73,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        finishAffinity(); // Cierra la app completamente
+        finishAffinity();
     }
 }

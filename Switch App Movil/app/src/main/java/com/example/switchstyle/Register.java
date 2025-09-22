@@ -32,9 +32,6 @@ public class Register extends AppCompatActivity {
         super.onStart();
         if (mAuth == null) mAuth = FirebaseAuth.getInstance();
         FirebaseUser currentUser = mAuth.getCurrentUser();
-
-        // ✅ Ya no redirigimos al catálogo automáticamente
-        // Si querés forzar logout aquí también, podés hacerlo:
         if (currentUser != null) {
             FirebaseAuth.getInstance().signOut();
         }
@@ -73,17 +70,16 @@ public class Register extends AppCompatActivity {
 
         btnIrLogin.setOnClickListener(v -> {
             startActivity(new Intent(Register.this, LoginActivity.class));
-            finishAffinity(); // Cierra esta y actividades anteriores
+            finishAffinity();
         });
 
-        // Navegación inferior
         LinearLayout navHome = findViewById(R.id.nav_home);
         LinearLayout navRegister = findViewById(R.id.nav_register);
         LinearLayout navCatalogs = findViewById(R.id.nav_catalogs);
 
         navHome.setOnClickListener(v -> {
             startActivity(new Intent(Register.this, MainActivity.class));
-            finishAffinity(); // Asegura que solo quede una actividad abierta
+            finishAffinity();
         });
 
         navRegister.setOnClickListener(v -> {
@@ -123,10 +119,8 @@ public class Register extends AppCompatActivity {
                         .addOnSuccessListener(aVoid -> {
                             Toast.makeText(this, R.string.registro_exitoso, Toast.LENGTH_SHORT).show();
 
-                            // 🔐 Cerrar sesión después de registrar
                             FirebaseAuth.getInstance().signOut();
 
-                            // 👉 Redirigir al login
                             Intent intent = new Intent(Register.this, LoginActivity.class);
                             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                             startActivity(intent);
@@ -157,7 +151,6 @@ public class Register extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        // Cierra todas las actividades al salir
         finishAffinity();
     }
 }

@@ -59,16 +59,6 @@
             tools:ignore="Autofill,VisualLintTextFieldSize" />
 
         <Button
-            android:id="@+id/boton_recuperar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="25dp"
-            android:background="#000000"
-            android:text="@string/olvido_su_contrase_aa"
-            android:textColor="#FFFFFF"
-            tools:ignore="VisualLintButtonSize" />
-
-        <Button
             android:id="@+id/login"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

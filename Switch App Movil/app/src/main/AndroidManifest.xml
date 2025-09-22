@@ -15,7 +15,6 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.SwitchStyle"
         tools:targetApi="31">
-        <!-- ... otras actividades ... -->
 
         <activity
             android:name=".CatalogoProductos"
@@ -39,10 +38,6 @@
         <activity
             android:name=".Register"
             android:exported="true" />
-        <activity
-            android:name=".ReiniciarContra"
-            android:exported="true" />
-
     </application>
 
 </manifest>

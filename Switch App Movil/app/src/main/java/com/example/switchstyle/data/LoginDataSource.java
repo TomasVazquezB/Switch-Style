@@ -1,6 +1,7 @@
 package com.example.switchstyle.data;
 
 import com.example.switchstyle.data.model.LoggedInUser;
+
 import java.io.IOException;
 
 public class LoginDataSource {
