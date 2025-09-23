@@ -100,7 +100,42 @@ const Home = ({ darkMode }) => {
       <div className={`home-index ${darkMode ? 'dark' : 'light'}`}>
         <div id="varkalaCarousel" className="carousel slide varkala-carousel" data-bs-ride="carousel" data-bs-interval="5000">
           <div className="carousel-wrapper">
-            <Carousel autoPlay infiniteLoop interval={5000} showThumbs={false} showStatus={false} showIndicators={true} swipeable emulateTouch stopOnHover dynamicHeight={false}>
+            <Carousel
+              autoPlay
+              infiniteLoop
+              interval={5000}
+              showThumbs={false}
+              showStatus={false}
+              showIndicators={true}
+              swipeable
+              emulateTouch
+              stopOnHover
+              dynamicHeight={false}
+              renderArrowPrev={(onClickHandler, hasPrev, label) =>
+                hasPrev && (
+                  <button
+                    type="button"
+                    onClick={onClickHandler}
+                    title={label}
+                    className="custom-carousel-arrow left"
+                  >
+                    <FaChevronLeft />
+                  </button>
+                )
+              }
+              renderArrowNext={(onClickHandler, hasNext, label) =>
+                hasNext && (
+                  <button
+                    type="button"
+                    onClick={onClickHandler}
+                    title={label}
+                    className="custom-carousel-arrow right"
+                  >
+                    <FaChevronRight />
+                  </button>
+                )
+              }
+            >
               <div>
                 <img src={banner1} alt="Slide 1" />
                 <div className="hero-text-zara">

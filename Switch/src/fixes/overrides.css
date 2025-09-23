@@ -1,6 +1,8 @@
 /* === overrides.css === */
 /* Importar al FINAL en main.jsx */
 
+
+
 /* Navbar fijo temporal */
 .navbar-top {
   position: fixed !important;
@@ -54,3 +56,102 @@
   color: #000 !important;
 }
 
+/* === Header & Footer con gris oscuro solo en modo oscuro === */
+
+/* Header navbar */
+.light-mode .navbar-top {
+  background-color: #f8f9fa !important; /* gris claro / casi blanco */
+  color: #000 !important;
+}
+.dark-mode .navbar-top {
+  background-color: #121212 !important; /* gris oscuro */
+  color: #fff !important;
+}
+
+/* Footer */
+.light-mode .footer {
+  background-color: #f8f9fa !important;
+  color: #000 !important;
+}
+.dark-mode .footer {
+  background-color: #121212 !important;
+  color: #fff !important;
+}
+
+/* Offer bar */
+.light-mode .offer-bar {
+  background-color: #e6e6e6 !important;
+  color: #000 !important;
+}
+.dark-mode .offer-bar {
+  background-color: #1a1a1a !important;
+  color: #fff !important;
+}
+
+/* === FOOTER FIXES === */
+
+/* Textos e íconos en footer */
+.dark-mode .footer,
+.dark-mode .footer * {
+  color: #ffffff !important; /* blanco sobre fondo oscuro */
+  fill: #ffffff !important;  /* para íconos SVG */
+}
+
+.light-mode .footer,
+.light-mode .footer * {
+  color: #000000 !important; /* negro sobre fondo claro */
+  fill: #000000 !important;
+}
+
+/* Caso particular: botón de descarga app */
+.dark-mode .footer .download-button {
+  background-color: #2a2a2a !important;
+  color: #ffffff !important;
+}
+.light-mode .footer .download-button {
+  background-color: #e6e6e6 !important;
+  color: #000000 !important;
+}
+
+/* Flechas unificadas para ambos carousels */
+.custom-carousel-arrow {
+  background-color: rgba(0,0,0,0.6);
+  color: white;
+  border: none;
+  border-radius: 50%;
+  padding: 10px;
+  font-size: 20px;
+  cursor: pointer;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+  transition: background-color 0.3s ease;
+}
+
+.custom-carousel-arrow:hover {
+  background-color: rgba(0,0,0,0.85);
+}
+
+.custom-carousel-arrow.left {
+  left: 15px;
+}
+
+.custom-carousel-arrow.right {
+  right: 15px;
+}
+
+/* Hover en modo claro (sombra normal oscura) */
+.card-home img:hover {
+  transition: box-shadow 0.3s ease-in-out;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+}
+
+body.dark-mode .card-home img:hover,
+.dark-mode .card-home img:hover {
+  box-shadow: 0 4px 12px rgba(255, 255, 255, 0.6) !important;
+}
