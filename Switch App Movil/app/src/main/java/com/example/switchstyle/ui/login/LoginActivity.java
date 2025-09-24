@@ -14,28 +14,23 @@ import com.example.switchstyle.CatalogoProductos;
 import com.example.switchstyle.MainActivity;
 import com.example.switchstyle.R;
 import com.example.switchstyle.Register;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.FirebaseFirestore;
+import com.example.switchstyle.api.ApiService;
+import com.example.switchstyle.api.AuthResponse;
+import com.example.switchstyle.api.LoginRequest;
+import com.example.switchstyle.api.RetrofitClient;
+import com.example.switchstyle.api.SessionManager;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class LoginActivity extends AppCompatActivity {
 
-    EditText email, password;
-    FirebaseAuth mAuth;
-    FirebaseFirestore mFirestore;
-
-    LinearLayout navHome, navRegister, navCatalogs;
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        if (mAuth == null) mAuth = FirebaseAuth.getInstance();
-        FirebaseUser currentUser = mAuth.getCurrentUser();
-        if (currentUser != null) {
-            startActivity(new Intent(LoginActivity.this, CatalogoProductos.class));
-            finish();
-        }
-    }
+    private EditText email, password;
+    private Button btnLogin;
+    private LinearLayout navHome, navRegister, navCatalogs;
+    private SessionManager sessionManager;
+    private ApiService apiService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,23 +38,34 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
         setTitle("Login");
 
-        mAuth = FirebaseAuth.getInstance();
-        mFirestore = FirebaseFirestore.getInstance();
-
         email = findViewById(R.id.username);
         password = findViewById(R.id.password);
-        Button btn_login = findViewById(R.id.login);
-
-        btn_login.setOnClickListener(view -> {
-            String emailUser = email.getText().toString().trim();
-            String passUser = password.getText().toString().trim();
-            validarCamposYLoguear(emailUser, passUser);
-        });
+        btnLogin = findViewById(R.id.login);
 
         navHome = findViewById(R.id.nav_home);
         navRegister = findViewById(R.id.nav_register);
         navCatalogs = findViewById(R.id.nav_catalogs);
 
+        sessionManager = new SessionManager(this);
+        apiService = RetrofitClient.getClient().create(ApiService.class);
+
+        // Si ya hay token, saltar al catálogo
+        if (sessionManager.isLoggedIn()) {
+            startActivity(new Intent(LoginActivity.this, CatalogoProductos.class));
+            finish();
+        }
+
+        btnLogin.setOnClickListener(view -> {
+            String emailUser = email.getText().toString().trim();
+            String passUser = password.getText().toString().trim();
+            if (TextUtils.isEmpty(emailUser) || TextUtils.isEmpty(passUser)) {
+                Toast.makeText(this, "Completá todos los campos", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            loginUser(emailUser, passUser);
+        });
+
+        // Navegación barra inferior
         navHome.setOnClickListener(v -> {
             startActivity(new Intent(LoginActivity.this, MainActivity.class));
             finishAffinity();
@@ -71,16 +77,18 @@ public class LoginActivity extends AppCompatActivity {
         });
 
         navCatalogs.setOnClickListener(v -> {
-            FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-            if (user != null) {
+            if (sessionManager.isLoggedIn()) {
+                // Usuario logueado → ir al catálogo
                 startActivity(new Intent(LoginActivity.this, CatalogoProductos.class));
                 finishAffinity();
             } else {
+                // No logueado → mostrar pantalla de validación
                 setContentView(R.layout.activity_login_validation);
                 setTitle("Acceso restringido");
 
                 Button btnIrLoginDesdeValidacion = findViewById(R.id.btnIrRegistro);
                 btnIrLoginDesdeValidacion.setOnClickListener(view2 -> {
+                    // Volver al login
                     startActivity(new Intent(LoginActivity.this, LoginActivity.class));
                     finishAffinity();
                 });
@@ -88,45 +96,41 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
-    private void validarCamposYLoguear(String emailUser, String passUser) {
-        if (TextUtils.isEmpty(emailUser) || TextUtils.isEmpty(passUser)) {
-            Toast.makeText(this, "Por favor, completá todos los campos", Toast.LENGTH_SHORT).show();
-            return;
-        }
-        loginUser(emailUser, passUser);
-    }
-
     private void loginUser(String emailUser, String passUser) {
-        mAuth.signInWithEmailAndPassword(emailUser, passUser)
-                .addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        FirebaseUser user = mAuth.getCurrentUser();
-                        if (user != null) {
-                            mFirestore.collection("user").document(user.getUid()).get()
-                                    .addOnSuccessListener(documentSnapshot -> {
-                                        String userName = documentSnapshot.getString("name");
-                                        if (userName == null || userName.isEmpty()) userName = "usuario";
+        LoginRequest request = new LoginRequest(emailUser, passUser);
+        Call<AuthResponse> call = apiService.login(request);
+        call.enqueue(new Callback<AuthResponse>() {
+            @Override
+            public void onResponse(Call<AuthResponse> call, Response<AuthResponse> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    AuthResponse auth = response.body();
+                    sessionManager.saveToken(auth.getToken());
 
-                                        Toast.makeText(this, "Bienvenido/a Switch Style " + userName, Toast.LENGTH_LONG).show();
+                    String userName = (auth.getUser() != null && auth.getUser().getName() != null)
+                            ? auth.getUser().getName()
+                            : "usuario";
 
-                                        Intent intent = new Intent(LoginActivity.this, CatalogoProductos.class);
-                                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                                        startActivity(intent);
-                                    })
-                                    .addOnFailureListener(e -> Toast.makeText(this, "Error al obtener los datos del usuario", Toast.LENGTH_SHORT).show());
-                        }
-                    } else {
-                        Toast.makeText(this, "Correo o contraseña incorrectos", Toast.LENGTH_SHORT).show();
-                    }
-                })
-                .addOnFailureListener(e ->
-                        Toast.makeText(this, "Error al iniciar sesión: " + e.getMessage(), Toast.LENGTH_SHORT).show()
-                );
+                    Toast.makeText(LoginActivity.this, "Bienvenido/a " + userName, Toast.LENGTH_LONG).show();
+
+                    startActivity(new Intent(LoginActivity.this, CatalogoProductos.class));
+                    finish();
+                } else {
+                    Toast.makeText(LoginActivity.this, "Email o contraseña incorrectos", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<AuthResponse> call, Throwable t) {
+                Toast.makeText(LoginActivity.this, "Error de conexión: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     @Override
     public void onBackPressed() {
+        // Al presionar atrás desde login, volver al home
         super.onBackPressed();
+        startActivity(new Intent(LoginActivity.this, MainActivity.class));
         finishAffinity();
     }
 }
