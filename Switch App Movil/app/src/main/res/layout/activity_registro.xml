@@ -7,7 +7,6 @@
     android:layout_height="match_parent"
     android:fitsSystemWindows="true">
 
-    <!-- Contenedor principal para controlar visibilidad -->
     <LinearLayout
         android:id="@+id/main_content"
         android:layout_width="0dp"
@@ -18,7 +17,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
 
-        <!-- Contenido actual del registro -->
         <LinearLayout
             android:id="@+id/linearLayout"
             android:layout_width="match_parent"
@@ -31,7 +29,6 @@
             android:paddingEnd="32dp"
             tools:ignore="UselessParent">
 
-            <!-- Campos de Registro -->
             <EditText
                 android:id="@+id/Nombre"
                 android:layout_width="match_parent"
@@ -85,7 +82,6 @@
 
     </LinearLayout>
 
-    <!-- Barra de Navegación (actualizada) -->
     <LinearLayout
         android:id="@+id/navigationBar"
         android:layout_width="0dp"
@@ -99,7 +95,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
 
-        <!-- Inicio -->
         <LinearLayout
             android:id="@+id/nav_home"
             android:layout_width="0dp"
@@ -128,7 +123,6 @@
                 android:textSize="13sp" />
         </LinearLayout>
 
-        <!-- Registro -->
         <LinearLayout
             android:id="@+id/nav_register"
             android:layout_width="0dp"
@@ -157,7 +151,6 @@
                 android:textSize="13sp" />
         </LinearLayout>
 
-        <!-- Catálogo -->
         <LinearLayout
             android:id="@+id/nav_catalogs"
             android:layout_width="0dp"

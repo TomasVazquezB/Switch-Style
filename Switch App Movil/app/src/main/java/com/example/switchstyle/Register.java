@@ -3,42 +3,24 @@ package com.example.switchstyle;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Toast;
-
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-
-import com.example.switchstyle.ui.login.LoginActivity;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.FirebaseFirestore;
-
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
+import com.example.switchstyle.api.AuthResponse;
+import com.example.switchstyle.api.RetrofitClient;
+import com.example.switchstyle.api.ApiService;
+import com.example.switchstyle.api.SessionManager;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class Register extends AppCompatActivity {
-
     private EditText name, email, password;
-    private FirebaseFirestore mFirestore;
-    private FirebaseAuth mAuth;
-    private static final String TAG = "RegisterActivity";
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        if (mAuth == null) mAuth = FirebaseAuth.getInstance();
-        FirebaseUser currentUser = mAuth.getCurrentUser();
-
-        // ✅ Ya no redirigimos al catálogo automáticamente
-        // Si querés forzar logout aquí también, podés hacerlo:
-        if (currentUser != null) {
-            FirebaseAuth.getInstance().signOut();
-        }
-    }
+    private ApiService apiService;
+    private SessionManager session;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,10 +28,12 @@ public class Register extends AppCompatActivity {
         setContentView(R.layout.activity_registro);
 
         setTitle(R.string.registro_title);
-        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
 
-        mFirestore = FirebaseFirestore.getInstance();
-        mAuth = FirebaseAuth.getInstance();
+        apiService = RetrofitClient.getClient().create(ApiService.class);
+        session = new SessionManager(this);
 
         name = findViewById(R.id.Nombre);
         email = findViewById(R.id.Email);
@@ -73,17 +57,16 @@ public class Register extends AppCompatActivity {
 
         btnIrLogin.setOnClickListener(v -> {
             startActivity(new Intent(Register.this, LoginActivity.class));
-            finishAffinity(); // Cierra esta y actividades anteriores
+            finishAffinity();
         });
 
-        // Navegación inferior
         LinearLayout navHome = findViewById(R.id.nav_home);
         LinearLayout navRegister = findViewById(R.id.nav_register);
         LinearLayout navCatalogs = findViewById(R.id.nav_catalogs);
 
         navHome.setOnClickListener(v -> {
             startActivity(new Intent(Register.this, MainActivity.class));
-            finishAffinity(); // Asegura que solo quede una actividad abierta
+            finishAffinity();
         });
 
         navRegister.setOnClickListener(v -> {
@@ -92,8 +75,7 @@ public class Register extends AppCompatActivity {
         });
 
         navCatalogs.setOnClickListener(v -> {
-            FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-            if (user != null) {
+            if (session.isLoggedIn()) {
                 startActivity(new Intent(Register.this, CatalogoProductos.class));
                 finishAffinity();
             } else {
@@ -110,40 +92,35 @@ public class Register extends AppCompatActivity {
     }
 
     private void registerUser(String nameUser, String emailUser, String passUser) {
-        mAuth.createUserWithEmailAndPassword(emailUser, passUser).addOnCompleteListener(task -> {
-            if (task.isSuccessful()) {
-                String userId = Objects.requireNonNull(mAuth.getCurrentUser()).getUid();
+        Call<AuthResponse> call = apiService.register(nameUser, emailUser, passUser);
 
-                Map<String, Object> userMap = new HashMap<>();
-                userMap.put("id", userId);
-                userMap.put("name", nameUser);
-                userMap.put("email", emailUser);
+        call.enqueue(new Callback<AuthResponse>() {
+            @Override
+            public void onResponse(@NonNull Call<AuthResponse> call, @NonNull Response<AuthResponse> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    AuthResponse authResponse = response.body();
 
-                mFirestore.collection("user").document(userId).set(userMap)
-                        .addOnSuccessListener(aVoid -> {
-                            Toast.makeText(this, R.string.registro_exitoso, Toast.LENGTH_SHORT).show();
+                    if (authResponse.getToken() != null) {
+                        session.saveToken(authResponse.getToken());
+                        Toast.makeText(Register.this, R.string.registro_exitoso, Toast.LENGTH_SHORT).show();
 
-                            // 🔐 Cerrar sesión después de registrar
-                            FirebaseAuth.getInstance().signOut();
-
-                            // 👉 Redirigir al login
-                            Intent intent = new Intent(Register.this, LoginActivity.class);
-                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                            startActivity(intent);
-                            finish();
-                        })
-                        .addOnFailureListener(e -> {
-                            Log.e(TAG, "Fallo al guardar en Firestore", e);
-                            Toast.makeText(this, getString(R.string.error_registro_generico) + ": " + e.getMessage(), Toast.LENGTH_LONG).show();
-                        });
-            } else {
-                String error = task.getException() != null ? task.getException().getMessage() : "";
-                Log.e(TAG, "Fallo al registrar: " + error);
-                if (error != null && error.contains("email address is already in use")) {
-                    Toast.makeText(this, R.string.error_email_existente, Toast.LENGTH_LONG).show();
+                        Intent intent = new Intent(Register.this, CatalogoProductos.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        startActivity(intent);
+                        finish();
+                    } else {
+                        Toast.makeText(Register.this, R.string.registro_exitoso, Toast.LENGTH_SHORT).show();
+                        startActivity(new Intent(Register.this, LoginActivity.class));
+                        finish();
+                    }
                 } else {
-                    Toast.makeText(this, getString(R.string.error_registro_generico) + ": " + error, Toast.LENGTH_LONG).show();
+                    Toast.makeText(Register.this, getString(R.string.error_registro_generico), Toast.LENGTH_LONG).show();
                 }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<AuthResponse> call, @NonNull Throwable t) {
+                Toast.makeText(Register.this, "Error: " + t.getMessage(), Toast.LENGTH_LONG).show();
             }
         });
     }
@@ -157,7 +134,6 @@ public class Register extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        // Cierra todas las actividades al salir
         finishAffinity();
     }
 }
