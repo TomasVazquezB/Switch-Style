@@ -7,22 +7,17 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-
 import com.example.switchstyle.api.AuthResponse;
 import com.example.switchstyle.api.RetrofitClient;
 import com.example.switchstyle.api.ApiService;
 import com.example.switchstyle.api.SessionManager;
-import com.example.switchstyle.ui.login.LoginActivity;
-
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 public class Register extends AppCompatActivity {
-
     private EditText name, email, password;
     private ApiService apiService;
     private SessionManager session;
@@ -46,7 +41,6 @@ public class Register extends AppCompatActivity {
         Button btnRegister = findViewById(R.id.Button_registro);
         Button btnIrLogin = findViewById(R.id.buttonIrALogin);
 
-        // 👉 Registro
         btnRegister.setOnClickListener(v -> {
             String nameUser = name.getText().toString().trim();
             String emailUser = email.getText().toString().trim();
@@ -61,13 +55,11 @@ public class Register extends AppCompatActivity {
             }
         });
 
-        // 👉 Ir al login
         btnIrLogin.setOnClickListener(v -> {
             startActivity(new Intent(Register.this, LoginActivity.class));
             finishAffinity();
         });
 
-        // 👉 Barra de navegación
         LinearLayout navHome = findViewById(R.id.nav_home);
         LinearLayout navRegister = findViewById(R.id.nav_register);
         LinearLayout navCatalogs = findViewById(R.id.nav_catalogs);

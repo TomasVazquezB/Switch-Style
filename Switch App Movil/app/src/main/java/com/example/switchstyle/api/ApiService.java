@@ -1,7 +1,6 @@
 package com.example.switchstyle.api;
 
 import java.util.List;
-
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.Field;
@@ -10,15 +9,10 @@ import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
-import retrofit2.http.Query;
 
 public interface ApiService {
-
     @POST("login")
     Call<AuthResponse> login(@Body LoginRequest request);
-
-    @GET("products")
-    Call<List<Product>> getProducts(@Header("Authorization") String token);
 
     @FormUrlEncoded
     @POST("register")
@@ -28,11 +22,18 @@ public interface ApiService {
             @Field("password") String password
     );
 
-    // Actualizar “me gusta” de un producto
-    @POST("products/{id}/like")
+    @GET("productos")
+    Call<List<Product>> getProductos(@Header("Authorization") String token);
+
+    @GET("ropa")
+    Call<List<Product>> getRopa();
+
+    @GET("accesorios")
+    Call<List<Product>> getAccesorios();
+
+    @POST("productos/{id}/like")
     Call<Void> setLike(
             @Path("id") int productId,
-            @Query("like") boolean like,
-            @Header("Authorization") String token
+            boolean nuevoEstado, @Header("Authorization") String token
     );
 }

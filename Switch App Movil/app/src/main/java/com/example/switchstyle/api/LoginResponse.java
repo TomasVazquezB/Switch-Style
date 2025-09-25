@@ -1,5 +1,4 @@
 package com.example.switchstyle.api;
-
 public class LoginResponse {
     private String token;
     private User user;

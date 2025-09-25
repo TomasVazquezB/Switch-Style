@@ -12,14 +12,12 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
-
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -30,11 +28,9 @@ import com.example.switchstyle.api.ApiService;
 import com.example.switchstyle.api.Product;
 import com.example.switchstyle.api.RetrofitClient;
 import com.example.switchstyle.api.SessionManager;
-import com.example.switchstyle.ui.login.LoginActivity;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -90,7 +86,6 @@ public class CatalogoProductos extends AppCompatActivity {
 
         initNavigation();
     }
-
     private void initNavigation() {
         LinearLayout navHome = findViewById(R.id.nav_home);
         LinearLayout navRegister = findViewById(R.id.nav_register);
@@ -99,20 +94,18 @@ public class CatalogoProductos extends AppCompatActivity {
         if (navRegister != null) navRegister.setOnClickListener(v -> { /* bloqueado */ });
         if (navCatalogs != null) navCatalogs.setOnClickListener(v -> { /* ya estamos aquí */ });
     }
-
     @SuppressLint("NotifyDataSetChanged")
     private void cargarPublicaciones() {
         isLoading = true;
         ApiService apiService = RetrofitClient.getClient().create(ApiService.class);
-        Call<List<Product>> call = apiService.getProducts("Bearer " + session.getToken());
+        Call<List<Product>> call = apiService.getProductos("Bearer " + session.getToken());
 
         call.enqueue(new Callback<List<Product>>() {
             @Override
-            public void onResponse(Call<List<Product>> call, Response<List<Product>> response) {
+            public void onResponse(@NonNull Call<List<Product>> call, @NonNull Response<List<Product>> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     publicaciones.clear();
 
-                    // Mapear Product a Publicacion
                     for (Product p : response.body()) {
                         Publicacion pub = new Publicacion(
                                 p.getId(),
@@ -130,14 +123,12 @@ public class CatalogoProductos extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<List<Product>> call, Throwable t) {
+            public void onFailure(@NonNull Call<List<Product>> call, @NonNull Throwable t) {
                 isLoading = false;
                 Log.e("CatalogoProductos", "Error: " + t.getMessage());
             }
         });
     }
-
-    // -------------------- MODELOS --------------------
     public static class Publicacion {
         int id;
         String nombre;
@@ -153,8 +144,6 @@ public class CatalogoProductos extends AppCompatActivity {
             this.meGusta = meGusta;
         }
     }
-
-    // -------------------- ADAPTER --------------------
     private static class PublicacionAdapter extends RecyclerView.Adapter<PublicacionAdapter.PublicacionViewHolder> {
         private final List<Publicacion> publicaciones;
         private final SessionManager session;
@@ -186,14 +175,13 @@ public class CatalogoProductos extends AppCompatActivity {
                 publicacion.meGusta = nuevoEstado;
                 holder.btnMeGusta.setImageResource(nuevoEstado ? R.drawable.favorite_filled_24px : R.drawable.favorite_24px);
 
-                // Actualizar me gusta en backend
                 ApiService apiService = RetrofitClient.getClient().create(ApiService.class);
                 Call<Void> call = apiService.setLike(publicacion.id, nuevoEstado, "Bearer " + session.getToken());
                 call.enqueue(new Callback<Void>() {
                     @Override
-                    public void onResponse(Call<Void> call, Response<Void> response) {}
+                    public void onResponse(@NonNull Call<Void> call, @NonNull Response<Void> response) {}
                     @Override
-                    public void onFailure(Call<Void> call, Throwable t) {}
+                    public void onFailure(@NonNull Call<Void> call, @NonNull Throwable t) {}
                 });
             });
 
@@ -230,7 +218,6 @@ public class CatalogoProductos extends AppCompatActivity {
             }
         }
     }
-
     private static class ImagenAdapter extends RecyclerView.Adapter<ImagenAdapter.ImagenViewHolder> {
         private final List<String> urls;
 
@@ -269,16 +256,13 @@ public class CatalogoProductos extends AppCompatActivity {
                     })
                     .into(holder.imageView);
         }
-
         @Override
         public int getItemCount() {
             return urls.size();
         }
-
         static class ImagenViewHolder extends RecyclerView.ViewHolder {
             ImageView imageView;
             ProgressBar progressBar;
-
             ImagenViewHolder(@NonNull View itemView) {
                 super(itemView);
                 imageView = itemView.findViewById(R.id.imagenProducto);

@@ -8,8 +8,6 @@
     android:fitsSystemWindows="true"
     tools:context=".ui.login.LoginActivity">
 
-    <!-- Barra de Navegación inferior idéntica a la del Registro -->
-
     <LinearLayout
         android:id="@+id/linearLayout4"
         android:layout_width="match_parent"
@@ -84,7 +82,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
 
-        <!-- Home -->
         <LinearLayout
             android:id="@+id/nav_home"
             android:layout_width="0dp"
@@ -113,7 +110,6 @@
                 android:textSize="13sp" />
         </LinearLayout>
 
-        <!-- Registro -->
         <LinearLayout
             android:id="@+id/nav_register"
             android:layout_width="0dp"
@@ -142,7 +138,6 @@
                 android:textSize="13sp" />
         </LinearLayout>
 
-        <!-- Catálogo -->
         <LinearLayout
             android:id="@+id/nav_catalogs"
             android:layout_width="0dp"

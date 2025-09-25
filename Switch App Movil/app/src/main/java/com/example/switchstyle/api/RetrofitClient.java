@@ -7,7 +7,6 @@ import okhttp3.logging.HttpLoggingInterceptor;
 
 public class RetrofitClient {
     private static Retrofit retrofit;
-
     public static Retrofit getClient() {
         if (retrofit == null) {
             HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
@@ -18,7 +17,7 @@ public class RetrofitClient {
                     .build();
 
             retrofit = new Retrofit.Builder()
-                    .baseUrl("https://TUDOMINIO.com/api/")
+                    .baseUrl("https://switchstyle.laravel.cloud/api/")
                     .addConverterFactory(GsonConverterFactory.create())
                     .client(client)
                     .build();

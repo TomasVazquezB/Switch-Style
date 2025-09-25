@@ -1,5 +1,4 @@
 package com.example.switchstyle.api;
-
 public class User {
     private int id;
     private String name;

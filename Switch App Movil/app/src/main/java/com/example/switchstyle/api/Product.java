@@ -1,7 +1,6 @@
 package com.example.switchstyle.api;
 
 import java.util.List;
-
 public class Product {
     private int id;
     private String nombre;

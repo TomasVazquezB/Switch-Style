@@ -1,9 +1,7 @@
 package com.example.switchstyle.api;
 
 import com.google.gson.annotations.SerializedName;
-
 public class AuthResponse {
-
     @SerializedName("token")
     private String token;
 
@@ -25,7 +23,6 @@ public class AuthResponse {
         return user;
     }
 
-    // Clase interna para el usuario
     public static class User {
         @SerializedName("id")
         private int id;
