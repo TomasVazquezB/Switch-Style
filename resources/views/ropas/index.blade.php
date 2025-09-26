@@ -1,4 +1,5 @@
 @extends('layouts.app')
+@php use Illuminate\Support\Facades\Storage; @endphp
 
 @section('content')
 <div class="max-w-7xl mx-auto p-6">
