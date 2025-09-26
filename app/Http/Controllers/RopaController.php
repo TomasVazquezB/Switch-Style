@@ -40,7 +40,7 @@ class RopaController extends Controller
         return view('ropas.index', [
             'ropas' => $ropas,
             'categorias' => Categoria::whereNotIn('nombre', ['Collares', 'Aritos', 'Anillos'])->get(),
-            'generos' => Genero::all()
+            'generos' => Genero::all(),
         ]);
     }
 
@@ -56,38 +56,41 @@ class RopaController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'titulo' => 'required|string',
-            'descripcion' => 'required|string',
-            'precio' => 'required|numeric',
-            'categoria_id' => 'required|exists:categorias,id',
-            'genero_id' => 'required|exists:generos,id',
-            'tallas' => 'required|array',
-            'tallas.*.id' => 'required|exists:tallas,id',
-            'tallas.*.cantidad' => 'required|integer|min:0',
-            'imagenes.*' => 'nullable|image|max:2048',
+            'titulo'             => 'required|string|max:255',
+            'descripcion'        => 'required|string',
+            'precio'             => 'required|numeric',
+            'categoria_id'       => 'required|exists:categorias,id',
+            'genero_id'          => 'required|exists:generos,id',
+            'tallas'             => 'required|array',
+            'tallas.*.id'        => 'required|exists:tallas,id',
+            'tallas.*.cantidad'  => 'required|integer|min:0',
+            'imagenes.*'         => 'nullable|image|max:2048',
         ]);
 
         DB::transaction(function () use ($request) {
             $ropa = Ropa::create([
-                'titulo' => $request->titulo,
-                'descripcion' => $request->descripcion,
-                'precio' => $request->precio,
+                'titulo'       => $request->titulo,
+                'descripcion'  => $request->descripcion,
+                'precio'       => $request->precio,
                 'categoria_id' => $request->categoria_id,
-                'genero_id' => $request->genero_id,
-                'ID_Usuario' => auth()->id(),
+                'genero_id'    => $request->genero_id,
+                'ID_Usuario'   => auth()->id(),
             ]);
 
+            // Stock por talla (solo las > 0)
             foreach ($request->tallas as $tallaData) {
-                if ((int)$tallaData['cantidad'] > 0) {
-                    $ropa->tallas()->attach($tallaData['id'], [
-                        'cantidad' => $tallaData['cantidad'],
-                    ]);
+                $cant = (int)($tallaData['cantidad'] ?? 0);
+                if ($cant > 0) {
+                    $ropa->tallas()->attach($tallaData['id'], ['cantidad' => $cant]);
                 }
             }
 
+            // Imágenes: la primera subida será principal
             if ($request->hasFile('imagenes')) {
                 foreach ($request->file('imagenes') as $index => $imagen) {
-                    $ruta = $imagen->store('ropa', 'public');
+                    $ruta = $imagen->store('ropa', 'public');               // p.ej. public/ropa/abc.jpg
+                    $ruta = ltrim(str_replace('public/', '', $ruta), '/');  // => ropa/abc.jpg
+
                     $ropa->imagenes()->create(['ruta' => $ruta]);
 
                     if ($index === 0) {
@@ -101,57 +104,68 @@ class RopaController extends Controller
     }
 
     public function edit(Ropa $ropa)
-{
-    $ropa->load('tallas');
+    {
+        $ropa->load(['tallas', 'imagenes']);
 
-    return view('ropas.edit', [
-        'ropa' => $ropa,
-        'categorias' => Categoria::whereNotIn('nombre', ['Anillos', 'Collares', 'Aritos'])->get(),
-        'tallas' => \App\Models\Talla::all(),
-        'generos' => \App\Models\Genero::all(),
-    ]);
-}
+        return view('ropas.edit', [
+            'ropa'       => $ropa,
+            'categorias' => Categoria::whereNotIn('nombre', ['Anillos', 'Collares', 'Aritos'])->get(),
+            'tallas'     => \App\Models\Talla::all(),
+            'generos'    => \App\Models\Genero::all(),
+        ]);
+    }
 
     public function update(Request $request, Ropa $ropa)
     {
         $request->validate([
-            'titulo' => 'required|string',
-            'descripcion' => 'required|string',
-            'precio' => 'required|numeric',
-            'categoria_id' => 'required|exists:categorias,id',
-            'genero_id' => 'required|exists:generos,id',
-            'tallas' => 'required|array',
-            'tallas.*.id' => 'required|exists:tallas,id',
-            'tallas.*.cantidad' => 'required|integer|min:0',
-            'imagenes.*' => 'nullable|image|max:2048',
+            'titulo'             => 'required|string|max:255',
+            'descripcion'        => 'required|string',
+            'precio'             => 'required|numeric',
+            'categoria_id'       => 'required|exists:categorias,id',
+            'genero_id'          => 'required|exists:generos,id',
+            'tallas'             => 'required|array',
+            'tallas.*.id'        => 'required|exists:tallas,id',
+            'tallas.*.cantidad'  => 'required|integer|min:0',
+            'imagenes.*'         => 'nullable|image|max:2048',
         ]);
 
         DB::transaction(function () use ($request, $ropa) {
+            // Datos base
             $ropa->update([
-                'titulo' => $request->titulo,
-                'descripcion' => $request->descripcion,
-                'precio' => $request->precio,
+                'titulo'       => $request->titulo,
+                'descripcion'  => $request->descripcion,
+                'precio'       => $request->precio,
                 'categoria_id' => $request->categoria_id,
-                'genero_id' => $request->genero_id,
+                'genero_id'    => $request->genero_id,
             ]);
 
+            // Sync de tallas (solo las > 0)
             $syncData = [];
             foreach ($request->tallas as $tallaData) {
-                if ((int)$tallaData['cantidad'] > 0) {
-                    $syncData[$tallaData['id']] = ['cantidad' => $tallaData['cantidad']];
+                $cant = (int)($tallaData['cantidad'] ?? 0);
+                if ($cant > 0) {
+                    $syncData[$tallaData['id']] = ['cantidad' => $cant];
                 }
             }
             $ropa->tallas()->sync($syncData);
 
+            // Subir nuevas: si hay al menos una, la primera pasa a principal
+            $primeraNuevaRuta = null;
             if ($request->hasFile('imagenes')) {
-                foreach ($request->file('imagenes') as $index => $imagen) {
+                foreach ($request->file('imagenes') as $i => $imagen) {
                     $ruta = $imagen->store('ropa', 'public');
+                    $ruta = ltrim(str_replace('public/', '', $ruta), '/'); // ropa/xyz.jpg
+
                     $ropa->imagenes()->create(['ruta' => $ruta]);
 
-                    if (!$ropa->ruta_imagen || $index === 0) {
-                        $ropa->update(['ruta_imagen' => $ruta]);
+                    if ($i === 0) {
+                        $primeraNuevaRuta = $ruta;
                     }
                 }
+            }
+
+            if ($primeraNuevaRuta) {
+                $ropa->update(['ruta_imagen' => $primeraNuevaRuta]); // actualizar principal
             }
         });
 
@@ -160,19 +174,22 @@ class RopaController extends Controller
 
     public function destroy(Ropa $ropa)
     {
+        // Borrar imágenes asociadas (archivo + registro)
+        $ropa->load('imagenes');
         foreach ($ropa->imagenes as $img) {
-            if (Storage::disk('public')->exists($img->ruta)) {
+            if ($img->ruta && Storage::disk('public')->exists($img->ruta)) {
                 Storage::disk('public')->delete($img->ruta);
             }
             $img->delete();
         }
 
+        // Borrar principal si corresponde
         if ($ropa->ruta_imagen && Storage::disk('public')->exists($ropa->ruta_imagen)) {
             Storage::disk('public')->delete($ropa->ruta_imagen);
         }
 
+        // Detach de tallas y delete de la prenda
         $ropa->tallas()->detach();
-
         $ropa->delete();
 
         return redirect()->route('ropas.index')->with('success', 'Prenda eliminada.');
@@ -211,17 +228,15 @@ class RopaController extends Controller
     }
 
     public function apiShow($id)
-{
-    try {
-        $ropa = Ropa::with(['imagenes', 'categoria', 'genero', 'tallas'])->findOrFail($id);
-
-        return response()->json($ropa);
-    } catch (\Exception $e) {
-        return response()->json([
-            'error' => 'Producto no encontrado',
-            'detalle' => $e->getMessage()
-        ], 500);
+    {
+        try {
+            $ropa = Ropa::with(['imagenes', 'categoria', 'genero', 'tallas'])->findOrFail($id);
+            return response()->json($ropa);
+        } catch (\Exception $e) {
+            return response()->json([
+                'error'   => 'Producto no encontrado',
+                'detalle' => $e->getMessage(),
+            ], 500);
+        }
     }
-}
-
 }

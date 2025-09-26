@@ -60,11 +60,15 @@
             <label class="block text-sm font-medium text-gray-700 mb-1">Stock por talla</label>
             <div class="flex flex-wrap gap-6">
                 @foreach ($tallas as $talla)
+                    @php
+                        $pivot = $ropa->tallas->firstWhere('id', $talla->id)?->pivot;
+                        $cantidad = old('tallas.' . $talla->id . '.cantidad', $pivot->cantidad ?? 0);
+                    @endphp
                     <div class="flex flex-col items-center">
                         <label class="text-sm font-medium">{{ $talla->nombre }}</label>
                         <input type="hidden" name="tallas[{{ $talla->id }}][id]" value="{{ $talla->id }}">
                         <input type="number" min="0" name="tallas[{{ $talla->id }}][cantidad]"
-                               value="{{ old('tallas.' . $talla->id . '.cantidad', $ropa->tallas->find($talla->id)->pivot->cantidad ?? 0) }}"
+                               value="{{ $cantidad }}"
                                class="w-20 text-center border border-gray-300 rounded-md px-2 py-1">
                     </div>
                 @endforeach
@@ -83,9 +87,13 @@
                 <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mt-2">
                     @foreach ($ropa->imagenes as $img)
                         <div class="relative group border rounded overflow-hidden">
-                            <img src="{{ asset('storage/' . $img->ruta) }}" class="w-full h-32 object-cover rounded">
+                            <img src="{{ Storage::url($img->ruta) }}"
+                                 onerror="this.onerror=null;this.src='{{ asset('images/placeholder.png') }}';"
+                                 class="w-full h-32 object-cover rounded">
 
-                            <form action="{{ route('imagenes.destroy', $img->id) }}" method="POST" class="absolute top-1 right-1 z-10">
+                            {{-- Eliminar imagen --}}
+                            <form action="{{ route('imagenes.destroy', $img->id) }}" method="POST"
+                                  class="absolute top-1 right-1 z-10">
                                 @csrf
                                 @method('DELETE')
                                 <button type="submit" onclick="return confirm('¿Eliminar esta imagen?')"
@@ -94,7 +102,9 @@
                                 </button>
                             </form>
 
-                            <form action="{{ route('imagenes.principal', $img->id) }}" method="POST" class="absolute bottom-1 left-1 z-10">
+                            {{-- Marcar como principal --}}
+                            <form action="{{ route('imagenes.principal', $img->id) }}" method="POST"
+                                  class="absolute bottom-1 left-1 z-10">
                                 @csrf
                                 @method('PUT')
                                 <button type="submit"
@@ -110,7 +120,11 @@
 
         <div>
             <label class="block text-sm font-medium text-gray-700 mb-1">Subir nuevas imágenes (opcional)</label>
-            <input type="file" name="imagenes[]" multiple class="w-full border border-gray-300 rounded-md px-4 py-2">
+            <input type="file" name="imagenes[]" multiple accept="image/*"
+                   class="w-full border border-gray-300 rounded-md px-4 py-2">
+            <p class="text-xs text-gray-500 mt-1">
+                Si subís nuevas, la <strong>primera</strong> se marcará como principal automáticamente.
+            </p>
         </div>
 
         <div class="text-end">

@@ -85,21 +85,35 @@
                 @forelse($ropas as $ropa)
                     <tr class="border-t">
                         <td class="px-4 py-2 border text-center">
-                            @if($ropa->ruta_imagen)
-                                <img src="{{ asset('storage/' . $ropa->ruta_imagen) }}" class="w-16 h-16 object-cover rounded shadow inline-block">
+                            @php
+                                $src = $ropa->ruta_imagen ? Storage::url($ropa->ruta_imagen) : null;
+                            @endphp
+
+                            @if($src)
+                                <img src="{{ $src }}"
+                                     onerror="this.onerror=null;this.src='{{ asset('images/placeholder.png') }}';"
+                                     class="w-16 h-16 object-cover rounded shadow inline-block"
+                                     alt="{{ $ropa->titulo }}">
                             @else
-                                <span class="text-gray-400 italic">Sin imagen</span>
+                                <img src="{{ asset('images/placeholder.png') }}"
+                                     class="w-16 h-16 object-cover rounded shadow inline-block"
+                                     alt="Sin imagen">
                             @endif
                         </td>
+
                         <td class="px-4 py-2 border">{{ $ropa->titulo }}</td>
                         <td class="px-4 py-2 border">${{ number_format($ropa->precio, 2, ',', '.') }}</td>
                         <td class="px-4 py-2 border">{{ $ropa->categoria->nombre ?? '-' }}</td>
                         <td class="px-4 py-2 border">{{ $ropa->genero->nombre ?? '-' }}</td>
+
                         <td class="px-4 py-2 border">
-                            @foreach($ropa->tallas as $t)
+                            @forelse($ropa->tallas as $t)
                                 <div>{{ $t->nombre }}: {{ $t->pivot->cantidad }}</div>
-                            @endforeach
+                            @empty
+                                <span class="text-gray-400 italic">Sin stock</span>
+                            @endforelse
                         </td>
+
                         <td class="px-4 py-2 border text-center space-x-2">
                             <a href="{{ route('ropas.edit', $ropa->id) }}"
                                class="text-blue-600 hover:underline">Editar</a>

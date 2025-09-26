@@ -59,19 +59,29 @@
                 @forelse($accesorios as $accesorio)
                     <tr class="border-t">
                         <td class="px-4 py-2 border text-center">
-                            @if($accesorio->ruta_imagen)
-                                <img src="{{ asset('storage/' . $accesorio->ruta_imagen) }}" class="w-16 h-16 object-cover rounded shadow inline-block">
+                            @php
+                                // Construye URL segura (sirve para public y S3)
+                                $src = $accesorio->ruta_imagen ? Storage::url($accesorio->ruta_imagen) : null;
+                            @endphp
+
+                            @if($src)
+                                <img src="{{ $src }}"
+                                     onerror="this.onerror=null;this.src='{{ asset('images/placeholder.png') }}';"
+                                     class="w-16 h-16 object-cover rounded shadow inline-block" alt="{{ $accesorio->titulo }}">
                             @else
-                                <span class="text-gray-400 italic">Sin imagen</span>
+                                <img src="{{ asset('images/placeholder.png') }}" class="w-16 h-16 object-cover rounded shadow inline-block" alt="Sin imagen">
                             @endif
                         </td>
+
                         <td class="px-4 py-2 border">{{ $accesorio->titulo }}</td>
                         <td class="px-4 py-2 border">${{ number_format($accesorio->precio, 2, ',', '.') }}</td>
                         <td class="px-4 py-2 border text-center">{{ $accesorio->stock }}</td>
                         <td class="px-4 py-2 border">{{ $accesorio->categoria->nombre ?? '-' }}</td>
+
                         <td class="px-4 py-2 border text-center space-x-2">
                             <a href="{{ route('accesorios.edit', $accesorio->id) }}"
                                class="text-blue-600 hover:underline">Editar</a>
+
                             <form action="{{ route('accesorios.destroy', $accesorio->id) }}" method="POST" class="inline">
                                 @csrf
                                 @method('DELETE')
