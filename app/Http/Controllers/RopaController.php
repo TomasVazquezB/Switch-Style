@@ -77,7 +77,7 @@ class RopaController extends Controller
                 'ID_Usuario'   => auth()->id(),
             ]);
 
-            // Stock por talla (solo las > 0)
+            // Stock por talla (solo > 0)
             foreach ($request->tallas as $tallaData) {
                 $cant = (int)($tallaData['cantidad'] ?? 0);
                 if ($cant > 0) {
@@ -85,13 +85,16 @@ class RopaController extends Controller
                 }
             }
 
-            // Imágenes: la primera subida será principal
+            // Imágenes: primera como principal (igual que accesorios)
             if ($request->hasFile('imagenes')) {
                 foreach ($request->file('imagenes') as $index => $imagen) {
-                    $ruta = $imagen->store('ropa', 'public');               // p.ej. public/ropa/abc.jpg
-                    $ruta = ltrim(str_replace('public/', '', $ruta), '/');  // => ropa/abc.jpg
+                    $ruta = $imagen->store('ropa', 'public');               // public/ropa/xxx.jpg
+                    $ruta = ltrim(str_replace('public/', '', $ruta), '/');  // ropa/xxx.jpg
 
-                    $ropa->imagenes()->create(['ruta' => $ruta]);
+                    $ropa->imagenes()->create([
+                        'ruta'         => $ruta,
+                        'es_principal' => $index === 0,
+                    ]);
 
                     if ($index === 0) {
                         $ropa->update(['ruta_imagen' => $ruta]);
@@ -127,10 +130,15 @@ class RopaController extends Controller
             'tallas.*.id'        => 'required|exists:tallas,id',
             'tallas.*.cantidad'  => 'required|integer|min:0',
             'imagenes.*'         => 'nullable|image|max:2048',
+            'principal'          => 'nullable|integer',   // <- igual que accesorios
+            'borrar'             => 'array',
+            'borrar.*'           => 'integer',
         ]);
 
+        $ropa->load('imagenes');
+
         DB::transaction(function () use ($request, $ropa) {
-            // Datos base
+            // 1) Datos base
             $ropa->update([
                 'titulo'       => $request->titulo,
                 'descripcion'  => $request->descripcion,
@@ -139,33 +147,71 @@ class RopaController extends Controller
                 'genero_id'    => $request->genero_id,
             ]);
 
-            // Sync de tallas (solo las > 0)
+            // 2) Stock por talla (solo > 0)
             $syncData = [];
-            foreach ($request->tallas as $tallaData) {
-                $cant = (int)($tallaData['cantidad'] ?? 0);
+            foreach ($request->tallas as $t) {
+                $cant = (int)($t['cantidad'] ?? 0);
                 if ($cant > 0) {
-                    $syncData[$tallaData['id']] = ['cantidad' => $cant];
+                    $syncData[$t['id']] = ['cantidad' => $cant];
                 }
             }
             $ropa->tallas()->sync($syncData);
 
-            // Subir nuevas: si hay al menos una, la primera pasa a principal
-            $primeraNuevaRuta = null;
-            if ($request->hasFile('imagenes')) {
-                foreach ($request->file('imagenes') as $i => $imagen) {
-                    $ruta = $imagen->store('ropa', 'public');
-                    $ruta = ltrim(str_replace('public/', '', $ruta), '/'); // ropa/xyz.jpg
-
-                    $ropa->imagenes()->create(['ruta' => $ruta]);
-
-                    if ($i === 0) {
-                        $primeraNuevaRuta = $ruta;
+            // 3) Borrar imágenes marcadas
+            if ($request->filled('borrar')) {
+                $aBorrar = $ropa->imagenes()->whereIn('id', $request->borrar)->get();
+                foreach ($aBorrar as $img) {
+                    if ($img->ruta && Storage::disk('public')->exists($img->ruta)) {
+                        Storage::disk('public')->delete($img->ruta);
                     }
+                    $img->delete();
                 }
+                $ropa->unsetRelation('imagenes');
+                $ropa->load('imagenes');
             }
 
-            if ($primeraNuevaRuta) {
-                $ropa->update(['ruta_imagen' => $primeraNuevaRuta]); // actualizar principal
+            // 4) Subir nuevas (candidata a principal: la primera nueva si no elegís otra)
+            $primeraNueva = null;
+            if ($request->hasFile('imagenes')) {
+                foreach ($request->file('imagenes') as $i => $file) {
+                    $ruta = $file->store('ropa', 'public');
+                    $ruta = ltrim(str_replace('public/', '', $ruta), '/');
+
+                    $nueva = $ropa->imagenes()->create([
+                        'ruta'         => $ruta,
+                        'es_principal' => false,
+                    ]);
+
+                    if ($i === 0) {
+                        $primeraNueva = $nueva;
+                    }
+                }
+                $ropa->unsetRelation('imagenes');
+                $ropa->load('imagenes');
+            }
+
+            // 5) Resolver principal (igual que accesorios)
+            $principalId = $request->input('principal');
+            if (!$principalId && $primeraNueva) {
+                $principalId = $primeraNueva->id;
+            }
+
+            if ($principalId) {
+                $ropa->imagenes()->update(['es_principal' => false]);
+
+                $imgPrincipal = $ropa->imagenes()->where('id', $principalId)->first();
+                if ($imgPrincipal) {
+                    $imgPrincipal->update(['es_principal' => true]);
+                    $ropa->update(['ruta_imagen' => $imgPrincipal->ruta]);
+                }
+            } else {
+                // Si no quedó ninguna marcada, mantener alguna existente
+                $imgPrincipal = $ropa->imagenes()->where('es_principal', true)->first()
+                    ?: $ropa->imagenes()->first();
+                $ropa->update(['ruta_imagen' => $imgPrincipal?->ruta]);
+                if ($imgPrincipal && !$imgPrincipal->es_principal) {
+                    $imgPrincipal->update(['es_principal' => true]);
+                }
             }
         });
 
@@ -183,18 +229,17 @@ class RopaController extends Controller
             $img->delete();
         }
 
-        // Borrar principal si corresponde
         if ($ropa->ruta_imagen && Storage::disk('public')->exists($ropa->ruta_imagen)) {
             Storage::disk('public')->delete($ropa->ruta_imagen);
         }
 
-        // Detach de tallas y delete de la prenda
         $ropa->tallas()->detach();
         $ropa->delete();
 
         return redirect()->route('ropas.index')->with('success', 'Prenda eliminada.');
     }
 
+    // ---- API opcionales ----
     public function apiIndex(Request $request)
     {
         $query = Ropa::with(['imagenes', 'categoria', 'genero'])
@@ -202,9 +247,8 @@ class RopaController extends Controller
                 $q->whereNotIn('nombre', ['Anillos', 'Collares', 'Aritos']);
             });
 
-        // Filtro por nombre de género (como "Hombre")
         if ($request->filled('genero')) {
-            $nombreGenero = strtolower($request->genero); // ej. "hombre"
+            $nombreGenero = strtolower($request->genero);
             $query->whereHas('genero', function ($q) use ($nombreGenero) {
                 $q->whereRaw('LOWER(nombre) = ?', [$nombreGenero]);
             });
