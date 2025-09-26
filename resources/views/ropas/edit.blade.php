@@ -19,18 +19,21 @@
         @csrf
         @method('PUT')
 
+        {{-- Título --}}
         <div>
             <label class="block text-sm font-medium text-gray-700 mb-1">Título</label>
             <input type="text" name="titulo" value="{{ old('titulo', $ropa->titulo) }}" required
                    class="w-full border border-gray-300 rounded-md px-4 py-2 focus:ring-2 focus:ring-blue-400">
         </div>
 
+        {{-- Descripción --}}
         <div>
             <label class="block text-sm font-medium text-gray-700 mb-1">Descripción</label>
             <textarea name="descripcion" rows="3" required
                       class="w-full border border-gray-300 rounded-md px-4 py-2 focus:ring-2 focus:ring-blue-400">{{ old('descripcion', $ropa->descripcion) }}</textarea>
         </div>
 
+        {{-- Categoría / Género --}}
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
                 <label class="block text-sm font-medium text-gray-700 mb-1">Categoría</label>
@@ -57,6 +60,7 @@
             </div>
         </div>
 
+        {{-- Stock por talla --}}
         <div>
             <label class="block text-sm font-medium text-gray-700 mb-1">Stock por talla</label>
             <div class="flex flex-wrap gap-6">
@@ -76,62 +80,53 @@
             </div>
         </div>
 
+        {{-- Precio --}}
         <div>
             <label class="block text-sm font-medium text-gray-700 mb-1">Precio</label>
             <input type="number" step="0.01" name="precio" value="{{ old('precio', $ropa->precio) }}" required
                    class="w-full border border-gray-300 rounded-md px-4 py-2 focus:ring-2 focus:ring-blue-400">
         </div>
 
+        {{-- Imágenes existentes (solo eliminar, SIN principal) --}}
         @if ($ropa->imagenes->count())
             <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1">Imágenes actuales:</label>
-                <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mt-2">
-                    @foreach ($ropa->imagenes as $img)
-                        <div class="relative group border rounded overflow-hidden">
+                <p class="text-sm font-medium text-gray-700 mb-2">Imágenes existentes</p>
+                <div class="flex flex-wrap gap-4">
+                    @foreach($ropa->imagenes as $img)
+                        <label class="flex items-center gap-2 border rounded p-2">
                             <img src="{{ Storage::url($img->ruta) }}"
                                  onerror="this.onerror=null;this.src='{{ asset('images/placeholder.png') }}';"
-                                 class="w-full h-32 object-cover rounded">
-
-                            {{-- Eliminar imagen --}}
-                            <form action="{{ route('imagenes.destroy', $img->id) }}" method="POST"
-                                  class="absolute top-1 right-1 z-10">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" onclick="return confirm('¿Eliminar esta imagen?')"
-                                        class="bg-red-600 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs hover:bg-red-700">
-                                    ✕
-                                </button>
-                            </form>
-
-                            {{-- Marcar como principal --}}
-                            <form action="{{ route('imagenes.principal', $img->id) }}" method="POST"
-                                  class="absolute bottom-1 left-1 z-10">
-                                @csrf
-                                @method('PUT')
-                                <button type="submit"
-                                        class="bg-yellow-500 text-white text-xs px-2 py-1 rounded hover:bg-yellow-600">
-                                    Principal
-                                </button>
-                            </form>
-                        </div>
+                                 class="h-16 w-16 object-cover rounded">
+                            <span class="text-xs text-gray-600">#{{ $img->id }}</span>
+                            <span class="ml-4">
+                                <input type="checkbox" name="borrar[]" value="{{ $img->id }}" class="mr-1">
+                                <span class="text-xs text-red-600">Eliminar</span>
+                            </span>
+                        </label>
                     @endforeach
                 </div>
             </div>
         @endif
 
+        {{-- Subir nuevas --}}
         <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1">Subir nuevas imágenes (opcional)</label>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Imágenes (podés subir nuevas)</label>
             <input type="file" name="imagenes[]" multiple accept="image/*"
                    class="w-full border border-gray-300 rounded-md px-4 py-2">
             <p class="text-xs text-gray-500 mt-1">
-                Si subís nuevas, la <strong>primera</strong> se marcará como principal automáticamente.
+                Podés seleccionar varias imágenes a la vez.
             </p>
         </div>
 
-        <div class="text-end">
+        {{-- Acciones --}}
+        <div class="flex justify-end gap-2">
+            <a href="{{ route('ropas.index') }}"
+               class="bg-gray-200 text-gray-800 px-4 py-2 rounded hover:bg-gray-300">
+                Cancelar
+            </a>
             <button type="submit"
-                    class="bg-blue-600 text-white font-medium px-6 py-2 rounded-md hover:bg-blue-700 transition">
-                Guardar
+                    class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
+                Actualizar
             </button>
         </div>
     </form>

@@ -85,17 +85,12 @@ class RopaController extends Controller
                 }
             }
 
-            // Imágenes: la primera subida será principal
+            // Imágenes: guardar SIN marcar principal
             if ($request->hasFile('imagenes')) {
-                foreach ($request->file('imagenes') as $index => $imagen) {
+                foreach ($request->file('imagenes') as $imagen) {
                     $ruta = $imagen->store('ropa', 'public');               // p.ej. public/ropa/abc.jpg
                     $ruta = ltrim(str_replace('public/', '', $ruta), '/');  // => ropa/abc.jpg
-
                     $ropa->imagenes()->create(['ruta' => $ruta]);
-
-                    if ($index === 0) {
-                        $ropa->update(['ruta_imagen' => $ruta]);
-                    }
                 }
             }
         });
@@ -127,6 +122,8 @@ class RopaController extends Controller
             'tallas.*.id'        => 'required|exists:tallas,id',
             'tallas.*.cantidad'  => 'required|integer|min:0',
             'imagenes.*'         => 'nullable|image|max:2048',
+            'borrar'             => 'sometimes|array',
+            'borrar.*'           => 'integer|exists:imagenes,id',
         ]);
 
         DB::transaction(function () use ($request, $ropa) {
@@ -149,24 +146,30 @@ class RopaController extends Controller
             }
             $ropa->tallas()->sync($syncData);
 
-            // Subir nuevas: si hay al menos una, la primera pasa a principal
-            $primeraNuevaRuta = null;
-            if ($request->hasFile('imagenes')) {
-                foreach ($request->file('imagenes') as $i => $imagen) {
-                    $ruta = $imagen->store('ropa', 'public');
-                    $ruta = ltrim(str_replace('public/', '', $ruta), '/'); // ropa/xyz.jpg
-
-                    $ropa->imagenes()->create(['ruta' => $ruta]);
-
-                    if ($i === 0) {
-                        $primeraNuevaRuta = $ruta;
+            // Eliminar imágenes marcadas (borrar[])
+            $idsBorrar = (array) $request->input('borrar', []);
+            if (!empty($idsBorrar)) {
+                $imagenes = $ropa->imagenes()->whereIn('id', $idsBorrar)->get();
+                foreach ($imagenes as $img) {
+                    if ($img->ruta && Storage::disk('public')->exists($img->ruta)) {
+                        Storage::disk('public')->delete($img->ruta);
                     }
+                    $img->delete();
                 }
             }
 
-            if ($primeraNuevaRuta) {
-                $ropa->update(['ruta_imagen' => $primeraNuevaRuta]); // actualizar principal
+            // Subir nuevas (SIN principal)
+            if ($request->hasFile('imagenes')) {
+                foreach ($request->file('imagenes') as $imagen) {
+                    $ruta = $imagen->store('ropa', 'public');
+                    $ruta = ltrim(str_replace('public/', '', $ruta), '/'); // ropa/xyz.jpg
+                    $ropa->imagenes()->create(['ruta' => $ruta]);
+                }
             }
+
+            // No tocar ruta_imagen (se elimina la noción de principal)
+            // Si querés limpiar cualquier residuo, podrías:
+            // $ropa->update(['ruta_imagen' => null]);
         });
 
         return redirect()->route('ropas.index')->with('success', 'Prenda actualizada.');
@@ -183,7 +186,7 @@ class RopaController extends Controller
             $img->delete();
         }
 
-        // Borrar principal si corresponde
+        // Si existía campo ruta_imagen y hay archivo, borrarlo también (por limpieza)
         if ($ropa->ruta_imagen && Storage::disk('public')->exists($ropa->ruta_imagen)) {
             Storage::disk('public')->delete($ropa->ruta_imagen);
         }
