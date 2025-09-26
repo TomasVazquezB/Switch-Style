@@ -3,7 +3,7 @@
 
 @section('content')
 <div class="max-w-7xl mx-auto p-6">
-    <h2 class="text-2xl font-bold mb-6 text-gray-800">Mis Accesorios</h2>
+    <h2 class="text-2xl font-bold mb-6 text-gray-800">Listado de accesorios</h2>
 
     @if(session('success'))
         <div class="mb-4 p-3 bg-green-100 text-green-700 rounded">
@@ -11,8 +11,11 @@
         </div>
     @endif
 
+    @php
+        $soloAccesorios = ['Collares', 'Anillos', 'Aritos'];
+    @endphp
+
     <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-6">
-        <!-- Filtros -->
         <form method="GET" class="flex flex-wrap gap-4 items-end">
             <div>
                 <label class="block text-sm font-medium text-gray-600">Buscar por título</label>
@@ -24,10 +27,12 @@
                 <label class="block text-sm font-medium text-gray-600">Categoría</label>
                 <select name="categoria_id" class="border border-gray-300 rounded px-3 py-2">
                     <option value="">Todas</option>
-                    @foreach($categorias as $categoria)
-                        <option value="{{ $categoria->id }}" {{ request('categoria_id') == $categoria->id ? 'selected' : '' }}>
-                            {{ $categoria->nombre }}
-                        </option>
+                    @foreach($categorias as $c)
+                        @if(in_array($c->nombre, $soloAccesorios))
+                            <option value="{{ $c->id }}" {{ request('categoria_id') == $c->id ? 'selected' : '' }}>
+                                {{ $c->nombre }}
+                            </option>
+                        @endif
                     @endforeach
                 </select>
             </div>
@@ -48,7 +53,7 @@
         <table class="min-w-full bg-white border border-gray-300 rounded shadow-sm text-sm">
             <thead class="bg-gray-100 text-gray-700">
                 <tr>
-                    <th class="px-4 py-2 border">Imagen</th>
+                    <th class="px-4 py-2 border">Imagen(es)</th>
                     <th class="px-4 py-2 border">Título</th>
                     <th class="px-4 py-2 border">Precio</th>
                     <th class="px-4 py-2 border">Stock</th>
@@ -58,31 +63,33 @@
             </thead>
             <tbody>
                 @forelse($accesorios as $accesorio)
-                    <tr class="border-t">
-                        <td class="px-4 py-2 border text-center">
-                            @php
-                                // Construye URL segura (sirve para public y S3)
-                                $src = $accesorio->ruta_imagen ? Storage::url($accesorio->ruta_imagen) : null;
-                            @endphp
-
-                            @if($src)
-                                <img src="{{ $src }}"
-                                     onerror="this.onerror=null;this.src='{{ asset('images/placeholder.png') }}';"
-                                     class="w-16 h-16 object-cover rounded shadow inline-block" alt="{{ $accesorio->titulo }}">
+                    <tr class="border-t align-top">
+                        {{-- Todas las imágenes del accesorio --}}
+                        <td class="px-4 py-2 border">
+                            @if($accesorio->imagenes->count())
+                                <div class="flex flex-wrap gap-2 max-w-[260px]">
+                                    @foreach($accesorio->imagenes as $img)
+                                        <img src="{{ Storage::url($img->ruta) }}"
+                                             onerror="this.onerror=null;this.src='{{ asset('images/placeholder.png') }}';"
+                                             class="w-16 h-16 object-cover rounded shadow"
+                                             alt="{{ $accesorio->titulo }}">
+                                    @endforeach
+                                </div>
                             @else
-                                <img src="{{ asset('images/placeholder.png') }}" class="w-16 h-16 object-cover rounded shadow inline-block" alt="Sin imagen">
+                                <img src="{{ asset('images/placeholder.png') }}"
+                                     class="w-16 h-16 object-cover rounded shadow inline-block"
+                                     alt="Sin imagen">
                             @endif
                         </td>
 
                         <td class="px-4 py-2 border">{{ $accesorio->titulo }}</td>
                         <td class="px-4 py-2 border">${{ number_format($accesorio->precio, 2, ',', '.') }}</td>
-                        <td class="px-4 py-2 border text-center">{{ $accesorio->stock }}</td>
+                        <td class="px-4 py-2 border">{{ $accesorio->stock }}</td>
                         <td class="px-4 py-2 border">{{ $accesorio->categoria->nombre ?? '-' }}</td>
 
                         <td class="px-4 py-2 border text-center space-x-2">
                             <a href="{{ route('accesorios.edit', $accesorio->id) }}"
                                class="text-blue-600 hover:underline">Editar</a>
-
                             <form action="{{ route('accesorios.destroy', $accesorio->id) }}" method="POST" class="inline">
                                 @csrf
                                 @method('DELETE')

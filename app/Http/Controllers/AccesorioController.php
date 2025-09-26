@@ -17,11 +17,20 @@ class AccesorioController extends Controller
             ? Accesorio::query()
             : Accesorio::where('ID_Usuario', auth()->id());
 
+        // Filtros opcionales
+        if ($request->filled('busqueda')) {
+            $query->where('titulo', 'like', '%' . $request->busqueda . '%');
+        }
         if ($request->filled('categoria_id')) {
             $query->where('categoria_id', $request->categoria_id);
         }
 
-        $accesorios = $query->latest()->paginate(8);
+        // Eager loading para listar todas las imágenes sin N+1
+        $accesorios = $query->with(['imagenes', 'categoria'])
+                            ->latest()
+                            ->paginate(8)
+                            ->appends($request->query());
+
         $categorias = Categoria::whereIn('nombre', ['Anillos', 'Collares', 'Aritos'])->get();
 
         return view('accesorios.index', compact('accesorios', 'categorias'));
@@ -56,8 +65,8 @@ class AccesorioController extends Controller
 
             if ($request->hasFile('imagenes')) {
                 foreach ($request->file('imagenes') as $index => $imagen) {
-                    $ruta = $imagen->store('accesorios', 'public'); // p.ej. public/accesorios/xxx.jpg
-                    $ruta = ltrim(str_replace('public/', '', $ruta), '/'); // => accesorios/xxx.jpg
+                    $ruta = $imagen->store('accesorios', 'public'); // public/accesorios/xxx.jpg
+                    $ruta = ltrim(str_replace('public/', '', $ruta), '/'); // accesorios/xxx.jpg
 
                     ImagenAccesorio::create([
                         'ruta'         => $ruta,
@@ -143,7 +152,7 @@ class AccesorioController extends Controller
             }
 
             // 4) Resolver principal
-            $principalId = $request->input('principal'); // radio de la vista
+            $principalId = $request->input('principal');
 
             if (!$principalId && $primeraNueva) {
                 $principalId = $primeraNueva->id; // si no marcaste, usamos la primera nueva
@@ -160,7 +169,6 @@ class AccesorioController extends Controller
                     $accesorio->update(['ruta_imagen' => $imgPrincipal->ruta]);
                 }
             } else {
-                // si no quedó ninguna como principal, intenta mantener la que exista
                 $imgPrincipal = $accesorio->imagenes()->where('es_principal', true)->first();
                 $accesorio->update(['ruta_imagen' => $imgPrincipal?->ruta]);
             }

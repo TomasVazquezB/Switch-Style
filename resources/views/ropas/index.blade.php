@@ -73,7 +73,7 @@
         <table class="min-w-full bg-white border border-gray-300 rounded shadow-sm text-sm">
             <thead class="bg-gray-100 text-gray-700">
                 <tr>
-                    <th class="px-4 py-2 border">Imagen</th>
+                    <th class="px-4 py-2 border">Imagen(es)</th>
                     <th class="px-4 py-2 border">Título</th>
                     <th class="px-4 py-2 border">Precio</th>
                     <th class="px-4 py-2 border">Categoría</th>
@@ -84,17 +84,18 @@
             </thead>
             <tbody>
                 @forelse($ropas as $ropa)
-                    <tr class="border-t">
-                        <td class="px-4 py-2 border text-center">
-                            @php
-                                $src = $ropa->ruta_imagen ? Storage::url($ropa->ruta_imagen) : null;
-                            @endphp
-
-                            @if($src)
-                                <img src="{{ $src }}"
-                                     onerror="this.onerror=null;this.src='{{ asset('images/placeholder.png') }}';"
-                                     class="w-16 h-16 object-cover rounded shadow inline-block"
-                                     alt="{{ $ropa->titulo }}">
+                    <tr class="border-t align-top">
+                        {{-- TODAS las imágenes de la prenda --}}
+                        <td class="px-4 py-2 border">
+                            @if($ropa->imagenes->count())
+                                <div class="flex flex-wrap gap-2 max-w-[260px]">
+                                    @foreach($ropa->imagenes as $img)
+                                        <img src="{{ Storage::url($img->ruta) }}"
+                                             onerror="this.onerror=null;this.src='{{ asset('images/placeholder.png') }}';"
+                                             class="w-16 h-16 object-cover rounded shadow"
+                                             alt="{{ $ropa->titulo }}">
+                                    @endforeach
+                                </div>
                             @else
                                 <img src="{{ asset('images/placeholder.png') }}"
                                      class="w-16 h-16 object-cover rounded shadow inline-block"

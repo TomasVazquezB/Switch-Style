@@ -35,7 +35,11 @@ class RopaController extends Controller
             $query->where('genero_id', $request->genero_id);
         }
 
-        $ropas = $query->latest()->paginate(8)->appends($request->query());
+        // 👇 importante: eager loading de relaciones para mostrar todas las imágenes
+        $ropas = $query->with(['imagenes', 'categoria', 'genero', 'tallas'])
+                       ->latest()
+                       ->paginate(8)
+                       ->appends($request->query());
 
         return view('ropas.index', [
             'ropas' => $ropas,
@@ -88,8 +92,8 @@ class RopaController extends Controller
             // Imágenes: guardar SIN marcar principal
             if ($request->hasFile('imagenes')) {
                 foreach ($request->file('imagenes') as $imagen) {
-                    $ruta = $imagen->store('ropa', 'public');               // p.ej. public/ropa/abc.jpg
-                    $ruta = ltrim(str_replace('public/', '', $ruta), '/');  // => ropa/abc.jpg
+                    $ruta = $imagen->store('ropa', 'public');
+                    $ruta = ltrim(str_replace('public/', '', $ruta), '/');
                     $ropa->imagenes()->create(['ruta' => $ruta]);
                 }
             }
@@ -136,7 +140,7 @@ class RopaController extends Controller
                 'genero_id'    => $request->genero_id,
             ]);
 
-            // Sync de tallas (solo las > 0)
+            // Sync de tallas
             $syncData = [];
             foreach ($request->tallas as $tallaData) {
                 $cant = (int)($tallaData['cantidad'] ?? 0);
@@ -146,7 +150,7 @@ class RopaController extends Controller
             }
             $ropa->tallas()->sync($syncData);
 
-            // Eliminar imágenes marcadas (borrar[])
+            // Eliminar imágenes marcadas
             $idsBorrar = (array) $request->input('borrar', []);
             if (!empty($idsBorrar)) {
                 $imagenes = $ropa->imagenes()->whereIn('id', $idsBorrar)->get();
@@ -158,18 +162,14 @@ class RopaController extends Controller
                 }
             }
 
-            // Subir nuevas (SIN principal)
+            // Subir nuevas imágenes
             if ($request->hasFile('imagenes')) {
                 foreach ($request->file('imagenes') as $imagen) {
                     $ruta = $imagen->store('ropa', 'public');
-                    $ruta = ltrim(str_replace('public/', '', $ruta), '/'); // ropa/xyz.jpg
+                    $ruta = ltrim(str_replace('public/', '', $ruta), '/');
                     $ropa->imagenes()->create(['ruta' => $ruta]);
                 }
             }
-
-            // No tocar ruta_imagen (se elimina la noción de principal)
-            // Si querés limpiar cualquier residuo, podrías:
-            // $ropa->update(['ruta_imagen' => null]);
         });
 
         return redirect()->route('ropas.index')->with('success', 'Prenda actualizada.');
@@ -177,7 +177,6 @@ class RopaController extends Controller
 
     public function destroy(Ropa $ropa)
     {
-        // Borrar imágenes asociadas (archivo + registro)
         $ropa->load('imagenes');
         foreach ($ropa->imagenes as $img) {
             if ($img->ruta && Storage::disk('public')->exists($img->ruta)) {
@@ -186,12 +185,10 @@ class RopaController extends Controller
             $img->delete();
         }
 
-        // Si existía campo ruta_imagen y hay archivo, borrarlo también (por limpieza)
         if ($ropa->ruta_imagen && Storage::disk('public')->exists($ropa->ruta_imagen)) {
             Storage::disk('public')->delete($ropa->ruta_imagen);
         }
 
-        // Detach de tallas y delete de la prenda
         $ropa->tallas()->detach();
         $ropa->delete();
 
@@ -205,9 +202,8 @@ class RopaController extends Controller
                 $q->whereNotIn('nombre', ['Anillos', 'Collares', 'Aritos']);
             });
 
-        // Filtro por nombre de género (como "Hombre")
         if ($request->filled('genero')) {
-            $nombreGenero = strtolower($request->genero); // ej. "hombre"
+            $nombreGenero = strtolower($request->genero);
             $query->whereHas('genero', function ($q) use ($nombreGenero) {
                 $q->whereRaw('LOWER(nombre) = ?', [$nombreGenero]);
             });
