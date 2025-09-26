@@ -94,7 +94,7 @@
                 <div class="flex flex-wrap gap-4">
                     @foreach($ropa->imagenes as $img)
                         <label class="flex items-center gap-2 border rounded p-2">
-                            <img src="{{ Storage::url($img->ruta) }}"
+                            <img src="{{ Storage::disk(config('filesystems.default'))->url($img->ruta) }}"
                                  onerror="this.onerror=null;this.src='{{ asset('images/placeholder.png') }}';"
                                  class="h-16 w-16 object-cover rounded">
                             <span class="text-xs text-gray-600">#{{ $img->id }}</span>

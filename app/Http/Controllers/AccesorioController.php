@@ -53,7 +53,9 @@ class AccesorioController extends Controller
             'imagenes.*'   => 'nullable|image|max:2048',
         ]);
 
-        DB::transaction(function () use ($request) {
+        $disk = config('filesystems.default');
+
+        DB::transaction(function () use ($request, $disk) {
             $accesorio = Accesorio::create([
                 'titulo'       => $request->titulo,
                 'descripcion'  => $request->descripcion,
@@ -65,8 +67,8 @@ class AccesorioController extends Controller
 
             if ($request->hasFile('imagenes')) {
                 foreach ($request->file('imagenes') as $index => $imagen) {
-                    $ruta = $imagen->store('accesorios', 'public'); // public/accesorios/xxx.jpg
-                    $ruta = ltrim(str_replace('public/', '', $ruta), '/'); // accesorios/xxx.jpg
+                    // Guarda en el disco por defecto (S3/R2) bajo carpeta 'accesorios'
+                    $ruta = $imagen->store('accesorios', $disk); // devuelve p.ej. accesorios/xxx.jpg
 
                     ImagenAccesorio::create([
                         'ruta'         => $ruta,
@@ -106,9 +108,10 @@ class AccesorioController extends Controller
             'borrar.*'     => 'integer',
         ]);
 
+        $disk = config('filesystems.default');
         $accesorio = Accesorio::with('imagenes')->findOrFail($id);
 
-        DB::transaction(function () use ($request, $accesorio) {
+        DB::transaction(function () use ($request, $accesorio, $disk) {
 
             // 1) Datos base
             $accesorio->update([
@@ -125,8 +128,8 @@ class AccesorioController extends Controller
                     ->whereIn('id', $request->borrar)->get();
 
                 foreach ($aBorrar as $img) {
-                    if ($img->ruta && Storage::disk('public')->exists($img->ruta)) {
-                        Storage::disk('public')->delete($img->ruta);
+                    if ($img->ruta && Storage::disk($disk)->exists($img->ruta)) {
+                        Storage::disk($disk)->delete($img->ruta);
                     }
                     $img->delete();
                 }
@@ -136,8 +139,7 @@ class AccesorioController extends Controller
             $primeraNueva = null;
             if ($request->hasFile('imagenes')) {
                 foreach ($request->file('imagenes') as $i => $file) {
-                    $ruta = $file->store('accesorios', 'public');
-                    $ruta = ltrim(str_replace('public/', '', $ruta), '/');
+                    $ruta = $file->store('accesorios', $disk);
 
                     $nueva = ImagenAccesorio::create([
                         'ruta'         => $ruta,
@@ -179,18 +181,19 @@ class AccesorioController extends Controller
 
     public function destroy($id)
     {
+        $disk = config('filesystems.default');
         $accesorio = Accesorio::with('imagenes')->findOrFail($id);
 
-        DB::transaction(function () use ($accesorio) {
+        DB::transaction(function () use ($accesorio, $disk) {
             foreach ($accesorio->imagenes as $img) {
-                if ($img->ruta && Storage::disk('public')->exists($img->ruta)) {
-                    Storage::disk('public')->delete($img->ruta);
+                if ($img->ruta && Storage::disk($disk)->exists($img->ruta)) {
+                    Storage::disk($disk)->delete($img->ruta);
                 }
                 $img->delete();
             }
 
-            if ($accesorio->ruta_imagen && Storage::disk('public')->exists($accesorio->ruta_imagen)) {
-                Storage::disk('public')->delete($accesorio->ruta_imagen);
+            if ($accesorio->ruta_imagen && Storage::disk($disk)->exists($accesorio->ruta_imagen)) {
+                Storage::disk($disk)->delete($accesorio->ruta_imagen);
             }
 
             $accesorio->delete();

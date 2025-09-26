@@ -35,7 +35,7 @@ class RopaController extends Controller
             $query->where('genero_id', $request->genero_id);
         }
 
-        // 👇 importante: eager loading de relaciones para mostrar todas las imágenes
+        // Eager loading de relaciones
         $ropas = $query->with(['imagenes', 'categoria', 'genero', 'tallas'])
                        ->latest()
                        ->paginate(8)
@@ -71,7 +71,9 @@ class RopaController extends Controller
             'imagenes.*'         => 'nullable|image|max:2048',
         ]);
 
-        DB::transaction(function () use ($request) {
+        $disk = config('filesystems.default');
+
+        DB::transaction(function () use ($request, $disk) {
             $ropa = Ropa::create([
                 'titulo'       => $request->titulo,
                 'descripcion'  => $request->descripcion,
@@ -92,8 +94,8 @@ class RopaController extends Controller
             // Imágenes: guardar SIN marcar principal
             if ($request->hasFile('imagenes')) {
                 foreach ($request->file('imagenes') as $imagen) {
-                    $ruta = $imagen->store('ropa', 'public');
-                    $ruta = ltrim(str_replace('public/', '', $ruta), '/');
+                    // Guarda en el disco por defecto (S3/R2) bajo carpeta 'ropa'
+                    $ruta = $imagen->store('ropa', $disk); // p.ej. ropa/abc.jpg
                     $ropa->imagenes()->create(['ruta' => $ruta]);
                 }
             }
@@ -130,7 +132,9 @@ class RopaController extends Controller
             'borrar.*'           => 'integer|exists:imagenes,id',
         ]);
 
-        DB::transaction(function () use ($request, $ropa) {
+        $disk = config('filesystems.default');
+
+        DB::transaction(function () use ($request, $ropa, $disk) {
             // Datos base
             $ropa->update([
                 'titulo'       => $request->titulo,
@@ -155,8 +159,8 @@ class RopaController extends Controller
             if (!empty($idsBorrar)) {
                 $imagenes = $ropa->imagenes()->whereIn('id', $idsBorrar)->get();
                 foreach ($imagenes as $img) {
-                    if ($img->ruta && Storage::disk('public')->exists($img->ruta)) {
-                        Storage::disk('public')->delete($img->ruta);
+                    if ($img->ruta && Storage::disk($disk)->exists($img->ruta)) {
+                        Storage::disk($disk)->delete($img->ruta);
                     }
                     $img->delete();
                 }
@@ -165,8 +169,7 @@ class RopaController extends Controller
             // Subir nuevas imágenes
             if ($request->hasFile('imagenes')) {
                 foreach ($request->file('imagenes') as $imagen) {
-                    $ruta = $imagen->store('ropa', 'public');
-                    $ruta = ltrim(str_replace('public/', '', $ruta), '/');
+                    $ruta = $imagen->store('ropa', $disk);
                     $ropa->imagenes()->create(['ruta' => $ruta]);
                 }
             }
@@ -177,16 +180,18 @@ class RopaController extends Controller
 
     public function destroy(Ropa $ropa)
     {
+        $disk = config('filesystems.default');
+
         $ropa->load('imagenes');
         foreach ($ropa->imagenes as $img) {
-            if ($img->ruta && Storage::disk('public')->exists($img->ruta)) {
-                Storage::disk('public')->delete($img->ruta);
+            if ($img->ruta && Storage::disk($disk)->exists($img->ruta)) {
+                Storage::disk($disk)->delete($img->ruta);
             }
             $img->delete();
         }
 
-        if ($ropa->ruta_imagen && Storage::disk('public')->exists($ropa->ruta_imagen)) {
-            Storage::disk('public')->delete($ropa->ruta_imagen);
+        if ($ropa->ruta_imagen && Storage::disk($disk)->exists($ropa->ruta_imagen)) {
+            Storage::disk($disk)->delete($ropa->ruta_imagen);
         }
 
         $ropa->tallas()->detach();
@@ -202,6 +207,7 @@ class RopaController extends Controller
                 $q->whereNotIn('nombre', ['Anillos', 'Collares', 'Aritos']);
             });
 
+        // Filtro por nombre de género (como "Hombre")
         if ($request->filled('genero')) {
             $nombreGenero = strtolower($request->genero);
             $query->whereHas('genero', function ($q) use ($nombreGenero) {

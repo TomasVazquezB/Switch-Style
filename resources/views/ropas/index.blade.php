@@ -90,7 +90,7 @@
                             @if($ropa->imagenes->count())
                                 <div class="flex flex-wrap gap-2 max-w-[260px]">
                                     @foreach($ropa->imagenes as $img)
-                                        <img src="{{ Storage::url($img->ruta) }}"
+                                        <img src="{{ Storage::disk(config('filesystems.default'))->url($img->ruta) }}"
                                              onerror="this.onerror=null;this.src='{{ asset('images/placeholder.png') }}';"
                                              class="w-16 h-16 object-cover rounded shadow"
                                              alt="{{ $ropa->titulo }}">
