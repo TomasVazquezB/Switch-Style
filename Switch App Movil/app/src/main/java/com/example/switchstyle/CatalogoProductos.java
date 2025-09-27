@@ -28,7 +28,6 @@ import com.example.switchstyle.api.ApiService;
 import com.example.switchstyle.api.Product;
 import com.example.switchstyle.api.RetrofitClient;
 import com.example.switchstyle.api.SessionManager;
-
 import java.util.ArrayList;
 import java.util.List;
 import retrofit2.Call;
@@ -36,7 +35,6 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class CatalogoProductos extends AppCompatActivity {
-
     private RecyclerView recyclerView;
     private PublicacionAdapter adapter;
     private List<Publicacion> publicaciones;
