@@ -8,7 +8,6 @@ use App\Http\Controllers\AccesorioController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ImagenAccesorioController;
 use App\Http\Controllers\AuthController;
-use App\Http\Controllers\FirebaseController;
 use App\Http\Middleware\TipoUsuario;
 
 Route::get('/', fn() => redirect()->route('inicio'));
@@ -48,7 +47,6 @@ Route::middleware('auth')->group(function () {
         Route::put('/imagenes/{imagen}/principal', [ImagenAccesorioController::class, 'marcarComoPrincipal'])->name('imagenes.principal');
     });
 
-    Route::post('/firebase/guardar', [FirebaseController::class, 'guardar']);
 });
 
 require __DIR__.'/auth.php';
