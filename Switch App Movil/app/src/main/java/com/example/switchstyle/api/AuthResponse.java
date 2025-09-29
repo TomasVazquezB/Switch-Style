@@ -22,7 +22,6 @@ public class AuthResponse {
     public User getUser() {
         return user;
     }
-
     public static class User {
         @SerializedName("id")
         private int id;

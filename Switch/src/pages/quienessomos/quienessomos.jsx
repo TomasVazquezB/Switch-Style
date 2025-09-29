@@ -27,7 +27,7 @@ export function QuienesSomosPage({ darkMode }) {
             <p className="team-role">Cofundador</p>
           </div>
           <div className="team-card">
-            <img src="src/assets/.jpg" alt="Carolina Ho" className="team-img" />
+            <img src="https://res.cloudinary.com/switchstyle/image/upload/v1758934268/Carolina_Belen_Ho_12May2025_Argentina_jbpty5.png" alt="Carolina Ho" className="team-img" />
             <h3 className="team-name"style={{ color: darkMode ? "#ffffff" : "#111111" }}>Carolina Belen Ho</h3>
             <p className="team-role">Programadora y Diseñadora</p>
           </div>
