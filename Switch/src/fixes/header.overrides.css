@@ -1,0 +1,216 @@
+/* File: src/fixes/header.overrides.css
+   IMPORTANTE: importarlo al FINAL en main.jsx
+   Objetivo: corregir colores/contraste solo del header (offer-bar, navbar, iconos, search, profile-menu)
+*/
+
+/* --- Variables (ajustables) --- */
+:root {
+  --site-gray-900: #121212;    /* gris oscuro, menos agresivo que #000 */
+  --site-gray-800: #1a1a1a;
+  --site-light-100: #ffffff;
+  --text-on-dark: #f3f3f3;
+  --text-on-light: #111111;
+  --muted-border: rgba(255,255,255,0.06);
+}
+
+/* Helper: detectores de modo (cubren varios patrones que usás) */
+@media all {
+  /* Keep selectors explicit to avoid global collisions */
+}
+
+/* ==========================================================
+   OFFER BAR
+   - tu Header usa: darkMode ? "bg-ultra-light" : "bg-ultra-dark"
+   - no confiamos en el nombre; controlamos por body.dark-mode / body.light-mode
+   ========================================================== */
+body.dark-mode .offer-bar,
+.home-index.dark .offer-bar,
+.dark .offer-bar {
+  background-color: var(--site-gray-800) !important;
+  color: var(--text-on-dark) !important;
+  border-bottom: 1px solid rgba(255,255,255,0.03);
+}
+body.light-mode .offer-bar,
+.home-index.light .offer-bar,
+.light .offer-bar {
+  background-color: var(--site-light-100) !important;
+  color: var(--text-on-light) !important;
+  border-bottom: 1px solid rgba(0,0,0,0.06);
+}
+
+/* Texto de la offer-bar */
+body.dark-mode .offer-bar-text,
+.home-index.dark .offer-bar-text,
+.dark .offer-bar-text {
+  color: var(--text-on-dark) !important;
+}
+body.light-mode .offer-bar-text,
+.home-index.light .offer-bar-text,
+.light .offer-bar-text {
+  color: var(--text-on-light) !important;
+}
+
+/* ==========================================================
+   NAVBAR TOP (header)
+   ========================================================== */
+/* Fondo del navbar por modo */
+body.dark-mode .navbar-top,
+.home-index.dark .navbar-top,
+.dark .navbar-top {
+  background-color: var(--site-gray-900) !important;
+  color: var(--text-on-dark) !important;
+  border-bottom: 1px solid rgba(255,255,255,0.04) !important;
+}
+body.light-mode .navbar-top,
+.home-index.light .navbar-top,
+.light .navbar-top {
+  background-color: var(--site-light-100) !important;
+  color: var(--text-on-light) !important;
+  border-bottom: 1px solid rgba(0,0,0,0.05) !important;
+}
+
+/* Nav links / bootstrap overrides (específico en navbar-top) */
+body.dark-mode .navbar-top .nav-link,
+.home-index.dark .navbar-top .nav-link,
+.dark .navbar-top .nav-link {
+  color: var(--text-on-dark) !important;
+}
+body.light-mode .navbar-top .nav-link,
+.home-index.light .navbar-top .nav-link,
+.light .navbar-top .nav-link {
+  color: var(--text-on-light) !important;
+}
+
+/* Cuando NavLink agrega text-white/text-dark por getLinkClass, respetamos pero forzamos contraste */
+.navbar-top .text-white { color: var(--text-on-dark) !important; }
+.navbar-top .text-dark  { color: var(--text-on-light) !important; }
+
+/* ==========================================================
+   ICONS: mode toggle, carrito, search icon, user icon
+   ========================================================== */
+.mode-icon,
+.navbar-icon,
+.search-icon-btn,
+.login-buttom svg,
+.carrito svg {
+  color: inherit !important;
+  transition: color 0.18s ease;
+}
+
+/* Especificamos colores por modo */
+body.dark-mode .mode-icon,
+.home-index.dark .mode-icon,
+.dark .mode-icon {
+  color: var(--text-on-dark) !important;
+}
+body.light-mode .mode-icon,
+.home-index.light .mode-icon,
+.light .mode-icon {
+  color: var(--text-on-light) !important;
+}
+
+body.dark-mode .navbar-icon,
+.home-index.dark .navbar-icon,
+.dark .navbar-icon {
+  color: var(--text-on-dark) !important;
+}
+body.light-mode .navbar-icon,
+.home-index.light .navbar-icon,
+.light .navbar-icon {
+  color: var(--text-on-light) !important;
+}
+
+/* search button (tu JSX usa class search-icon-btn) */
+.search-icon-btn,
+.search-btn {
+  background: transparent;
+  border: none;
+  color: inherit;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px;
+}
+body.dark-mode .search-input,
+.home-index.dark .search-input,
+.dark .search-input {
+  color: var(--text-on-dark) !important;
+}
+body.dark-mode .search-input::placeholder,
+.home-index.dark .search-input::placeholder,
+.dark .search-input::placeholder {
+  color: rgba(243,243,243,0.6) !important;
+}
+body.light-mode .search-input::placeholder,
+.home-index.light .search-input::placeholder,
+.light .search-input::placeholder {
+  color: rgba(0,0,0,0.45) !important;
+}
+
+/* ==========================================================
+   PROFILE MENU / DROPDOWN
+   ========================================================== */
+.profile-menu {
+  min-width: 180px;
+  box-sizing: border-box;
+  transition: background-color 0.18s ease, color 0.18s ease;
+}
+body.dark-mode .profile-menu,
+.home-index.dark .profile-menu,
+.dark .profile-menu {
+  background-color: #1d1d1d !important;
+  color: var(--text-on-dark) !important;
+  border: 1px solid rgba(255,255,255,0.04);
+}
+body.light-mode .profile-menu,
+.home-index.light .profile-menu,
+.light .profile-menu {
+  background-color: #fff !important;
+  color: var(--text-on-light) !important;
+  border: 1px solid rgba(0,0,0,0.06);
+}
+
+/* links inside profile menu */
+.profile-menu a, .profile-menu button {
+  color: inherit !important;
+}
+
+/* dropdown menus inside header */
+.nav-dropdown .dropdown-menu {
+  transition: background 0.18s ease, color 0.18s ease;
+}
+body.dark-mode .nav-dropdown .dropdown-menu,
+.home-index.dark .nav-dropdown .dropdown-menu,
+.dark .nav-dropdown .dropdown-menu {
+  background-color: #222 !important;
+  color: var(--text-on-dark) !important;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.45);
+}
+body.light-mode .nav-dropdown .dropdown-menu,
+.home-index.light .nav-dropdown .dropdown-menu,
+.light .nav-dropdown .dropdown-menu {
+  background-color: #fff !important;
+  color: var(--text-on-light) !important;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.06);
+}
+
+/* ==========================================================
+   Accessibility / focus states for header controls
+   ========================================================== */
+.navbar-top .nav-link:focus,
+.navbar-top button:focus,
+.navbar-top a:focus {
+  outline: 2px solid rgba(255,255,255,0.08);
+}
+
+/* ==========================================================
+   Safety net: do not cascade to whole page (avoid body * rules)
+   ========================================================== */
+/* IMPORTANT: avoid heavy global selectors here. If hay reglas antiguas conflictivas,
+   sube la especificidad solo para lo que necesites modificar (hecho arriba).
+*/
+
+/* Small nicety: smooth transitions */
+.navbar-top, .offer-bar, .profile-menu, .nav-dropdown .dropdown-menu {
+  transition: background-color 0.22s ease, color 0.18s ease, border-color 0.18s ease;
+}
