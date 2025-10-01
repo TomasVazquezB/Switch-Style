@@ -19,6 +19,7 @@ return [
     'allowed_origins' => [
         'http://localhost:5173',           // Vite local
         'https://switchstyle.laravel.cloud', // Producción
+        'https://switchstyle.vercel.app',  // Frontend producción
     ],
 
     'allowed_origins_patterns' => [],
