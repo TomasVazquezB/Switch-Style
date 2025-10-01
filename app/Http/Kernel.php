@@ -31,11 +31,13 @@ class Kernel extends HttpKernel
     ];
 
     protected $middlewareAliases = [
-    // 'auth' => \App\Http\Middleware\Authenticate::class,
-    // 'guest' => \App\Http\Middleware\RedirectIfAuthenticated::class,
+    'auth' => \App\Http\Middleware\Authenticate::class,
+    'guest' => \App\Http\Middleware\RedirectIfAuthenticated::class,
     'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
     'tipo_usuario' => \App\Http\Middleware\TipoUsuario::class,
-    'firebase' => \App\Http\Middleware\FirebaseAuth::class,  
+    'firebase' => \App\Http\Middleware\FirebaseAuth::class,
+    'active' => \App\Http\Middleware\CheckUserIsActive::class, // 👈 nuevo
 ];
+
 
 }
