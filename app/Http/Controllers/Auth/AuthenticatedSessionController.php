@@ -15,41 +15,52 @@ class AuthenticatedSessionController extends Controller
     }
 
     public function store(Request $request)
-{
-    $credentials = $request->validate([
-        'Correo_Electronico' => ['required', 'email'],
-        'password' => ['required'],
-    ]);
-
-    if (!Auth::attempt([
-        'Correo_Electronico' => $credentials['Correo_Electronico'],
-        'password' => $credentials['password']
-    ], $request->filled('remember'))) {
-        throw ValidationException::withMessages([
-            'Correo_Electronico' => __('Estas credenciales no coinciden con nuestros registros.'),
+    {
+        
+        $credentials = $request->validate([
+            'Correo_Electronico' => ['required', 'email'],
+            'password'           => ['required'],
         ]);
+
+        
+        $remember = $request->filled('remember'); 
+        if (! Auth::attempt([
+            'Correo_Electronico' => $credentials['Correo_Electronico'],
+            'password'           => $credentials['password'],
+        ], $remember)) {
+            throw ValidationException::withMessages([
+                'Correo_Electronico' => __('Estas credenciales no coinciden con nuestros registros.'),
+            ])->redirectTo(route('login'));
+        }
+
+        
+        $request->session()->regenerate();
+
+        $user = Auth::user();
+        $isActive = $user->is_active ?? ($user->Activo ?? true);
+        if (! $isActive) {
+            Auth::logout();
+            $request->session()->invalidate();
+            $request->session()->regenerateToken();
+
+            throw ValidationException::withMessages([
+                'Correo_Electronico' => 'Tu cuenta está inactiva. Contactá al administrador.',
+            ])->redirectTo(route('login'));
+        }
+
+        $tipo = strtolower($user->Tipo_Usuario ?? '');
+        return match ($tipo) {
+            'admin'           => redirect()->route('inicio'),
+            'free', 'premium' => redirect()->route('inicio'),
+            default           => redirect('/'),
+        };
     }
-
-    $request->session()->regenerate();
-
-    $tipo = strtolower(Auth::user()->Tipo_Usuario);
-
-    return match ($tipo) {
-        'admin' => redirect()->route('inicio'), // ✅ aquí va directamente a la tabla
-        'free', 'premium' => redirect()->route('inicio'),
-        default => redirect('/'),
-    };
-}
-
-
 
     public function destroy(Request $request)
     {
         Auth::logout();
-
         $request->session()->invalidate();
         $request->session()->regenerateToken();
-
         return redirect('/');
     }
 }

@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 
 class User extends Authenticatable
 {
@@ -32,6 +34,7 @@ class User extends Authenticatable
         'is_active' => 'boolean',
     ];
 
+   
     public function getAuthPassword()
     {
         return $this->Contraseña;
@@ -42,8 +45,21 @@ class User extends Authenticatable
         return 'ID_Usuario';
     }
 
+
     public function getEmailForPasswordReset()
     {
         return $this->Correo_Electronico;
     }
+
+   
+    public function setContraseñaAttribute($value)
+    {
+        if ($value) {
+            $this->attributes['Contraseña'] = Str::startsWith($value, '$2y$')
+                ? $value 
+                : Hash::make($value);
+        }
+    }
+
+    
 }

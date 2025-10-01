@@ -45,6 +45,6 @@ class Kernel extends HttpKernel
         'verified'     => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
         'tipo_usuario' => \App\Http\Middleware\TipoUsuario::class,
         'firebase'     => \App\Http\Middleware\FirebaseAuth::class,
-        'active'       => \App\Http\Middleware\CheckUserIsActive::class,
+        'active' => \App\Http\Middleware\EnsureUserIsActive::class,
     ];
 }
