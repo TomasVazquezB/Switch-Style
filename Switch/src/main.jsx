@@ -11,11 +11,11 @@ import './fixes/overrides.css'
 import './fixes/header.overrides.css'
 
 ReactDOM.createRoot(document.getElementById('root')).render(
-  <BrowserRouter>
+<BrowserRouter>
+  <DataProvider>
     <ShopContextProvider>
-      <DataProvider>
-        <App/>
-      </DataProvider>
+      <App />
     </ShopContextProvider>
-  </BrowserRouter>
+  </DataProvider>
+</BrowserRouter>
 );
