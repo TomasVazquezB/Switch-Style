@@ -1,22 +1,25 @@
+// src/api/auth.js
+
+// Guardar usuario y token
 export const guardarUsuario = (usuario, token) => {
   localStorage.setItem('usuario', JSON.stringify(usuario));
-  localStorage.setItem('token', token);
+  if (token) localStorage.setItem('token', token);
 };
 
+// Obtener usuario
 export const obtenerUsuario = () => {
   const data = localStorage.getItem('usuario');
   return data ? JSON.parse(data) : null;
 };
 
-export const obtenerToken = () => {
-  return localStorage.getItem('token');
-};
+// Obtener token
+export const obtenerToken = () => localStorage.getItem('token');
 
+// Cerrar sesión
 export const cerrarSesion = () => {
   localStorage.removeItem('usuario');
-  localStorage.removeItem('token'); 
+  localStorage.removeItem('token');
 };
 
-export const estaAutenticado = () => {
-  return !!localStorage.getItem('usuario') && !!localStorage.getItem('token');
-};
+// Verifica si está autenticado
+export const estaAutenticado = () => Boolean(obtenerUsuario() && obtenerToken());

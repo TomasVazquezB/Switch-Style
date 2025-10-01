@@ -1,4 +1,3 @@
-// File: src/components/home/home.jsx
 import React, { useState, useEffect, useContext } from 'react';
 import { FaChevronLeft, FaChevronRight, FaSyncAlt, FaTruck, FaUndo } from 'react-icons/fa';
 import './home.css';
@@ -7,6 +6,7 @@ import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import { DataContext } from '../../context/DataContext';
 import ErrorBoundary from '../../components/Error/ErrorBoundary';
 import { useNavigate } from 'react-router-dom';
+import axios from '../../api/axios'; // Axios apuntando a Laravel Cloud
 
 import banner1 from '../../assets/banner1.jpg';
 import banner2 from '../../assets/banner2.jpg';
@@ -46,44 +46,12 @@ const Home = ({ darkMode }) => {
   const [showModal, setShowModal] = useState(false);
   const navigate = useNavigate();
 
-  // Autoplay: actualizar index periódicamente (se actualiza usando setter con prev)
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentIndex(prev => (prev + cardsPerSlide) % lastAddedImages.length);
     }, 5000);
     return () => clearInterval(interval);
-  }, []); // dependencia vacía: no recrea interval cada render
-
-  useEffect(() => {
-    fetch('http://127.0.0.1:8000/api/prueba')
-      .then(res => res.json())
-      .then(data => console.log(data))
-      .catch(err => console.error(err));
   }, []);
-
-  const crearProductoDePrueba = () => {
-    fetch('http://127.0.0.1:8000/api/producto', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        Nombre: 'Campera Switch',
-        Descripción: 'Campera estilo urbano',
-        Precio: 299.99,
-        Tipo: 'Casual',
-        Imagen: 'campera.jpg',
-        ID_Tienda: 1
-      }),
-    })
-      .then(res => res.json())
-      .then(data => {
-        console.log('Producto insertado correctamente:', data);
-        alert('✅ Producto creado correctamente');
-      })
-      .catch(err => {
-        console.error('❌ Error al insertar producto:', err);
-        alert('⚠️ Error al crear producto. Ver consola.');
-      });
-  };
 
   const handlePrev = () => {
     setCurrentIndex(prevIndex => (prevIndex - cardsPerSlide + lastAddedImages.length) % lastAddedImages.length);
@@ -207,11 +175,6 @@ const Home = ({ darkMode }) => {
           >
             <button className="carousel-cards-btn" onClick={handlePrev} aria-label="Anterior"><FaChevronLeft /></button>
 
-            { /* key fixes:
-                 - width del track = (nCards / cardsPerSlide) * 100%
-                 - translateX = currentIndex * (100 / cardsPerSlide)%
-                 - inline flex en cada card ya define su ancho visible
-            */ }
             <div
               className="carousel-cards-track"
               style={{

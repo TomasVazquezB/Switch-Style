@@ -8,13 +8,14 @@ import { DataProvider } from './context/DataContext';
 import { BrowserRouter } from 'react-router-dom';
 import '../index.css'
 import './fixes/overrides.css'
+import './fixes/header.overrides.css'
 
 ReactDOM.createRoot(document.getElementById('root')).render(
-  <BrowserRouter>
+<BrowserRouter>
+  <DataProvider>
     <ShopContextProvider>
-      <DataProvider>
-        <App/>
-      </DataProvider>
+      <App />
     </ShopContextProvider>
-  </BrowserRouter>
+  </DataProvider>
+</BrowserRouter>
 );

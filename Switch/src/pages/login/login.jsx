@@ -1,11 +1,10 @@
-import React, { useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
-import api from '../../api/axios';
-import './login.css';
-import { guardarUsuario } from '../../api/auth'; // tu función para guardar en localStorage
+import React, { useState } from "react";
+import { useNavigate, Link } from "react-router-dom";
+import api from "../../api/axios";
+import "./login.css";
 
 export function LoginPage() {
-  const [formData, setFormData] = useState({ identificador: '', contrasena: '' });
+  const [formData, setFormData] = useState({ identificador: "", contrasena: "" });
   const [error, setError] = useState(null);
   const navigate = useNavigate();
 
@@ -18,33 +17,31 @@ export function LoginPage() {
     setError(null);
 
     try {
-      // Primero obtenemos la cookie CSRF de Sanctum
-      await api.get('/sanctum/csrf-cookie');
+      // Paso 1: obtener cookie CSRF
+      await api.get("/sanctum/csrf-cookie");
 
-      // Luego hacemos login
-      const response = await api.post('/api/login', {
+      // Paso 2: login (OJO, ya tienes baseURL con /api en axios.js → NO pongas /api/login aquí)
+      const response = await api.post("/login", {
         email: formData.identificador,
         password: formData.contrasena,
       });
 
-      // Guardamos usuario y token en localStorage
-      const user = response.data.user; // { user: {...}, token: '...' }
-      const token = response.data.token;
+      const user = response.data.user;
 
-      guardarUsuario({ ...user, token }); // función de auth.js que guarda en localStorage
+      // Como Sanctum usa cookies, no necesitas guardar token, solo el usuario
+      localStorage.setItem("usuario", JSON.stringify(user));
 
-      alert(`Bienvenido ${user.name || user.nombre || ''}`);
+      alert(`Bienvenido ${user.nombre || user.name || ""}`);
 
-      // Redirigimos según tipo de usuario
-      if (user.Tipo_Usuario === 'Admin') {
-        window.location.href = 'https://switchstyle.laravel.cloud/admin';
+      // Redirección según rol
+      if (user.Tipo_Usuario === "Admin") {
+        window.location.href = "https://switchstyle.laravel.cloud/admin";
       } else {
-        navigate('/');
+        navigate("/");
       }
-
     } catch (err) {
       console.error(err);
-      setError(err.response?.data?.message || 'Error al iniciar sesión.');
+      setError(err.response?.data?.message || "Error al iniciar sesión.");
     }
   };
 
@@ -82,9 +79,12 @@ export function LoginPage() {
               className="form-control input_user"
             />
             {error && <div className="alert alert-danger">{error}</div>}
-            <button type="submit" className="button-login">Ingresar</button>
+            <button type="submit" className="button-login">
+              Ingresar
+            </button>
             <p className="registro-link">
-              ¿Todavía no estás registrado? <Link to="/registro">Regístrate aquí</Link>
+              ¿Todavía no estás registrado?{" "}
+              <Link to="/registro">Regístrate aquí</Link>
             </p>
           </form>
         </div>

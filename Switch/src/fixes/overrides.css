@@ -1,11 +1,94 @@
 /* === overrides.css === */
 /* Importar al FINAL en main.jsx */
 
+/* Header offer bar */
+.offer-bar-text {
+  transition: color 0.3s ease;
+}
+
+.home-index.light .offer-bar-text {
+  color: #111; /* negro en modo claro */
+}
+
+.home-index.dark .offer-bar-text {
+  color: #fff; /* blanco en modo oscuro */
+}
+
+/* === FIX: Flechas del carousel (contraste icono vs fondo en light/dark) === */
+
+/* base de estilo común */
+.custom-carousel-arrow,
+.carousel-cards-btn,
+.carousel-wrapper .control-arrow {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  transition: background-color 0.18s ease, transform 0.12s ease, color 0.18s ease;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.12);
+  z-index: 50 !important;
+}
+
+/* los iconos heredan color */
+.custom-carousel-arrow svg,
+.carousel-cards-btn svg,
+.carousel-wrapper .control-arrow svg {
+  color: inherit !important;
+  fill: currentColor !important;
+  stroke: currentColor !important;
+  filter: none !important;
+}
+
+/* pseudo-elementos de react-responsive-carousel */
+.carousel-wrapper .control-arrow::before {
+  color: inherit !important;
+  filter: none !important;
+  opacity: 1 !important;
+  background: transparent !important;
+}
+
+/* light mode → círculo claro + icono oscuro */
+body.light-mode .custom-carousel-arrow,
+body.light-mode .carousel-cards-btn,
+body.light-mode .carousel-wrapper .control-arrow {
+  background-color: rgba(255,255,255,0.96) !important;
+  color: #111 !important;
+}
+
+/* hover en light mode */
+body.light-mode .custom-carousel-arrow:hover,
+body.light-mode .carousel-cards-btn:hover,
+body.light-mode .carousel-wrapper .control-arrow:hover {
+  background-color: #fff !important;
+  transform: scale(1.06);
+}
+
+/* dark mode → círculo oscuro + icono claro */
+body.dark-mode .custom-carousel-arrow,
+body.dark-mode .carousel-cards-btn,
+body.dark-mode .carousel-wrapper .control-arrow {
+  background-color: rgba(0,0,0,0.65) !important;
+  color: #fff !important;
+}
+
+/* hover en dark mode */
+body.dark-mode .custom-carousel-arrow:hover,
+body.dark-mode .carousel-cards-btn:hover,
+body.dark-mode .carousel-wrapper .control-arrow:hover {
+  background-color: rgba(0,0,0,0.85) !important;
+  transform: scale(1.06);
+}
+
 
 
 /* Navbar fijo temporal */
 .navbar-top {
-  position: fixed !important;
+  /* position: fixed !important; */
   top: 0;
   width: 100%;
   z-index: 2000;
@@ -145,13 +228,47 @@
   right: 15px;
 }
 
-/* Hover en modo claro (sombra normal oscura) */
+/* Hover en modo claro → sombra oscura */
 .card-home img:hover {
   transition: box-shadow 0.3s ease-in-out;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4);
 }
 
-body.dark-mode .card-home img:hover,
-.dark-mode .card-home img:hover {
-  box-shadow: 0 4px 12px rgba(255, 255, 255, 0.6) !important;
+/* Hover en modo oscuro → sombra blanca */
+.home-index.dark .card-home img:hover {
+  box-shadow: 0 6px 16px rgba(255, 255, 255, 0.85) !important;
 }
+
+/* === FIX: Modal del footer (contraste texto vs fondo en light/dark) === */
+
+/* Base */
+.modal-overlay,
+.modal-box {
+  transition: background-color 0.18s ease, color 0.18s ease;
+}
+
+/* Light mode → fondo claro + texto oscuro */
+body.light-mode .modal-overlay,
+body.light-mode .modal-box {
+  background-color: rgba(255, 255, 255, 0.96) !important;
+  color: #111 !important;
+}
+
+/* Dark mode → fondo oscuro + texto claro */
+body.dark-mode .modal-overlay,
+body.dark-mode .modal-box {
+  background-color: rgba(0, 0, 0, 0.85) !important;
+  color: #fff !important;
+}
+
+/* Botón cerrar (contrastado también) */
+body.light-mode .close-modal-btn {
+  background-color: #111 !important;
+  color: #fff !important;
+}
+
+body.dark-mode .close-modal-btn {
+  background-color: #fff !important;
+  color: #111 !important;
+}
+

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { PayPalButtons } from "@paypal/react-paypal-js";
 import { toast } from 'react-toastify';
+import axios from '../../api/axios'; // axios apuntando a Laravel Cloud
 import './carrito.css';
 
 const Carrito = () => {
@@ -23,19 +24,21 @@ const Carrito = () => {
         const fetchData = async () => {
             try {
                 const [ropaRes, accesoriosRes] = await Promise.all([
-                    fetch("http://localhost:8000/api/ropa"),
-                    fetch("http://localhost:8000/api/accesorios")
+                    axios.get('/ropa'),
+                    axios.get('/accesorios')
                 ]);
-                setProductos(await ropaRes.json());
-                setAccesorios(await accesoriosRes.json());
-            } catch (error) {console.error("Error al obtener productos o accesorios:", error);
+                setProductos(ropaRes.data);
+                setAccesorios(accesoriosRes.data);
+            } catch (error) {
+                console.error("Error al obtener productos o accesorios:", error);
             }
         };
         fetchData();
     }, []);
 
-    const buscarProducto = (item) => {const fuente = item.tipo === 'accesorio' ? accesorios : productos;
-    return fuente.find(p => p.id === item.producto_id);
+    const buscarProducto = (item) => {
+        const fuente = item.tipo === 'accesorio' ? accesorios : productos;
+        return fuente.find(p => p.id === item.producto_id);
     };
 
     const calcularTotal = () => {
@@ -55,8 +58,9 @@ const Carrito = () => {
         if (tallaData) stockDisponible = tallaData.pivot?.cantidad || 1;
 
         if (nuevaCantidad < 1) return;
-        if (nuevaCantidad > stockDisponible) {toast.error(`Stock máximo disponible: ${stockDisponible}`);
-        return;
+        if (nuevaCantidad > stockDisponible) {
+            toast.error(`Stock máximo disponible: ${stockDisponible}`);
+            return;
         }
 
         const actualizado = [...carritoData];
@@ -83,7 +87,11 @@ const Carrito = () => {
                         const producto = buscarProducto(item);
                         if (!producto) return null;
 
-                        const imagen = item.ruta_imagen || producto.ruta_imagen || '';
+                        const imagen = item.ruta_imagen
+                            ? item.ruta_imagen
+                            : producto.ruta_imagen?.startsWith('http')
+                                ? producto.ruta_imagen
+                                : `${axios.defaults.baseURL}/storage/${producto.ruta_imagen}`;
                         const talla = item.talla ? ` | ${item.talla}` : '';
 
                         return (
@@ -107,7 +115,7 @@ const Carrito = () => {
 
             <div className="order-summary">
                 <h3>Resumen de la Compra</h3>
-                <br></br>
+                <br/>
                 <div className="summary-line">
                     <span>Subtotal</span>
                     <span>{moneda}{calcularTotal()}</span>
@@ -124,7 +132,8 @@ const Carrito = () => {
                      <span className="total-label">Total</span>
                      <span className="total-amount">{moneda}{calcularTotal()}</span>
                 </div>
-                <div className="pay-buttons"><PayPalButtons style={{ layout: 'vertical' }}/>
+                <div className="pay-buttons">
+                    <PayPalButtons style={{ layout: 'vertical' }} />
                 </div>
             </div>
         </div>

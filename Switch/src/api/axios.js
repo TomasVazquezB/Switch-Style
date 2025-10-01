@@ -1,17 +1,27 @@
-import axios from 'axios';
-import { obtenerUsuario } from './auth';
+// src/api/axios.js
+import axios from "axios";
+import { obtenerToken } from "./auth";
 
 const api = axios.create({
-  baseURL: 'https://switchstyle.laravel.cloud', // sin /api porque lo pondrás en la ruta
-  withCredentials: true, // necesario para Sanctum y cookies
+  baseURL: "https://switchstyle.laravel.cloud/api", // Tu dominio y prefijo de API
+  withCredentials: true, // Para cookies de Sanctum
+  headers: {
+    "X-Requested-With": "XMLHttpRequest", // Laravel lo espera en AJAX
+  },
 });
 
-// Interceptor para incluir token JWT si existe (opcional)
+// Endpoint para obtener CSRF (Sanctum)
+export const csrf = () =>
+  axios.get("https://switchstyle.laravel.cloud/sanctum/csrf-cookie", {
+    withCredentials: true,
+  });
+
+// Interceptor para agregar token en headers
 api.interceptors.request.use(
   (config) => {
-    const usuario = obtenerUsuario();
-    if (usuario?.token) {
-      config.headers.Authorization = `Bearer ${usuario.token}`;
+    const token = obtenerToken();
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
     }
     return config;
   },
