@@ -1,23 +1,69 @@
 <?php
 
-namespace App\Models;
+namespace App\Http\Controllers;
 
-use Illuminate\Database\Eloquent\Model;
+use App\Models\Producto;
+use Illuminate\Http\Request;
 
-class Producto extends Model
+class ProductoController extends Controller
 {
-    protected $table = 'producto';
+    // 🔹 Listar productos
+    public function index()
+    {
+        $productos = Producto::all()->map(function($producto) {
+            $producto->imagen_url = asset('storage/' . $producto->Imagen); 
+            // Esto genera la URL completa: http://tudominio.com/storage/ropa/imagen.jpg
+            return $producto;
+        });
 
-    protected $primaryKey = 'ID_Producto';
+        return response()->json($productos);
+    }
 
-    public $timestamps = false;
+    // 🔹 Crear producto
+    public function store(Request $request)
+    {
+        $data = $request->validate([
+            'Nombre' => 'required|string',
+            'Precio' => 'required|numeric',
+            'Descripción' => 'nullable|string',
+            'Tipo' => 'required|string',
+            'Imagen' => 'required|string', // nombre de archivo guardado en storage
+            'ID_Tienda' => 'required|integer'
+        ]);
 
-    protected $fillable = [
-        'Nombre',
-        'Descripción',
-        'Precio',
-        'Tipo',
-        'Imagen',
-        'ID_Tienda'
-    ];
+        $producto = Producto::create($data);
+
+        $producto->imagen_url = asset('storage/' . $producto->Imagen);
+
+        return response()->json($producto, 201);
+    }
+
+    // 🔹 Actualizar producto
+    public function update(Request $request, $id)
+    {
+        $producto = Producto::findOrFail($id);
+
+        $data = $request->validate([
+            'Nombre' => 'sometimes|string',
+            'Precio' => 'sometimes|numeric',
+            'Descripción' => 'nullable|string',
+            'Tipo' => 'sometimes|string',
+            'Imagen' => 'sometimes|string'
+        ]);
+
+        $producto->update($data);
+
+        $producto->imagen_url = asset('storage/' . $producto->Imagen);
+
+        return response()->json($producto);
+    }
+
+    // 🔹 Eliminar producto
+    public function destroy($id)
+    {
+        $producto = Producto::findOrFail($id);
+        $producto->delete();
+
+        return response()->json(['message' => 'Producto eliminado correctamente']);
+    }
 }
