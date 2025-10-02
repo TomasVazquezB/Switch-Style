@@ -135,34 +135,22 @@ const Productos = () => {
                     {productoData.imagenes.map((imgItem, index) => {
                         const ruta = `${BASE_STORAGE}/${imgItem.ruta}`;
                         return (
-                            <img
-                                key={index}
-                                src={ruta}
-                                alt={`Miniatura ${index + 1}`}
-                                onClick={() => setImg(ruta)}
-                                className={`thumbnail ${img === ruta ? 'active' : ''}`}
-                            />
+                        <img key={index} src={ruta} alt={`Miniatura ${index + 1}`} onClick={() => setImg(ruta)} className={`thumbnail ${img === ruta ? 'active' : ''}`}/>
                         );
                     })}
                 </div>
 
                 {/* Imagen principal */}
-                <div style={{ backgroundColor: '#f9f9f9', padding: '1rem', borderRadius: '0.75rem' }}>
-                    <img src={img} alt="Producto" className="main-image"/>
-                </div>
+                <div style={{ backgroundColor: '#f9f9f9', padding: '1rem', borderRadius: '0.75rem' }}><img src={img} alt="Producto" className="main-image"/></div>
 
                 {/* Información */}
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
                     <div>
                         <h2 style={{ fontSize: '2rem', fontWeight: 'bold' }}>{productoData.titulo}</h2>
                         <p style={{ fontSize: '1.5rem', fontWeight: 'bold', color: '#000000ff', marginTop: '1rem' }}>${Number(productoData.precio).toFixed(2)}</p>
-                        <button onClick={toggleFavorito} style={{marginTop: '0.5rem',background: 'none',border: 'none',cursor: 'pointer',fontSize: '1.2rem',color: favoritos.includes(productoData.id) ? 'red' : '#888'}}>
-                            {favoritos.includes(productoData.id) ? '❤️ Quitar de favoritos' : '🤍 Agregar a favoritos'}
-                        </button>
+                        <button onClick={toggleFavorito} style={{marginTop: '0.5rem',background: 'none',border: 'none',cursor: 'pointer',fontSize: '1.2rem',color: favoritos.includes(productoData.id) ? 'red' : '#888'}}>{favoritos.includes(productoData.id) ? '❤️ Quitar de favoritos' : '🤍 Agregar a favoritos'}</button>
                         {tipo.includes('accesorio') && (
-                            <p style={{ fontSize: '1rem', marginTop: '0.5rem', color: sinStock ? 'red' : '#555' }}>
-                                {sinStock ? 'Sin stock disponible' : `Stock disponible: ${stockDisponible}`}
-                            </p>
+                            <p style={{ fontSize: '1rem', marginTop: '0.5rem', color: sinStock ? 'red' : '#555' }}>{sinStock ? 'Sin stock disponible' : `Stock disponible: ${stockDisponible}`}</p>
                         )}
                     </div>
 
@@ -172,16 +160,12 @@ const Productos = () => {
                             <p style={{ fontWeight: 500, marginBottom: '0.5rem' }}>Tallas disponibles:</p>
                             <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
                                 {productoData.tallas.map((t, index) => (
-                                    <button key={index} onClick={() => handleSeleccionTalla(t.nombre)} className={`talla-btn ${talla === t.nombre ? 'active' : ''}`}>
-                                        {t.nombre}
-                                    </button>
+                                    <button key={index} onClick={() => handleSeleccionTalla(t.nombre)} className={`talla-btn ${talla === t.nombre ? 'active' : ''}`}>{t.nombre}</button>
                                 ))}
                             </div>
                             {talla && (
                                 <div className="mt-4">
-                                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                                        Cantidad (Stock disponible: {stockDisponible})
-                                    </label>
+                                    <label className="block text-sm font-medium text-gray-700 mb-1">Cantidad (Stock disponible: {stockDisponible})</label>
                                     <input type="number" min="1" max={stockDisponible} value={cantidad} onChange={(e) => setCantidad(parseInt(e.target.value))} className="border px-3 py-1 w-24 rounded"/>
                                 </div>
                             )}
