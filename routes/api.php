@@ -1,7 +1,6 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use Illuminate\Http\Request;
 use App\Http\Controllers\RopaController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\AuthController;
@@ -22,12 +21,12 @@ Route::get('/accesorios/{id}', [AccesorioController::class, 'apiShow']);
 // Usuarios
 Route::get('/usuario', [UserController::class, 'index']);
 
-// Auth (registro / login / logout)
+// Auth
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
-Route::post('/logout', [AuthController::class, 'logout']);
 
-// Perfil del usuario autenticado
+// Rutas protegidas con Sanctum
 Route::middleware('auth:sanctum')->group(function () {
+    Route::post('/logout', [AuthController::class, 'logout']);
     Route::get('/perfil', [UserController::class, 'perfil']);
 });
