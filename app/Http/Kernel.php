@@ -31,12 +31,12 @@ class Kernel extends HttpKernel
     ];
 
     protected $routeMiddleware = [
-    'auth'         => \App\Http\Middleware\Authenticate::class,
-    'guest'        => \App\Http\Middleware\RedirectIfAuthenticated::class,
-    'verified'     => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
-    'tipo_usuario' => \App\Http\Middleware\TipoUsuario::class,
-    'active'       => \App\Http\Middleware\EnsureUserIsActive::class, 
-];
+        'auth'         => \App\Http\Middleware\Authenticate::class,
+        'guest'        => \App\Http\Middleware\RedirectIfAuthenticated::class,
+        'verified'     => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
+        'tipo_usuario' => \App\Http\Middleware\TipoUsuario::class,
+        'active' => \App\Http\Middleware\EnsureUserIsActive::class,
+    ];
 
  
 }

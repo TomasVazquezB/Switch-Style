@@ -16,10 +16,9 @@ class EnsureUserIsActive
             return $next($request);
         }
 
-        // ajusta si tu columna es 'Activo'
         $isActive = $user->is_active ?? ($user->Activo ?? true);
 
-        if (!$isActive) {
+        if (! $isActive) {
             if ($request->expectsJson()) {
                 return response()->json(['message' => 'Tu cuenta está inactiva.'], 403);
             }
