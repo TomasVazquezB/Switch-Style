@@ -3,41 +3,33 @@
 namespace App\Http\Middleware;
 
 use Closure;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Symfony\Component\HttpFoundation\Response;
 
 class TipoUsuario
 {
-    
-    public function handle(Request $request, Closure $next, ...$tiposPermitidos): Response
+    /**
+     * Maneja una solicitud entrante.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \Closure(\Illuminate\Http\Request): (\Illuminate\Http\Response|\Illuminate\Http\RedirectResponse)  $next
+     * @param  mixed  ...$tiposPermitidos
+     * @return \Illuminate\Http\Response|\Illuminate\Http\RedirectResponse
+     */
+    public function handle($request, Closure $next, ...$tiposPermitidos)
     {
+        // Verifica si hay un usuario autenticado
         if (!Auth::check()) {
-            abort(401, 'No autenticado.');
+            return redirect()->route('login');
         }
 
-        $user = Auth::user();
+        $usuario = Auth::user();
+        $tipo = strtolower($usuario->Tipo_Usuario); // Asegurate de que esta columna existe en tu tabla 'users'
+        $permitidos = array_map('strtolower', $tiposPermitidos);
 
-        $rawTipo = $user->Tipo_Usuario ?? $user->tipo_usuario ?? null;
-        if ($rawTipo === null) {
-            abort(403, 'El usuario no tiene tipo asignado.');
+        if (!in_array($tipo, $permitidos)) {
+            abort(403, 'Acceso denegado.');
         }
 
-        $tipoNormalizado = strtolower(trim((string) $rawTipo));
-
-        $permitidos = array_map(
-            fn($t) => strtolower(trim((string) $t)),
-            $tiposPermitidos ?? []
-        );
-
-        if (empty($permitidos)) {
-            return $next($request);
-        }
-
-        if (in_array($tipoNormalizado, $permitidos, true)) {
-            return $next($request);
-        }
-
-        abort(403, 'Acceso denegado.');
+        return $next($request);
     }
 }
