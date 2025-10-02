@@ -11,6 +11,12 @@ class Kernel extends HttpKernel
      *
      * @var array
      */
+
+{
+    protected $middleware = [
+        \Illuminate\Http\Middleware\HandleCors::class,
+    ];
+
     protected $middlewareGroups = [
         'web' => [
             \App\Http\Middleware\EncryptCookies::class,
