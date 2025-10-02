@@ -4,20 +4,10 @@
 <div class="max-w-5xl mx-auto mt-10 p-6 bg-white rounded shadow">
     <h1 class="text-2xl font-bold text-gray-800 mb-6">Gestión de Usuarios</h1>
 
-    {{-- Flash genérico (éxito/errores) --}}
+    {{-- Mensaje de éxito --}}
     @if (session('success'))
         <div class="mb-4 p-4 bg-green-100 text-green-800 rounded">
             {{ session('success') }}
-        </div>
-    @endif
-    @if ($errors->any())
-        <div class="mb-4 p-4 bg-red-100 text-red-800 rounded">
-            <strong>Revisá los siguientes errores:</strong>
-            <ul class="list-disc ml-6 mt-2">
-                @foreach ($errors->all() as $e)
-                    <li>{{ $e }}</li>
-                @endforeach
-            </ul>
         </div>
     @endif
 
@@ -34,34 +24,23 @@
             </thead>
             <tbody class="divide-y divide-gray-200">
                 @forelse ($usuarios as $usuario)
-                    @php
-                        // Tolerancia a esquema mixto
-                        $nombre = $usuario->Nombre ?? $usuario->name ?? '-';
-                        $correo = $usuario->Correo_Electronico ?? $usuario->email ?? '-';
-                        $tipo   = $usuario->Tipo_Usuario ?? '-';
-
-                        // is_active puede ser null si el user es viejo
-                        $activo = isset($usuario->is_active)
-                                    ? (bool)$usuario->is_active
-                                    : (isset($usuario->Activo) ? (bool)$usuario->Activo : true);
-                    @endphp
                     <tr>
-                        <td class="px-4 py-2">{{ $nombre }}</td>
-                        <td class="px-4 py-2">{{ $correo }}</td>
-                        <td class="px-4 py-2 capitalize">{{ $tipo }}</td>
+                        <td class="px-4 py-2">{{ $usuario->Nombre }}</td>
+                        <td class="px-4 py-2">{{ $usuario->Correo_Electronico }}</td>
+                        <td class="px-4 py-2 capitalize">{{ $usuario->Tipo_Usuario }}</td>
                         <td class="px-4 py-2">
                             {{-- Toggle estado --}}
                             <form action="{{ route('admin.usuarios.toggle', $usuario) }}" method="POST">
                                 @csrf
                                 @method('PUT')
-                                @if($activo)
+                                @if($usuario->is_active)
                                     <button type="submit"
-                                        class="inline-flex items-center px-3 py-1 text-xs font-semibold text-green-800 bg-green-100 rounded hover:bg-green-200 transition">
+                                            class="inline-flex items-center px-3 py-1 text-xs font-semibold text-green-800 bg-green-100 rounded hover:bg-green-200 transition">
                                         ✅ Activo (Click para desactivar)
                                     </button>
                                 @else
                                     <button type="submit"
-                                        class="inline-flex items-center px-3 py-1 text-xs font-semibold text-red-800 bg-red-100 rounded hover:bg-red-200 transition">
+                                            class="inline-flex items-center px-3 py-1 text-xs font-semibold text-red-800 bg-red-100 rounded hover:bg-red-200 transition">
                                         ❌ Inactivo (Click para activar)
                                     </button>
                                 @endif
@@ -98,12 +77,5 @@
             </tbody>
         </table>
     </div>
-
-    {{-- Paginación si viene de ->paginate() --}}
-    @if (method_exists($usuarios, 'links'))
-        <div class="mt-6">
-            {{ $usuarios->links() }}
-        </div>
-    @endif
 </div>
 @endsection

@@ -19,7 +19,7 @@ class UserController extends Controller
     // 📋 Listar usuarios
     public function index()
     {
-        $usuarios = User::orderBy('ID_Usuario', 'desc')->paginate(15);
+        $usuarios = User::orderBy('ID_Usuario','desc')->paginate(15); // con paginación
         return view('admin.usuarios.index', compact('usuarios'));
     }
 
@@ -42,20 +42,19 @@ class UserController extends Controller
         $user = User::create([
             'Nombre'             => $request->Nombre,
             'Correo_Electronico' => $request->Correo_Electronico,
-            'Contraseña'         => $request->Contraseña, // mutator se encarga del hash
+            'Contraseña'         => Hash::make($request->Contraseña),
             'Tipo_Usuario'       => $request->Tipo_Usuario,
             'is_active'          => true,
         ]);
 
-        $this->firestore->collection('usuarios')
-            ->document((string)$user->ID_Usuario)
-            ->set([
-                'uid'          => (string)$user->ID_Usuario,
-                'nombre'       => $user->Nombre,
-                'email'        => $user->Correo_Electronico,
-                'tipo_usuario' => $user->Tipo_Usuario,
-                'activo'       => $user->is_active,
-            ]);
+        // Guardar también en Firestore
+        $this->firestore->collection('usuarios')->document((string)$user->ID_Usuario)->set([
+            'uid'          => (string)$user->ID_Usuario,
+            'nombre'       => $user->Nombre,
+            'email'        => $user->Correo_Electronico,
+            'tipo_usuario' => $user->Tipo_Usuario,
+            'activo'       => $user->is_active,
+        ]);
 
         return redirect()->route('admin.usuarios.index')->with('success', 'Usuario creado correctamente.');
     }
@@ -73,31 +72,31 @@ class UserController extends Controller
             'Nombre'             => 'required|string|max:255',
             'Correo_Electronico' => 'required|email|unique:usuario,Correo_Electronico,' . $user->ID_Usuario . ',ID_Usuario',
             'Tipo_Usuario'       => 'required|in:admin,free,premium',
-            'is_active'          => 'nullable|boolean',
+            'is_active'          => 'required|boolean',
         ]);
 
         $datos = [
             'Nombre'             => $request->Nombre,
             'Correo_Electronico' => $request->Correo_Electronico,
             'Tipo_Usuario'       => $request->Tipo_Usuario,
-            'is_active'          => $request->boolean('is_active'),
+            'is_active'          => $request->is_active,
         ];
 
+        // Solo actualiza contraseña si se envía
         if ($request->filled('Contraseña')) {
             $request->validate(['Contraseña' => 'string|min:8|confirmed']);
-            $datos['Contraseña'] = $request->Contraseña; // mutator hace hash
+            $datos['Contraseña'] = Hash::make($request->Contraseña);
         }
 
         $user->update($datos);
 
-        $this->firestore->collection('usuarios')
-            ->document((string)$user->ID_Usuario)
-            ->set([
-                'nombre'       => $user->Nombre,
-                'email'        => $user->Correo_Electronico,
-                'tipo_usuario' => $user->Tipo_Usuario,
-                'activo'       => $user->is_active,
-            ], ['merge' => true]);
+        // Actualizar en Firestore
+        $this->firestore->collection('usuarios')->document((string)$user->ID_Usuario)->set([
+            'nombre'       => $user->Nombre,
+            'email'        => $user->Correo_Electronico,
+            'tipo_usuario' => $user->Tipo_Usuario,
+            'activo'       => $user->is_active,
+        ], ['merge' => true]);
 
         return redirect()->route('admin.usuarios.index')->with('success', 'Usuario actualizado.');
     }
@@ -107,22 +106,21 @@ class UserController extends Controller
     {
         $user->delete();
 
-        $this->firestore->collection('usuarios')
-            ->document((string)$user->ID_Usuario)
-            ->delete();
+        $this->firestore->collection('usuarios')->document((string)$user->ID_Usuario)->delete();
 
         return redirect()->route('admin.usuarios.index')->with('success', 'Usuario eliminado.');
     }
 
-    // 🔀 Toggle activo/inactivo
+    // 🔀 Toggle estado activo/inactivo
     public function toggle(User $user)
     {
-        $user->is_active = ! $user->is_active;
+        $user->is_active = !$user->is_active;
         $user->save();
 
-        $this->firestore->collection('usuarios')
-            ->document((string)$user->ID_Usuario)
-            ->set(['activo' => $user->is_active], ['merge' => true]);
+        // Actualizar en Firestore
+        $this->firestore->collection('usuarios')->document((string)$user->ID_Usuario)->set([
+            'activo' => $user->is_active,
+        ], ['merge' => true]);
 
         return redirect()->route('admin.usuarios.index')
             ->with('success', 'El estado del usuario fue actualizado.');
@@ -156,6 +154,7 @@ class UserController extends Controller
         ]);
     }
 
+    // 🔄 Crear usuario desde Firebase
     public function storeDesdeFirebase(Request $request)
     {
         $firebaseUid = $request->get('firebase_uid');
@@ -174,21 +173,19 @@ class UserController extends Controller
         $user = User::create([
             'Nombre'             => $nombre,
             'Correo_Electronico' => $email,
-            'Contraseña'         => 'firebase-default',
+            'Contraseña'         => Hash::make('firebase-default'),
             'Tipo_Usuario'       => 'free',
             'firebase_uid'       => $firebaseUid,
             'is_active'          => true,
         ]);
 
-        $this->firestore->collection('usuarios')
-            ->document($firebaseUid)
-            ->set([
-                'uid'          => $firebaseUid,
-                'nombre'       => $nombre,
-                'email'        => $email,
-                'tipo_usuario' => 'free',
-                'activo'       => true,
-            ]);
+        $this->firestore->collection('usuarios')->document($firebaseUid)->set([
+            'uid'          => $firebaseUid,
+            'nombre'       => $nombre,
+            'email'        => $email,
+            'tipo_usuario' => 'free',
+            'activo'       => true,
+        ]);
 
         return response()->json(['message' => "Usuario sincronizado con UID: $firebaseUid"]);
     }
