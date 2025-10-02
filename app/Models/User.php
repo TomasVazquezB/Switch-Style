@@ -9,27 +9,23 @@ class User extends Authenticatable
 {
     use Notifiable;
 
-    protected $table = 'usuario';              // Nombre real de la tabla
-    protected $primaryKey = 'ID_Usuario';      // PK real
-    public $timestamps = false;                // No tienes created_at/updated_at
-    public $incrementing = true;
-    protected $keyType = 'int';
+    protected $table = 'usuario';
+    protected $primaryKey = 'ID_Usuario';
+    public $timestamps = false;
+
+    public $incrementing = true; // ✅ Asegura que Laravel lo trate como autoincrement
+    protected $keyType = 'int';  // ✅ Para evitar problemas si Laravel espera string
 
     protected $fillable = [
         'Nombre',
         'Correo_Electronico',
         'Contraseña',
         'Tipo_Usuario',
-        'is_active', 
     ];
 
     protected $hidden = [
         'Contraseña',
         'remember_token',
-    ];
-
-    protected $casts = [
-        'is_active' => 'boolean',
     ];
 
     public function getAuthPassword()
