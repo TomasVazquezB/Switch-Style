@@ -8,14 +8,16 @@ use App\Http\Controllers\AccesorioController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ImagenAccesorioController;
 use App\Http\Controllers\AuthController;
-use App\Http\Middleware\TipoUsuario;
+
+// ✅ Importá el middleware por CLASE (FQCN)
+use App\Http\Middleware\EnsureUserIsActive;
 
 // Redirige a inicio
 Route::get('/', fn() => redirect()->route('inicio'));
 
 // Página de inicio (solo usuarios logueados y activos)
 Route::get('/inicio', fn() => view('inicio'))
-    ->middleware(['auth','active'])
+    ->middleware(['auth', EnsureUserIsActive::class])  // ✅ sin alias 'active'
     ->name('inicio');
 
 // Rutas de login (solo guest)
@@ -27,18 +29,18 @@ Route::middleware('guest')->group(function () {
 // API login para SPA / mobile
 Route::post('/api/login', [AuthController::class, 'login']);
 
-// Logout
+// Logout (⚠️ no uses active acá para permitir cerrar sesión)
 Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])
-    ->middleware(['auth','active'])
+    ->middleware(['auth'])
     ->name('logout');
 
 // Dashboard
 Route::get('/dashboard', fn() => view('dashboard'))
-    ->middleware(['auth','active'])
+    ->middleware(['auth', EnsureUserIsActive::class])  // ✅
     ->name('dashboard');
 
 // Todas las rutas protegidas
-Route::middleware(['auth','active'])->group(function () {
+Route::middleware(['auth', EnsureUserIsActive::class])->group(function () {
 
     // Perfil de usuario
     Route::prefix('perfil')->group(function () {
@@ -48,7 +50,8 @@ Route::middleware(['auth','active'])->group(function () {
     });
 
     // 🔐 Solo Admins -> ABM Usuarios
-    Route::middleware([TipoUsuario::class . ':admin'])
+    // ✅ Usar ALIAS con parámetros (debe existir en Kernel como 'tipo_usuario' => TipoUsuario::class)
+    Route::middleware('tipo_usuario:admin')
         ->prefix('admin/usuarios')
         ->name('admin.usuarios.')
         ->group(function () {
@@ -62,7 +65,7 @@ Route::middleware(['auth','active'])->group(function () {
         });
 
     // 👕 Ropas y Accesorios (free, premium, admin)
-    Route::middleware([TipoUsuario::class . ':free,premium,admin'])->group(function () {
+    Route::middleware('tipo_usuario:free,premium,admin')->group(function () {
         Route::resource('ropas', RopaController::class);
         Route::resource('accesorios', AccesorioController::class);
 
