@@ -17,11 +17,19 @@ class AuthController extends Controller
             'password' => 'required|string',
         ]);
 
-        $user = User::where('Correo_Electronico', $request->email)->first();
+        $user = DB::table('usuario')->where('Correo_Electronico', $request->email)->first();
 
         if (!$user || !Hash::check($request->password, $user->Contraseña)) {
             return response()->json(['message' => 'Credenciales inválidas'], 401);
         }
+
+            // Loguear usando el guard de Auth
+        $userModel = User::where('Correo_Electronico', $request->email)->first();
+        Auth::login($userModel);
+
+        // Regenerar sesión
+        $request->session()->regenerate();
+
 
         // 🔹 Si usas Sanctum, generamos un token
         $token = $user->createToken('auth_token')->plainTextToken;
@@ -70,10 +78,33 @@ class AuthController extends Controller
         ], 201);
     }
 
-    public function logout(Request $request)
+ public function logout(Request $request)
     {
+        Auth::logout();
+
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
         $request->user()->tokens()->delete();
 
         return response()->json(['message' => 'Logout exitoso']);
+    }
+
+    /**
+     * Obtener usuario autenticado
+     */
+    public function me(Request $request)
+    {
+        $user = Auth::user();
+
+        if (!$user) {
+            return response()->json(['message' => 'No autenticado'], 401);
+        }
+
+        return response()->json([
+            'id'     => $user->ID_Usuario,
+            'nombre' => $user->Nombre,
+            'correo' => $user->Correo_Electronico,
+            'rol'    => $user->Tipo_Usuario,
+        ]);
     }
 }
