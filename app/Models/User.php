@@ -9,9 +9,9 @@ class User extends Authenticatable
 {
     use Notifiable;
 
-    protected $table = 'usuario';
-    protected $primaryKey = 'ID_Usuario';
-    public $timestamps = false;
+    protected $table = 'usuario';              // Nombre real de la tabla
+    protected $primaryKey = 'ID_Usuario';      // PK real
+    public $timestamps = false;                // No tienes created_at/updated_at
     public $incrementing = true;
     protected $keyType = 'int';
 
@@ -20,7 +20,7 @@ class User extends Authenticatable
         'Correo_Electronico',
         'Contraseña',
         'Tipo_Usuario',
-        'is_active',
+        'is_active', 
     ];
 
     protected $hidden = [

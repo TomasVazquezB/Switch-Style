@@ -8,7 +8,6 @@
         @csrf
         @method('PUT')
 
-        {{-- Nombre --}}
         <div class="mb-4">
             <label class="block text-gray-700">Nombre</label>
             <input type="text" name="Nombre" value="{{ old('Nombre', $user->Nombre) }}"
@@ -16,7 +15,6 @@
             @error('Nombre') <p class="text-red-500 text-sm">{{ $message }}</p> @enderror
         </div>
 
-        {{-- Correo --}}
         <div class="mb-4">
             <label class="block text-gray-700">Correo Electrónico</label>
             <input type="email" name="Correo_Electronico" value="{{ old('Correo_Electronico', $user->Correo_Electronico) }}"
@@ -24,24 +22,13 @@
             @error('Correo_Electronico') <p class="text-red-500 text-sm">{{ $message }}</p> @enderror
         </div>
 
-        {{-- Tipo de Usuario --}}
         <div class="mb-4">
             <label class="block text-gray-700">Tipo de Usuario</label>
             <select name="Tipo_Usuario" class="w-full px-4 py-2 border rounded" required>
-                <option value="admin"   {{ $user->Tipo_Usuario === 'admin' ? 'selected' : '' }}>Admin</option>
-                <option value="free"    {{ $user->Tipo_Usuario === 'free' ? 'selected' : '' }}>Free</option>
+                <option value="admin" {{ $user->Tipo_Usuario === 'admin' ? 'selected' : '' }}>Admin</option>
+                <option value="free" {{ $user->Tipo_Usuario === 'free' ? 'selected' : '' }}>Free</option>
                 <option value="premium" {{ $user->Tipo_Usuario === 'premium' ? 'selected' : '' }}>Premium</option>
             </select>
-        </div>
-
-        {{-- Estado de la cuenta --}}
-        <div class="mb-4">
-            <label class="block text-gray-700">Estado de la cuenta</label>
-            <select name="is_active" class="w-full px-4 py-2 border rounded">
-                <option value="1" {{ $user->is_active ? 'selected' : '' }}>✅ Activo</option>
-                <option value="0" {{ !$user->is_active ? 'selected' : '' }}>❌ Inactivo</option>
-            </select>
-            @error('is_active') <p class="text-red-500 text-sm">{{ $message }}</p> @enderror
         </div>
 
         <div class="flex justify-between">

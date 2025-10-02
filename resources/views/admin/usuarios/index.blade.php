@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="max-w-5xl mx-auto mt-10 p-6 bg-white rounded shadow">
+<div class="max-w-4xl mx-auto mt-10 p-6 bg-white rounded shadow">
     <h1 class="text-2xl font-bold text-gray-800 mb-6">Gestión de Usuarios</h1>
 
     {{-- Mensaje de éxito --}}
@@ -18,7 +18,6 @@
                     <th class="px-4 py-2">Nombre</th>
                     <th class="px-4 py-2">Correo Electrónico</th>
                     <th class="px-4 py-2">Tipo de Usuario</th>
-                    <th class="px-4 py-2">Estado</th>
                     <th class="px-4 py-2">Acciones</th>
                 </tr>
             </thead>
@@ -28,33 +27,13 @@
                         <td class="px-4 py-2">{{ $usuario->Nombre }}</td>
                         <td class="px-4 py-2">{{ $usuario->Correo_Electronico }}</td>
                         <td class="px-4 py-2 capitalize">{{ $usuario->Tipo_Usuario }}</td>
-                        <td class="px-4 py-2">
-                            {{-- Toggle estado --}}
-                            <form action="{{ route('admin.usuarios.toggle', $usuario) }}" method="POST">
-                                @csrf
-                                @method('PUT')
-                                @if($usuario->is_active)
-                                    <button type="submit"
-                                            class="inline-flex items-center px-3 py-1 text-xs font-semibold text-green-800 bg-green-100 rounded hover:bg-green-200 transition">
-                                        ✅ Activo (Click para desactivar)
-                                    </button>
-                                @else
-                                    <button type="submit"
-                                            class="inline-flex items-center px-3 py-1 text-xs font-semibold text-red-800 bg-red-100 rounded hover:bg-red-200 transition">
-                                        ❌ Inactivo (Click para activar)
-                                    </button>
-                                @endif
-                            </form>
-                        </td>
                         <td class="px-4 py-2 text-center">
                             <div class="flex justify-center items-center gap-2">
-                                {{-- Editar --}}
                                 <a href="{{ route('admin.usuarios.edit', $usuario) }}"
                                    class="inline-flex items-center bg-blue-600 text-white px-3 py-1 rounded hover:bg-blue-700 transition">
                                     ✏️ Editar
                                 </a>
 
-                                {{-- Eliminar --}}
                                 <form action="{{ route('admin.usuarios.destroy', $usuario) }}" method="POST"
                                       onsubmit="return confirm('¿Estás seguro de eliminar este usuario?');">
                                     @csrf
@@ -69,7 +48,7 @@
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="5" class="px-4 py-4 text-gray-500">
+                        <td colspan="4" class="px-4 py-4 text-gray-500">
                             No hay usuarios registrados.
                         </td>
                     </tr>
