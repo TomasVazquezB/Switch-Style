@@ -12,19 +12,36 @@ class EnsureUserIsActive
     {
         $user = $request->user();
 
+        
         if (!$user) {
             return $next($request);
         }
 
-        $isActive = $user->is_active ?? ($user->Activo ?? true);
+        
+        $isActive = null;
 
-        if (! $isActive) {
+        if (isset($user->is_active)) {          
+            $isActive = (bool) $user->is_active;
+        } elseif (isset($user->Activo)) {        
+            $isActive = (bool) $user->Activo;
+        } elseif (isset($user->active)) {
+            $isActive = (bool) $user->active;
+        }
+
+        
+        if ($isActive === false) {
+            
             if ($request->expectsJson()) {
-                return response()->json(['message' => 'Tu cuenta está inactiva.'], 403);
+                return response()->json([
+                    'message' => 'Tu cuenta está inactiva. Contactá al administrador.'
+                ], 403);
             }
+
+            
             auth()->logout();
-            return redirect()->route('login')
-                ->withErrors(['inactive' => 'Tu cuenta está inactiva.']);
+            return redirect()
+                ->route('login')
+                ->withErrors(['inactive' => 'Tu cuenta está inactiva. Contactá al administrador.']);
         }
 
         return $next($request);
