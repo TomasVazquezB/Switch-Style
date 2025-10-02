@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import ProductoItem from '../../components/Productoitem/ProductoItem';
-import axios from '../../api/axios'; // axios apuntando a Laravel Cloud
-import './MainAccesorios.css';
+import axios from '../../api/axios'; 
+import './MainAccesorios.css';u
 
 const MainAccesorios = () => {
     const [productos, setProductos] = useState([]);

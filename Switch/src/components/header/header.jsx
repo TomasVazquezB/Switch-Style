@@ -330,7 +330,6 @@ const Header = ({ toggleTheme, darkMode }) => {
                         Mis favoritos
                       </NavLink>
 
-                      {/* 🔗 Enlace al backend Laravel para usuarios y admins */}
                       <a
                         href="https://switchstyle.laravel.cloud/login"
                         target="_blank"

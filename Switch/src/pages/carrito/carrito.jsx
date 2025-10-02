@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { PayPalButtons } from "@paypal/react-paypal-js";
 import { toast } from 'react-toastify';
-import axios from '../../api/axios'; // axios apuntando a Laravel Cloud
+import axios from '../../api/axios'; 
 import './carrito.css';
 
 const Carrito = () => {
@@ -121,11 +121,7 @@ const Carrito = () => {
                     <span>{moneda}{calcularTotal()}</span>
                 </div>
                 <div className="summary-line">
-                    <span>Estimacion de Envio</span>
-                    <span>{moneda}0.00</span>
-                </div>
-                <div className="summary-line">
-                    <span>Estimacion de Impuestos</span>
+                    <span>Estimacion de Envio y Impuestos</span>
                     <span>{moneda}0.00</span>
                 </div>
                 <div className="total">
