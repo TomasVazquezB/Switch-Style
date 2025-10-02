@@ -31,17 +31,16 @@ class UserController extends Controller
             'is_active'          => 'nullable|boolean',
         ]);
 
-        // Gracias al mutator del modelo, NO hasheamos acá.
-        User::create([
+        $user = User::create([
             'Nombre'             => $validated['Nombre'],
             'Correo_Electronico' => $validated['Correo_Electronico'],
-            'Contraseña'         => $validated['Contraseña'], // el mutator hace el hash
+            'Contraseña'         => $validated['Contraseña'], // el mutator la hashea
             'Tipo_Usuario'       => $validated['Tipo_Usuario'],
             'is_active'          => $request->boolean('is_active', true),
         ]);
 
         return redirect()
-            ->route('usuarios.index')
+            ->route('admin.usuarios.index')
             ->with('success', 'Usuario creado correctamente.');
     }
 
@@ -66,8 +65,7 @@ class UserController extends Controller
             'Nombre'             => $validated['Nombre'],
             'Correo_Electronico' => $validated['Correo_Electronico'],
             'Tipo_Usuario'       => $validated['Tipo_Usuario'],
-            // si el checkbox no viene, mantenemos el valor actual:
-            'is_active'          => $request->has('is_active') ? $request->boolean('is_active') : (bool) $user->is_active,
+            'is_active'          => $request->boolean('is_active'),
         ];
 
         if (!empty($validated['Contraseña'])) {
@@ -77,7 +75,7 @@ class UserController extends Controller
         $user->update($datos);
 
         return redirect()
-            ->route('usuarios.index')
+            ->route('admin.usuarios.index')
             ->with('success', 'Usuario actualizado.');
     }
 
@@ -87,7 +85,7 @@ class UserController extends Controller
         $user->delete();
 
         return redirect()
-            ->route('usuarios.index')
+            ->route('admin.usuarios.index')
             ->with('success', 'Usuario eliminado.');
     }
 
@@ -98,7 +96,7 @@ class UserController extends Controller
         $user->save();
 
         return redirect()
-            ->route('usuarios.index')
+            ->route('admin.usuarios.index')
             ->with('success', 'El estado del usuario fue actualizado.');
     }
 }
