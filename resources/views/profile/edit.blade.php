@@ -18,14 +18,16 @@
 
         <div class="mb-4">
             <label class="block text-gray-700">Nombre</label>
-            <input type="text" name="Nombre" value="{{ old('Nombre', Auth::user()->Nombre) }}"
+            <input type="text" name="Nombre" 
+                   value="{{ old('Nombre', Auth::user()->Nombre) }}"
                    class="w-full px-4 py-2 border rounded @error('Nombre') border-red-500 @enderror" required>
             @error('Nombre') <p class="text-red-500 text-sm">{{ $message }}</p> @enderror
         </div>
 
         <div class="mb-4">
             <label class="block text-gray-700">Correo Electrónico</label>
-            <input type="email" name="Correo_Electronico" value="{{ old('Correo_Electronico', Auth::user()->Correo_Electronico) }}"
+            <input type="email" name="Correo_Electronico" 
+                   value="{{ old('Correo_Electronico', Auth::user()->Correo_Electronico) }}"
                    class="w-full px-4 py-2 border rounded @error('Correo_Electronico') border-red-500 @enderror" required>
             @error('Correo_Electronico') <p class="text-red-500 text-sm">{{ $message }}</p> @enderror
         </div>
@@ -73,10 +75,10 @@
         </div>
 
         <div class="flex justify-end">
-    <button type="submit" class="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700">
-        🔁 Actualizar Contraseña
-    </button>
-</div>
+            <button type="submit" class="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700">
+                🔁 Actualizar Contraseña
+            </button>
+        </div>
     </form>
 </div>
 @endsection

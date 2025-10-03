@@ -25,10 +25,23 @@
         <div class="mb-4">
             <label class="block text-gray-700">Tipo de Usuario</label>
             <select name="Tipo_Usuario" class="w-full px-4 py-2 border rounded" required>
-                <option value="admin" {{ $user->Tipo_Usuario === 'admin' ? 'selected' : '' }}>Admin</option>
-                <option value="free" {{ $user->Tipo_Usuario === 'free' ? 'selected' : '' }}>Free</option>
-                <option value="premium" {{ $user->Tipo_Usuario === 'premium' ? 'selected' : '' }}>Premium</option>
+                <option value="Admin" {{ $user->Tipo_Usuario === 'Admin' ? 'selected' : '' }}>Admin</option>
+                <option value="Free" {{ $user->Tipo_Usuario === 'Free' ? 'selected' : '' }}>Free</option>
+                <option value="Premium" {{ $user->Tipo_Usuario === 'Premium' ? 'selected' : '' }}>Premium</option>
             </select>
+        </div>
+
+        <div class="mb-4">
+            <label class="block text-gray-700">Nueva Contraseña (opcional)</label>
+            <input type="password" name="Contraseña"
+                   class="w-full px-4 py-2 border rounded @error('Contraseña') border-red-500 @enderror">
+            @error('Contraseña') <p class="text-red-500 text-sm">{{ $message }}</p> @enderror
+        </div>
+
+        <div class="mb-6">
+            <label class="block text-gray-700">Confirmar Nueva Contraseña</label>
+            <input type="password" name="Contraseña_confirmation"
+                   class="w-full px-4 py-2 border rounded">
         </div>
 
         <div class="flex justify-between">
@@ -37,7 +50,7 @@
 
             <button type="submit"
                     class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">
-                Guardar Cambios
+                💾 Guardar Cambios
             </button>
         </div>
     </form>
