@@ -147,9 +147,10 @@ body.dark-mode .carousel-wrapper .control-arrow:hover {
   color: #000 !important;
 }
 .dark-mode .navbar-top {
-  background-color: #121212 !important; /* gris oscuro */
+  background-color: #1e1e1e !important; /* gris oscuro detallado */
   color: #fff !important;
 }
+
 
 /* Footer */
 .light-mode .footer {
@@ -157,7 +158,7 @@ body.dark-mode .carousel-wrapper .control-arrow:hover {
   color: #000 !important;
 }
 .dark-mode .footer {
-  background-color: #121212 !important;
+  background-color: #1e1e1e !important;
   color: #fff !important;
 }
 
@@ -167,9 +168,11 @@ body.dark-mode .carousel-wrapper .control-arrow:hover {
   color: #000 !important;
 }
 .dark-mode .offer-bar {
-  background-color: #1a1a1a !important;
+  background-color: #2a2a2a !important;
   color: #fff !important;
 }
+
+
 
 /* === FOOTER FIXES === */
 
