@@ -7,16 +7,19 @@ use Illuminate\Foundation\Http\Kernel as HttpKernel;
 class Kernel extends HttpKernel
 {
     /**
+     * The application's global HTTP middleware stack.
+     *
+     * @var array
+     */
+    protected $middleware = [
+        \Illuminate\Http\Middleware\HandleCors::class, // 🔹 CORS integrado en Laravel 9+
+    ];
+
+    /**
      * The application's route middleware groups.
      *
      * @var array
      */
-
-{
-    protected $middleware = [
-        \Illuminate\Http\Middleware\HandleCors::class,
-    ];
-
     protected $middlewareGroups = [
         'web' => [
             \App\Http\Middleware\EncryptCookies::class,
@@ -47,9 +50,9 @@ class Kernel extends HttpKernel
      * @var array
      */
     protected $middlewareAliases = [
-        'auth'     => \App\Http\Middleware\Authenticate::class, // 🔹 lo necesitas para auth:sanctum
-        'guest'    => \App\Http\Middleware\RedirectIfAuthenticated::class,
-        'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
-        'tipo_usuario' => \App\Http\Middleware\TipoUsuario::class,
+        'auth'        => \App\Http\Middleware\Authenticate::class, // ✅ necesario para auth:sanctum
+        'guest'       => \App\Http\Middleware\RedirectIfAuthenticated::class,
+        'verified'    => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
+        'tipo_usuario'=> \App\Http\Middleware\TipoUsuario::class,
     ];
 }
