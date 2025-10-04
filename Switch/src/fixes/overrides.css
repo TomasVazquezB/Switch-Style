@@ -65,7 +65,7 @@ body.light-mode .custom-carousel-arrow:hover,
 body.light-mode .carousel-cards-btn:hover,
 body.light-mode .carousel-wrapper .control-arrow:hover {
   background-color: #fff !important;
-  transform: scale(1.06);
+  
 }
 
 /* dark mode → círculo oscuro + icono claro */
@@ -81,7 +81,7 @@ body.dark-mode .custom-carousel-arrow:hover,
 body.dark-mode .carousel-cards-btn:hover,
 body.dark-mode .carousel-wrapper .control-arrow:hover {
   background-color: rgba(0,0,0,0.85) !important;
-  transform: scale(1.06);
+  
 }
 
 
