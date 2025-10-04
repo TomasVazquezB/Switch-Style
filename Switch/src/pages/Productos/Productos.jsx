@@ -27,11 +27,12 @@ const Productos = () => {
     });
 
     const [reviews] = useState([
-        { id: 1, autor: 'Juan', fecha: '2025-06-01', comentario: 'Muy buen producto.', puntuacion: 5 },
-        { id: 2, autor: 'Ana', fecha: '2025-06-05', comentario: 'Podría ser mejor.', puntuacion: 3 }
+        { id: 1, autor: 'Juan Perez', fecha: '2025-06-01', comentario: 'Muy buen producto.', puntuacion: 5 },
+        { id: 2, autor: 'Ana Fernandez', fecha: '2025-06-05', comentario: 'Podría ser mejor.', puntuacion: 3 },
+        { id: 3, autor: 'Sofia De los montes', fecha: '2025-08-12', comentario: 'Excelente calidad y precio muy recomendado.', puntuacion: 4 },
+        { id: 4, autor: 'Pedro Manuel Campos', fecha: '2025-10-04', comentario: 'Me llego en mal estado el producto.', puntuacion: 1 }
     ]);
 
-    // Cargar producto desde API
     useEffect(() => {
         const endpoint = tipo.includes('accesorio') ? 'accesorios' : 'ropa';
         const url = `${BASE_API}/${endpoint}/${productoId}`;
