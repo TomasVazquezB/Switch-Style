@@ -4,13 +4,14 @@ namespace App\Models;
 
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
 {
-    use Notifiable;
+    use HasApiTokens, Notifiable; // 🔹 Agregado HasApiTokens para Sanctum
 
     protected $table = 'usuario'; // tu tabla personalizada
-    protected $primaryKey = 'ID_Usuario'; // tu PK
+    protected $primaryKey = 'ID_Usuario';
     public $timestamps = false;
 
     public $incrementing = true;
@@ -28,18 +29,19 @@ class User extends Authenticatable
         'Contraseña',
     ];
 
-    // Laravel sabe que este campo es la contraseña
+    // 🔹 Laravel sabrá qué columna usar para verificar la contraseña
     public function getAuthPassword()
     {
         return $this->Contraseña;
     }
 
-    // Para login usando el email
+    // 🔹 Login usando el email (Correo_Electronico)
     public function getAuthIdentifierName()
     {
         return 'Correo_Electronico';
     }
 
+    // 🔹 Para restablecer contraseña (si lo usas)
     public function getEmailForPasswordReset()
     {
         return $this->Correo_Electronico;
