@@ -1,6 +1,7 @@
 package com.example.switchstyle.api;
 
 import com.google.gson.annotations.SerializedName;
+
 public class AuthResponse {
     @SerializedName("token")
     private String token;
@@ -9,7 +10,7 @@ public class AuthResponse {
     private String message;
 
     @SerializedName("user")
-    private User user;
+    private User user;  // <-- Usamos la clase User externa
 
     public String getToken() {
         return token;
@@ -21,27 +22,5 @@ public class AuthResponse {
 
     public User getUser() {
         return user;
-    }
-    public static class User {
-        @SerializedName("id")
-        private int id;
-
-        @SerializedName("name")
-        private String name;
-
-        @SerializedName("email")
-        private String email;
-
-        public int getId() {
-            return id;
-        }
-
-        public String getName() {
-            return name;
-        }
-
-        public String getEmail() {
-            return email;
-        }
     }
 }

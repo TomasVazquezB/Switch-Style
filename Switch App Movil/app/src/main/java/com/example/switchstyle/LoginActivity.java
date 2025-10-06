@@ -19,6 +19,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class LoginActivity extends AppCompatActivity {
+
     private EditText email, password;
     private SessionManager sessionManager;
     private ApiService apiService;
@@ -48,6 +49,7 @@ public class LoginActivity extends AppCompatActivity {
         btnLogin.setOnClickListener(view -> {
             String emailUser = email.getText().toString().trim();
             String passUser = password.getText().toString().trim();
+
             if (TextUtils.isEmpty(emailUser) || TextUtils.isEmpty(passUser)) {
                 Toast.makeText(this, "Completá todos los campos", Toast.LENGTH_SHORT).show();
                 return;
@@ -84,16 +86,22 @@ public class LoginActivity extends AppCompatActivity {
 
     private void loginUser(String emailUser, String passUser) {
         LoginRequest request = new LoginRequest(emailUser, passUser);
+
         Call<AuthResponse> call = apiService.login(request);
         call.enqueue(new Callback<AuthResponse>() {
             @Override
             public void onResponse(@NonNull Call<AuthResponse> call, @NonNull Response<AuthResponse> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     AuthResponse auth = response.body();
+
                     sessionManager.saveToken(auth.getToken());
 
-                    String userName = (auth.getUser() != null && auth.getUser().getName() != null)
-                            ? auth.getUser().getName()
+                    if (auth.getUser() != null) {
+                        sessionManager.saveUser(auth.getUser());
+                    }
+
+                    String userName = (auth.getUser() != null && auth.getUser().getNombre() != null)
+                            ? auth.getUser().getNombre()
                             : "usuario";
 
                     Toast.makeText(LoginActivity.this, "Bienvenido/a " + userName, Toast.LENGTH_LONG).show();
