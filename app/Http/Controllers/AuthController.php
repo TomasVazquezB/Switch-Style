@@ -3,13 +3,15 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
 use App\Models\User;
 
 class AuthController extends Controller
 {
+    /**
+     * 🔹 LOGIN de usuario (para Android o API)
+     */
     public function login(Request $request)
     {
         $request->validate([
@@ -17,21 +19,14 @@ class AuthController extends Controller
             'password' => 'required|string',
         ]);
 
-        $user = DB::table('usuario')->where('Correo_Electronico', $request->email)->first();
+        // Buscar el usuario en la tabla personalizada
+        $user = User::where('Correo_Electronico', $request->email)->first();
 
         if (!$user || !Hash::check($request->password, $user->Contraseña)) {
             return response()->json(['message' => 'Credenciales inválidas'], 401);
         }
 
-            // Loguear usando el guard de Auth
-        $userModel = User::where('Correo_Electronico', $request->email)->first();
-        Auth::login($userModel);
-
-        // Regenerar sesión
-        $request->session()->regenerate();
-
-
-        // 🔹 Si usas Sanctum, generamos un token
+        // Crear token de acceso (Sanctum)
         $token = $user->createToken('auth_token')->plainTextToken;
 
         return response()->json([
@@ -46,6 +41,9 @@ class AuthController extends Controller
         ]);
     }
 
+    /**
+     * 🔹 REGISTRO de usuario
+     */
     public function register(Request $request)
     {
         $request->validate([
@@ -55,7 +53,8 @@ class AuthController extends Controller
             'tipo'    => 'nullable|string|in:Free,Premium,Admin,Usuario',
         ]);
 
-        $id = DB::table('usuario')->insertGetId([
+        // Crear el usuario
+        $user = User::create([
             'Nombre'            => $request->nombre,
             'Correo_Electronico'=> $request->correo,
             'Contraseña'        => bcrypt($request->password),
@@ -63,38 +62,41 @@ class AuthController extends Controller
             'Fecha_Registro'    => now(),
         ]);
 
-        $user = User::find($id);
+        // Crear token
         $token = $user->createToken('auth_token')->plainTextToken;
 
         return response()->json([
             'message' => 'Usuario registrado exitosamente',
             'usuario' => [
-                'id'     => $id,
-                'nombre' => $request->nombre,
-                'correo' => $request->correo,
-                'rol'    => $request->tipo ?? 'Usuario',
+                'id'     => $user->ID_Usuario,
+                'nombre' => $user->Nombre,
+                'correo' => $user->Correo_Electronico,
+                'rol'    => $user->Tipo_Usuario,
             ],
             'token' => $token,
         ], 201);
     }
 
- public function logout(Request $request)
+    /**
+     * 🔹 CERRAR SESIÓN (revocar token actual)
+     */
+    public function logout(Request $request)
     {
-        Auth::logout();
+        $user = $request->user();
 
-        $request->session()->invalidate();
-        $request->session()->regenerateToken();
-        $request->user()->tokens()->delete();
+        if ($user) {
+            $user->currentAccessToken()->delete();
+        }
 
         return response()->json(['message' => 'Logout exitoso']);
     }
 
     /**
-     * Obtener usuario autenticado
+     * 🔹 OBTENER USUARIO AUTENTICADO
      */
     public function me(Request $request)
     {
-        $user = Auth::user();
+        $user = $request->user();
 
         if (!$user) {
             return response()->json(['message' => 'No autenticado'], 401);
