@@ -275,3 +275,54 @@ body.dark-mode .close-modal-btn {
   color: #111 !important;
 }
 
+/* === Correcciones globales para productos === */
+
+/* 1. Quitar subrayado azul del título del producto */
+.product-grid a,
+.product-grid a:visited,
+.product-grid a:active {
+  text-decoration: none !important;
+  color: inherit !important;
+}
+
+.product-grid a:hover {
+  text-decoration: none !important;
+  color: #a0a0a0 !important; /* un gris suave para hover */
+}
+
+/* 2. Aumentar el espacio entre la barra lateral y los productos */
+.main {
+  margin-left: 40px !important; /* separa de la sidebar */
+}
+
+/* 3. Ajustar espaciado entre productos dentro del grid */
+.product-grid {
+  gap: 35px !important; /* espacio entre tarjetas */
+}
+
+/* 4. Asegurar que el precio cambie correctamente con el modo */
+.dark-mode .product-price {
+  color: #ffffff !important;
+}
+
+.light-mode .product-price {
+  color: #000000 !important;
+}
+
+/* 5. Ajuste estético opcional para los nombres de producto */
+.product-grid h5,
+.product-grid .product-name {
+  font-weight: 600 !important;
+  color: inherit !important;
+}
+
+/* Evitar que el modo oscuro cambie el color del precio o nombre */
+.dark-mode .product-item .product-price,
+.dark-mode .product-item .product-name {
+  color: #000 !important;
+}
+
+/* Evita que los precios dentro de productos se vuelvan blancos en modo oscuro */
+.dark-mode .product-grid .text-gray-600 {
+  color: #222 !important; /* o #000 si querés más contraste */
+}
