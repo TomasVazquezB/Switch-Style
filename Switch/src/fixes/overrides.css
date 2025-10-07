@@ -326,3 +326,22 @@ body.dark-mode .close-modal-btn {
 .dark-mode .product-grid .text-gray-600 {
   color: #222 !important; /* o #000 si querés más contraste */
 }
+
+/* ==== Separación global entre filtros (sidebar) y productos ==== */
+.main {
+  margin-left: 260px !important; /* más espacio entre sidebar y grid */
+  transition: margin 0.3s ease;
+}
+
+/* Padding interno opcional para que no toque el borde */
+.product-grid {
+  padding-left: 20px !important;
+}
+
+/* En pantallas pequeñas, eliminamos el desplazamiento */
+@media (max-width: 1024px) {
+  .main {
+    margin-left: 0 !important;
+    padding-left: 1rem !important;
+  }
+}
