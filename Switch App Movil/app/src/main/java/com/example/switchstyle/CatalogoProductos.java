@@ -175,11 +175,19 @@ public class CatalogoProductos extends AppCompatActivity {
 
                 ApiService apiService = RetrofitClient.getClient().create(ApiService.class);
                 Call<Void> call = apiService.setLike(publicacion.id, nuevoEstado, "Bearer " + session.getToken());
+
                 call.enqueue(new Callback<Void>() {
                     @Override
-                    public void onResponse(@NonNull Call<Void> call, @NonNull Response<Void> response) {}
+                    public void onResponse(@NonNull Call<Void> call, @NonNull Response<Void> response) {
+                        if (!response.isSuccessful()) {
+                            Log.e("setLike", "Error al cambiar estado: " + response.code());
+                        }
+                    }
+
                     @Override
-                    public void onFailure(@NonNull Call<Void> call, @NonNull Throwable t) {}
+                    public void onFailure(@NonNull Call<Void> call, @NonNull Throwable t) {
+                        Log.e("setLike", "Fallo en la petición: " + t.getMessage());
+                    }
                 });
             });
 

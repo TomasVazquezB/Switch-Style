@@ -3,6 +3,7 @@ package com.example.switchstyle;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -41,11 +42,13 @@ public class LoginActivity extends AppCompatActivity {
         sessionManager = new SessionManager(this);
         apiService = RetrofitClient.getClient().create(ApiService.class);
 
+        // Si ya hay sesión iniciada, ir directo al catálogo
         if (sessionManager.isLoggedIn()) {
             startActivity(new Intent(LoginActivity.this, CatalogoProductos.class));
             finish();
         }
 
+        // Login
         btnLogin.setOnClickListener(view -> {
             String emailUser = email.getText().toString().trim();
             String passUser = password.getText().toString().trim();
@@ -54,32 +57,27 @@ public class LoginActivity extends AppCompatActivity {
                 Toast.makeText(this, "Completá todos los campos", Toast.LENGTH_SHORT).show();
                 return;
             }
+
             loginUser(emailUser, passUser);
         });
 
+        // Navegación inferior
         navHome.setOnClickListener(v -> {
             startActivity(new Intent(LoginActivity.this, MainActivity.class));
-            finishAffinity();
+            finish();
         });
 
         navRegister.setOnClickListener(v -> {
             startActivity(new Intent(LoginActivity.this, Register.class));
-            finishAffinity();
+            finish();
         });
 
         navCatalogs.setOnClickListener(v -> {
             if (sessionManager.isLoggedIn()) {
                 startActivity(new Intent(LoginActivity.this, CatalogoProductos.class));
-                finishAffinity();
+                finish();
             } else {
-                setContentView(R.layout.activity_login_validation);
-                setTitle("Acceso restringido");
-
-                Button btnIrLoginDesdeValidacion = findViewById(R.id.btnIrRegistro);
-                btnIrLoginDesdeValidacion.setOnClickListener(view2 -> {
-                    startActivity(new Intent(LoginActivity.this, LoginActivity.class));
-                    finishAffinity();
-                });
+                startActivity(new Intent(LoginActivity.this, LoginValidationActivity.class));
             }
         });
     }
@@ -91,10 +89,14 @@ public class LoginActivity extends AppCompatActivity {
         call.enqueue(new Callback<AuthResponse>() {
             @Override
             public void onResponse(@NonNull Call<AuthResponse> call, @NonNull Response<AuthResponse> response) {
+                Log.d("LoginActivity", "response code: " + response.code() + " body: " + response.body());
+
                 if (response.isSuccessful() && response.body() != null) {
                     AuthResponse auth = response.body();
 
-                    sessionManager.saveToken(auth.getToken());
+                    if (auth.getToken() != null) {
+                        sessionManager.saveToken(auth.getToken());
+                    }
 
                     if (auth.getUser() != null) {
                         sessionManager.saveUser(auth.getUser());
@@ -115,6 +117,7 @@ public class LoginActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(@NonNull Call<AuthResponse> call, @NonNull Throwable t) {
+                Log.e("LoginActivity", "Error en login", t);
                 Toast.makeText(LoginActivity.this, "Error de conexión: " + t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
@@ -124,6 +127,6 @@ public class LoginActivity extends AppCompatActivity {
     public void onBackPressed() {
         super.onBackPressed();
         startActivity(new Intent(LoginActivity.this, MainActivity.class));
-        finishAffinity();
+        finish();
     }
 }

@@ -7,7 +7,6 @@ public class SessionManager {
 
     private static final String PREF_NAME = "SwitchStylePrefs";
     private static final String KEY_TOKEN = "auth_token";
-
     private static final String KEY_USER_ID = "user_id";
     private static final String KEY_USER_NOMBRE = "user_nombre";
     private static final String KEY_USER_CORREO = "user_correo";
@@ -21,23 +20,19 @@ public class SessionManager {
         editor = prefs.edit();
     }
 
-    /** Guardar token de autenticación */
     public void saveToken(String token) {
         editor.putString(KEY_TOKEN, token);
         editor.apply();
     }
 
-    /** Obtener token */
     public String getToken() {
         return prefs.getString(KEY_TOKEN, null);
     }
 
-    /** Verificar si hay sesión activa */
     public boolean isLoggedIn() {
         return getToken() != null;
     }
 
-    /** Cerrar sesión (remover token y usuario) */
     public void logout() {
         editor.remove(KEY_TOKEN)
                 .remove(KEY_USER_ID)
@@ -47,12 +42,10 @@ public class SessionManager {
                 .apply();
     }
 
-    /** Limpiar toda la sesión */
     public void clearSession() {
         editor.clear().apply();
     }
 
-    /** Guardar datos del usuario */
     public void saveUser(User user) {
         if (user == null) return;
         editor.putInt(KEY_USER_ID, user.getId());
@@ -62,7 +55,6 @@ public class SessionManager {
         editor.apply();
     }
 
-    /** Obtener datos del usuario */
     public User getUser() {
         if (!isLoggedIn()) return null;
         User user = new User();

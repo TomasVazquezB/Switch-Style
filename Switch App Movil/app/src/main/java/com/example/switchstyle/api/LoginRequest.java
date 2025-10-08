@@ -4,23 +4,17 @@ import com.google.gson.annotations.SerializedName;
 
 public class LoginRequest {
 
-    @SerializedName("correo") // Cambiar a "email" si tu backend espera "email"
-    private String correo;
+    @SerializedName("email")  // 👈 importante
+    private String email;
 
     @SerializedName("password")
     private String password;
 
-    public LoginRequest(String correo, String password) {
-        this.correo = correo;
+    public LoginRequest(String email, String password) {
+        this.email = email;
         this.password = password;
     }
 
-    // Getters opcionales
-    public String getCorreo() {
-        return correo;
-    }
-
-    public String getPassword() {
-        return password;
-    }
+    public String getEmail() { return email; }
+    public String getPassword() { return password; }
 }
