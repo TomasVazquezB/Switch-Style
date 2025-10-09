@@ -8,8 +8,6 @@
     android:fitsSystemWindows="true"
     tools:context=".ui.login.LoginActivity">
 
-    <!-- Barra de Navegación inferior idéntica a la del Registro -->
-
     <LinearLayout
         android:id="@+id/linearLayout4"
         android:layout_width="match_parent"
@@ -59,16 +57,6 @@
             tools:ignore="Autofill,VisualLintTextFieldSize" />
 
         <Button
-            android:id="@+id/boton_recuperar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="25dp"
-            android:background="#000000"
-            android:text="@string/olvido_su_contrase_aa"
-            android:textColor="#FFFFFF"
-            tools:ignore="VisualLintButtonSize" />
-
-        <Button
             android:id="@+id/login"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -94,7 +82,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
 
-        <!-- Home -->
         <LinearLayout
             android:id="@+id/nav_home"
             android:layout_width="0dp"
@@ -123,7 +110,6 @@
                 android:textSize="13sp" />
         </LinearLayout>
 
-        <!-- Registro -->
         <LinearLayout
             android:id="@+id/nav_register"
             android:layout_width="0dp"
@@ -152,7 +138,6 @@
                 android:textSize="13sp" />
         </LinearLayout>
 
-        <!-- Catálogo -->
         <LinearLayout
             android:id="@+id/nav_catalogs"
             android:layout_width="0dp"

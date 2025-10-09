@@ -23,7 +23,9 @@ return [
         ],
     ],
 
-  'firebase' => [
-    'credentials' => storage_path('app/firebase/firebase_credentials.json'),
+'firebase' => [
+    'enabled' => env('FIREBASE_ENABLED', false),
+    'credentials' => env('FIREBASE_CREDENTIALS', null),
 ],
+
 ];

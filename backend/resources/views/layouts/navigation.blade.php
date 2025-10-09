@@ -13,7 +13,7 @@
                 <!-- Solo admins -->
                 @if (Auth::check() && strtolower(Auth::user()->Tipo_Usuario) === 'admin')
                     <x-nav-link :href="route('admin.usuarios.index')" :active="request()->routeIs('admin.usuarios.*')">
-                        {{ __('Panel deUsuarios') }}
+                        {{ __('Panel de Usuarios') }}
                     </x-nav-link>
                 @endif
 

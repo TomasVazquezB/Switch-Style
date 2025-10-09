@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import ProductoItem from '../../components/Productoitem/ProductoItem';
-import axios from 'axios';
+import axios from '../../api/axios'; // Instancia axios apuntando a Laravel Cloud
 import './MainKids.css';
+
+const BASE_STORAGE = "https://switchstyle.laravel.cloud/storage";
 
 const MainKids = () => {
     const [productos, setProductos] = useState([]);
@@ -14,10 +16,11 @@ const MainKids = () => {
 
     const fetchProductos = async () => {
         try {
-            const res = await axios.get('http://127.0.0.1:8000/api/ropa', {params: { genero: 'Chicos' }});
+            const res = await axios.get('/ropa', { params: { genero: 'Chicos' } });
             setProductos(res.data);
             setFiltroProductos(res.data);
-        } catch (error) {console.error("Error al obtener productos:", error);
+        } catch (error) {
+            console.error("Error al obtener productos:", error);
         }
     };
 
@@ -27,18 +30,28 @@ const MainKids = () => {
 
     const toggleSubCategoria = (e) => {
         const value = e.target.value;
-        setSubCategoria((prev) => prev.includes(value) ? prev.filter((item) => item !== value) : [...prev, value]
+        setSubCategoria((prev) =>
+            prev.includes(value) ? prev.filter((item) => item !== value) : [...prev, value]
         );
     };
 
-    const toggleTallaManual = (size) => {setTallas((prev) => prev.includes(size) ? prev.filter((t) => t !== size) : [...prev, size]);};
+    const toggleTallaManual = (size) => {
+        setTallas((prev) =>
+            prev.includes(size) ? prev.filter((t) => t !== size) : [...prev, size]
+        );
+    };
+
     const applyFiltro = () => {
         let temp = [...productos];
 
-        if (subCategoria.length > 0) {temp = temp.filter((item) => subCategoria.includes(item.categoria?.nombre));
+        if (subCategoria.length > 0) {
+            temp = temp.filter((item) => subCategoria.includes(item.categoria?.nombre));
         }
 
-        if (tallas.length > 0) {temp = temp.filter((item) => item.tallas?.some((t) => tallas.includes(t.nombre)));
+        if (tallas.length > 0) {
+            temp = temp.filter((item) =>
+                item.tallas?.some((t) => tallas.includes(t.nombre))
+            );
         }
 
         temp = temp.filter((item) => item.precio >= precioMin && item.precio <= precioMax);
@@ -47,7 +60,8 @@ const MainKids = () => {
 
     const ordenar = () => {
         const ordenados = [...filtroProductos];
-        if (sortTipo === 'low-high') {ordenados.sort((a, b) => a.precio - b.precio);
+        if (sortTipo === 'low-high') {
+            ordenados.sort((a, b) => a.precio - b.precio);
         } else if (sortTipo === 'high-low') {
             ordenados.sort((a, b) => b.precio - a.precio);
         }
@@ -61,6 +75,7 @@ const MainKids = () => {
     useEffect(() => {
         ordenar();
     }, [sortTipo]);
+
     const maxPrice = productos.length > 0 ? Math.max(...productos.map((p) => p.precio || 0)) : 350;
 
     return (
@@ -79,7 +94,22 @@ const MainKids = () => {
                     <hr className="my-4" />
                     <div className="mb-4">
                         <h4 className="mb-3">TALLA</h4>
-                        <div className="flex flex-wrap gap-3 text-sm font-light text-gray-700">{["S", "M", "L", "XL"].map((size) => (<button key={size} type="button" onClick={() => toggleTallaManual(size)} className={`px-4 py-2 border rounded-full text-sm transition-colors duration-200 ${tallas.includes(size) ? 'bg-black text-white border-black hover:bg-gray-800' : 'bg-white text-black border-gray-400 hover:bg-gray-100'}`} >{size}</button>))}</div>
+                        <div className="flex flex-wrap gap-3 text-sm font-light text-gray-700">
+                            {["S", "M", "L", "XL"].map((size) => (
+                                <button
+                                    key={size}
+                                    type="button"
+                                    onClick={() => toggleTallaManual(size)}
+                                    className={`px-4 py-2 border rounded-full text-sm transition-colors duration-200 ${
+                                        tallas.includes(size)
+                                            ? 'bg-black text-white border-black hover:bg-gray-800'
+                                            : 'bg-white text-black border-gray-400 hover:bg-gray-100'
+                                    }`}
+                                >
+                                    {size}
+                                </button>
+                            ))}
+                        </div>
                     </div>
 
                     <hr className="my-4" />
@@ -87,7 +117,15 @@ const MainKids = () => {
                         <h4>PRECIO</h4>
                         <div className="range flex items-center gap-2">
                             <span>${precioMin}</span>
-                            <input type="range" min={precioMin} max={maxPrice} step="10" value={precioMax} onChange={(e) => setPrecioMax(e.target.value)} className="w-full"/>
+                            <input
+                                type="range"
+                                min={precioMin}
+                                max={maxPrice}
+                                step="10"
+                                value={precioMax}
+                                onChange={(e) => setPrecioMax(e.target.value)}
+                                className="w-full"
+                            />
                             <span>${precioMax}</span>
                         </div>
                     </div>
@@ -97,18 +135,27 @@ const MainKids = () => {
             <div className="main pl-[220px] px-8 py-6">
                 <div className="flex justify-end mb-2">
                     <select onChange={(e) => setSortTipo(e.target.value)} className="border border-gray-300 text-sm px-2 py-1 rounded">
-                          <option value="relavente">Ordenar por: Relevante</option>
-                          <option value="low-high">Ordenar por: de menor a mayor</option>
-                          <option value="high-low">Ordenar por: mayor a menor</option>
+                        <option value="relavente">Ordenar por: Relevante</option>
+                        <option value="low-high">Ordenar por: de menor a mayor</option>
+                        <option value="high-low">Ordenar por: mayor a menor</option>
                     </select>
                 </div>
 
                 <div className="product-grid grid grid-cols-3 gap-6">
                     {filtroProductos.map((item) => {
-                        const imageUrl = item.ruta_imagen?.startsWith('http') ? item.ruta_imagen : `http://127.0.0.1:8000/storage/${item.ruta_imagen}`;
+                        const imageUrl = item.ruta_imagen?.startsWith('http')
+                            ? item.ruta_imagen
+                            : `${BASE_STORAGE}/${item.ruta_imagen}`; // <-- Laravel Cloud
 
                         return (
-                            <ProductoItem key={item.id} id={item.id} img={imageUrl} nombre={item.titulo} precio={item.precio} tipo="ropa"/>
+                            <ProductoItem
+                                key={item.id}
+                                id={item.id}
+                                img={imageUrl}
+                                nombre={item.titulo}
+                                precio={item.precio}
+                                tipo="ropa"
+                            />
                         );
                     })}
                 </div>

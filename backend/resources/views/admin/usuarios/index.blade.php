@@ -1,10 +1,15 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="max-w-4xl mx-auto mt-10 p-6 bg-white rounded shadow">
-    <h1 class="text-2xl font-bold text-gray-800 mb-6">Gestión de Usuarios</h1>
+<div class="max-w-5xl mx-auto mt-10 p-6 bg-white rounded shadow">
+    <div class="flex justify-between items-center mb-6">
+        <h1 class="text-2xl font-bold text-gray-800">👥 Gestión de Usuarios</h1>
+        <a href="{{ route('admin.usuarios.create') }}"
+           class="inline-flex items-center bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 transition">
+            ➕ Nuevo Usuario
+        </a>
+    </div>
 
-    {{-- Mensaje de éxito --}}
     @if (session('success'))
         <div class="mb-4 p-4 bg-green-100 text-green-800 rounded">
             {{ session('success') }}
@@ -26,7 +31,7 @@
                     <tr>
                         <td class="px-4 py-2">{{ $usuario->Nombre }}</td>
                         <td class="px-4 py-2">{{ $usuario->Correo_Electronico }}</td>
-                        <td class="px-4 py-2 capitalize">{{ $usuario->Tipo_Usuario }}</td>
+                        <td class="px-4 py-2">{{ $usuario->Tipo_Usuario }}</td>
                         <td class="px-4 py-2 text-center">
                             <div class="flex justify-center items-center gap-2">
                                 <a href="{{ route('admin.usuarios.edit', $usuario) }}"

@@ -12,41 +12,48 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
-
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-
+import com.example.switchstyle.api.ApiService;
+import com.example.switchstyle.api.Product;
+import com.example.switchstyle.api.RetrofitClient;
+import com.example.switchstyle.api.SessionManager;
 import java.util.ArrayList;
 import java.util.List;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class CatalogoProductos extends AppCompatActivity {
-
-    private FirebaseAuth mAuth;
     private RecyclerView recyclerView;
     private PublicacionAdapter adapter;
     private List<Publicacion> publicaciones;
     private boolean isLoading = false;
+    private SessionManager session;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        mAuth = FirebaseAuth.getInstance();
-
-        if (!validarSesion()) return;
+        session = new SessionManager(this);
+        if (!session.isLoggedIn()) {
+            setContentView(R.layout.activity_login_validation);
+            findViewById(R.id.btnIrRegistro).setOnClickListener(v -> {
+                startActivity(new android.content.Intent(this, LoginActivity.class));
+                finish();
+            });
+            return;
+        }
 
         setContentView(R.layout.activity_catalogo_productos);
         setTitle("Catálogo de productos");
@@ -55,10 +62,10 @@ public class CatalogoProductos extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         publicaciones = new ArrayList<>();
-        adapter = new PublicacionAdapter(publicaciones);
+        adapter = new PublicacionAdapter(publicaciones, session);
         recyclerView.setAdapter(adapter);
 
-        cargarMasPublicaciones();
+        cargarPublicaciones();
 
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
@@ -69,26 +76,13 @@ public class CatalogoProductos extends AppCompatActivity {
                     int totalItemCount = lm.getItemCount();
                     int lastVisibleItem = lm.findLastVisibleItemPosition();
                     if (lastVisibleItem >= totalItemCount - 3) {
-                        cargarMasPublicaciones();
+                        cargarPublicaciones();
                     }
                 }
             }
         });
 
         initNavigation();
-    }
-
-    private boolean validarSesion() {
-        FirebaseUser currentUser = mAuth.getCurrentUser();
-        if (currentUser == null) {
-            setContentView(R.layout.activity_login_validation);
-            findViewById(R.id.btnIrRegistro).setOnClickListener(v -> {
-                startActivity(new android.content.Intent(this, Register.class));
-                finish();
-            });
-            return false;
-        }
-        return true;
     }
     private void initNavigation() {
         LinearLayout navHome = findViewById(R.id.nav_home);
@@ -99,62 +93,68 @@ public class CatalogoProductos extends AppCompatActivity {
         if (navCatalogs != null) navCatalogs.setOnClickListener(v -> { /* ya estamos aquí */ });
     }
     @SuppressLint("NotifyDataSetChanged")
-    private void cargarMasPublicaciones() {
+    private void cargarPublicaciones() {
         isLoading = true;
-        int startId = publicaciones.size() + 1;
-        int PAGE_SIZE = 20;
-        for (int i = 0; i < PAGE_SIZE; i++) {
-            int pubId = startId + i;
-            String categoria;
-            switch (pubId % 4) {
-                case 1:
-                    categoria = "ropa_mujer";
-                    break;
-                case 2:
-                    categoria = "ropa_hombre";
-                    break;
-                case 3:
-                    categoria = "ropa_ninos";
-                    break;
-                default:
-                    categoria = "accesorios";
+        ApiService apiService = RetrofitClient.getClient().create(ApiService.class);
+        Call<List<Product>> call = apiService.getProductos("Bearer " + session.getToken());
+
+        call.enqueue(new Callback<List<Product>>() {
+            @Override
+            public void onResponse(@NonNull Call<List<Product>> call, @NonNull Response<List<Product>> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    publicaciones.clear();
+
+                    for (Product p : response.body()) {
+                        Publicacion pub = new Publicacion(
+                                p.getId(),
+                                p.getNombre(),
+                                p.getCategoria(),
+                                p.getUrlsImagenes(),
+                                p.isMeGusta()
+                        );
+                        publicaciones.add(pub);
+                    }
+
+                    adapter.notifyDataSetChanged();
+                }
+                isLoading = false;
             }
-            int cantidadImagenes = 2 + (pubId % 4); // 2 a 5 imágenes
-            boolean meGusta = (pubId % 3 == 0);
-            publicaciones.add(new Publicacion(pubId, cantidadImagenes, meGusta, categoria));
-        }
-        adapter.notifyDataSetChanged();
-        isLoading = false;
+
+            @Override
+            public void onFailure(@NonNull Call<List<Product>> call, @NonNull Throwable t) {
+                isLoading = false;
+                Log.e("CatalogoProductos", "Error: " + t.getMessage());
+            }
+        });
     }
     public static class Publicacion {
         int id;
-        int cantidadImagenes;
-        boolean meGusta;
+        String nombre;
         String categoria;
         List<String> urlsImagenes;
-        Publicacion(int id, int cantidadImagenes, boolean meGusta, String categoria) {
+        boolean meGusta;
+
+        public Publicacion(int id, String nombre, String categoria, List<String> urlsImagenes, boolean meGusta) {
             this.id = id;
-            this.cantidadImagenes = cantidadImagenes;
-            this.meGusta = meGusta;
+            this.nombre = nombre;
             this.categoria = categoria;
-            this.urlsImagenes = generarImagenesTematicas(id, cantidadImagenes, categoria);
-        }
-        private static List<String> generarImagenesTematicas(int idPublicacion, int cantidad, String categoria) {
-            List<String> imgs = new ArrayList<>();
-            String query = "nature";
-            for (int j = 0; j < cantidad; j++) { imgs.add("https://source.unsplash.com/800x800/?" + query);}
-            return imgs;
+            this.urlsImagenes = urlsImagenes;
+            this.meGusta = meGusta;
         }
     }
     private static class PublicacionAdapter extends RecyclerView.Adapter<PublicacionAdapter.PublicacionViewHolder> {
         private final List<Publicacion> publicaciones;
-        PublicacionAdapter(List<Publicacion> publicaciones) {
+        private final SessionManager session;
+
+        PublicacionAdapter(List<Publicacion> publicaciones, SessionManager session) {
             this.publicaciones = publicaciones;
+            this.session = session;
         }
 
         @NonNull
         @Override
-        public PublicacionViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) { View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_publicacion, parent, false);
+        public PublicacionViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_publicacion, parent, false);
             return new PublicacionViewHolder(view);
         }
 
@@ -164,24 +164,42 @@ public class CatalogoProductos extends AppCompatActivity {
             ImagenAdapter imagenAdapter = new ImagenAdapter(publicacion.urlsImagenes);
             holder.viewPagerImagenes.setAdapter(imagenAdapter);
 
-            if (publicacion.cantidadImagenes > 1) {
-                holder.tvContadorImagenes.setVisibility(View.VISIBLE);
-                holder.tvContadorImagenes.setText(holder.tvContadorImagenes.getContext()
-                        .getString(R.string.contador_imagenes, 1, publicacion.cantidadImagenes));
-            } else {
-                holder.tvContadorImagenes.setVisibility(View.GONE);
-            }
+            holder.tvContadorImagenes.setVisibility(publicacion.urlsImagenes.size() > 1 ? View.VISIBLE : View.GONE);
+            holder.tvContadorImagenes.setText(holder.tvContadorImagenes.getContext().getString(R.string.contador_imagenes, 1, publicacion.urlsImagenes.size()));
 
             holder.btnMeGusta.setImageResource(publicacion.meGusta ? R.drawable.favorite_filled_24px : R.drawable.favorite_24px);
-            holder.btnMeGusta.setOnClickListener(v -> { publicacion.meGusta = !publicacion.meGusta; holder.btnMeGusta.setImageResource(publicacion.meGusta  ? R.drawable.favorite_filled_24px : R.drawable.favorite_24px);});
+            holder.btnMeGusta.setOnClickListener(v -> {
+                boolean nuevoEstado = !publicacion.meGusta;
+                publicacion.meGusta = nuevoEstado;
+                holder.btnMeGusta.setImageResource(nuevoEstado ? R.drawable.favorite_filled_24px : R.drawable.favorite_24px);
 
-            if (holder.pageChangeCallback != null) {holder.viewPagerImagenes.unregisterOnPageChangeCallback(holder.pageChangeCallback); }
+                ApiService apiService = RetrofitClient.getClient().create(ApiService.class);
+                Call<Void> call = apiService.setLike(publicacion.id, nuevoEstado, "Bearer " + session.getToken());
+
+                call.enqueue(new Callback<Void>() {
+                    @Override
+                    public void onResponse(@NonNull Call<Void> call, @NonNull Response<Void> response) {
+                        if (!response.isSuccessful()) {
+                            Log.e("setLike", "Error al cambiar estado: " + response.code());
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(@NonNull Call<Void> call, @NonNull Throwable t) {
+                        Log.e("setLike", "Fallo en la petición: " + t.getMessage());
+                    }
+                });
+            });
+
+            if (holder.pageChangeCallback != null) {
+                holder.viewPagerImagenes.unregisterOnPageChangeCallback(holder.pageChangeCallback);
+            }
 
             holder.pageChangeCallback = new ViewPager2.OnPageChangeCallback() {
                 @Override
                 public void onPageSelected(int pos) {
                     super.onPageSelected(pos);
-                    holder.tvContadorImagenes.setText(holder.tvContadorImagenes.getContext().getString(R.string.contador_imagenes, pos + 1, publicacion.cantidadImagenes));
+                    holder.tvContadorImagenes.setText(holder.tvContadorImagenes.getContext().getString(R.string.contador_imagenes, pos + 1, publicacion.urlsImagenes.size()));
                 }
             };
             holder.viewPagerImagenes.registerOnPageChangeCallback(holder.pageChangeCallback);
@@ -191,11 +209,13 @@ public class CatalogoProductos extends AppCompatActivity {
         public int getItemCount() {
             return publicaciones.size();
         }
+
         static class PublicacionViewHolder extends RecyclerView.ViewHolder {
             ViewPager2 viewPagerImagenes;
             ImageButton btnMeGusta;
             TextView tvContadorImagenes;
             ViewPager2.OnPageChangeCallback pageChangeCallback;
+
             PublicacionViewHolder(@NonNull View itemView) {
                 super(itemView);
                 viewPagerImagenes = itemView.findViewById(R.id.viewPagerImagenes);
@@ -206,11 +226,15 @@ public class CatalogoProductos extends AppCompatActivity {
     }
     private static class ImagenAdapter extends RecyclerView.Adapter<ImagenAdapter.ImagenViewHolder> {
         private final List<String> urls;
-        ImagenAdapter(List<String> urls) { this.urls = urls;}
+
+        ImagenAdapter(List<String> urls) {
+            this.urls = urls;
+        }
 
         @NonNull
         @Override
-        public ImagenViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) { View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_imagen, parent, false);
+        public ImagenViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_imagen, parent, false);
             return new ImagenViewHolder(view);
         }
 
@@ -227,7 +251,7 @@ public class CatalogoProductos extends AppCompatActivity {
                         public boolean onLoadFailed(@Nullable GlideException e, Object model, @NonNull Target<Drawable> target, boolean isFirstResource) {
                             holder.progressBar.setVisibility(View.GONE);
                             Log.e("GlideError", "Error loading image: " + (e != null ? e.getMessage() : "Unknown error"));
-                            return false; // false para que Glide maneje el error y coloque la imagen de error
+                            return false;
                         }
 
                         @Override
@@ -238,7 +262,6 @@ public class CatalogoProductos extends AppCompatActivity {
                     })
                     .into(holder.imageView);
         }
-
         @Override
         public int getItemCount() {
             return urls.size();

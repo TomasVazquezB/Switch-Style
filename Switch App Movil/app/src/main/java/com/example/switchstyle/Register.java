@@ -1,5 +1,6 @@
 package com.example.switchstyle;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -9,155 +10,126 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.switchstyle.ui.login.LoginActivity;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.FirebaseFirestore;
+import com.example.switchstyle.api.ApiService;
+import com.example.switchstyle.api.AuthResponse;
+import com.example.switchstyle.api.RegisterRequest;
+import com.example.switchstyle.api.RetrofitClient;
+import com.example.switchstyle.api.SessionManager;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class Register extends AppCompatActivity {
 
-    private EditText name, email, password;
-    private FirebaseFirestore mFirestore;
-    private FirebaseAuth mAuth;
-    private static final String TAG = "RegisterActivity";
+    private EditText etNombre, etEmail, etPassword;
+    private SessionManager session;
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-        if (mAuth == null) mAuth = FirebaseAuth.getInstance();
-        FirebaseUser currentUser = mAuth.getCurrentUser();
-
-        // ✅ Ya no redirigimos al catálogo automáticamente
-        // Si querés forzar logout aquí también, podés hacerlo:
-        if (currentUser != null) {
-            FirebaseAuth.getInstance().signOut();
-        }
-    }
-
+    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registro);
 
-        setTitle(R.string.registro_title);
-        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
+        session = new SessionManager(this);
 
-        mFirestore = FirebaseFirestore.getInstance();
-        mAuth = FirebaseAuth.getInstance();
+        // EditTexts
+        etNombre = findViewById(R.id.Nombre);
+        etEmail = findViewById(R.id.Email);
+        etPassword = findViewById(R.id.password);
 
-        name = findViewById(R.id.Nombre);
-        email = findViewById(R.id.Email);
-        password = findViewById(R.id.Contraseña);
-        Button btnRegister = findViewById(R.id.Button_registro);
+        // Buttons
+        Button btnRegister = findViewById(R.id.btnIrRegistro);
         Button btnIrLogin = findViewById(R.id.buttonIrALogin);
 
-        btnRegister.setOnClickListener(v -> {
-            String nameUser = name.getText().toString().trim();
-            String emailUser = email.getText().toString().trim();
-            String passUser = password.getText().toString().trim();
-
-            if (TextUtils.isEmpty(nameUser) || TextUtils.isEmpty(emailUser) || TextUtils.isEmpty(passUser)) {
-                Toast.makeText(this, R.string.error_campos_vacios, Toast.LENGTH_SHORT).show();
-            } else if (passUser.length() < 6) {
-                Toast.makeText(this, R.string.error_contraseña_corta, Toast.LENGTH_SHORT).show();
-            } else {
-                registerUser(nameUser, emailUser, passUser);
-            }
-        });
-
-        btnIrLogin.setOnClickListener(v -> {
-            startActivity(new Intent(Register.this, LoginActivity.class));
-            finishAffinity(); // Cierra esta y actividades anteriores
-        });
-
-        // Navegación inferior
+        // Navbar
         LinearLayout navHome = findViewById(R.id.nav_home);
         LinearLayout navRegister = findViewById(R.id.nav_register);
         LinearLayout navCatalogs = findViewById(R.id.nav_catalogs);
 
-        navHome.setOnClickListener(v -> {
-            startActivity(new Intent(Register.this, MainActivity.class));
-            finishAffinity(); // Asegura que solo quede una actividad abierta
-        });
+        // ✅ Registro
+        if (btnRegister != null) {
+            btnRegister.setOnClickListener(v -> {
+                String nameUser = etNombre.getText().toString().trim();
+                String emailUser = etEmail.getText().toString().trim();
+                String passUser = etPassword.getText().toString().trim();
 
-        navRegister.setOnClickListener(v -> {
-            startActivity(new Intent(Register.this, LoginActivity.class));
+                if (TextUtils.isEmpty(nameUser) || TextUtils.isEmpty(emailUser) || TextUtils.isEmpty(passUser)) {
+                    Toast.makeText(Register.this, "Todos los campos son obligatorios", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                registerUser(nameUser, emailUser, passUser);
+            });
+        }
+
+        // ✅ Ir a Login
+        if (btnIrLogin != null) {
+            btnIrLogin.setOnClickListener(v -> {
+                startActivity(new Intent(Register.this, LoginActivity.class));
+                finish();
+            });
+        }
+
+        // ✅ Navbar
+        if (navHome != null) navHome.setOnClickListener(v -> {
+            startActivity(new Intent(Register.this, MainActivity.class));
             finishAffinity();
         });
 
-        navCatalogs.setOnClickListener(v -> {
-            FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-            if (user != null) {
+        if (navRegister != null) navRegister.setOnClickListener(v -> {
+            // Ya estamos en Register, no hacemos nada
+        });
+
+        if (navCatalogs != null) navCatalogs.setOnClickListener(v -> {
+            if (session.isLoggedIn()) {
                 startActivity(new Intent(Register.this, CatalogoProductos.class));
                 finishAffinity();
             } else {
-                setContentView(R.layout.activity_login_validation);
-                setTitle("Acceso restringido");
-
-                Button btnIrLoginDesdeValidacion = findViewById(R.id.btnIrRegistro);
-                btnIrLoginDesdeValidacion.setOnClickListener(view -> {
-                    startActivity(new Intent(Register.this, LoginActivity.class));
-                    finishAffinity();
-                });
+                Toast.makeText(Register.this, "Acceso restringido. Logueate primero", Toast.LENGTH_SHORT).show();
             }
         });
     }
 
     private void registerUser(String nameUser, String emailUser, String passUser) {
-        mAuth.createUserWithEmailAndPassword(emailUser, passUser).addOnCompleteListener(task -> {
-            if (task.isSuccessful()) {
-                String userId = Objects.requireNonNull(mAuth.getCurrentUser()).getUid();
+        ApiService apiService = RetrofitClient.getClient().create(ApiService.class);
 
-                Map<String, Object> userMap = new HashMap<>();
-                userMap.put("id", userId);
-                userMap.put("name", nameUser);
-                userMap.put("email", emailUser);
+        RegisterRequest request = new RegisterRequest(nameUser, emailUser, passUser);
 
-                mFirestore.collection("user").document(userId).set(userMap)
-                        .addOnSuccessListener(aVoid -> {
-                            Toast.makeText(this, R.string.registro_exitoso, Toast.LENGTH_SHORT).show();
+        Call<AuthResponse> call = apiService.register(request);
+        call.enqueue(new Callback<AuthResponse>() {
+            @Override
+            public void onResponse(@NonNull Call<AuthResponse> call, @NonNull Response<AuthResponse> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    AuthResponse auth = response.body();
 
-                            // 🔐 Cerrar sesión después de registrar
-                            FirebaseAuth.getInstance().signOut();
+                    if (auth.getToken() != null) session.saveToken(auth.getToken());
+                    if (auth.getUser() != null) session.saveUser(auth.getUser());
 
-                            // 👉 Redirigir al login
-                            Intent intent = new Intent(Register.this, LoginActivity.class);
-                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                            startActivity(intent);
-                            finish();
-                        })
-                        .addOnFailureListener(e -> {
-                            Log.e(TAG, "Fallo al guardar en Firestore", e);
-                            Toast.makeText(this, getString(R.string.error_registro_generico) + ": " + e.getMessage(), Toast.LENGTH_LONG).show();
-                        });
-            } else {
-                String error = task.getException() != null ? task.getException().getMessage() : "";
-                Log.e(TAG, "Fallo al registrar: " + error);
-                if (error != null && error.contains("email address is already in use")) {
-                    Toast.makeText(this, R.string.error_email_existente, Toast.LENGTH_LONG).show();
+                    Toast.makeText(Register.this, "Registro exitoso", Toast.LENGTH_SHORT).show();
+                    startActivity(new Intent(Register.this, LoginActivity.class));
+                    finish();
                 } else {
-                    Toast.makeText(this, getString(R.string.error_registro_generico) + ": " + error, Toast.LENGTH_LONG).show();
+                    Log.e("Register", "Error response: " + response.code());
+                    Toast.makeText(Register.this, "Error en el registro", Toast.LENGTH_SHORT).show();
                 }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<AuthResponse> call, @NonNull Throwable t) {
+                Log.e("Register", "Failure: " + t.getMessage());
+                Toast.makeText(Register.this, "Fallo en la conexión: " + t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }
 
     @Override
-    public boolean onSupportNavigateUp() {
-        finish();
-        return true;
-    }
-
-    @Override
     public void onBackPressed() {
         super.onBackPressed();
-        // Cierra todas las actividades al salir
+        startActivity(new Intent(Register.this, MainActivity.class));
         finishAffinity();
     }
 }

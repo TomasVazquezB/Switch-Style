@@ -1,4 +1,5 @@
 @extends('layouts.app')
+@php use Illuminate\Support\Facades\Storage; @endphp
 
 @section('content')
 <div class="max-w-7xl mx-auto p-6">
@@ -72,7 +73,7 @@
         <table class="min-w-full bg-white border border-gray-300 rounded shadow-sm text-sm">
             <thead class="bg-gray-100 text-gray-700">
                 <tr>
-                    <th class="px-4 py-2 border">Imagen</th>
+                    <th class="px-4 py-2 border">Imagen(es)</th>
                     <th class="px-4 py-2 border">Título</th>
                     <th class="px-4 py-2 border">Precio</th>
                     <th class="px-4 py-2 border">Categoría</th>
@@ -83,23 +84,38 @@
             </thead>
             <tbody>
                 @forelse($ropas as $ropa)
-                    <tr class="border-t">
-                        <td class="px-4 py-2 border text-center">
-                            @if($ropa->ruta_imagen)
-                                <img src="{{ asset('storage/' . $ropa->ruta_imagen) }}" class="w-16 h-16 object-cover rounded shadow inline-block">
+                    <tr class="border-t align-top">
+                        {{-- TODAS las imágenes de la prenda --}}
+                        <td class="px-4 py-2 border">
+                            @if($ropa->imagenes->count())
+                                <div class="flex flex-wrap gap-2 max-w-[260px]">
+                                    @foreach($ropa->imagenes as $img)
+                                        <img src="{{ Storage::disk(config('filesystems.default'))->url($img->ruta) }}"
+                                             onerror="this.onerror=null;this.src='{{ asset('images/placeholder.png') }}';"
+                                             class="w-16 h-16 object-cover rounded shadow"
+                                             alt="{{ $ropa->titulo }}">
+                                    @endforeach
+                                </div>
                             @else
-                                <span class="text-gray-400 italic">Sin imagen</span>
+                                <img src="{{ asset('images/placeholder.png') }}"
+                                     class="w-16 h-16 object-cover rounded shadow inline-block"
+                                     alt="Sin imagen">
                             @endif
                         </td>
+
                         <td class="px-4 py-2 border">{{ $ropa->titulo }}</td>
                         <td class="px-4 py-2 border">${{ number_format($ropa->precio, 2, ',', '.') }}</td>
                         <td class="px-4 py-2 border">{{ $ropa->categoria->nombre ?? '-' }}</td>
                         <td class="px-4 py-2 border">{{ $ropa->genero->nombre ?? '-' }}</td>
+
                         <td class="px-4 py-2 border">
-                            @foreach($ropa->tallas as $t)
+                            @forelse($ropa->tallas as $t)
                                 <div>{{ $t->nombre }}: {{ $t->pivot->cantidad }}</div>
-                            @endforeach
+                            @empty
+                                <span class="text-gray-400 italic">Sin stock</span>
+                            @endforelse
                         </td>
+
                         <td class="px-4 py-2 border text-center space-x-2">
                             <a href="{{ route('ropas.edit', $ropa->id) }}"
                                class="text-blue-600 hover:underline">Editar</a>

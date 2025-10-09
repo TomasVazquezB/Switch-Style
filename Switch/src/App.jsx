@@ -7,7 +7,6 @@ import { FAQPage } from './pages/faq/faq';
 import { QuienesSomosPage } from './pages/quienessomos/quienessomos';
 import { RegistroPage } from './pages/registro/registro';
 import { LoginPage } from './pages/login/login';
-import AdminPage from './pages/admin/admin';
 import CarritoPage from './pages/carrito/carrito.jsx';
 import MainHombresPage from './pages/Hombre/MainHombres.jsx';
 import MainMujeresPage from './pages/Mujer/MainMujeres';
@@ -53,7 +52,6 @@ function App() {
               <Route path="/FAQ" element={<PageTitle title="Preguntas Frecuentes"><FAQPage /></PageTitle>} />
               <Route path="/quienessomos" element={<PageTitle title="Quiénes Somos"><QuienesSomosPage /></PageTitle>} />
               <Route path="/login" element={<PageTitle title="Login"><LoginPage /></PageTitle>} />
-              <Route path="/admin" element={<PageTitle title="Admin"><AdminPage /></PageTitle>} />
               <Route path="/registro" element={<PageTitle title="Registro"><RegistroPage /></PageTitle>} />
               <Route path="/carrito" element={<PageTitle title="Carrito"><CarritoPage /></PageTitle>} />
               <Route path="/MainHombres" element={<PageTitle title="Hombres"><MainHombresPage /></PageTitle>} />

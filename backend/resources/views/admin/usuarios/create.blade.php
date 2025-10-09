@@ -9,9 +9,9 @@
 
         <div class="mb-4">
             <label class="block text-gray-700">Nombre</label>
-            <input type="text" name="name" value="{{ old('name') }}"
-                   class="w-full px-4 py-2 border rounded @error('name') border-red-500 @enderror" required>
-            @error('name') <p class="text-red-500 text-sm">{{ $message }}</p> @enderror
+            <input type="text" name="Nombre" value="{{ old('Nombre') }}"
+                   class="w-full px-4 py-2 border rounded @error('Nombre') border-red-500 @enderror" required>
+            @error('Nombre') <p class="text-red-500 text-sm">{{ $message }}</p> @enderror
         </div>
 
         <div class="mb-4">
@@ -23,14 +23,14 @@
 
         <div class="mb-4">
             <label class="block text-gray-700">Contraseña</label>
-            <input type="password" name="password"
-                   class="w-full px-4 py-2 border rounded @error('password') border-red-500 @enderror" required>
-            @error('password') <p class="text-red-500 text-sm">{{ $message }}</p> @enderror
+            <input type="password" name="Contraseña"
+                   class="w-full px-4 py-2 border rounded @error('Contraseña') border-red-500 @enderror" required>
+            @error('Contraseña') <p class="text-red-500 text-sm">{{ $message }}</p> @enderror
         </div>
 
         <div class="mb-4">
             <label class="block text-gray-700">Confirmar Contraseña</label>
-            <input type="password" name="password_confirmation"
+            <input type="password" name="Contraseña_confirmation"
                    class="w-full px-4 py-2 border rounded" required>
         </div>
 
@@ -38,10 +38,11 @@
             <label class="block text-gray-700">Tipo de Usuario</label>
             <select name="Tipo_Usuario" class="w-full px-4 py-2 border rounded" required>
                 <option value="">Seleccione...</option>
-                <option value="admin">Admin</option>
-                <option value="free">Free</option>
-                <option value="premium">Premium</option>
+                <option value="Admin">Admin</option>
+                <option value="Free">Free</option>
+                <option value="Premium">Premium</option>
             </select>
+            @error('Tipo_Usuario') <p class="text-red-500 text-sm">{{ $message }}</p> @enderror
         </div>
 
         <div class="flex justify-between">

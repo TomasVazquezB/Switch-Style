@@ -131,7 +131,7 @@ html {
 .home-index.dark .service-box .service-item,
 .home-index.dark .service-box .service-title,
 .home-index.dark .service-box .service-description {
-    background-color: #1e1e1e;
+    background-color: #2a2a2a !important;
     color: #f0f0f0;
 }
 
@@ -724,7 +724,6 @@ html {
   animation: autoSlide 10s infinite;
 }
 
-
 @keyframes fadeIn {
   from {
     background: rgba(0, 0, 0, 0);
@@ -893,3 +892,4 @@ html {
 
   }
 } 
+
