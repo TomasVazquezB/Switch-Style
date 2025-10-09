@@ -13,5 +13,8 @@ class VerifyCsrfToken extends Middleware
      */
     protected $except = [
         'api/*', // Exime todas las rutas que empiecen con /api/
+        'api/login',
+        'api/register',
+        'api/logout',
     ];
 }
