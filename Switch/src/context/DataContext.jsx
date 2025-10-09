@@ -11,6 +11,7 @@ const DataProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  // 🔹 Inicializar CSRF para todas las llamadas
   const initCsrf = async () => {
     try {
       await csrf();
@@ -20,12 +21,13 @@ const DataProvider = ({ children }) => {
     }
   };
 
+  // 🔹 Login
   const login = async (email, password) => {
     try {
       await initCsrf();
       const response = await api.post("/login", { email, password });
-      const { user, token } = response.data;
-      guardarUsuario(user, token);
+      const { user } = response.data;
+      guardarUsuario(user); // guarda en localStorage
       setUsuario(user);
       setError(null);
       return true;
@@ -36,6 +38,7 @@ const DataProvider = ({ children }) => {
     }
   };
 
+  // 🔹 Logout
   const logout = async () => {
     try {
       await api.post("/logout");
@@ -47,30 +50,28 @@ const DataProvider = ({ children }) => {
     }
   };
 
- const fetchProductos = async () => {
-  try {
-    const response = await api.get("/ropa");
-    const productosConImagen = response.data.map((producto) => {
-      let imagenNormal = `https://switchstyle.laravel.cloud/storage/${producto.Imagen}`;
+  // 🔹 Obtener productos
+  const fetchProductos = async (darkMode = false) => {
+    try {
+      const response = await api.get("/ropa");
+      const productosConImagen = response.data.map((producto) => {
+        let imagenNormal = `https://switchstyle.laravel.cloud/storage/${producto.Imagen}`;
+        if (producto.ImagenNocturna && darkMode) {
+          imagenNormal = `https://switchstyle.laravel.cloud/storage/${producto.ImagenNocturna}`;
+        }
+        return { ...producto, imagen_url: imagenNormal };
+      });
+      setProductos(productosConImagen);
+    } catch (err) {
+      console.error("Error al obtener productos:", err);
+      setError("Error al obtener productos");
+    }
+  };
 
-      if (producto.ImagenNocturna && darkMode) {
-        imagenNormal = `https://switchstyle.laravel.cloud/storage/${producto.ImagenNocturna}`;
-      }
-
-      return {
-        ...producto,
-        imagen_url: imagenNormal,
-      };
-    });
-    setProductos(productosConImagen);
-  } catch (err) {
-    console.error("Error al obtener productos:", err);
-    setError("Error al obtener productos");
-  }
-};
-
+  // 🔹 Obtener usuarios (protegido)
   const fetchUsuarios = async () => {
     try {
+      await initCsrf(); // 🔹 Asegurarse de CSRF antes de llamar a endpoint protegido
       const response = await api.get("/usuario");
       setUsuarios(response.data);
     } catch (err) {
@@ -86,14 +87,30 @@ const DataProvider = ({ children }) => {
     const fetchData = async () => {
       setLoading(true);
       await fetchProductos();
-      await fetchUsuarios();
+      if (usuario) await fetchUsuarios(); // 🔹 Solo si hay sesión
       setLoading(false);
     };
     fetchData();
-  }, []);
+  }, [usuario]); // 🔹 Dependencia de usuario
 
   return (
-    <DataContext.Provider value={{productos,ropa,accesorios,usuarios,usuario,loading,error,login,logout,fetchProductos,fetchUsuarios,}}>{children}</DataContext.Provider>
+    <DataContext.Provider
+      value={{
+        productos,
+        ropa,
+        accesorios,
+        usuarios,
+        usuario,
+        loading,
+        error,
+        login,
+        logout,
+        fetchProductos,
+        fetchUsuarios,
+      }}
+    >
+      {children}
+    </DataContext.Provider>
   );
 };
 

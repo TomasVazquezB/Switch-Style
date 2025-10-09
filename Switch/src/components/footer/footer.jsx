@@ -1,6 +1,6 @@
 import React, { useRef, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { FaPhoneAlt, FaEnvelope, FaInstagram, FaRegSmileWink, FaQuestionCircle, FaApple, FaGooglePlay } from 'react-icons/fa';
+import {FaPhoneAlt,FaEnvelope,FaInstagram,FaRegSmileWink,FaQuestionCircle,FaApple,FaGooglePlay,} from 'react-icons/fa';
 import './footer.css';
 
 const Footer = ({ darkMode }) => {
@@ -16,15 +16,22 @@ const Footer = ({ darkMode }) => {
     e.preventDefault();
     navigate('/FAQ');
     window.scrollTo(0, 0);
-  }
+  };
 
   const handleAppDownload = () => {
     setShowModal(true);
-    const link = document.createElement("a");
-    link.href = "/Switch Style.apk";
-    link.download = "Switch Style.apk";
+
+    const fileId = '1pk-R8qao_OVm0ad5XkL_Gd74kcvmwfcF';
+    const directDownloadLink = `https://drive.google.com/uc?export=download&id=${fileId}`;
+
+    const link = document.createElement('a');
+    link.href = directDownloadLink;
+    link.download = 'SwitchStyle.apk';
+    link.style.display = 'none';
     document.body.appendChild(link);
+
     link.click();
+
     document.body.removeChild(link);
   };
 
@@ -61,7 +68,7 @@ const Footer = ({ darkMode }) => {
         <div className="social-icons">
           <div className="icons-inline">
             <a href="https://www.instagram.com/switch_style25/" target="_blank" rel="noopener noreferrer" className="social-icon">
-              <FaInstagram size={30} />
+              <FaInstagram size={30}/>
             </a>
           </div>
           <span className="social-text">Switch Style</span>
@@ -80,7 +87,9 @@ const Footer = ({ darkMode }) => {
         <div className={`modal-overlay ${darkMode ? 'dark' : 'light'}`}>
           <div className={`modal-box ${darkMode ? 'dark' : 'light'}`}>
             <h3>¡Gracias por descargar nuestra app!</h3>
-            <p>Si la descarga no se inicia automáticamente, vuelva a intentarlo</p>
+            <p>La descarga debería comenzar automáticamente. Si no se inicia,
+              por favor hacé clic nuevamente en el botón “Descargar APP”.
+            </p>
             <button className="close-modal-btn" onClick={closeModal}>Cerrar</button>
           </div>
         </div>

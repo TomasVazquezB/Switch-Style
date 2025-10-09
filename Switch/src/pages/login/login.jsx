@@ -1,14 +1,14 @@
 import React, { useState, useContext } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import api, { csrf } from "../../api/axios";
-import { DataContext } from "../../context/DataContext.jsx"; // 📌 importar contexto
+import { DataContext } from "../../context/DataContext.jsx"; 
 import "./login.css";
 
 export function LoginPage() {
   const [formData, setFormData] = useState({ identificador: "", contrasena: "" });
   const [error, setError] = useState(null);
   const navigate = useNavigate();
-  const { setUsuario } = useContext(DataContext); // 📌 setter de usuario global
+  const { setUsuario } = useContext(DataContext); 
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -22,8 +22,8 @@ export function LoginPage() {
       // 1️⃣ Obtener cookie CSRF
       await csrf();
 
-      // 2️⃣ Hacer login → /api/login obligatorio
-      const response = await api.post("/api/login", {
+      // 2️⃣ Hacer login → ruta correcta /login
+      const response = await api.post("/login", {
         email: formData.identificador,
         password: formData.contrasena,
       });
@@ -32,7 +32,7 @@ export function LoginPage() {
 
       // 3️⃣ Guardar usuario en localStorage y contexto
       localStorage.setItem("usuario", JSON.stringify(user));
-      setUsuario(user); // actualizar contexto
+      setUsuario(user); 
 
       alert(`Bienvenido ${user.Nombre || user.name || ""}`);
 
@@ -44,9 +44,10 @@ export function LoginPage() {
       }
     } catch (err) {
       console.error(err);
-      // 419 es CSRF o expiración de sesión
       if (err.response?.status === 419) {
         setError("Error de sesión. Intenta recargar la página.");
+      } else if (err.response?.status === 401) {
+        setError("Usuario o contraseña incorrectos.");
       } else {
         setError(err.response?.data?.message || "Error al iniciar sesión.");
       }

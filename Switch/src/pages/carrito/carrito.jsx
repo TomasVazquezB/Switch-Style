@@ -96,7 +96,9 @@ const Carrito = () => {
 
                         return (
                             <div key={index} className="cart-product">
+                                <br />
                                 <img src={imagen} alt={producto.titulo} />
+                                <br/>
                                 <div className="cart-product-info">
                                     <h4>{producto.titulo}</h4>
                                     <p>{moneda}{parseFloat(producto.precio).toFixed(2)}{talla}</p>
@@ -104,8 +106,10 @@ const Carrito = () => {
                                         <button onClick={() => actualizarCantidad(index, item.cantidad - 1)}>-</button>
                                         <input type="number" value={item.cantidad} min="1" onChange={(e) => actualizarCantidad(index, parseInt(e.target.value))} />
                                         <button onClick={() => actualizarCantidad(index, item.cantidad + 1)}>+</button>
+                                        <br/>
                                     </div>
                                 </div>
+                                <br />
                                 <button onClick={() => eliminarProducto(index)} className="remove-btn">Eliminar</button>
                             </div>
                         );

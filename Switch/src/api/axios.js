@@ -1,22 +1,22 @@
 // src/api/axios.js
 import axios from "axios";
-import { obtenerToken } from "./auth";
+import { obtenerToken } from "./auth"; // <- una sola vez
 
-// 🔹 Instancia principal de Axios
 const api = axios.create({
-  baseURL: "https://switchstyle.laravel.cloud/api", 
-  withCredentials: true, // necesario para cookies de Sanctum
+  baseURL: "https://switchstyle.laravel.cloud/api",
   headers: {
-    "X-Requested-With": "XMLHttpRequest", // Laravel espera esto en AJAX
     "Content-Type": "application/json",
     Accept: "application/json",
   },
+  withCredentials: true, // 🔑 clave para cookies de Sanctum
 });
 
 // 🔹 Función helper para pedir CSRF de Sanctum
 export const csrf = async () => {
   try {
-    await api.get("/sanctum/csrf-cookie"); // usa misma instancia
+    await axios.get("https://switchstyle.laravel.cloud/sanctum/csrf-cookie", {
+      withCredentials: true,
+    });
   } catch (error) {
     console.error("Error al obtener CSRF:", error);
     throw error;
@@ -29,6 +29,7 @@ api.interceptors.request.use(
     const token = obtenerToken?.();
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
+      console.log("Enviando token:", token);
     }
     return config;
   },
@@ -40,7 +41,6 @@ api.interceptors.response.use(
   (response) => response,
   (error) => {
     if (!error.response) {
-      // error de red o CORS
       console.error("Network error o CORS:", error);
     } else {
       console.error(
