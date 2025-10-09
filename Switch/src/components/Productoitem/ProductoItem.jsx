@@ -2,21 +2,13 @@ import React, { useContext } from 'react';
 import { ShopContext } from '../../context/ShopContext';
 import { Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import axios from '../../api/axios'; // Para obtener baseURL si se necesita
+import axios from '../../api/axios'; 
 
 const ProductoItem = ({ id, img, nombre, precio, tipo }) => {
     const { moneda } = useContext(ShopContext);
 
     const handleAgregarAlCarrito = () => {
-        const nuevoItem = {
-            producto_id: id,
-            titulo: nombre,
-            precio: precio,
-            ruta_imagen: img || '', // ya viene la URL completa desde el padre
-            talla: null,
-            cantidad: 1,
-            tipo
-        };
+        const nuevoItem = {producto_id: id,titulo: nombre,precio: precio, ruta_imagen: img || '', talla: null, cantidad: 1,tipo};
 
         try {
             const carritoActual = JSON.parse(localStorage.getItem("carrito")) || [];
@@ -41,14 +33,7 @@ const ProductoItem = ({ id, img, nombre, precio, tipo }) => {
     return (
         <div className="bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300">
             <Link to={`/producto/${tipo}/${id}`} onClick={() => window.scrollTo(0, 0)} className="block">
-                <div className="overflow-hidden rounded-t-lg h-[600px]">
-                    <img 
-                        src={img} 
-                        alt={nombre} 
-                        className="w-full h-full object-cover hover:scale-105 transition-transform duration-300" 
-                        onError={(e) => (e.target.style.display = 'none')}
-                    />
-                </div>
+                <div className="overflow-hidden rounded-t-lg h-[600px]"><img src={img} alt={nombre} className="w-full h-full object-cover hover:scale-105 transition-transform duration-300" onError={(e) => (e.target.style.display = 'none')}/></div>
                 <div className="p-4">
                     <p className="text-base font-medium text-gray-900 truncate">{nombre}</p>
                     <p className="text-sm text-gray-600 mt-1">{moneda}{precio}</p>
@@ -56,12 +41,7 @@ const ProductoItem = ({ id, img, nombre, precio, tipo }) => {
             </Link>
 
             <div className="p-4 pt-0">
-                <button 
-                    onClick={handleAgregarAlCarrito} 
-                    className="w-full mt-2 bg-black text-white text-sm py-2 px-4 rounded hover:bg-gray-800 transition-colors"
-                >
-                    Agregar al carrito
-                </button>
+                <button onClick={handleAgregarAlCarrito} className="w-full mt-2 bg-black text-white text-sm py-2 px-4 rounded hover:bg-gray-800 transition-colors">Agregar al carrito</button>
             </div>
         </div>
     );

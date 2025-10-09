@@ -1,12 +1,14 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import api from "../../api/axios";
+import api, { csrf } from "../../api/axios";
+import { DataContext } from "../../context/DataContext.jsx"; 
 import "./login.css";
 
 export function LoginPage() {
   const [formData, setFormData] = useState({ identificador: "", contrasena: "" });
   const [error, setError] = useState(null);
   const navigate = useNavigate();
+  const { setUsuario } = useContext(DataContext); 
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -17,10 +19,10 @@ export function LoginPage() {
     setError(null);
 
     try {
-      // Paso 1: obtener cookie CSRF
-      await api.get("/sanctum/csrf-cookie");
+      // 1️⃣ Obtener cookie CSRF
+      await csrf();
 
-      // Paso 2: login (OJO, ya tienes baseURL con /api en axios.js → NO pongas /api/login aquí)
+      // 2️⃣ Hacer login → ruta correcta /login
       const response = await api.post("/login", {
         email: formData.identificador,
         password: formData.contrasena,
@@ -28,12 +30,13 @@ export function LoginPage() {
 
       const user = response.data.user;
 
-      // Como Sanctum usa cookies, no necesitas guardar token, solo el usuario
+      // 3️⃣ Guardar usuario en localStorage y contexto
       localStorage.setItem("usuario", JSON.stringify(user));
+      setUsuario(user); 
 
-      alert(`Bienvenido ${user.nombre || user.name || ""}`);
+      alert(`Bienvenido ${user.Nombre || user.name || ""}`);
 
-      // Redirección según rol
+      // 4️⃣ Redirigir según rol
       if (user.Tipo_Usuario === "Admin") {
         window.location.href = "https://switchstyle.laravel.cloud/admin";
       } else {
@@ -41,7 +44,13 @@ export function LoginPage() {
       }
     } catch (err) {
       console.error(err);
-      setError(err.response?.data?.message || "Error al iniciar sesión.");
+      if (err.response?.status === 419) {
+        setError("Error de sesión. Intenta recargar la página.");
+      } else if (err.response?.status === 401) {
+        setError("Usuario o contraseña incorrectos.");
+      } else {
+        setError(err.response?.data?.message || "Error al iniciar sesión.");
+      }
     }
   };
 
@@ -83,8 +92,7 @@ export function LoginPage() {
               Ingresar
             </button>
             <p className="registro-link">
-              ¿Todavía no estás registrado?{" "}
-              <Link to="/registro">Regístrate aquí</Link>
+              ¿Todavía no estás registrado? <Link to="/registro">Regístrate aquí</Link>
             </p>
           </form>
         </div>

@@ -7,12 +7,14 @@ import Navbar from "react-bootstrap/Navbar";
 import { NavLink, useNavigate, Link } from "react-router-dom";
 import { FaSearch, FaShoppingCart, FaUser } from "react-icons/fa";
 import { BsMoon, BsSun } from "react-icons/bs";
+import { useLocation } from "react-router-dom";
 
 const Header = ({ toggleTheme, darkMode }) => {
   const [usuario, setUsuario] = useState(null);
   const [showProfileMenu, setShowProfileMenu] = useState(false);
   const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState("");
+  const location = useLocation();
 
   const handleClick = (e) => {
     const links = document.querySelectorAll(".nav-link");
@@ -27,6 +29,7 @@ const Header = ({ toggleTheme, darkMode }) => {
     e.preventDefault();
     if (searchQuery.trim()) {
       navigate(`/buscar?q=${encodeURIComponent(searchQuery)}`);
+      setSearchQuery(""); // 🧹 Limpia el campo después de buscar
     }
   };
 
@@ -55,6 +58,14 @@ const Header = ({ toggleTheme, darkMode }) => {
       window.removeEventListener("usuario-actualizado", actualizarUsuario);
   }, []);
 
+  useEffect(() => {
+    setSearchQuery(""); // 🧼 Limpia el input al montar el header
+  }, []);
+
+  useEffect(() => {
+    setSearchQuery(""); // 🧭 Limpia el buscador al cambiar de ruta
+  }, [location.pathname]);
+
   const goToCart = () => navigate("/carrito");
 
   useEffect(() => {
@@ -72,16 +83,14 @@ const Header = ({ toggleTheme, darkMode }) => {
   }, [darkMode]);
 
   const getLinkClass = (isActive) =>
-    `nav-link ${darkMode ? "text-white" : "text-dark"} ${
-      isActive ? "active-link" : ""
+    `nav-link ${darkMode ? "text-white" : "text-dark"} ${isActive ? "active-link" : ""
     }`;
 
   return (
     <>
       <div
-        className={`offer-bar ${
-          darkMode ? "bg-ultra-light" : "bg-ultra-dark"
-        } text-center pt-4 pb-2`}
+        className={`offer-bar ${darkMode ? "bg-ultra-light" : "bg-ultra-dark"
+          } text-center pt-4 pb-2`}
       >
         <p className="offer-bar-text">
           ¡Registrate para obtener ofertas unicas y obten un 15% en tu primer
@@ -270,9 +279,8 @@ const Header = ({ toggleTheme, darkMode }) => {
             <Nav.Link onClick={goToCart} className="carrito">
               <FaShoppingCart
                 size={21}
-                className={`navbar-icon ${
-                  darkMode ? "text-white" : "text-dark"
-                }`}
+                className={`navbar-icon ${darkMode ? "text-white" : "text-dark"
+                  }`}
               />
             </Nav.Link>
 
@@ -301,45 +309,40 @@ const Header = ({ toggleTheme, darkMode }) => {
                       </div>
                       <NavLink
                         to="/perfil"
-                        className={`block px-4 py-2 text-sm ${
-                          darkMode
-                            ? "text-white hover:bg-gray-700"
-                            : "text-gray-800 hover:bg-gray-100"
-                        }`}
+                        className={`block px-4 py-2 text-sm ${darkMode
+                          ? "text-white hover:bg-gray-700"
+                          : "text-gray-800 hover:bg-gray-100"
+                          }`}
                       >
                         Mi Perfil
                       </NavLink>
                       <NavLink
                         to="/pedidos"
-                        className={`block px-4 py-2 text-sm ${
-                          darkMode
-                            ? "text-white hover:bg-gray-700"
-                            : "text-gray-800 hover:bg-gray-100"
-                        }`}
+                        className={`block px-4 py-2 text-sm ${darkMode
+                          ? "text-white hover:bg-gray-700"
+                          : "text-gray-800 hover:bg-gray-100"
+                          }`}
                       >
                         Mis pedidos
                       </NavLink>
                       <NavLink
                         to="/favoritos"
-                        className={`block px-4 py-2 text-sm ${
-                          darkMode
-                            ? "text-white hover:bg-gray-700"
-                            : "text-gray-800 hover:bg-gray-100"
-                        }`}
+                        className={`block px-4 py-2 text-sm ${darkMode
+                          ? "text-white hover:bg-gray-700"
+                          : "text-gray-800 hover:bg-gray-100"
+                          }`}
                       >
                         Mis favoritos
                       </NavLink>
 
-                      {/* 🔗 Enlace al backend Laravel para usuarios y admins */}
                       <a
                         href="https://switchstyle.laravel.cloud/login"
                         target="_blank"
                         rel="noopener noreferrer"
-                        className={`block px-4 py-2 text-sm ${
-                          darkMode
-                            ? "text-white hover:bg-gray-700"
-                            : "text-gray-800 hover:bg-gray-100"
-                        }`}
+                        className={`block px-4 py-2 text-sm ${darkMode
+                          ? "text-white hover:bg-gray-700"
+                          : "text-gray-800 hover:bg-gray-100"
+                          }`}
                       >
                         Ir al Gestor de Productos
                       </a>

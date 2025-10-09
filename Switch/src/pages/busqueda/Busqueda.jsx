@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
-import axios from '../../api/axios'; // axios apuntando a Laravel Cloud
+import axios from '../../api/axios'; 
 import ProductoItem from '../../components/Productoitem/ProductoItem';
 
 const Busqueda = () => {
@@ -43,16 +43,7 @@ const Busqueda = () => {
                         ? item.ruta_imagen 
                         : `${axios.defaults.baseURL}/storage/${item.ruta_imagen}`;
                     return (
-                        <ProductoItem 
-                            key={item.id} 
-                            id={item.id} 
-                            img={imageUrl} 
-                            nombre={item.titulo} 
-                            precio={item.precio} 
-                            tipo="ropa" 
-                            esFavorito={favoritos.includes(item.id)} 
-                            onToggleFavorito={() => toggleFavorito(item.id)} 
-                        />
+                        <ProductoItem key={item.id} id={item.id} img={imageUrl} nombre={item.titulo} precio={item.precio} tipo="ropa" esFavorito={favoritos.includes(item.id)} onToggleFavorito={() => toggleFavorito(item.id)} />
                     );
                 })}
             </div>

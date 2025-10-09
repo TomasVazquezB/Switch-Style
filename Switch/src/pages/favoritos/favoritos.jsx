@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import axios from '../../api/axios'; // axios apuntando a Laravel Cloud
+import axios from '../../api/axios'; 
 import './favoritos.css';
 
 const Favoritos = () => {

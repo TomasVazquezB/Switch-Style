@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import ProductoItem from '../../components/Productoitem/ProductoItem';
-import axios from '../../api/axios'; // axios apuntando a Laravel Cloud
+import axios from '../../api/axios'; 
 import './MainHombres.css';
 
-const MainHombres = () => {
+const MainHombres = ({ darkMode }) => {
   const [productos, setProductos] = useState([]);
   const [filtroProductos, setFiltroProductos] = useState([]);
   const [subCategoria, setSubCategoria] = useState([]);
@@ -33,8 +33,23 @@ const MainHombres = () => {
   const fetchProductos = async () => {
     try {
       const res = await axios.get('/ropa', { params: { genero: 'Hombre' } });
-      setProductos(res.data);
-      setFiltroProductos(res.data);
+
+      const productosConRuta = res.data.map(prod => {
+        let imagenPrincipal = prod.ruta_imagen || 'placeholder.png';
+
+        if (!imagenPrincipal.startsWith('http')) {
+          imagenPrincipal = `${axios.defaults.baseURL}/storage/${imagenPrincipal}`;
+        }
+
+        if (darkMode && prod.imagen_nocturna) {
+          imagenPrincipal = `${axios.defaults.baseURL}/storage/${prod.imagen_nocturna}`;
+        }
+
+        return { ...prod, ruta_imagen: imagenPrincipal };
+      });
+
+      setProductos(productosConRuta);
+      setFiltroProductos(productosConRuta);
     } catch (error) {
       console.error("Error al obtener productos:", error);
     }
@@ -42,7 +57,7 @@ const MainHombres = () => {
 
   useEffect(() => {
     fetchProductos();
-  }, []);
+  }, [darkMode]); 
 
   const toggleSubCategoria = (e) => {
     const value = e.target.value;
@@ -78,7 +93,7 @@ const MainHombres = () => {
     setFiltroProductos(ordenados);
   };
 
-  useEffect(() => { applyFiltro(); }, [subCategoria, tallas, precioMax]);
+  useEffect(() => { applyFiltro(); }, [subCategoria, tallas, precioMax, productos]);
   useEffect(() => { ordenar(); }, [sortTipo]);
 
   const maxPrice = productos.length > 0 ? Math.max(...productos.map((p) => p.precio || 0)) : 350;
@@ -131,21 +146,18 @@ const MainHombres = () => {
         </div>
 
         <div className="product-grid">
-          {filtroProductos.map(item => {
-            const imageUrl = item.ruta_imagen?.startsWith('http') ? item.ruta_imagen : `${axios.defaults.baseURL}/storage/${item.ruta_imagen}`;
-            return (
-              <ProductoItem
-                key={item.id}
-                id={item.id}
-                img={imageUrl}
-                nombre={item.titulo}
-                precio={item.precio}
-                tipo="ropa"
-                esFavorito={favoritos.includes(item.id)}
-                onToggleFavorito={() => toggleFavorito(item.id)}
-              />
-            );
-          })}
+          {filtroProductos.map(item => (
+            <ProductoItem
+              key={item.id}
+              id={item.id}
+              img={item.ruta_imagen}
+              nombre={item.titulo}
+              precio={item.precio}
+              tipo="ropa"
+              esFavorito={favoritos.includes(item.id)}
+              onToggleFavorito={() => toggleFavorito(item.id)}
+            />
+          ))}
         </div>
       </div>
     </div>
