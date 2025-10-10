@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import axios from '../../api/axios';
 import ProductoItem from '../../components/Productoitem/ProductoItem';
-import './Busqueda.css';
+import './busqueda.css';
 
 const Busqueda = () => {
   const location = useLocation();
