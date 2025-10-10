@@ -6,7 +6,7 @@ import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import { DataContext } from '../../context/DataContext';
 import ErrorBoundary from '../../components/Error/ErrorBoundary';
 import { useNavigate } from 'react-router-dom';
-import axios from '../../api/axios'; // Axios apuntando a Laravel Cloud
+import axios from '../../api/axios'; 
 
 import banner1 from '../../assets/banner1.jpg';
 import banner2 from '../../assets/banner2.jpg';

@@ -14,7 +14,6 @@ import MainKidsPage from './pages/Kids/MainKids.jsx';
 import MainAccesorios from './pages/Accesorios/MainAccesorios.jsx';
 import Productos from './pages/Productos/Productos.jsx';
 import Favoritos from './pages/favoritos/favoritos.jsx';
-import PerfilUsuario from './pages/Perfil/PerfilUsuario.jsx';
 import ErrorBoundary from './components/Error/ErrorBoundary';
 import Busqueda from './pages/busqueda/Busqueda.jsx';
 import { ToastContainer } from 'react-toastify';
@@ -60,7 +59,6 @@ function App() {
               <Route path="/accesorios" element={<PageTitle title="Accesorios"><MainAccesorios /></PageTitle>} />
               <Route path="/producto/:tipo/:productoId" element={<Productos />} />
               <Route path="/favoritos" element={<PageTitle title="Favoritos"><Favoritos /></PageTitle>} />
-              <Route path="/perfil" element={<PageTitle title="Perfil"><PerfilUsuario /></PageTitle>} />
             </Routes>
           </ErrorBoundary>
         </main>

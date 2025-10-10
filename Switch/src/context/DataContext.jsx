@@ -91,7 +91,10 @@ const DataProvider = ({ children }) => {
       setLoading(false);
     };
     fetchData();
-  }, [usuario]); // 🔹 Dependencia de usuario
+  }, [usuario]); 
+
+ const [darkMode, setDarkMode] = useState(false); // ⚡ estado para modo oscuro
+
 
   return (
     <DataContext.Provider
@@ -103,10 +106,12 @@ const DataProvider = ({ children }) => {
         usuario,
         loading,
         error,
+        darkMode,       // ✅
         login,
         logout,
         fetchProductos,
         fetchUsuarios,
+        setDarkMode,    // ✅
       }}
     >
       {children}
