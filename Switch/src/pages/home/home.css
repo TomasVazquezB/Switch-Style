@@ -36,10 +36,7 @@ html {
   color: #f0f0f0;
 }
 
-.home-index.light .service-title,
-.home-index.light .service-description {
-  color: #121212;
-}
+
 
 .home-index.dark {
   background-color: #121212;
@@ -110,7 +107,7 @@ html {
 .home-index.light .service-description,
 .home-index.light .service-title,
 .home-index.light .download-text {
-  color: black;
+  color: rgb(255, 255, 255);
 }
 
 .home-index.light .download-row {

@@ -185,7 +185,6 @@ body.dark-mode .carousel-wrapper .control-arrow:hover {
   color: #ffffff !important;
 }
 .light-mode .footer .download-button {
-  background-color: #e6e6e6 !important;
   color: #000000 !important;
 }
 
@@ -542,4 +541,67 @@ body.dark-mode .profile-menu button:hover {
     margin-left: 0 !important;
     padding-left: 1rem !important;
   }
+}
+
+/* ====== FIX: Offer bar + Footer (mantener fondo gris y texto blanco) ====== */
+
+/* Offer bar (header superior) */
+.offer-bar {
+  background-color: #2b2b2b !important;
+  color: #ffffff !important;
+}
+.offer-bar .offer-bar-text {
+  color: #ffffff !important;
+}
+
+/* Footer: fondo gris y texto blanco (no negro) */
+.footer {
+  background-color: #2b2b2b !important;
+  color: #ffffff !important;
+}
+
+/* Forzar herencia blanca para elementos internos del footer */
+.footer a,
+.footer p,
+.footer span,
+.footer li,
+.footer svg,
+.footer .social-text {
+  color: #ffffff !important;
+  fill: #ffffff !important;
+  text-decoration: none !important;
+}
+
+/* Asegurar que los toggles .dark-mode / .light-mode no sobrescriban estas zonas */
+body.dark-mode .offer-bar,
+body.light-mode .offer-bar,
+body.dark-mode .footer,
+body.light-mode .footer {
+  background-color: #2b2b2b !important;
+  color: #ffffff !important;
+}
+
+/* --- No incluir selectors globales como `body.dark-mode, body.light-mode` solos --- */
+/* Eso rompe muchas zonas porque afecta al <body> completo. */
+
+/* 🔧 Forzar color blanco en offer-bar y footer */
+body.light-mode .offer-bar,
+body.light-mode .offer-bar *,
+body.dark-mode .offer-bar,
+body.dark-mode .offer-bar *,
+body.light-mode .footer,
+body.light-mode .footer *,
+body.dark-mode .footer,
+body.dark-mode .footer * {
+  color: #ffffff !important;
+  fill: #ffffff !important;
+}
+
+
+
+/* Asegura que no cambie con el modo */
+body.dark-mode .service-box,
+body.light-mode .service-box {
+  background-color: #2b2b2b !important;
+  color: #ffffff !important;
 }
