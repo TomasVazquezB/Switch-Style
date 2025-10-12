@@ -142,13 +142,13 @@ const Productos = () => {
                 </div>
 
                 {/* Imagen principal */}
-                <div style={{ backgroundColor: '#f9f9f9', padding: '1rem', borderRadius: '0.75rem' }}><img src={img} alt="Producto" className="main-image"/></div>
+                <div style={{ backgroundColor: '#ffffffff', padding: '1rem', borderRadius: '0.75rem' }}><img src={img} alt="Producto" className="main-image"/></div>
 
                 {/* Información */}
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
                     <div>
                         <h2 style={{ fontSize: '2rem', fontWeight: 'bold' }}>{productoData.titulo}</h2>
-                        <p style={{ fontSize: '1.5rem', fontWeight: 'bold', color: '#000000ff', marginTop: '1rem' }}>${Number(productoData.precio).toFixed(2)}</p>
+                        <p style={{ fontSize: '1.5rem', fontWeight: 'bold', marginTop: '1rem' }}>${Number(productoData.precio).toFixed(2)}</p>
                         <button onClick={toggleFavorito} style={{marginTop: '0.5rem',background: 'none',border: 'none',cursor: 'pointer',fontSize: '1.2rem',color: favoritos.includes(productoData.id) ? 'red' : '#888'}}>{favoritos.includes(productoData.id) ? '❤️ Quitar de favoritos' : '🤍 Agregar a favoritos'}</button>
                         {tipo.includes('accesorio') && (
                             <p style={{ fontSize: '1rem', marginTop: '0.5rem', color: sinStock ? 'red' : '#555' }}>{sinStock ? 'Sin stock disponible' : `Stock disponible: ${stockDisponible}`}</p>

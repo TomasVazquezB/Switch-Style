@@ -106,7 +106,7 @@
 
 .tab-button.active {
     border-color: #000;
-    color: #000;
+
 }
 
 .review-card {
@@ -152,4 +152,98 @@
     .talla-btn {
         padding: 0.4rem 1rem;
     }
+}
+
+/* === FIX de contraste específico para Productos.jsx === */
+
+/* ----------- MODO OSCURO ----------- */
+body.dark-mode .content {
+  color: #f5f5f5;
+}
+
+/* Precio */
+body.dark-mode p[style*="color: #000000"] {
+  color: #ffffff !important;
+}
+
+/* "Tallas disponibles" */
+body.dark-mode p[style*="font-weight: 500"] {
+  color: #ffffff !important;
+}
+
+/* Descripción */
+body.dark-mode p[style*="color: #444"] {
+  color: #dddddd !important;
+}
+
+/* Referencia de imagen del producto */
+body.dark-mode .thumbnail {
+  color: #ffffff !important;
+  background-color: #1a1a1a !important;
+  border: 1px solid #333 !important;
+}
+
+/* Texto dentro del botón de tallas */
+body.dark-mode .talla-btn {
+  color: #000000 !important;
+  background-color: #ffffff !important;
+  border: 1px solid #888;
+}
+body.dark-mode .talla-btn.active {
+  background-color: #222 !important;
+  color: #ffffff !important;
+  border-color: #fff;
+}
+
+/* ----------- MODO CLARO ----------- */
+body.light-mode .content {
+  color: #000000;
+}
+
+/* Precio (blanco sobre blanco → negro visible) */
+body.light-mode p[style*="color: #ffffff"] {
+  color: #000000 !important;
+}
+
+/* "Tallas disponibles" */
+body.light-mode p[style*="font-weight: 500"] {
+  color: #000000 !important;
+}
+
+/* Descripción */
+body.light-mode p[style*="color: #444"] {
+  color: #111111 !important;
+}
+
+/* Referencia de imagen del producto */
+body.light-mode .thumbnail {
+  color: #000000 !important;
+  background-color: #ffffff !important;
+  border: 1px solid #ccc !important;
+}
+
+/* Texto dentro del botón de tallas */
+body.light-mode .talla-btn {
+  color: #ffffff !important;
+  background-color: #000000 !important;
+  border: 1px solid #888;
+}
+body.light-mode .talla-btn.active {
+  background-color: #f0f0f0 !important;
+  color: #000000 !important;
+  border-color: #000;
+}
+
+body.dark-mode .main-image {
+  color: #000000; /* modo oscuro */
+}
+
+/* Texto del label "Cantidad" */
+label.text-gray-700 {
+  color: #222 !important; /* Modo claro */
+}
+
+/* En modo oscuro */
+body.dark-mode label.text-gray-700 {
+  color: #f0f0f0 !important;
 }
