@@ -168,3 +168,17 @@
 .dark-mode .favoritos-page-remove:hover {
   color: #ef4444;
 }
+
+/* === Corregir texto de mensaje vacío en Favoritos === */
+
+/* Modo oscuro */
+body.dark-mode .favoritos-page p,
+body.dark-mode .text-gray-600 {
+  color: #ffffff !important;
+}
+
+/* Modo claro */
+body.light-mode .favoritos-page p,
+body.light-mode .text-gray-600 {
+  color: #000000 !important;
+}
