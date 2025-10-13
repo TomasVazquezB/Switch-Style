@@ -1,50 +1,64 @@
 // src/api/axios.js
 import axios from "axios";
-import { obtenerToken } from "./auth"; // <- una sola vez
+import { obtenerToken } from "./auth";
 
+// ✅ Instancia global de Axios
 const api = axios.create({
-  baseURL: "https://switchstyle.laravel.cloud/api",
+  // ⚙️ Usamos el proxy configurado en vite.config.js
+  baseURL: "/api",
   headers: {
     "Content-Type": "application/json",
     Accept: "application/json",
   },
-  withCredentials: true, // 🔑 clave para cookies de Sanctum
+  withCredentials: true, // 🔑 Envía cookies (XSRF-TOKEN, sesión, etc.)
 });
 
-// 🔹 Función helper para pedir CSRF de Sanctum
+// ✅ Helper: obtener cookie por nombre
+function getCookie(name) {
+  const match = document.cookie.match(new RegExp("(^| )" + name + "=([^;]+)"));
+  return match ? decodeURIComponent(match[2]) : null;
+}
+
+// ✅ Helper: obtener cookie CSRF de Sanctum
 export const csrf = async () => {
   try {
     await axios.get("https://switchstyle.laravel.cloud/sanctum/csrf-cookie", {
       withCredentials: true,
     });
+    console.log("✅ CSRF cookie obtenida correctamente");
   } catch (error) {
-    console.error("Error al obtener CSRF:", error);
+    console.error("❌ Error al obtener CSRF cookie:", error);
     throw error;
   }
 };
 
-// 🔹 Interceptor de request para agregar token JWT si existe
+// ✅ Interceptor para agregar automáticamente CSRF y JWT
 api.interceptors.request.use(
   (config) => {
+    const xsrfToken = getCookie("XSRF-TOKEN");
+    if (xsrfToken) {
+      config.headers["X-XSRF-TOKEN"] = xsrfToken;
+    }
+
     const token = obtenerToken?.();
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
-      console.log("Enviando token:", token);
     }
+
     return config;
   },
   (error) => Promise.reject(error)
 );
 
-// 🔹 Interceptor de response para manejo global de errores
+// ✅ Interceptor de respuesta con logs claros
 api.interceptors.response.use(
   (response) => response,
   (error) => {
     if (!error.response) {
-      console.error("Network error o CORS:", error);
+      console.error("❌ Error de red o CORS:", error);
     } else {
       console.error(
-        `HTTP ${error.response.status}:`,
+        `⚠️ HTTP ${error.response.status}:`,
         error.response.data || error.message
       );
     }

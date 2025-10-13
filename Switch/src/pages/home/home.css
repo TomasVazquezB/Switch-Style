@@ -36,8 +36,6 @@ html {
   color: #f0f0f0;
 }
 
-
-
 .home-index.dark {
   background-color: #121212;
   color: white;
@@ -351,7 +349,6 @@ html {
   display: flex;
   flex-direction: column;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
-  cursor: pointer;
   opacity: 0;
   transform: translateY(20px);
   animation: fadeInUp 0.6s ease forwards;
