@@ -36,11 +36,6 @@ html {
   color: #f0f0f0;
 }
 
-.home-index.light .service-title,
-.home-index.light .service-description {
-  color: #121212;
-}
-
 .home-index.dark {
   background-color: #121212;
   color: white;
@@ -110,7 +105,7 @@ html {
 .home-index.light .service-description,
 .home-index.light .service-title,
 .home-index.light .download-text {
-  color: black;
+  color: rgb(255, 255, 255);
 }
 
 .home-index.light .download-row {
@@ -354,7 +349,6 @@ html {
   display: flex;
   flex-direction: column;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
-  cursor: pointer;
   opacity: 0;
   transform: translateY(20px);
   animation: fadeInUp 0.6s ease forwards;

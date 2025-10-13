@@ -231,3 +231,90 @@ body.dark-mode .order-summary {
 body.dark-mode .summary-line span {
   color: #ffffff;
 }
+
+/* --- ESPACIADO ENTRE PRODUCTOS --- */
+.cart-items {
+  display: flex;
+  flex-direction: column;
+  gap: 25px; /* espacio entre productos */
+  padding: 20px;
+}
+
+.cart-product {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  background-color: var(--color-fondo-producto, #f8f8f8);
+  border-radius: 12px;
+  padding: 15px 20px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Evita que se amontonen cuando hay muchos productos */
+.cart-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 40px;
+  justify-content: space-between;
+}
+
+/* --- Ajuste visual de botones y texto --- */
+.cart-product-info {
+  margin-top: 10px;
+}
+
+.cart-qty-controls {
+  margin-top: 10px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.remove-btn {
+  margin-top: 10px;
+  background-color: #000;
+  color: #fff;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.remove-btn:hover {
+  background-color: #333;
+}
+
+/* Corrige visibilidad de texto y controles en modo oscuro */
+body.dark-mode .cart-product,
+body.dark-mode .cart-product * {
+  color: #000 !important; /* texto negro visible sobre fondo blanco */
+  fill: #000 !important; /* íconos o SVG */
+}
+
+/* Mantiene color correcto de botones en oscuro */
+body.dark-mode .cart-product .remove-btn,
+body.dark-mode .cart-product button {
+  background-color: #000 !important;
+  color: #fff !important;
+}
+
+/* Ajuste extra: cantidad y control de número */
+body.dark-mode .cart-qty-controls input {
+  background-color: #fff !important;
+  color: #000 !important;
+  
+}
+
+/* Ajuste visual para los botones + y - */
+body.dark-mode .cart-qty-controls button {
+  background-color: transparent !important; /* sin fondo negro */
+  color: #000 !important; /* símbolo visible */
+  
+}
+
+/* Si querés un estilo más sutil (sin borde) */
+body.dark-mode .cart-qty-controls button:hover {
+  color: #333 !important; /* leve cambio al pasar el mouse */
+  border-color: #333 !important;
+}

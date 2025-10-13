@@ -284,75 +284,44 @@ const Header = ({ toggleTheme, darkMode }) => {
               />
             </Nav.Link>
 
-            <Nav.Link
-              as={Link}
-              to="/login"
-              onClick={handleClick}
-              className="login-buttom"
-            >
-              <FaUser size={20} style={{ marginRight: "8px" }} />
-            </Nav.Link>
-
             <Nav className="ms-auto">
-              {usuario ? (
-                <div className="profile-container">
-                  <img
-                    src={usuario.foto || "/default-avatar.png"}
-                    alt="Perfil"
-                    className="w-8 h-8 rounded-full cursor-pointer"
-                    onClick={handleProfileClick}
-                  />
-                  {showProfileMenu && (
-                    <div className="profile-menu">
-                      <div className="px-4 py-2 border-b border-gray-200 text-sm font-medium">
-                        Hola, {usuario.nombre}
-                      </div>
-                      <NavLink
-                        to="/perfil"
-                        className={`block px-4 py-2 text-sm ${darkMode
-                          ? "text-white hover:bg-gray-700"
-                          : "text-gray-800 hover:bg-gray-100"
-                          }`}
-                      >
-                        Mi Perfil
-                      </NavLink>
-                      <NavLink
-                        to="/pedidos"
-                        className={`block px-4 py-2 text-sm ${darkMode
-                          ? "text-white hover:bg-gray-700"
-                          : "text-gray-800 hover:bg-gray-100"
-                          }`}
-                      >
-                        Mis pedidos
-                      </NavLink>
-                      <NavLink
-                        to="/favoritos"
-                        className={`block px-4 py-2 text-sm ${darkMode
-                          ? "text-white hover:bg-gray-700"
-                          : "text-gray-800 hover:bg-gray-100"
-                          }`}
-                      >
-                        Mis favoritos
-                      </NavLink>
+  <div className="profile-container">
+    <Nav.Link
+      as="div"
+      onClick={usuario ? handleProfileClick : () => navigate("/login")}
+      className="login-buttom"
+      style={{ cursor: "pointer" }}
+    >
+      <FaUser size={20} />
+    </Nav.Link>
 
-                      <a
-                        href="https://switchstyle.laravel.cloud/login"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className={`block px-4 py-2 text-sm ${darkMode
-                          ? "text-white hover:bg-gray-700"
-                          : "text-gray-800 hover:bg-gray-100"
-                          }`}
-                      >
-                        Ir al Gestor de Productos
-                      </a>
-
-                      <button onClick={handleLogout}>Cerrar sesión</button>
-                    </div>
-                  )}
-                </div>
-              ) : null}
-            </Nav>
+    {usuario && showProfileMenu && (
+      <div className="profile-menu">
+           <div className="px-4 py-2 border-b border-gray-200 text-sm font-medium">
+          Hola, {usuario.nombre}
+        </div>
+        <NavLink
+          to="/favoritos"
+          className={`block px-4 py-2 text-sm ${darkMode ? "text-white hover:bg-gray-700" : "text-gray-800 hover:bg-gray-100"}`}
+        >
+          Mis favoritos
+        </NavLink>
+        <a
+        href="https://switchstyle.laravel.cloud/login"
+        className={`block px-4 py-2 text-sm ${darkMode ? "text-white hover:bg-gray-700" : "text-gray-800 hover:bg-gray-100"}`}
+> 
+  Ir al Gestor de Productos
+</a>
+        <button
+          onClick={handleLogout}
+          className="block px-4 py-2 text-sm w-full text-left"
+        >
+          Cerrar sesión
+        </button>
+      </div>
+    )}
+  </div>
+</Nav>
           </Navbar.Collapse>
         </Container>
       </Navbar>
