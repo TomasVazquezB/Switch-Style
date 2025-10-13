@@ -57,7 +57,7 @@ function App() {
               <Route path="/MainMujeres" element={<PageTitle title="Mujeres"><MainMujeresPage /></PageTitle>} />
               <Route path="/MainKids" element={<PageTitle title="Chicos"><MainKidsPage /></PageTitle>} />
               <Route path="/accesorios" element={<PageTitle title="Accesorios"><MainAccesorios /></PageTitle>} />
-              <Route path="/producto/:tipo/:productoId" element={<Productos />} />
+              <Route path="/producto/:tipo/:productoId" element={<Productos darkMode={darkMode} />} />
               <Route path="/favoritos" element={<PageTitle title="Favoritos"><Favoritos /></PageTitle>} />
             </Routes>
           </ErrorBoundary>

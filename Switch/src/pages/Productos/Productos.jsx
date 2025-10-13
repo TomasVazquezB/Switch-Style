@@ -8,7 +8,7 @@ import './Productos.css';
 const BASE_API = "https://switchstyle.laravel.cloud/api";
 const BASE_STORAGE = "https://switchstyle.laravel.cloud/storage";
 
-const Productos = () => {
+const Productos = ({ darkMode }) => {
     const { tipo, productoId } = useParams();
     const navigate = useNavigate();
     const [productoData, setProductoData] = useState(null);
@@ -117,11 +117,11 @@ const Productos = () => {
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ items: [producto] })
         })
-        .then(res => res.json())
-        .then(data => {
-            setPreferenceId(data.preferenceId);
-            setMostrarPagos(true);
-        });
+            .then(res => res.json())
+            .then(data => {
+                setPreferenceId(data.preferenceId);
+                setMostrarPagos(true);
+            });
     };
 
     if (!productoData) return <div className="content">Cargando producto...</div>;
@@ -129,111 +129,114 @@ const Productos = () => {
     const sinStock = stockDisponible === 0;
 
     return (
-        <div className="content">
-            <div style={{maxWidth: '1200px',margin: '0 auto',display: 'grid',gridTemplateColumns: '120px auto 1.2fr',columnGap: '1rem',alignItems: 'start'}}>
-                {/* Miniaturas */}
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
-                    {productoData.imagenes.map((imgItem, index) => {
-                        const ruta = `${BASE_STORAGE}/${imgItem.ruta}`;
-                        return (
-                        <img key={index} src={ruta} alt={`Miniatura ${index + 1}`} onClick={() => setImg(ruta)} className={`thumbnail ${img === ruta ? 'active' : ''}`}/>
-                        );
-                    })}
-                </div>
-
-                {/* Imagen principal */}
-                <div style={{ backgroundColor: '#ffffffff', padding: '1rem', borderRadius: '0.75rem' }}><img src={img} alt="Producto" className="main-image"/></div>
-
-                {/* Información */}
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
-                    <div>
-                        <h2 style={{ fontSize: '2rem', fontWeight: 'bold' }}>{productoData.titulo}</h2>
-                        <p style={{ fontSize: '1.5rem', fontWeight: 'bold', marginTop: '1rem' }}>${Number(productoData.precio).toFixed(2)}</p>
-                        <button onClick={toggleFavorito} style={{marginTop: '0.5rem',background: 'none',border: 'none',cursor: 'pointer',fontSize: '1.2rem',color: favoritos.includes(productoData.id) ? 'red' : '#888'}}>{favoritos.includes(productoData.id) ? '❤️ Quitar de favoritos' : '🤍 Agregar a favoritos'}</button>
-                        {tipo.includes('accesorio') && (
-                            <p style={{ fontSize: '1rem', marginTop: '0.5rem', color: sinStock ? 'red' : '#555' }}>{sinStock ? 'Sin stock disponible' : `Stock disponible: ${stockDisponible}`}</p>
-                        )}
+        <div className={`content ${darkMode ? 'dark' : ''}`}>
+            <div className="content">
+                <div style={{ maxWidth: '1200px', margin: '0 auto', display: 'grid', gridTemplateColumns: '120px auto 1.2fr', columnGap: '1rem', alignItems: 'start' }}>
+                    {/* Miniaturas */}
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+                        {productoData.imagenes.map((imgItem, index) => {
+                            const ruta = `${BASE_STORAGE}/${imgItem.ruta}`;
+                            return (
+                                <img key={index} src={ruta} alt={`Miniatura ${index + 1}`} onClick={() => setImg(ruta)} className={`thumbnail ${img === ruta ? 'active' : ''}`} />
+                            );
+                        })}
                     </div>
 
-                    {/* Selección de talla */}
-                    {tipo.includes('ropa') && productoData.tallas?.length > 0 && (
+                    {/* Imagen principal */}
+                    <div style={{ backgroundColor: '#ffffffff', padding: '1rem', borderRadius: '0.75rem' }}><img src={img} alt="Producto" className="main-image" /></div>
+
+                    {/* Información */}
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
                         <div>
-                            <p style={{ fontWeight: 500, marginBottom: '0.5rem' }}>Tallas disponibles:</p>
-                            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
-                                {productoData.tallas.map((t, index) => (
-                                    <button key={index} onClick={() => handleSeleccionTalla(t.nombre)} className={`talla-btn ${talla === t.nombre ? 'active' : ''}`}>{t.nombre}</button>
-                                ))}
-                            </div>
-                            {talla && (
-                                <div className="mt-4">
-                                    <label className="block text-sm font-medium text-gray-700 mb-1">Cantidad (Stock disponible: {stockDisponible})</label>
-                                    <input type="number" min="1" max={stockDisponible} value={cantidad} onChange={(e) => setCantidad(parseInt(e.target.value))} className="border px-3 py-1 w-24 rounded"/>
-                                </div>
+                            <h2 style={{ fontSize: '2rem', fontWeight: 'bold' }}>{productoData.titulo}</h2>
+                            <p style={{ fontSize: '1.5rem', fontWeight: 'bold', marginTop: '1rem' }}>${Number(productoData.precio).toFixed(2)}</p>
+                            <button onClick={toggleFavorito} style={{ marginTop: '0.5rem', background: 'none', border: 'none', cursor: 'pointer', fontSize: '1.2rem', color: favoritos.includes(productoData.id) ? 'red' : '#888' }}>{favoritos.includes(productoData.id) ? '❤️ Quitar de favoritos' : '🤍 Agregar a favoritos'}</button>
+                            {tipo.includes('accesorio') && (
+                                <p style={{ fontSize: '1rem', marginTop: '0.5rem', color: sinStock ? 'red' : '#555' }}>{sinStock ? 'Sin stock disponible' : `Stock disponible: ${stockDisponible}`}</p>
                             )}
                         </div>
-                    )}
 
-                    {/* Cantidad accesorios */}
-                    {tipo.includes('accesorio') && !sinStock && (
-                        <div className="mt-4">
-                            <label className="block text-sm font-medium text-gray-700 mb-1">Cantidad</label>
-                            <input type="number" min="1" max={stockDisponible} value={cantidad} onChange={(e) => setCantidad(parseInt(e.target.value))} className="border px-3 py-1 w-24 rounded"/>
-                        </div>
-                    )}
-
-                    {/* Botones */}
-                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1rem' }}>
-                        <button className="button carrito" onClick={handleAgregarAlCarrito} disabled={sinStock} style={sinStock ? { backgroundColor: '#ccc', cursor: 'not-allowed' } : {}}>Agregar al carrito</button>
-                        <button className="button comprar" onClick={generarPreferencia} disabled={sinStock} style={sinStock ? { backgroundColor: '#ccc', cursor: 'not-allowed' } : {}}>Comprar ahora</button>
-                    </div>
-
-                    {/* PayPal */}
-                    {mostrarPagos && (
-                        <div style={{ marginTop: '2rem' }}>
-                            <PayPalButtons
-                                style={{ layout: "horizontal" }}
-                                createOrder={(data, actions) => actions.order.create({ purchase_units: [{ amount: { value: productoData.precio.toFixed(2) } }] })}
-                                onApprove={(data, actions) => actions.order.capture().then(details => {
-                                    toast.success(`Pago aprobado por ${details.payer.name.given_name}`);
-                                    navigate("/carrito");
-                                })}
-                            />
-                        </div>
-                    )}
-                </div>
-            </div>
-
-            {/* Tabs descripción / reviews */}
-            <div style={{marginTop: '4rem', maxWidth: '1000px', marginLeft: 'auto', marginRight: 'auto'}}>
-                <div style={{display: 'flex', gap: '1rem',borderBottom: '1px solid #ddd', marginBottom: '1rem'}}>
-                    <button onClick={() => setActiveTab('descripcion')} className={`tab-button ${activeTab === 'descripcion' ? 'active' : ''}`}>Descripción</button>
-                    <button onClick={() => setActiveTab('reviews')} className={`tab-button ${activeTab === 'reviews' ? 'active' : ''}`}>Reviews({reviews.length})</button>
-                </div>
-
-                {activeTab === 'descripcion' ? (
-                    <p style={{ color: '#444', fontSize: '0.95rem' }}>{productoData.descripcion}</p>
-                ) : (
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-                        <select value={sortReviews} onChange={(e) => setSortReviews(e.target.value)}
-                            style={{padding: '0.5rem', fontSize: '0.875rem', borderRadius: '0.375rem', border: '1px solid #ccc', width: 'fit-content'}}>    
-                            <option value="recientes">Más recientes</option>
-                            <option value="mejor">Mejor puntuados</option>
-                            <option value="peor">Peor puntuados</option>
-                        </select>
-
-                        {reviews.map(review => (
-                            <div key={review.id} className="review-card">
-                                <div style={{display: 'flex',justifyContent: 'space-between', fontSize: '0.875rem'}}>
-                                    <span className="review-author">{review.autor}</span>
-                                    <span className="review-date">{review.fecha}</span>
+                        {/* Selección de talla */}
+                        {tipo.includes('ropa') && productoData.tallas?.length > 0 && (
+                            <div>
+                                <p style={{ fontWeight: 500, marginBottom: '0.5rem' }}>Tallas disponibles:</p>
+                                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
+                                    {productoData.tallas.map((t, index) => (
+                                        <button key={index} onClick={() => handleSeleccionTalla(t.nombre)} className={`talla-btn ${talla === t.nombre ? 'active' : ''}`}>{t.nombre}</button>
+                                    ))}
                                 </div>
-                                <p className="review-text">{review.comentario}</p>
-                                <p className="review-stars">⭐ {review.puntuacion}/5</p>
+                                {talla && (
+                                    <div className="mt-4">
+                                        <label className="block text-sm font-medium text-gray-700 mb-1">Cantidad (Stock disponible: {stockDisponible})</label>
+                                        <input type="number" min="1" max={stockDisponible} value={cantidad} onChange={(e) => setCantidad(parseInt(e.target.value))} className="border px-3 py-1 w-24 rounded" />
+                                    </div>
+                                )}
                             </div>
-                        ))}
+                        )}
+
+                        {/* Cantidad accesorios */}
+                        {tipo.includes('accesorio') && !sinStock && (
+                            <div className="mt-4">
+                                <label className="block text-sm font-medium text-gray-700 mb-1">Cantidad</label>
+                                <input type="number" min="1" max={stockDisponible} value={cantidad} onChange={(e) => setCantidad(parseInt(e.target.value))} className="border px-3 py-1 w-24 rounded" />
+                            </div>
+                        )}
+
+                        {/* Botones */}
+                        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1rem' }}>
+                            <button className="button carrito" onClick={handleAgregarAlCarrito} disabled={sinStock} style={sinStock ? { backgroundColor: '#ccc', cursor: 'not-allowed' } : {}}>Agregar al carrito</button>
+                            <button className="button comprar" onClick={generarPreferencia} disabled={sinStock} style={sinStock ? { backgroundColor: '#ccc', cursor: 'not-allowed' } : {}}>Comprar ahora</button>
+                        </div>
+
+                        {/* PayPal */}
+                        {mostrarPagos && (
+                            <div style={{ marginTop: '2rem' }}>
+                                <PayPalButtons
+                                    style={{ layout: "horizontal" }}
+                                    createOrder={(data, actions) => actions.order.create({ purchase_units: [{ amount: { value: productoData.precio.toFixed(2) } }] })}
+                                    onApprove={(data, actions) => actions.order.capture().then(details => {
+                                        toast.success(`Pago aprobado por ${details.payer.name.given_name}`);
+                                        navigate("/carrito");
+                                    })}
+                                />
+                            </div>
+                        )}
                     </div>
-                )}
+                </div>
+
+                {/* Tabs descripción / reviews */}
+                <div style={{ marginTop: '4rem', maxWidth: '1000px', marginLeft: 'auto', marginRight: 'auto' }}>
+                    <div style={{ display: 'flex', gap: '1rem', borderBottom: '1px solid #ddd', marginBottom: '1rem' }}>
+                        <button onClick={() => setActiveTab('descripcion')} className={`tab-button ${activeTab === 'descripcion' ? 'active' : ''}`}>Descripción</button>
+                        <button onClick={() => setActiveTab('reviews')} className={`tab-button ${activeTab === 'reviews' ? 'active' : ''}`}>Reviews({reviews.length})</button>
+                    </div>
+
+                    {activeTab === 'descripcion' ? (
+                        <p style={{ color: '#444', fontSize: '0.95rem' }}>{productoData.descripcion}</p>
+                    ) : (
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                            <select value={sortReviews} onChange={(e) => setSortReviews(e.target.value)}
+                                style={{ padding: '0.5rem', fontSize: '0.875rem', borderRadius: '0.375rem', border: '1px solid #ccc', width: 'fit-content' }}>
+                                <option value="recientes">Más recientes</option>
+                                <option value="mejor">Mejor puntuados</option>
+                                <option value="peor">Peor puntuados</option>
+                            </select>
+
+                            {reviews.map(review => (
+                                <div key={review.id} className="review-card">
+                                    <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.875rem' }}>
+                                        <span className="review-author">{review.autor}</span>
+                                        <span className="review-date">{review.fecha}</span>
+                                    </div>
+                                    <p className="review-text">{review.comentario}</p>
+                                    <p className="review-stars">⭐ {review.puntuacion}/5</p>
+                                </div>
+                            ))}
+                        </div>
+                    )}
+                </div>
             </div>
+
         </div>
     );
 };
