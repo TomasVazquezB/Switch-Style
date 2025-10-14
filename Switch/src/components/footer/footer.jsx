@@ -22,7 +22,7 @@ const Footer = ({ darkMode }) => {
     setShowModal(true);
 
     const fileId = '1pk-R8qao_OVm0ad5XkL_Gd74kcvmwfcF';
-    const directDownloadLink = `https://drive.google.com/uc?export=download&id=${fileId}`;
+    /* const directDownloadLink = `https://drive.google.com/uc?export=download&id=${fileId}`; */
 
     const link = document.createElement('a');
     link.href = directDownloadLink;

@@ -581,6 +581,7 @@ body.light-mode .footer {
   color: #ffffff !important;
 }
 
+
 /* --- No incluir selectors globales como `body.dark-mode, body.light-mode` solos --- */
 /* Eso rompe muchas zonas porque afecta al <body> completo. */
 
@@ -604,4 +605,82 @@ body.dark-mode .service-box,
 body.light-mode .service-box {
   background-color: #2b2b2b !important;
   color: #ffffff !important;
+}
+
+
+/* === FIX modal + close button (colores contrastados) ===
+   Pegar al final de overrides.css
+*/
+
+/* Asegura que funcionen aunque el proyecto use distintas convenciones de nombre para la clase dark */
+body.dark-mode .modal-box,
+.dark .modal-box {
+  background-color: #1b1b1b !important; /* gris oscuro sólido */
+  color: #f7f7f7 !important;            /* texto claro */
+}
+
+/* Light mode (por si no está definido explícitamente en otros archivos) */
+body.light-mode .modal-box,
+.light .modal-box {
+  background-color: #ffffff !important;
+  color: #111 !important;
+}
+
+/* Base del botón dentro del modal (más específico) */
+.modal-box .close-modal-btn {
+  border-radius: 50px;
+  padding: 10px 22px;
+  font-weight: 700;
+  font-size: 0.95rem;
+  transition: transform 0.14s ease, background-color 0.14s ease, color 0.14s ease;
+  border: 1px solid transparent;
+  cursor: pointer;
+  display: inline-block;
+  text-align: center;
+  /* Asegura que el botón quede por encima de sombras/overlays */
+  z-index: 1200;
+}
+
+/* Modo oscuro: botón con contraste (fondo oscuro translúcido + texto blanco) */
+body.dark-mode .modal-box .close-modal-btn,
+.dark .modal-box .close-modal-btn {
+  background: rgba(255,255,255,0.06) !important; /* leve placa clara para distinguir del fondo */
+  color: #ffffff !important;
+  border: 1px solid rgba(255,255,255,0.12) !important;
+  box-shadow: 0 6px 18px rgba(255,255,255,0.03) inset, 0 4px 10px rgba(0,0,0,0.6);
+}
+
+/* Hover dark */
+body.dark-mode .modal-box .close-modal-btn:hover,
+.dark .modal-box .close-modal-btn:hover {
+  background: rgba(255,255,255,0.12) !important;
+  transform: translateY(-2px);
+}
+
+body.light-mode .footer .modal-box,
+body.light-mode .footer .modal-box *,
+body.dark-mode .footer .modal-box,
+body.dark-mode .footer .modal-box * {
+  color: inherit !important;
+  fill: inherit !important;
+}
+
+body.light-mode .footer .modal-box {
+  background-color: #f9f9f9 !important;
+  color: #222 !important;
+}
+
+body.dark-mode .footer .modal-box {
+  background-color: #333 !important;
+  color: #fff !important;
+}
+
+body.light-mode .footer .close-modal-btn {
+  background-color: #222 !important;
+  color: #fff !important;
+}
+
+body.dark-mode .footer .close-modal-btn {
+  background-color: #fff !important;
+  color: #222 !important;
 }
