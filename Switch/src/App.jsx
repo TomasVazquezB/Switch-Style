@@ -16,7 +16,7 @@ import Productos from './pages/Productos/Productos.jsx';
 import Favoritos from './pages/favoritos/favoritos.jsx';
 import ErrorBoundary from './components/Error/ErrorBoundary';
 import Busqueda from './pages/busqueda/Busqueda.jsx';
-import { MisPedidos } from "./pages/mispedidos/MisPedidos.jsx";
+import { MisPedidos } from "./pages/mispedidos/mispedidos.jsx";
 import { ToastContainer } from 'react-toastify';
 import { PayPalScriptProvider } from "@paypal/react-paypal-js";
 import 'react-toastify/dist/ReactToastify.css';
