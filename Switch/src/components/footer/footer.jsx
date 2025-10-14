@@ -76,8 +76,8 @@ const Footer = ({ darkMode }) => {
 
         <div className="download-row">
           <button onClick={handleAppDownload} className="download-button">
-            <FaApple size={24} className="store-icon" />
-            <FaGooglePlay size={24} className="store-icon" />
+            <FaApple size={22} className="store-icon" />
+            <FaGooglePlay size={22} className="store-icon" />
             <span className="download-text">Descargar APP</span>
           </button>
         </div>
