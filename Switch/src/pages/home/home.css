@@ -517,7 +517,7 @@ html {
   text-align: center;
   font-size: 2.2rem;
   margin-bottom: 13px;
-  margin-top: 7px;
+  margin-top: -6px;
   font-weight: bold;
   letter-spacing: 0.5px;
   color: var(--text-color, #000000);
@@ -886,4 +886,8 @@ html {
 
   }
 } 
+
+.dark .card-home:hover {
+  box-shadow: 0 12px 25px rgba(255, 255, 255, 0.322);
+}
 

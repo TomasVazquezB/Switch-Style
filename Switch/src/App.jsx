@@ -16,6 +16,7 @@ import Productos from './pages/Productos/Productos.jsx';
 import Favoritos from './pages/favoritos/favoritos.jsx';
 import ErrorBoundary from './components/Error/ErrorBoundary';
 import Busqueda from './pages/busqueda/Busqueda.jsx';
+import { MisPedidos } from "./pages/mispedidos/MisPedidos.jsx";
 import { ToastContainer } from 'react-toastify';
 import { PayPalScriptProvider } from "@paypal/react-paypal-js";
 import 'react-toastify/dist/ReactToastify.css';
@@ -57,8 +58,9 @@ function App() {
               <Route path="/MainMujeres" element={<PageTitle title="Mujeres"><MainMujeresPage /></PageTitle>} />
               <Route path="/MainKids" element={<PageTitle title="Chicos"><MainKidsPage /></PageTitle>} />
               <Route path="/accesorios" element={<PageTitle title="Accesorios"><MainAccesorios /></PageTitle>} />
-              <Route path="/producto/:tipo/:productoId" element={<Productos />} />
+              <Route path="/producto/:tipo/:productoId" element={<Productos darkMode={darkMode} />} />
               <Route path="/favoritos" element={<PageTitle title="Favoritos"><Favoritos /></PageTitle>} />
+              <Route path="/mispedidos" element={<MisPedidos />} />
             </Routes>
           </ErrorBoundary>
         </main>

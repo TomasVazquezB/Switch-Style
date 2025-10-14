@@ -144,7 +144,7 @@ footer nav {
   font-size: 1.3rem;
   margin-left: 3px;
   font-weight: 600;
-  margin-right: -193px;
+  margin-right: -238px;
 }
 
 .contact-info {
@@ -221,33 +221,61 @@ footer nav {
 .download-row {
   margin-top: -50px;
   text-align: left;
+  bottom: 8px; /* 👈 margen desde el borde inferior */
+  right: 8px;  /* 👈 margen desde el borde derecho */
+  z-index: 100;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   gap: 0px;
-  margin-right: -20px;
 }
 
 .download-icons {
   display: flex;
   flex-direction: row;   
   align-items: center;
-  gap: 15px;             
-  margin-left: 175px;
+  gap: 10px; /* un poco menos de separación */
+  margin-left: 0px; /* 👈 más cerca del borde izquierdo */
+  margin-bottom: 0px;
 }
 
 .download-button {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 7px; 
-  padding: 11px 14px;
+  gap: 6px;
+  margin-left: 30px;
+  padding: 9px 17px;
   border-radius: 25px;
   font-size: 0.95rem;
-  font-weight: bold;
+  font-weight: 600;
   cursor: pointer;
-  border: none;
-  transition: background 0.3s ease, color 0.3s ease;
+  background-color: #2e2e2e; /* un gris un poco más claro que el fondo */
+  border: 1.5px solid #fff; /* borde blanco para destacar */
+  color: #fff;
+  transition: all 0.3s ease;
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.05);
+}
+
+.download-button:hover {
+  background-color: #3a3a3a; /* un poco más claro al hover */
+  transform: translateY(-2px);
+  box-shadow: 0 0 15px rgba(255, 255, 255, 0.15);
+}
+
+.download-text {
+  font-size: 0.85rem;
+  font-weight: bold;
+  letter-spacing: 0.5px;
+}
+
+.store-icon {
+  color: #fff;
+  transition: color 0.3s;
+}
+
+.download-button:hover .store-icon {
+  color: #00ff90; /* un verde tipo “switchstyle” como acento visual */
 }
 
 .light-mode .download-button {
@@ -266,11 +294,6 @@ footer nav {
 
 .dark-mode .download-button:hover {
   background-color: #c2c2c2;
-}
-
-.download-text {
-  font-size: 0.95rem;
-  font-weight: bold;
 }
 
 .light-mode .download-text {
