@@ -3,6 +3,10 @@
     {
       "source": "/api/(.*)",
       "destination": "https://switchstyle.laravel.cloud/api/$1"
+    },
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
     }
   ]
 }
