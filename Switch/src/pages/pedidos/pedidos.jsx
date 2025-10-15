@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useContext } from "react";
 import api from "../../api/axios.js";
 import { DataContext } from "../../context/DataContext.jsx";
-import "./MisPedidos.css";
+import "./pedidos.css";
 
 export function MisPedidos() {
   const [pedidos, setPedidos] = useState([]);
