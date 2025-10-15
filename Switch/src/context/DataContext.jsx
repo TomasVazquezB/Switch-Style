@@ -11,12 +11,12 @@ const DataProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // 🔹 Inicializar CSRF para todas las llamadas
+  // 🔹 Inicializar CSRF
   const initCsrf = async () => {
     try {
       await csrf();
     } catch (err) {
-      console.error("Error al obtener CSRF:", err);
+      console.error("❌ Error al obtener CSRF:", err);
       setError("No se pudo inicializar CSRF");
     }
   };
@@ -27,12 +27,12 @@ const DataProvider = ({ children }) => {
       await initCsrf();
       const response = await api.post("/login", { email, password });
       const { user } = response.data;
-      guardarUsuario(user); // guarda en localStorage
+      guardarUsuario(user);
       setUsuario(user);
       setError(null);
       return true;
     } catch (err) {
-      console.error("Error en login:", err);
+      console.error("❌ Error en login:", err);
       setError("Credenciales inválidas o error de conexión");
       return false;
     }
@@ -43,58 +43,62 @@ const DataProvider = ({ children }) => {
     try {
       await api.post("/logout");
     } catch (err) {
-      console.error("Error en logout:", err);
+      console.error("❌ Error en logout:", err);
     } finally {
       cerrarSesion();
       setUsuario(null);
     }
   };
 
-  // 🔹 Obtener productos
-  const fetchProductos = async (darkMode = false) => {
+  // 🔹 Obtener productos (una sola versión)
+  const fetchProductos = async () => {
     try {
       const response = await api.get("/ropa");
-      const productosConImagen = response.data.map((producto) => {
-        let imagenNormal = `https://switchstyle.laravel.cloud/storage/${producto.Imagen}`;
-        if (producto.ImagenNocturna && darkMode) {
-          imagenNormal = `https://switchstyle.laravel.cloud/storage/${producto.ImagenNocturna}`;
-        }
-        return { ...producto, imagen_url: imagenNormal };
-      });
+      if (!Array.isArray(response.data)) {
+        console.warn("⚠️ Respuesta inesperada de /ropa:", response.data);
+        setProductos([]);
+        return;
+      }
+
+      const productosConImagen = response.data.map((producto) => ({
+        ...producto,
+        imagen_url: `https://switchstyle.laravel.cloud/storage/${producto.Imagen}`,
+        titulo: producto.Titulo || producto.titulo || "",
+        tipo: producto.Tipo || producto.tipo || "",
+        descripcion: producto.Descripcion || producto.descripcion || "",
+      }));
+
       setProductos(productosConImagen);
     } catch (err) {
-      console.error("Error al obtener productos:", err);
+      console.error("❌ Error al obtener productos:", err);
       setError("Error al obtener productos");
     }
   };
 
-  // 🔹 Obtener usuarios (protegido)
+  // 🔹 Obtener usuarios (solo si hay sesión)
   const fetchUsuarios = async () => {
     try {
-      await initCsrf(); // 🔹 Asegurarse de CSRF antes de llamar a endpoint protegido
+      await initCsrf();
       const response = await api.get("/usuario");
       setUsuarios(response.data);
     } catch (err) {
-      console.error("Error al obtener usuarios:", err);
+      console.error("❌ Error al obtener usuarios:", err);
       setError("Error al obtener usuarios");
     }
   };
 
-  const ropa = productos.filter((p) => p.Tipo === "Ropa");
-  const accesorios = productos.filter((p) => p.Tipo === "Accesorios");
+  const ropa = productos.filter((p) => p.tipo === "Ropa" || p.Tipo === "Ropa");
+  const accesorios = productos.filter((p) => p.tipo === "Accesorios" || p.Tipo === "Accesorios");
 
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
       await fetchProductos();
-      if (usuario) await fetchUsuarios(); // 🔹 Solo si hay sesión
+      if (usuario) await fetchUsuarios();
       setLoading(false);
     };
     fetchData();
-  }, [usuario]); 
-
- const [darkMode, setDarkMode] = useState(false); // ⚡ estado para modo oscuro
-
+  }, [usuario]);
 
   return (
     <DataContext.Provider
@@ -106,12 +110,10 @@ const DataProvider = ({ children }) => {
         usuario,
         loading,
         error,
-        darkMode,       // ✅
         login,
         logout,
         fetchProductos,
         fetchUsuarios,
-        setDarkMode,    // ✅
       }}
     >
       {children}

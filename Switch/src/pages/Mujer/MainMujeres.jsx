@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import ProductoItem from '../../components/Productoitem/ProductoItem';
-import axios from '../../api/axios'; // tu axios.js ya debe tener baseURL a Laravel Cloud
+import axios from '../../api/axios'; 
 import './MainMujeres.css';
 
 const BASE_STORAGE = "https://switchstyle.laravel.cloud/storage";
@@ -136,7 +136,7 @@ const MainMujeres = () => {
                     {filtroProductos.map((item) => {
                         const imageUrl = item.ruta_imagen?.startsWith('http')
                             ? item.ruta_imagen
-                            : `${BASE_STORAGE}/${item.ruta_imagen}`; // <-- cambio a Laravel Cloud
+                            : `${BASE_STORAGE}/${item.ruta_imagen}`; 
 
                         return (
                             <ProductoItem

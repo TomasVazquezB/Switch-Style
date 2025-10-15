@@ -302,7 +302,7 @@ const Header = ({ toggleTheme, darkMode }) => {
         </div>
 
          <NavLink
-          to="/MisPedidos"
+          to="/pedidos"
           className={`block px-4 py-2 text-sm ${darkMode ? "text-white hover:bg-gray-700" : "text-gray-800 hover:bg-gray-100"}`}
         >
           Mis pedidos

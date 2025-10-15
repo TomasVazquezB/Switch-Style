@@ -22,8 +22,8 @@ const Footer = ({ darkMode }) => {
     setShowModal(true);
 
     const fileId = '1pk-R8qao_OVm0ad5XkL_Gd74kcvmwfcF';
-    const directDownloadLink = `https://drive.google.com/uc?export=download&id=${fileId}`;
-
+    const directDownloadLink = `https://drive.google.com/uc?export=download&id=${fileId}`; 
+    
     const link = document.createElement('a');
     link.href = directDownloadLink;
     link.download = 'SwitchStyle.apk';
@@ -88,7 +88,7 @@ const Footer = ({ darkMode }) => {
           <div className={`modal-box ${darkMode ? 'dark' : 'light'}`}>
             <h3>¡Gracias por descargar nuestra app!</h3>
             <p>La descarga debería comenzar automáticamente. Si no se inicia,
-              por favor hacé clic nuevamente en el botón “Descargar APP”.
+              por favor hacé clic nuevamente en el botón “Descargar APP”
             </p>
             <button className="close-modal-btn" onClick={closeModal}>Cerrar</button>
           </div>

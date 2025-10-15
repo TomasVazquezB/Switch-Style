@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useContext } from "react";
 import api from "../../api/axios.js";
 import { DataContext } from "../../context/DataContext.jsx";
-import "./mispedidos.css";
+import "./pedidos.css";
 
 export function MisPedidos() {
   const [pedidos, setPedidos] = useState([]);
@@ -26,12 +26,15 @@ export function MisPedidos() {
     fetchPedidos();
   }, []);
 
-  if (loading) return <div className="pedidos-loading">Cargando tus pedidos...</div>;
+  if (loading)
+    return <div className="pedidos-loading">Cargando tus pedidos...</div>;
 
   if (error)
-    return <div className="pedidos-error">
-      <p>{error}</p>
-    </div>;
+    return (
+      <div className="pedidos-error">
+        <p>{error}</p>
+      </div>
+    );
 
   return (
     <div className="mis-pedidos-container">
@@ -63,3 +66,5 @@ export function MisPedidos() {
     </div>
   );
 }
+
+export default MisPedidos; 
