@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import ProductoItem from '../../components/Productoitem/ProductoItem';
-import axios from '../../api/axios'; // Instancia axios apuntando a Laravel Cloud
+import axios from '../../api/axios'; 
 import './MainKids.css';
 
 const BASE_STORAGE = "https://switchstyle.laravel.cloud/storage";
@@ -145,7 +145,7 @@ const MainKids = () => {
                     {filtroProductos.map((item) => {
                         const imageUrl = item.ruta_imagen?.startsWith('http')
                             ? item.ruta_imagen
-                            : `${BASE_STORAGE}/${item.ruta_imagen}`; // <-- Laravel Cloud
+                            : `${BASE_STORAGE}/${item.ruta_imagen}`; 
 
                         return (
                             <ProductoItem

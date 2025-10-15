@@ -6,7 +6,7 @@ import { toast } from 'react-toastify';
 
 const ProductoItem = ({ id, img, nombre, precio, tipo }) => {
   const { moneda } = useContext(ShopContext);
-  const { darkMode } = useContext(DataContext); // ⚡ obtenemos el estado global
+  const { darkMode } = useContext(DataContext); 
 
   const handleAgregarAlCarrito = () => {
     const nuevoItem = {

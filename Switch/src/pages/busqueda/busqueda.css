@@ -1,9 +1,8 @@
 /* ================================
    BUSQUEDA PAGE - ESTILOS COMPLETOS
    ================================ */
-
 .busqueda-page {
-  padding: 2rem 1rem;
+  padding: 3rem 2rem;
   max-width: 1200px;
   margin: 0 auto;
   font-family: 'Inter', sans-serif;
@@ -13,130 +12,112 @@
 /* --- MODO CLARO Y OSCURO --- */
 .light-mode .busqueda-page {
   background-color: #ffffff;
-  color: #000000; /* texto negro */
+  color: #000000; /* texto principal */
 }
 
 .dark-mode .busqueda-page {
   background-color: #121212;
-  color: #ffffff; /* texto blanco */
-}
-
-/* Para asegurar color también en mensajes */
-.busqueda-page-message,
-.busqueda-page-title,
-.busqueda-page-grid {
-  color: inherit; /* hereda color de modo actual */
+  color: #ffffff; /* texto principal */
 }
 
 /* --- TÍTULO PRINCIPAL --- */
 .busqueda-page-title {
-  font-size: 2rem;
+  font-size: 2.25rem;
   font-weight: 700;
-  margin-bottom: 1.5rem;
+  margin-bottom: 2rem;
   text-align: left;
+  letter-spacing: 0.5px;
+  color: inherit;
 }
 
-.light-mode .busqueda-page-title {
-  color: #111827;
-}
-
-.dark-mode .busqueda-page-title {
-  color: #ffffff;
-}
-
-/* --- MENSAJES (CARGANDO, ERROR, VACÍO) --- */
+/* --- MENSAJES --- */
 .busqueda-page-message {
   font-size: 1rem;
   margin-top: 1rem;
   text-align: center;
+  color: inherit;
 }
-
-.busqueda-page-message.loading {
-  color: #6b7280; /* gris medio */
-}
-
-.busqueda-page-message.error {
-  color: #dc2626; /* rojo error */
-}
-
-.busqueda-page-message.empty {
-  color: #9ca3af; /* gris claro */
-}
+.busqueda-page-message.loading { color: #6b7280; }
+.busqueda-page-message.error { color: #dc2626; }
+.busqueda-page-message.empty { color: #9ca3af; }
 
 /* --- GRID DE PRODUCTOS --- */
 .busqueda-page-grid {
   display: grid;
-  gap: 1.5rem;
-  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-  margin-top: 1rem;
+  gap: 2rem;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  margin-top: 2rem;
+  padding: 0 1rem;
 }
 
 /* --- TARJETA DE PRODUCTO --- */
 .busqueda-page-card {
-  border-radius: 1rem;
+  border-radius: 1.2rem;
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  transition: transform 0.35s ease, box-shadow 0.35s ease;
+  border: 1px solid transparent;
+  cursor: pointer;
+  padding: 0;
 }
 
-/* Modo claro */
+/* Fondo visible para cards según modo */
 .light-mode .busqueda-page-card {
-  background: #ffffff;
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.05);
+  background-color: #ffffff; /* blanco para modo claro */
+  color: #000000; /* textos negros en modo claro */
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
 }
 
-/* Modo oscuro */
 .dark-mode .busqueda-page-card {
-  background: #1e1e1e;
-  box-shadow: 0 4px 14px rgba(255, 255, 255, 0.05);
+  background-color: #1e1e1e; /* fondo oscuro */
+  color: #ffffff; /* textos blancos en modo oscuro */
+  box-shadow: 0 6px 20px rgba(255, 255, 255, 0.05);
 }
 
 /* Hover efecto */
 .busqueda-page-card:hover {
-  transform: translateY(-5px) scale(1.02);
+  transform: translateY(-8px) scale(1.03);
+  box-shadow: 0 12px 28px rgba(0,0,0,0.25);
 }
 
 /* --- IMAGEN DEL PRODUCTO --- */
 .busqueda-page-card img {
   width: 100%;
-  height: 230px;
+  height: 250px;
   object-fit: cover;
   border-bottom: 1px solid #e5e7eb;
+  transition: transform 0.3s ease;
+}
+.busqueda-page-card img:hover {
+  transform: scale(1.05);
 }
 
 /* --- INFO DEL PRODUCTO --- */
 .busqueda-page-info {
-  padding: 1rem;
+  padding: 1.2rem;
   display: flex;
   flex-direction: column;
-  gap: 0.25rem;
+  gap: 0.5rem;
   text-decoration: none;
+  color: inherit; /* asegura que tome negro en claro y blanco en oscuro */
 }
 
 /* --- TÍTULO Y PRECIO --- */
 .busqueda-page-title-producto,
 .busqueda-page-precio-producto {
-  text-decoration: none;
-  color: inherit;
+  text-decoration: none !important;
+  color: inherit; /* negro en claro, blanco en oscuro */
 }
 
 .busqueda-page-title-producto {
-  font-size: 1rem;
+  font-size: 1.1rem;
   font-weight: 600;
 }
 
 .busqueda-page-precio-producto {
-  font-size: 0.95rem;
+  font-size: 1rem;
   font-weight: 500;
-}
-
-.light-mode .busqueda-page-precio-producto {
-  color: #000000;
-}
-
-.dark-mode .busqueda-page-precio-producto {
-  color: #ffffff;
 }
 
 /* --- BOTÓN FAVORITO --- */
@@ -150,22 +131,23 @@
   transition: color 0.2s, transform 0.2s;
 }
 
-.light-mode .busqueda-page-favorito {
-  color: #dc2626;
-}
-
-.dark-mode .busqueda-page-favorito {
-  color: #f87171;
-}
+.light-mode .busqueda-page-favorito { color: #dc2626; }
+.dark-mode .busqueda-page-favorito { color: #f87171; }
 
 .busqueda-page-favorito:hover {
-  transform: scale(1.08);
+  transform: scale(1.1);
 }
+.light-mode .busqueda-page-favorito:hover { color: #b91c1c; }
+.dark-mode .busqueda-page-favorito:hover { color: #ef4444; }
 
-.light-mode .busqueda-page-favorito:hover {
-  color: #b91c1c;
+/* --- QUITAR SUBRAYADO DE TEXTOS Y PRECIOS --- */
+.busqueda-page a,
+.busqueda-page .busqueda-page-title-producto,
+.busqueda-page .busqueda-page-precio-producto {
+  text-decoration: none !important;
 }
-
-.dark-mode .busqueda-page-favorito:hover {
-  color: #ef4444;
+.busqueda-page a:hover,
+.busqueda-page .busqueda-page-title-producto:hover,
+.busqueda-page .busqueda-page-precio-producto:hover {
+  text-decoration: none !important;
 }

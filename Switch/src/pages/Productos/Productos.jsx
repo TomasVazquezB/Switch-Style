@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import axios from "../../api/axios"; // Tu axios ya tiene baseURL configurado
+import axios from "../../api/axios"; 
 import { toast } from "react-toastify";
 import { PayPalButtons } from "@paypal/react-paypal-js";
 import './Productos.css';
@@ -132,7 +132,6 @@ const Productos = ({ darkMode }) => {
         <div className={`content ${darkMode ? 'dark' : ''}`}>
             <div className="content">
                 <div style={{ maxWidth: '1200px', margin: '0 auto', display: 'grid', gridTemplateColumns: '120px auto 1.2fr', columnGap: '1rem', alignItems: 'start' }}>
-                    {/* Miniaturas */}
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
                         {productoData.imagenes.map((imgItem, index) => {
                             const ruta = `${BASE_STORAGE}/${imgItem.ruta}`;
@@ -142,10 +141,8 @@ const Productos = ({ darkMode }) => {
                         })}
                     </div>
 
-                    {/* Imagen principal */}
                     <div style={{ backgroundColor: '#ffffffff', padding: '1rem', borderRadius: '0.75rem' }}><img src={img} alt="Producto" className="main-image" /></div>
 
-                    {/* Información */}
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
                         <div>
                             <h2 style={{ fontSize: '2rem', fontWeight: 'bold' }}>{productoData.titulo}</h2>
@@ -156,7 +153,6 @@ const Productos = ({ darkMode }) => {
                             )}
                         </div>
 
-                        {/* Selección de talla */}
                         {tipo.includes('ropa') && productoData.tallas?.length > 0 && (
                             <div>
                                 <p style={{ fontWeight: 500, marginBottom: '0.5rem' }}>Tallas disponibles:</p>
@@ -174,7 +170,6 @@ const Productos = ({ darkMode }) => {
                             </div>
                         )}
 
-                        {/* Cantidad accesorios */}
                         {tipo.includes('accesorio') && !sinStock && (
                             <div className="mt-4">
                                 <label className="block text-sm font-medium text-gray-700 mb-1">Cantidad</label>
@@ -182,13 +177,11 @@ const Productos = ({ darkMode }) => {
                             </div>
                         )}
 
-                        {/* Botones */}
                         <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1rem' }}>
                             <button className="button carrito" onClick={handleAgregarAlCarrito} disabled={sinStock} style={sinStock ? { backgroundColor: '#ccc', cursor: 'not-allowed' } : {}}>Agregar al carrito</button>
                             <button className="button comprar" onClick={generarPreferencia} disabled={sinStock} style={sinStock ? { backgroundColor: '#ccc', cursor: 'not-allowed' } : {}}>Comprar ahora</button>
                         </div>
 
-                        {/* PayPal */}
                         {mostrarPagos && (
                             <div style={{ marginTop: '2rem' }}>
                                 <PayPalButtons
@@ -204,7 +197,6 @@ const Productos = ({ darkMode }) => {
                     </div>
                 </div>
 
-                {/* Tabs descripción / reviews */}
                 <div style={{ marginTop: '4rem', maxWidth: '1000px', marginLeft: 'auto', marginRight: 'auto' }}>
                     <div style={{ display: 'flex', gap: '1rem', borderBottom: '1px solid #ddd', marginBottom: '1rem' }}>
                         <button onClick={() => setActiveTab('descripcion')} className={`tab-button ${activeTab === 'descripcion' ? 'active' : ''}`}>Descripción</button>
