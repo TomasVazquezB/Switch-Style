@@ -13,15 +13,7 @@ const ProductoItem = ({ id, img, nombre, precio, esFavorito, onToggleFavorito })
         <div className="busqueda-page-info">
           <h3 className="busqueda-page-title-producto">{nombre}</h3>
           <p className="busqueda-page-precio-producto">${precio}</p>
-          <div
-            className="busqueda-page-favorito"
-            onClick={(e) => {
-              e.preventDefault();
-              onToggleFavorito();
-            }}
-          >
-            {esFavorito ? "❤️" : "🤍"} Favorito
-          </div>
+          <div className="busqueda-page-favorito" onClick={(e) => {e.preventDefault(); onToggleFavorito();}}>{esFavorito ? "❤️" : "🤍"} Favorito </div>
         </div>
       </div>
     </Link>
@@ -46,23 +38,13 @@ const Busqueda = () => {
     }
 
     const filtrados = productos.filter((p) => {
-      // Campos seguros
       const titulo = (p.Titulo || p.titulo || "").toString().toLowerCase();
       const descripcion = (p.Descripcion || p.descripcion || "").toString().toLowerCase();
+      const categoria = typeof p.categoria === "object" ? (p.categoria?.nombre || "").toLowerCase() : (p.Categoria || p.categoria || "").toString().toLowerCase();
+      const tipo = typeof p.tipo === "object" ? (p.tipo?.nombre || "").toLowerCase() : (p.Tipo || p.tipo || "").toString().toLowerCase();
+      const genero = typeof p.genero === "object" ? (p.genero?.nombre || "").toLowerCase() : (p.Genero || p.genero || "").toString().toLowerCase();
 
-      const categoria = typeof p.categoria === "object"
-        ? (p.categoria?.nombre || "").toLowerCase()
-        : (p.Categoria || p.categoria || "").toString().toLowerCase();
-
-      const tipo = typeof p.tipo === "object"
-        ? (p.tipo?.nombre || "").toLowerCase()
-        : (p.Tipo || p.tipo || "").toString().toLowerCase();
-
-      const genero = typeof p.genero === "object"
-        ? (p.genero?.nombre || "").toLowerCase()
-        : (p.Genero || p.genero || "").toString().toLowerCase();
-
-      // 🔍 Casos especiales de búsqueda:
+    
       if (["man", "men", "hombre", "hombres"].includes(query)) {
         return genero.includes("hombre") || genero.includes("man");
       }
@@ -75,19 +57,10 @@ const Busqueda = () => {
         return genero.includes("kids") || genero.includes("niños") || genero.includes("niñas");
       }
 
-      // ✅ Casos especiales para ACCESORIOS
       if (["accesorio", "accesorios", "accessory", "accessories"].includes(query)) {
-        return (
-          tipo.includes("accesorio") ||
-          categoria.includes("accesorio") ||
-          titulo.includes("accesorio") ||
-          descripcion.includes("accesorio") ||
-          // Si el producto proviene de /accesorios en la API, su ruta_imagen lo indica:
-          (p.ruta_imagen && p.ruta_imagen.toLowerCase().includes("accesorios"))
-        );
+        return (tipo.includes("accesorio") || categoria.includes("accesorio") || titulo.includes("accesorio") || descripcion.includes("accesorio") || (p.ruta_imagen && p.ruta_imagen.toLowerCase().includes("accesorios")));
       }
 
-      // --- Filtro general (coincidencia libre) ---
       const texto = `${titulo} ${descripcion} ${categoria} ${tipo} ${genero}`;
       return texto.includes(query);
     });
@@ -97,9 +70,7 @@ const Busqueda = () => {
 
   const toggleFavorito = (id) => {
     setFavoritos((prev) => {
-      const nuevos = prev.includes(id)
-        ? prev.filter((f) => f !== id)
-        : [...prev, id];
+      const nuevos = prev.includes(id) ? prev.filter((f) => f !== id) : [...prev, id];
       localStorage.setItem("favoritos", JSON.stringify(nuevos));
       return nuevos;
     });
@@ -107,36 +78,21 @@ const Busqueda = () => {
 
   return (
     <div className={`busqueda-page ${darkMode ? "dark-mode" : "light-mode"}`}>
-      <h2 className="busqueda-page-title">
-        Resultados para: "{query.toUpperCase()}"
-      </h2>
+      <h2 className="busqueda-page-title">Resultados para: "{query.toUpperCase()}"</h2>
 
       {loading ? (
         <p className="busqueda-page-message">Cargando productos...</p>
       ) : !query ? (
         <p className="busqueda-page-message">Ingresa algo para buscar</p>
       ) : resultados.length === 0 ? (
-        <p className="busqueda-page-message">
-          No se encontraron productos que coincidan con "{query}"
-        </p>
+        <p className="busqueda-page-message">No se encontraron productos que coincidan con "{query}"</p>
       ) : (
         <div className="busqueda-page-grid">
           {resultados.map((item) => {
-            const imageUrl =
-              item.imagen_url?.startsWith("http")
-                ? item.imagen_url
-                : `${BASE_STORAGE}/${item.ruta_imagen}`;
+            const imageUrl = item.imagen_url?.startsWith("http") ? item.imagen_url : `${BASE_STORAGE}/${item.ruta_imagen}`;
 
             return (
-              <ProductoItem
-                key={item.id}
-                id={item.id}
-                img={imageUrl}
-                nombre={item.titulo || item.Titulo}
-                precio={item.precio || item.Precio}
-                esFavorito={favoritos.includes(item.id)}
-                onToggleFavorito={() => toggleFavorito(item.id)}
-              />
+              <ProductoItem key={item.id} id={item.id} img={imageUrl} nombre={item.titulo || item.Titulo} precio={item.precio || item.Precio} esFavorito={favoritos.includes(item.id)} onToggleFavorito={() => toggleFavorito(item.id)}/>
             );
           })}
         </div>

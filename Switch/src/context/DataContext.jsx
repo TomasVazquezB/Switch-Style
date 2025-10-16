@@ -11,7 +11,6 @@ const DataProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // 🔹 Inicializar CSRF
   const initCsrf = async () => {
     try {
       await csrf();
@@ -21,7 +20,6 @@ const DataProvider = ({ children }) => {
     }
   };
 
-  // 🔹 Login
   const login = async (email, password) => {
     try {
       await initCsrf();
@@ -38,7 +36,6 @@ const DataProvider = ({ children }) => {
     }
   };
 
-  // 🔹 Logout
   const logout = async () => {
     try {
       await api.post("/logout");
@@ -50,7 +47,6 @@ const DataProvider = ({ children }) => {
     }
   };
 
-  // 🔹 Obtener productos (ropa + accesorios)
   const fetchProductos = async () => {
     try {
       const [ropaRes, accesoriosRes] = await Promise.all([
@@ -61,33 +57,9 @@ const DataProvider = ({ children }) => {
       const ropaData = Array.isArray(ropaRes.data) ? ropaRes.data : [];
       const accesoriosData = Array.isArray(accesoriosRes.data) ? accesoriosRes.data : [];
 
-      // 🔹 Normalizar productos de ropa
-      const ropaNormalizada = ropaData.map((producto) => ({
-        ...producto,
-        imagen_url: producto.Imagen
-          ? `https://switchstyle.laravel.cloud/storage/${producto.Imagen}`
-          : null,
-        titulo: producto.Titulo || producto.titulo || "",
-        tipo: producto.Tipo || producto.tipo || "",
-        descripcion: producto.Descripcion || producto.descripcion || "",
-        categoria: "Ropa",
-        tipoProducto: "ropa",
-      }));
+      const ropaNormalizada = ropaData.map((producto) => ({...producto, imagen_url: producto.Imagen ? `https://switchstyle.laravel.cloud/storage/${producto.Imagen}` : null, titulo: producto.Titulo || producto.titulo || "", tipo: producto.Tipo || producto.tipo || "", descripcion: producto.Descripcion || producto.descripcion || "", categoria: "Ropa", tipoProducto: "ropa",}));
+      const accesoriosNormalizados = accesoriosData.map((producto) => ({...producto, imagen_url: producto.ruta_imagen ? `${api.defaults.baseURL}/storage/${producto.ruta_imagen}` : null,titulo: producto.titulo || producto.Titulo || "", tipo: "Accesorio", descripcion: producto.descripcion || producto.Descripcion || "", categoria: "Accesorios", tipoProducto: "accesorio",}));
 
-      // 🔹 Normalizar accesorios
-      const accesoriosNormalizados = accesoriosData.map((producto) => ({
-        ...producto,
-        imagen_url: producto.ruta_imagen
-          ? `${api.defaults.baseURL}/storage/${producto.ruta_imagen}`
-          : null,
-        titulo: producto.titulo || producto.Titulo || "",
-        tipo: "Accesorio",
-        descripcion: producto.descripcion || producto.Descripcion || "",
-        categoria: "Accesorios",
-        tipoProducto: "accesorio",
-      }));
-
-      // 🔹 Unir todo
       setProductos([...ropaNormalizada, ...accesoriosNormalizados]);
     } catch (err) {
       console.error("❌ Error al obtener productos:", err);
@@ -96,7 +68,6 @@ const DataProvider = ({ children }) => {
     }
   };
 
-  // 🔹 Obtener usuarios (solo si hay sesión)
   const fetchUsuarios = async () => {
     try {
       await initCsrf();
@@ -119,21 +90,7 @@ const DataProvider = ({ children }) => {
   }, [usuario]);
 
   return (
-    <DataContext.Provider
-      value={{
-        productos,
-        usuarios,
-        usuario,
-        loading,
-        error,
-        login,
-        logout,
-        fetchProductos,
-        fetchUsuarios,
-      }}
-    >
-      {children}
-    </DataContext.Provider>
+    <DataContext.Provider value={{productos,usuarios,usuario,loading,error,login,logout,fetchProductos,fetchUsuarios,}}>{children}</DataContext.Provider>
   );
 };
 

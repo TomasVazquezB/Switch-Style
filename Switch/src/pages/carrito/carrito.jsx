@@ -58,8 +58,7 @@ const Carrito = () => {
         if (tallaData) stockDisponible = tallaData.pivot?.cantidad || 1;
 
         if (nuevaCantidad < 1) return;
-        if (nuevaCantidad > stockDisponible) {
-            toast.error(`Stock máximo disponible: ${stockDisponible}`);
+        if (nuevaCantidad > stockDisponible) {toast.error(`Stock máximo disponible: ${stockDisponible}`);
             return;
         }
 

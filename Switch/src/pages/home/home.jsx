@@ -67,40 +67,10 @@ const Home = ({ darkMode }) => {
       <div className={`home-index ${darkMode ? 'dark' : 'light'}`}>
         <div id="varkalaCarousel" className="carousel slide varkala-carousel" data-bs-ride="carousel" data-bs-interval="5000">
           <div className="carousel-wrapper">
-            <Carousel
-              autoPlay
-              infiniteLoop
-              interval={5000}
-              showThumbs={false}
-              showStatus={false}
-              showIndicators={true}
-              swipeable
-              emulateTouch
-              stopOnHover
-              dynamicHeight={false}
-              renderArrowPrev={(onClickHandler, hasPrev, label) =>
-                hasPrev && (
-                  <button
-                    type="button"
-                    onClick={onClickHandler}
-                    title={label}
-                    className="custom-carousel-arrow left"
-                  >
-                    <FaChevronLeft />
-                  </button>
-                )
+            <Carousel autoPlay infiniteLoop interval={5000} showThumbs={false} showStatus={false} showIndicators={true} swipeable emulateTouch stopOnHover dynamicHeight={false} renderArrowPrev={(onClickHandler, hasPrev, label) => hasPrev && (<button type="button" onClick={onClickHandler} title={label} className="custom-carousel-arrow left"><FaChevronLeft /></button>)
               }
-              renderArrowNext={(onClickHandler, hasNext, label) =>
-                hasNext && (
-                  <button
-                    type="button"
-                    onClick={onClickHandler}
-                    title={label}
-                    className="custom-carousel-arrow right"
-                  >
-                    <FaChevronRight />
-                  </button>
-                )
+
+              renderArrowNext={(onClickHandler, hasNext, label) => hasNext && (<button type="button" onClick={onClickHandler} title={label} className="custom-carousel-arrow right"><FaChevronRight /></button>)
               }
             >
               <div>
@@ -168,19 +138,10 @@ const Home = ({ darkMode }) => {
 
         <div className="last-added-section">
           <h2 className="ultimas-prendas">¡Últimas Novedades!</h2>
-          <div
-            className="carousel-cards-wrapper"
-            style={{ '--cards-per-slide': cardsPerSlide }}
-          >
+          <div className="carousel-cards-wrapper" style={{ '--cards-per-slide': cardsPerSlide }}>
             <button className="carousel-cards-btn" onClick={handlePrev} aria-label="Anterior"><FaChevronLeft /></button>
 
-            <div
-              className="carousel-cards-track"
-              style={{
-                width: `${(lastAddedImages.length / cardsPerSlide) * 100}%`,
-                transform: `translateX(-${currentIndex * (100 / cardsPerSlide)}%)`
-              }}
-            >
+            <div className="carousel-cards-track" style={{width: `${(lastAddedImages.length / cardsPerSlide) * 100}%`, transform: `translateX(-${currentIndex * (100 / cardsPerSlide)}%)`}}>
               {lastAddedImages.map((img, idx) => (
                 <div className="carousel-card-home" key={idx} style={{ flex: `0 0 calc(100% / ${cardsPerSlide})` }}>
                   <img src={img} alt={`Prenda ${idx + 1}`} />
