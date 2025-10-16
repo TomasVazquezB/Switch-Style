@@ -1,20 +1,15 @@
-/* === overrides.css === */
-/* Importar al FINAL en main.jsx */
-
-/* Header offer bar */
 .offer-bar-text {
   transition: color 0.3s ease;
 }
 
 .home-index.light .offer-bar-text {
-  color: #111; /* negro en modo claro */
+  color: #111; 
 }
 
 .home-index.dark .offer-bar-text {
-  color: #fff; /* blanco en modo oscuro */
+  color: #fff; 
 }
 
-/* base de estilo común */
 .custom-carousel-arrow,
 .carousel-cards-btn,
 .carousel-wrapper .control-arrow {
@@ -32,7 +27,6 @@
   z-index: 50 !important;
 }
 
-/* los iconos heredan color */
 .custom-carousel-arrow svg,
 .carousel-cards-btn svg,
 .carousel-wrapper .control-arrow svg {
@@ -42,7 +36,6 @@
   filter: none !important;
 }
 
-/* pseudo-elementos de react-responsive-carousel */
 .carousel-wrapper .control-arrow::before {
   color: inherit !important;
   filter: none !important;
@@ -50,7 +43,6 @@
   background: transparent !important;
 }
 
-/* light mode → círculo claro + icono oscuro */
 body.light-mode .custom-carousel-arrow,
 body.light-mode .carousel-cards-btn,
 body.light-mode .carousel-wrapper .control-arrow {
@@ -58,7 +50,6 @@ body.light-mode .carousel-wrapper .control-arrow {
   color: #111 !important;
 }
 
-/* hover en light mode */
 body.light-mode .custom-carousel-arrow:hover,
 body.light-mode .carousel-cards-btn:hover,
 body.light-mode .carousel-wrapper .control-arrow:hover {
@@ -66,7 +57,6 @@ body.light-mode .carousel-wrapper .control-arrow:hover {
   
 }
 
-/* dark mode → círculo oscuro + icono claro */
 body.dark-mode .custom-carousel-arrow,
 body.dark-mode .carousel-cards-btn,
 body.dark-mode .carousel-wrapper .control-arrow {
@@ -74,7 +64,6 @@ body.dark-mode .carousel-wrapper .control-arrow {
   color: #fff !important;
 }
 
-/* hover en dark mode */
 body.dark-mode .custom-carousel-arrow:hover,
 body.dark-mode .carousel-cards-btn:hover,
 body.dark-mode .carousel-wrapper .control-arrow:hover {
@@ -82,19 +71,15 @@ body.dark-mode .carousel-wrapper .control-arrow:hover {
   
 }
 
-/* Navbar fijo temporal */
 .navbar-top {
-  /* position: fixed !important; */
   top: 0;
   width: 100%;
   z-index: 2000;
 }
 
-/* Carita en "¿Querés conocernos?" → opuesta al modo */
 .light-mode .footer-face-icon { color: #000 !important; }
 .dark-mode .footer-face-icon { color: #fff !important; }
 
-/* FAQ, Teléfono, Mail */
 .light-mode .footer-faq-icon,
 .light-mode .footer-phone-icon,
 .light-mode .footer-mail-icon,
@@ -110,7 +95,6 @@ body.dark-mode .carousel-wrapper .control-arrow:hover {
   color: #fff !important;
 }
 
-/* Derechos reservados, Instagram, Nombre del sitio */
 .light-mode .footer-copy,
 .light-mode .footer-instagram,
 .light-mode .footer-brand {
@@ -122,7 +106,6 @@ body.dark-mode .carousel-wrapper .control-arrow:hover {
   color: #fff !important;
 }
 
-/* Botón de descarga (invertido al resto del footer) */
 .footer-app-btn {
   transition: all 0.3s ease !important;
 }
@@ -135,18 +118,15 @@ body.dark-mode .carousel-wrapper .control-arrow:hover {
   color: #000 !important;
 }
 
-/* Header navbar */
 .light-mode .navbar-top {
-  background-color: #f8f9fa !important; /* gris claro / casi blanco */
+  background-color: #f8f9fa !important; 
   color: #000 !important;
 }
 .dark-mode .navbar-top {
-  background-color: #1e1e1e !important; /* gris oscuro detallado */
+  background-color: #1e1e1e !important; 
   color: #fff !important;
 }
 
-
-/* Footer */
 .light-mode .footer {
   background-color: #f8f9fa !important;
   color: #000 !important;
@@ -156,7 +136,6 @@ body.dark-mode .carousel-wrapper .control-arrow:hover {
   color: #fff !important;
 }
 
-/* Offer bar */
 .light-mode .offer-bar {
   background-color: #e6e6e6 !important;
   color: #000 !important;
@@ -166,20 +145,18 @@ body.dark-mode .carousel-wrapper .control-arrow:hover {
   color: #fff !important;
 }
 
-/* Textos e íconos en footer */
 .dark-mode .footer,
 .dark-mode .footer * {
-  color: #ffffff !important; /* blanco sobre fondo oscuro */
-  fill: #ffffff !important;  /* para íconos SVG */
+  color: #ffffff !important; 
+  fill: #ffffff !important;  
 }
 
 .light-mode .footer,
 .light-mode .footer * {
-  color: #000000 !important; /* negro sobre fondo claro */
+  color: #000000 !important; 
   fill: #000000 !important;
 }
 
-/* Caso particular: botón de descarga app */
 .dark-mode .footer .download-button {
   background-color: #2a2a2a !important;
   color: #ffffff !important;
@@ -188,7 +165,6 @@ body.dark-mode .carousel-wrapper .control-arrow:hover {
   color: #000000 !important;
 }
 
-/* Flechas unificadas para ambos carousels */
 .custom-carousel-arrow {
   background-color: rgba(0,0,0,0.6);
   color: white;
@@ -220,38 +196,32 @@ body.dark-mode .carousel-wrapper .control-arrow:hover {
   right: 15px;
 }
 
-/* Hover en modo claro → sombra oscura */
 .card-home img:hover {
   transition: box-shadow 0.3s ease-in-out;
   box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4);
 }
 
-/* Hover en modo oscuro → sombra blanca */
 .home-index.dark .card-home img:hover {
   box-shadow: 0 6px 16px rgba(255, 255, 255, 0.85) !important;
 }
 
-/* Base */
 .modal-overlay,
 .modal-box {
   transition: background-color 0.18s ease, color 0.18s ease;
 }
 
-/* Light mode → fondo claro + texto oscuro */
 body.light-mode .modal-overlay,
 body.light-mode .modal-box {
   background-color: rgba(255, 255, 255, 0.96) !important;
   color: #111 !important;
 }
 
-/* Dark mode → fondo oscuro + texto claro */
 body.dark-mode .modal-overlay,
 body.dark-mode .modal-box {
   background-color: rgba(0, 0, 0, 0.85) !important;
   color: #fff !important;
 }
 
-/* Botón cerrar (contrastado también) */
 body.light-mode .close-modal-btn {
   background-color: #111 !important;
   color: #fff !important;
@@ -262,7 +232,6 @@ body.dark-mode .close-modal-btn {
   color: #111 !important;
 }
 
-/* 1. Quitar subrayado azul del título del producto */
 .product-grid a,
 .product-grid a:visited,
 .product-grid a:active {
@@ -272,20 +241,17 @@ body.dark-mode .close-modal-btn {
 
 .product-grid a:hover {
   text-decoration: none !important;
-  color: #a0a0a0 !important; /* un gris suave para hover */
+  color: #a0a0a0 !important; 
 }
 
-/* 2. Aumentar el espacio entre la barra lateral y los productos */
 .main {
-  margin-left: 40px !important; /* separa de la sidebar */
+  margin-left: 40px !important; 
 }
 
-/* 3. Ajustar espaciado entre productos dentro del grid */
 .product-grid {
-  gap: 35px !important; /* espacio entre tarjetas */
+  gap: 35px !important; 
 }
 
-/* 4. Asegurar que el precio cambie correctamente con el modo */
 .dark-mode .product-price {
   color: #ffffff !important;
 }
@@ -294,27 +260,23 @@ body.dark-mode .close-modal-btn {
   color: #000000 !important;
 }
 
-/* 5. Ajuste estético opcional para los nombres de producto */
 .product-grid h5,
 .product-grid .product-name {
   font-weight: 600 !important;
   color: inherit !important;
 }
 
-/* Evitar que el modo oscuro cambie el color del precio o nombre */
 .dark-mode .product-item .product-price,
 .dark-mode .product-item .product-name {
   color: #000 !important;
 }
 
-/* Evita que los precios dentro de productos se vuelvan blancos en modo oscuro */
 .dark-mode .product-grid .text-gray-600 {
-  color: #222 !important; /* o #000 si querés más contraste */
+  color: #222 !important; 
 }
 
-/* ==== Separación global entre filtros (sidebar) y productos ==== */
 .main {
-  margin-left: 260px !important; /* más espacio entre sidebar y grid */
+  margin-left: 260px !important; 
   transition: margin 0.3s ease;
 }
 
@@ -428,7 +390,6 @@ body.light-mode .navbar-icon,
   color: var(--text-on-light) !important;
 }
 
-
 .search-icon-btn,
 .search-btn {
   background: transparent;
@@ -475,12 +436,10 @@ body.light-mode .profile-menu,
   border: 1px solid rgba(0,0,0,0.06);
 }
 
-/* links inside profile menu */
 .profile-menu a, .profile-menu button {
   color: inherit !important;
 }
 
-/* dropdown menus inside header */
 .nav-dropdown .dropdown-menu {
   transition: background 0.18s ease, color 0.18s ease;
 }
@@ -505,25 +464,21 @@ body.light-mode .nav-dropdown .dropdown-menu,
   outline: 2px solid rgba(255,255,255,0.08);
 }
 
-/* Small nicety: smooth transitions */
 .navbar-top, .offer-bar, .profile-menu, .nav-dropdown .dropdown-menu {
   transition: background-color 0.22s ease, color 0.18s ease, border-color 0.18s ease;
 }
 
-/* --- Profile Menu Dark Mode FIX --- */
 body.dark-mode .profile-menu {
-  background-color: #1a1a1a !important; /* oscuro como el resto del header */
+  background-color: #1a1a1a !important; 
   color: #fff !important;
   border: 1px solid #333 !important;
 }
 
-/* Ajustamos también el bloque del saludo */
 body.dark-mode .profile-menu > div {
   background-color: transparent !important;
   color: #fff !important;
 }
 
-/* Los links y botones del menú */
 body.dark-mode .profile-menu a,
 body.dark-mode .profile-menu button {
   background-color: transparent !important;
@@ -535,7 +490,6 @@ body.dark-mode .profile-menu button:hover {
   background-color: #333 !important;
 }
 
-/* En pantallas pequeñas, eliminamos el desplazamiento */
 @media (max-width: 1024px) {
   .main {
     margin-left: 0 !important;
@@ -543,9 +497,6 @@ body.dark-mode .profile-menu button:hover {
   }
 }
 
-/* ====== FIX: Offer bar + Footer (mantener fondo gris y texto blanco) ====== */
-
-/* Offer bar (header superior) */
 .offer-bar {
   background-color: #2b2b2b !important;
   color: #ffffff !important;

@@ -448,3 +448,70 @@ body {
 .profile-menu button:hover {
   background-color: #f3f3f3;
 }
+
+.search-suggestions {
+  position: absolute;
+  top: 120%;
+  left: 0;
+  width: 100%;
+  background-color: var(--suggestion-bg, #fff);
+  border: 1px solid var(--suggestion-border, #ccc);
+  border-radius: 13px;
+  z-index: 1000;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+  overflow: hidden;
+  color: var(--suggestion-text, #000);
+  transition: all 0.2s ease-in-out;
+}
+
+.dark-mode .search-suggestions {
+ background-color: #444;
+ border: #000;
+}
+.suggestion-item {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 10px 13px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.suggestion-item:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+body.dark-mode .suggestion-item:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.suggestion-img {
+  width: 20px;
+  height: 20px;
+  border-radius: 6px;
+  object-fit: cover;
+}
+
+.suggestion-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.suggestion-title {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: inherit;
+}
+
+.dark-mode .suggestion-title {
+  color: #ffffff;
+}
+
+.suggestion-price {
+  font-size: 0.8rem;
+  color: #000000;
+}
+
+.dark-mode .suggestion-price {
+  color: #ffffff;
+}
