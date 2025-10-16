@@ -1,19 +1,13 @@
-/* ================================
-   FAVORITOS PAGE - ESTILOS COMPLETOS
-   ================================ */
-
-/* --- Fondo completo del body según modo --- */
 .light-mode body {
-  background-color: #ffffff; /* Fondo blanco total */
+  background-color: #ffffff; 
   color: #111827;
 }
 
 .dark-mode body {
-  background-color: #000000; /* Fondo negro total */
+  background-color: #000000; 
   color: #ffffff;
 }
 
-/* --- Contenedor principal --- */
 .favoritos-page {
   padding: 2rem 4rem;
   max-width: 1900px;
@@ -21,26 +15,23 @@
   font-family: 'Inter', sans-serif;
 }
 
-/* --- Quitar subrayado de enlaces en favoritos --- */
 .favoritos-page a,
 .favoritos-page-title a,
 .favoritos-page-price a {
   text-decoration: none !important;
-  color: inherit; /* Mantiene color actual */
+  color: inherit; 
 }
 
-/* --- MODO CLARO Y OSCURO --- */
 .light-mode .favoritos-page {
-  background-color: #ffffff; /* Fondo blanco uniforme */
+  background-color: #ffffff; 
   color: #111827;
 }
 
 .dark-mode .favoritos-page {
-  background-color: #121212; /* Fondo negro uniforme */
+  background-color: #121212; 
   color: #ffffff;
 }
 
-/* --- Título principal --- */
 .favoritos-page-title-main {
   font-size: 2rem;
   font-weight: 600;
@@ -55,14 +46,12 @@
   color: #ffffff;
 }
 
-/* --- GRID --- */
 .favoritos-page-grid {
   display: grid;
   gap: 1.5rem;
   grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
 }
 
-/* --- CARD --- */
 .favoritos-page-card {
   border-radius: 1rem;
   overflow: hidden;
@@ -71,24 +60,20 @@
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-/* Modo claro */
 .light-mode .favoritos-page-card {
   background: #ffffff;
   box-shadow: 0 4px 14px rgba(0, 0, 0, 0.05);
 }
 
-/* Modo oscuro */
 .dark-mode .favoritos-page-card {
   background: #313133;
   box-shadow: 0 4px 14px rgba(255, 255, 255, 0.05);
 }
 
-/* Hover más notorio */
 .favoritos-page-card:hover {
   transform: translateY(-6px) scale(1.03);
 }
 
-/* Imagen del producto */
 .favoritos-page-card img {
   width: 100%;
   height: 230px;
@@ -96,7 +81,6 @@
   border-bottom: 1px solid #e5e7eb;
 }
 
-/* --- INFO --- */
 .favoritos-page-info {
   padding: 1rem;
   display: flex;
@@ -105,10 +89,9 @@
   text-decoration: none;
 }
 
-/* --- Título y precio sin subrayado --- */
 .favoritos-page-title,
 .favoritos-page-price {
-  text-decoration: none; /* Quita subrayado */
+  text-decoration: none; 
 }
 
 .favoritos-page-title {
@@ -138,7 +121,6 @@
   color: #ffffff;
 }
 
-/* --- BOTÓN DE ELIMINAR --- */
 .favoritos-page-remove {
   margin: 0.15rem 1rem 1rem;
   display: inline-flex;
@@ -169,15 +151,11 @@
   color: #ef4444;
 }
 
-/* === Corregir texto de mensaje vacío en Favoritos === */
-
-/* Modo oscuro */
 body.dark-mode .favoritos-page p,
 body.dark-mode .text-gray-600 {
   color: #ffffff !important;
 }
 
-/* Modo claro */
 body.light-mode .favoritos-page p,
 body.light-mode .text-gray-600 {
   color: #000000 !important;

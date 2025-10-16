@@ -221,8 +221,8 @@ footer nav {
 .download-row {
   margin-top: -50px;
   text-align: left;
-  bottom: 8px; /* 👈 margen desde el borde inferior */
-  right: 8px;  /* 👈 margen desde el borde derecho */
+  bottom: 8px; 
+  right: 8px; 
   z-index: 100;
   display: flex;
   flex-direction: column;
@@ -234,8 +234,8 @@ footer nav {
   display: flex;
   flex-direction: row;   
   align-items: center;
-  gap: 10px; /* un poco menos de separación */
-  margin-left: 0px; /* 👈 más cerca del borde izquierdo */
+  gap: 10px;
+  margin-left: 0px; 
   margin-bottom: 0px;
 }
 
@@ -250,15 +250,15 @@ footer nav {
   font-size: 0.95rem;
   font-weight: 600;
   cursor: pointer;
-  background-color: #2e2e2e; /* un gris un poco más claro que el fondo */
-  border: 1.5px solid #fff; /* borde blanco para destacar */
+  background-color: #2e2e2e; 
+  border: 1.5px solid #fff; 
   color: #fff;
   transition: all 0.3s ease;
   box-shadow: 0 0 10px rgba(255, 255, 255, 0.05);
 }
 
 .download-button:hover {
-  background-color: #3a3a3a; /* un poco más claro al hover */
+  background-color: #3a3a3a;
   transform: translateY(-2px);
   box-shadow: 0 0 15px rgba(255, 255, 255, 0.15);
 }
@@ -275,7 +275,7 @@ footer nav {
 }
 
 .download-button:hover .store-icon {
-  color: #00ff90; /* un verde tipo “switchstyle” como acento visual */
+  color: #00ff90; 
 }
 
 .light-mode .download-button {
@@ -338,7 +338,6 @@ footer nav {
   transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-/* Fondo según modo */
 .light-mode .modal-box {
   background-color: #ffffff;
   color: #111;
@@ -408,4 +407,3 @@ footer nav {
   background-color: #bbb;
   transform: scale(1.05);
 }
-

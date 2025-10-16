@@ -31,16 +31,12 @@ export function MisPedidos() {
 
   if (error)
     return (
-      <div className="pedidos-error">
-        <p>{error}</p>
-      </div>
+      <div className="pedidos-error"><p>{error}</p></div>
     );
 
   return (
     <div className="mis-pedidos-container">
-      <h1 className="titulo-pedidos">
-        {usuario ? `Pedidos de ${usuario.Nombre || usuario.name}` : "Mis Pedidos"}
-      </h1>
+      <h1 className="titulo-pedidos">{usuario ? `Pedidos de ${usuario.Nombre || usuario.name}` : "Mis Pedidos"}</h1>
 
       {pedidos.length === 0 ? (
         <p className="sin-pedidos">No tienes pedidos registrados todavía.</p>
@@ -50,9 +46,7 @@ export function MisPedidos() {
             <div key={pedido.id} className="pedido-card">
               <div className="pedido-header">
                 <span className="pedido-id">#{pedido.id}</span>
-                <span className={`estado ${pedido.estado.toLowerCase()}`}>
-                  {pedido.estado}
-                </span>
+                <span className={`estado ${pedido.estado.toLowerCase()}`}>{pedido.estado}</span>
               </div>
               <div className="pedido-detalle">
                 <p><strong>Fecha:</strong> {new Date(pedido.created_at).toLocaleDateString()}</p>

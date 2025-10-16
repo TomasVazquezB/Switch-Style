@@ -11,7 +11,6 @@ const DataProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // 🔹 Inicializar CSRF
   const initCsrf = async () => {
     try {
       await csrf();
@@ -21,7 +20,6 @@ const DataProvider = ({ children }) => {
     }
   };
 
-  // 🔹 Login
   const login = async (email, password) => {
     try {
       await initCsrf();
@@ -38,7 +36,6 @@ const DataProvider = ({ children }) => {
     }
   };
 
-  // 🔹 Logout
   const logout = async () => {
     try {
       await api.post("/logout");
@@ -50,32 +47,27 @@ const DataProvider = ({ children }) => {
     }
   };
 
-  // 🔹 Obtener productos (una sola versión)
   const fetchProductos = async () => {
     try {
-      const response = await api.get("/ropa");
-      if (!Array.isArray(response.data)) {
-        console.warn("⚠️ Respuesta inesperada de /ropa:", response.data);
-        setProductos([]);
-        return;
-      }
+      const [ropaRes, accesoriosRes] = await Promise.all([
+        api.get("/ropa"),
+        api.get("/accesorios"),
+      ]);
 
-      const productosConImagen = response.data.map((producto) => ({
-        ...producto,
-        imagen_url: `https://switchstyle.laravel.cloud/storage/${producto.Imagen}`,
-        titulo: producto.Titulo || producto.titulo || "",
-        tipo: producto.Tipo || producto.tipo || "",
-        descripcion: producto.Descripcion || producto.descripcion || "",
-      }));
+      const ropaData = Array.isArray(ropaRes.data) ? ropaRes.data : [];
+      const accesoriosData = Array.isArray(accesoriosRes.data) ? accesoriosRes.data : [];
 
-      setProductos(productosConImagen);
+      const ropaNormalizada = ropaData.map((producto) => ({...producto, imagen_url: producto.Imagen ? `https://switchstyle.laravel.cloud/storage/${producto.Imagen}` : null, titulo: producto.Titulo || producto.titulo || "", tipo: producto.Tipo || producto.tipo || "", descripcion: producto.Descripcion || producto.descripcion || "", categoria: "Ropa", tipoProducto: "ropa",}));
+      const accesoriosNormalizados = accesoriosData.map((producto) => ({...producto, imagen_url: producto.ruta_imagen ? `${api.defaults.baseURL}/storage/${producto.ruta_imagen}` : null,titulo: producto.titulo || producto.Titulo || "", tipo: "Accesorio", descripcion: producto.descripcion || producto.Descripcion || "", categoria: "Accesorios", tipoProducto: "accesorio",}));
+
+      setProductos([...ropaNormalizada, ...accesoriosNormalizados]);
     } catch (err) {
       console.error("❌ Error al obtener productos:", err);
       setError("Error al obtener productos");
+      setProductos([]);
     }
   };
 
-  // 🔹 Obtener usuarios (solo si hay sesión)
   const fetchUsuarios = async () => {
     try {
       await initCsrf();
@@ -86,9 +78,6 @@ const DataProvider = ({ children }) => {
       setError("Error al obtener usuarios");
     }
   };
-
-  const ropa = productos.filter((p) => p.tipo === "Ropa" || p.Tipo === "Ropa");
-  const accesorios = productos.filter((p) => p.tipo === "Accesorios" || p.Tipo === "Accesorios");
 
   useEffect(() => {
     const fetchData = async () => {
@@ -101,23 +90,7 @@ const DataProvider = ({ children }) => {
   }, [usuario]);
 
   return (
-    <DataContext.Provider
-      value={{
-        productos,
-        ropa,
-        accesorios,
-        usuarios,
-        usuario,
-        loading,
-        error,
-        login,
-        logout,
-        fetchProductos,
-        fetchUsuarios,
-      }}
-    >
-      {children}
-    </DataContext.Provider>
+    <DataContext.Provider value={{productos,usuarios,usuario,loading,error,login,logout,fetchProductos,fetchUsuarios,}}>{children}</DataContext.Provider>
   );
 };
 
