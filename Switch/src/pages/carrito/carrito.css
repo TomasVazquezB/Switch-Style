@@ -272,7 +272,7 @@ body.dark-mode .summary-line span {
 
 .remove-btn {
   margin-top: 10px;
-  background-color: #000;
+  background-color: #c50202;
   color: #fff;
   border: none;
   padding: 8px 14px;
@@ -282,7 +282,7 @@ body.dark-mode .summary-line span {
 }
 
 .remove-btn:hover {
-  background-color: #333;
+  background-color: #c50202;
 }
 
 /* Corrige visibilidad de texto y controles en modo oscuro */
@@ -295,7 +295,7 @@ body.dark-mode .cart-product * {
 /* Mantiene color correcto de botones en oscuro */
 body.dark-mode .cart-product .remove-btn,
 body.dark-mode .cart-product button {
-  background-color: #000 !important;
+  background-color: #c50202 !important;
   color: #fff !important;
 }
 

@@ -53,15 +53,7 @@ const MainAccesorios = () => {
                         <h4 className="mb-3">PRECIO</h4>
                         <div className="range">
                             <span>${precioMin}</span>
-                            <input 
-                                type="range" 
-                                min={precioMin} 
-                                max={maxPrice} 
-                                step="10" 
-                                value={precioMax} 
-                                onChange={(e) => setPrecioMax(e.target.value)} 
-                                className="w-full" 
-                            />
+                            <input type="range" min={precioMin} max={maxPrice} step="10" value={precioMax} onChange={(e) => setPrecioMax(e.target.value)} className="w-full"/>
                             <span>${precioMax}</span>
                         </div>
                     </div>

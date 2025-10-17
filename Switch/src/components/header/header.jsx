@@ -9,6 +9,35 @@ import { FaSearch, FaShoppingCart, FaUser } from "react-icons/fa";
 import { BsMoon, BsSun } from "react-icons/bs";
 import { useLocation } from "react-router-dom";
 import { DataContext } from "../../context/DataContext"; // 👈 agregado para obtener productos globales
+import axios from "../../api/axios"; // ✅ agregado para manejar imágenes del backend
+
+// === 🖼️ Configuración de imágenes ===
+const BUCKET_BASE = (import.meta.env.VITE_ASSETS_BASE || "").replace(/\/+$/, "");
+const PLACEHOLDER =
+  "data:image/svg+xml;utf8," +
+  encodeURIComponent(
+    `<svg xmlns='http://www.w3.org/2000/svg' width='300' height='200'>
+      <rect width='100%' height='100%' fill='#f3f4f6'/>
+      <text x='50%' y='50%' dominant-baseline='middle' text-anchor='middle' 
+      font-family='Arial' font-size='16' fill='#9ca3af'>Sin imagen</text>
+    </svg>`
+  );
+
+function toBucketUrl(rawPath) {
+  if (!rawPath) return PLACEHOLDER;
+  if (/^https?:\/\//i.test(rawPath)) return rawPath;
+
+  let key = String(rawPath)
+    .replace(/^https?:\/\/[^/]+\/?/, "")
+    .replace(/^\/+/, "")
+    .replace(/^storage\//, "")
+    .replace(/^public\//, "");
+
+  if (/^ropa\//i.test(key)) key = key.replace(/^ropa\//i, "imagenes/ropa/");
+  if (/^accesorios\//i.test(key)) key = key.replace(/^accesorios\//i, "imagenes/accesorios/");
+
+  return BUCKET_BASE ? `${BUCKET_BASE}/${encodeURI(key)}` : PLACEHOLDER;
+}
 
 const Header = ({ toggleTheme, darkMode }) => {
   const [usuario, setUsuario] = useState(null);
@@ -106,6 +135,15 @@ const Header = ({ toggleTheme, darkMode }) => {
           )
           .slice(0, 5)
       : [];
+
+  // ✅ Generar URL correcta para las imágenes
+  const getImageUrl = (p) => {
+    if (!p) return "";
+    if (p.imagen_url && p.imagen_url.startsWith("http")) return p.imagen_url;
+    if (p.ruta_imagen && p.ruta_imagen.startsWith("http")) return p.ruta_imagen;
+    if (p.ruta_imagen) return `${axios.defaults.baseURL}/storage/${p.ruta_imagen}`;
+    return "https://via.placeholder.com/60x60?text=No+Image"; // Fallback
+  };
 
   return (
     <>
@@ -300,34 +338,36 @@ const Header = ({ toggleTheme, darkMode }) => {
                 <button type="submit" className="search-icon-btn">
                   <FaSearch size={18} />
                 </button>
-
-                {showSuggestions && filteredSuggestions.length > 0 && (
-                  <div
-                    className={`search-suggestions ${
-                      darkMode ? "dark" : "light"
-                    }`}
-                  >
-                    {filteredSuggestions.map((p) => (
-                      <div
-                        key={p.id}
-                        className="suggestion-item"
-                        onClick={() => handleSuggestionClick(p.titulo)}
-                      >
-                        <img
-                          src={p.imagen_url || p.ruta_imagen}
-                          alt={p.titulo}
-                          className="suggestion-img"
-                        />
-                        <div className="suggestion-info">
-                          <span className="suggestion-title">{p.titulo}</span>
-                          <span className="suggestion-price">
-                            ${p.precio || p.Precio}
-                          </span>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                )}
+                
+{showSuggestions && filteredSuggestions.length > 0 && (
+  <div
+    className={`search-suggestions ${darkMode ? "dark" : "light"}`}
+  >
+    {filteredSuggestions.map((p) => {
+      const imagen = toBucketUrl(p.imagen_url || p.ruta_imagen || p.imagen);
+      return (
+        <div
+          key={p.id}
+          className="suggestion-item"
+          onClick={() => handleSuggestionClick(p.titulo)}
+        >
+          <img
+            src={imagen}
+            alt={p.titulo}
+            className="suggestion-img"
+            onError={(e) => (e.target.src = PLACEHOLDER)}
+          />
+          <div className="suggestion-info">
+            <span className="suggestion-title">{p.titulo}</span>
+            <span className="suggestion-price">
+              ${p.precio || p.Precio}
+            </span>
+          </div>
+        </div>
+      );
+    })}
+  </div>
+)}
               </form>
             </div>
 
