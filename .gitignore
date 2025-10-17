@@ -18,3 +18,71 @@ yarn-error.log
 /.nova
 /.vscode
 /.zed
+
+# Laravel core
+/vendor/
+node_modules/
+npm-debug.log
+yarn-error.log
+
+# Environment
+.env
+.env.backup
+.env.local
+.env.production
+.env.development
+
+# Laravel specific
+/public/storage
+/storage/*.key
+/storage/*.log
+/storage/framework/*
+/bootstrap/cache/*
+/vendor/composer/installed.json
+
+# IDE / OS
+.idea/
+.vscode/
+*.sublime-project
+*.sublime-workspace
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+*.stackdump
+
+# Composer PHARs
+composer.phar
+
+# Coverage / Reports
+coverage/
+phpunit.xml
+phpunit.xml.dist
+
+# Misc
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+* text=auto
+
+# Código: LF
+*.js     text eol=lf
+*.jsx    text eol=lf
+*.ts     text eol=lf
+*.tsx    text eol=lf
+*.css    text eol=lf
+*.scss   text eol=lf
+*.php    text eol=lf
+*.blade.php text eol=lf
+*.json   text eol=lf
+*.sh     text eol=lf
+*.yml    text eol=lf
+*.yaml   text eol=lf
+
+# Windows scripts: CRLF
+*.bat    text eol=crlf
+*.cmd    text eol=crlf
+*.ps1    text eol=crlf
