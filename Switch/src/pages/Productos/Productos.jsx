@@ -11,9 +11,7 @@ const PLACEHOLDER =
   encodeURIComponent(
     `<svg xmlns="http://www.w3.org/2000/svg" width="800" height="600">
       <rect width="100%" height="100%" fill="#f3f4f6"/>
-      <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle"
-            font-family="Arial" font-size="24" fill="#9ca3af">Sin imagen</text>
-    </svg>`
+      <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" font-family="Arial" font-size="24" fill="#9ca3af">Sin imagen</text></svg>`
   );
 
 function toBucketUrl(rawPath) {
@@ -50,10 +48,10 @@ const Productos = ({ darkMode }) => {
   });
 
   const [reviews] = useState([
-    { id: 1, autor: "Juan Perez", fecha: "2025-06-01", comentario: "Muy buen producto.", puntuacion: 5 },
-    { id: 2, autor: "Ana Fernandez", fecha: "2025-06-05", comentario: "Podría ser mejor.", puntuacion: 3 },
-    { id: 3, autor: "Sofia De los montes", fecha: "2025-08-12", comentario: "Excelente calidad y precio muy recomendado.", puntuacion: 4 },
-    { id: 4, autor: "Pedro Manuel Campos", fecha: "2025-10-04", comentario: "Me llegó en mal estado el producto.", puntuacion: 1 },
+    { id: 1, autor: "Juan Perez", fecha: "2025-06-01", comentario: "Muy buen producto", puntuacion: 5 },
+    { id: 2, autor: "Ana Fernandez", fecha: "2025-06-05", comentario: "Podría ser mejor", puntuacion: 3 },
+    { id: 3, autor: "Sofia De los montes", fecha: "2025-08-12", comentario: "Excelente calidad y precio muy recomendado", puntuacion: 4 },
+    { id: 4, autor: "Pedro Manuel Campos", fecha: "2025-10-04", comentario: "Me llegó en mal estado el producto", puntuacion: 1 },
   ]);
 
   useEffect(() => {

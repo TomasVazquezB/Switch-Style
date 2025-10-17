@@ -5,9 +5,7 @@ const PLACEHOLDER =
   encodeURIComponent(
     `<svg xmlns="http://www.w3.org/2000/svg" width="800" height="600">
       <rect width="100%" height="100%" fill="#f3f4f6"/>
-      <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle"
-            font-family="Arial" font-size="24" fill="#9ca3af">Sin imagen</text>
-    </svg>`
+      <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" font-family="Arial" font-size="24" fill="#9ca3af">Sin imagen</text></svg>`
   );
 
 export function toBucketUrl(rawPath) {

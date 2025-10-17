@@ -317,7 +317,7 @@ const MainHombres = () => {
 
           {!filtroProductos.length && (
             <p className="col-span-full text-sm opacity-70 dark:text-gray-300">
-              No encontramos resultados con los filtros seleccionados.
+              No encontramos resultados con los filtros seleccionados
             </p>
           )}
         </div>

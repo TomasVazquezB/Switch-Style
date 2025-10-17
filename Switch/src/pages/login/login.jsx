@@ -51,13 +51,13 @@ export function LoginPage() {
       console.error("❌ Error al iniciar sesión:", err);
 
       if (err.response?.status === 419) {
-        setError("Error de sesión (CSRF). Refresca la página e inténtalo otra vez.");
+        setError("Error de sesión (CSRF). Refresca la página e inténtalo otra vez");
       } else if (err.response?.status === 401) {
         setError("Usuario o contraseña incorrectos.");
       } else if (err.response?.status === 422) {
-        setError("Por favor completa todos los campos correctamente.");
+        setError("Por favor completa todos los campos correctamente");
       } else {
-        setError(err.response?.data?.message || "Error inesperado al iniciar sesión.");
+        setError(err.response?.data?.message || "Error inesperado al iniciar sesión");
       }
     }
   };

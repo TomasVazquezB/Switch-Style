@@ -125,7 +125,6 @@ const ShopContextProvider = (props) => {
     };
 
     const esFavorito = (productoId) => favoritos.includes(productoId);
-
     const value = {moneda,delivery_fee,productos,navigate,search, setSearch,showSearch, setShowSearch,agregarAlCarrito,quitarDelCarrito,updateCantidad,carritoItems,getCarritoCount,getCarritoCantidad,limpiarCarrito,favoritos,toggleFavorito,esFavorito};
 
     return (
