@@ -12,8 +12,8 @@
     @endif
 
     @php
-        // Usamos la misma lista de accesorios que en el controller (pasada como $soloAccesorios)
-        $accesorios = $soloAccesorios ?? ['Collares', 'Anillos', 'Aritos'];
+        // Para impedir elegir accesorios en esta vista
+        $accesorios = ['Collares', 'Anillos', 'Aritos'];
         $categoriaSeleccionada = $categorias->firstWhere('id', request('categoria_id'));
         $themeLocal = request('theme', $theme ?? 'light');
     @endphp
@@ -58,7 +58,7 @@
                 </select>
             </div>
 
-            {{-- NUEVO: Filtro de Estilo (igual que en Accesorios) --}}
+            {{-- Filtro de Estilo --}}
             <div>
                 <label class="block text-sm font-medium text-gray-600">Estilo</label>
                 <select name="estilo" class="border border-gray-300 rounded px-3 py-2">
@@ -74,7 +74,7 @@
             </button>
         </form>
 
-        {{-- Toggle de tema por URL, igual a Accesorios --}}
+        {{-- Toggle de tema (mismo comportamiento que en Accesorios) --}}
         <div class="inline-flex rounded overflow-hidden border">
             <a href="{{ request()->fullUrlWithQuery(['theme' => 'light']) }}"
                class="px-4 py-2 text-sm {{ ($themeLocal==='light' || $themeLocal==='claro') ? 'bg-gray-900 text-white' : 'bg-white text-gray-700' }}">
