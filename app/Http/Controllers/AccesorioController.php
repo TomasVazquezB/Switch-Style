@@ -13,11 +13,12 @@ class AccesorioController extends Controller
 {
     public function index(Request $request)
     {
+        $theme = $request->query('theme');
+
         $query = auth()->user()->Tipo_Usuario === 'admin'
             ? Accesorio::query()
             : Accesorio::where('ID_Usuario', auth()->id());
 
-        // Filtros opcionales
         if ($request->filled('busqueda')) {
             $query->where('titulo', 'like', '%' . $request->busqueda . '%');
         }
@@ -25,7 +26,8 @@ class AccesorioController extends Controller
             $query->where('categoria_id', $request->categoria_id);
         }
 
-        // Eager loading para listar todas las imágenes sin N+1
+        $query->delEstilo($theme);
+
         $accesorios = $query->with(['imagenes', 'categoria'])
                             ->latest()
                             ->paginate(8)
@@ -33,7 +35,7 @@ class AccesorioController extends Controller
 
         $categorias = Categoria::whereIn('nombre', ['Anillos', 'Collares', 'Aritos'])->get();
 
-        return view('accesorios.index', compact('accesorios', 'categorias'));
+        return view('accesorios.index', compact('accesorios', 'categorias', 'theme'));
     }
 
     public function create()
@@ -51,6 +53,7 @@ class AccesorioController extends Controller
             'stock'        => 'required|integer|min:0',
             'categoria_id' => 'required|exists:categorias,id',
             'imagenes.*'   => 'nullable|image|max:2048',
+            'estilo'       => 'required|in:claro,oscuro',
         ]);
 
         $disk = config('filesystems.default');
@@ -63,12 +66,12 @@ class AccesorioController extends Controller
                 'stock'        => $request->stock,
                 'categoria_id' => $request->categoria_id,
                 'ID_Usuario'   => auth()->id(),
+                'estilo'       => $request->estilo,
             ]);
 
             if ($request->hasFile('imagenes')) {
                 foreach ($request->file('imagenes') as $index => $imagen) {
-                    // Guarda en el disco por defecto (S3/R2) bajo carpeta 'accesorios'
-                    $ruta = $imagen->store('accesorios', $disk); // devuelve p.ej. accesorios/xxx.jpg
+                    $ruta = $imagen->store('accesorios', $disk);
 
                     ImagenAccesorio::create([
                         'ruta'         => $ruta,
@@ -103,26 +106,25 @@ class AccesorioController extends Controller
             'stock'        => 'required|integer|min:0',
             'categoria_id' => 'required|exists:categorias,id',
             'imagenes.*'   => 'nullable|image|max:2048',
-            'principal'    => 'nullable|integer',  // id de ImagenAccesorio elegida como principal
+            'principal'    => 'nullable|integer',
             'borrar'       => 'array',
             'borrar.*'     => 'integer',
+            'estilo'       => 'required|in:claro,oscuro',
         ]);
 
         $disk = config('filesystems.default');
         $accesorio = Accesorio::with('imagenes')->findOrFail($id);
 
         DB::transaction(function () use ($request, $accesorio, $disk) {
-
-            // 1) Datos base
             $accesorio->update([
                 'titulo'       => $request->titulo,
                 'descripcion'  => $request->descripcion,
                 'precio'       => $request->precio,
                 'stock'        => $request->stock,
                 'categoria_id' => $request->categoria_id,
+                'estilo'       => $request->estilo,
             ]);
 
-            // 2) Borrar seleccionadas
             if ($request->filled('borrar')) {
                 $aBorrar = ImagenAccesorio::where('accesorio_id', $accesorio->id)
                     ->whereIn('id', $request->borrar)->get();
@@ -135,7 +137,6 @@ class AccesorioController extends Controller
                 }
             }
 
-            // 3) Subir nuevas (la primera será candidata a principal si no marcás otra)
             $primeraNueva = null;
             if ($request->hasFile('imagenes')) {
                 foreach ($request->file('imagenes') as $i => $file) {
@@ -148,16 +149,15 @@ class AccesorioController extends Controller
                     ]);
 
                     if ($i === 0) {
-                        $primeraNueva = $nueva; // candidata
+                        $primeraNueva = $nueva;
                     }
                 }
             }
 
-            // 4) Resolver principal
             $principalId = $request->input('principal');
 
             if (!$principalId && $primeraNueva) {
-                $principalId = $primeraNueva->id; // si no marcaste, usamos la primera nueva
+                $principalId = $primeraNueva->id;
             }
 
             if ($principalId) {
@@ -202,10 +202,17 @@ class AccesorioController extends Controller
         return redirect()->route('accesorios.index')->with('success', 'Accesorio eliminado correctamente.');
     }
 
-    // API opcional
-    public function apiIndex()
+    public function apiIndex(Request $request)
     {
-        return Accesorio::with('imagenes', 'categoria')->get();
+        $theme = $request->query('theme');
+
+        $query = Accesorio::with('imagenes', 'categoria')->delEstilo($theme);
+
+        if ($request->filled('categoria_id')) {
+            $query->where('categoria_id', $request->categoria_id);
+        }
+
+        return $query->get();
     }
 
     public function apiShow($id)
@@ -221,6 +228,7 @@ class AccesorioController extends Controller
             'ruta_imagen' => $accesorio->ruta_imagen,
             'categoria'   => $accesorio->categoria,
             'imagenes'    => $accesorio->imagenes,
+            'estilo'      => $accesorio->estilo,
         ]);
     }
 }

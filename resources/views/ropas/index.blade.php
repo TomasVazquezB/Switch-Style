@@ -11,10 +11,10 @@
         </div>
     @endif
 
-    {{-- Advertencia si el usuario intenta filtrar por una categoría de accesorio --}}
     @php
         $accesorios = ['Collares', 'Anillos', 'Aritos'];
         $categoriaSeleccionada = $categorias->firstWhere('id', request('categoria_id'));
+        $themeLocal = request('theme', $theme ?? 'light');
     @endphp
 
     @if($categoriaSeleccionada && in_array($categoriaSeleccionada->nombre, $accesorios))
@@ -63,6 +63,17 @@
             </button>
         </form>
 
+        <div class="inline-flex rounded overflow-hidden border">
+            <a href="{{ request()->fullUrlWithQuery(['theme' => 'light']) }}"
+               class="px-4 py-2 text-sm {{ ($themeLocal==='light' || $themeLocal==='claro') ? 'bg-gray-900 text-white' : 'bg-white text-gray-700' }}">
+                Claro
+            </a>
+            <a href="{{ request()->fullUrlWithQuery(['theme' => 'dark']) }}"
+               class="px-4 py-2 text-sm {{ ($themeLocal==='dark' || $themeLocal==='oscuro') ? 'bg-gray-900 text-white' : 'bg-white text-gray-700' }}">
+                Oscuro
+            </a>
+        </div>
+
         <a href="{{ route('ropas.create') }}"
            class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 transition text-center">
             + Agregar prenda
@@ -78,6 +89,7 @@
                     <th class="px-4 py-2 border">Precio</th>
                     <th class="px-4 py-2 border">Categoría</th>
                     <th class="px-4 py-2 border">Género</th>
+                    <th class="px-4 py-2 border">Estilo</th>
                     <th class="px-4 py-2 border">Stock por Talla</th>
                     <th class="px-4 py-2 border">Acciones</th>
                 </tr>
@@ -85,7 +97,6 @@
             <tbody>
                 @forelse($ropas as $ropa)
                     <tr class="border-t align-top">
-                        {{-- TODAS las imágenes de la prenda --}}
                         <td class="px-4 py-2 border">
                             @if($ropa->imagenes->count())
                                 <div class="flex flex-wrap gap-2 max-w-[260px]">
@@ -107,6 +118,7 @@
                         <td class="px-4 py-2 border">${{ number_format($ropa->precio, 2, ',', '.') }}</td>
                         <td class="px-4 py-2 border">{{ $ropa->categoria->nombre ?? '-' }}</td>
                         <td class="px-4 py-2 border">{{ $ropa->genero->nombre ?? '-' }}</td>
+                        <td class="px-4 py-2 border uppercase text-xs">{{ $ropa->estilo }}</td>
 
                         <td class="px-4 py-2 border">
                             @forelse($ropa->tallas as $t)
@@ -132,7 +144,7 @@
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="7" class="text-center px-4 py-6 text-gray-500 italic">
+                        <td colspan="8" class="text-center px-4 py-6 text-gray-500 italic">
                             No hay prendas que coincidan.
                         </td>
                     </tr>

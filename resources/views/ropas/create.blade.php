@@ -57,6 +57,15 @@
         </div>
 
         <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Estilo</label>
+            <select name="estilo" required class="w-full border border-gray-300 rounded-md px-4 py-2">
+                <option value="claro" {{ old('estilo','claro')==='claro' ? 'selected' : '' }}>Claro</option>
+                <option value="oscuro" {{ old('estilo')==='oscuro' ? 'selected' : '' }}>Oscuro</option>
+            </select>
+            @error('estilo')<p class="text-xs text-red-600 mt-1">{{ $message }}</p>@enderror
+        </div>
+
+        <div>
             <label class="block text-sm font-medium text-gray-700 mb-1">Stock por talla</label>
             <div class="flex flex-wrap gap-6">
                 @foreach ($tallas as $talla)
@@ -95,7 +104,6 @@
     </form>
 </div>
 
-{{-- Previsualización simple --}}
 <script>
 document.getElementById('imagenes')?.addEventListener('change', function (e) {
     const cont = document.getElementById('preview');

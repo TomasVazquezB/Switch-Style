@@ -16,6 +16,12 @@ class Ropa extends Model
         'categoria_id',
         'genero_id',
         'ID_Usuario',
+        'estilo', // ← NUEVO: 'claro' | 'oscuro'
+    ];
+
+    protected $casts = [
+        'precio' => 'decimal:2',
+        'estilo' => 'string',
     ];
 
     public function usuario()
@@ -49,5 +55,23 @@ class Ropa extends Model
     {
         return $query->where('ID_Usuario', $userId ?? auth()->id());
     }
-}
 
+    /**
+     * Filtra por tema (acepta 'light'/'dark' o 'claro'/'oscuro')
+     * Uso: Ropa::delEstilo($request->query('theme'))->get();
+     */
+    public function scopeDelEstilo($query, $theme)
+    {
+        if (!$theme) return $query;
+
+        $map = [
+            'light'  => 'claro',
+            'dark'   => 'oscuro',
+            'claro'  => 'claro',
+            'oscuro' => 'oscuro',
+        ];
+
+        $value = $map[strtolower($theme)] ?? null;
+        return $value ? $query->where('estilo', $value) : $query;
+    }
+}

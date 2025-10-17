@@ -19,21 +19,18 @@
         @csrf
         @method('PUT')
 
-        {{-- Título --}}
         <div>
             <label class="block text-sm font-medium text-gray-700 mb-1">Título</label>
             <input type="text" name="titulo" value="{{ old('titulo', $ropa->titulo) }}" required
                    class="w-full border border-gray-300 rounded-md px-4 py-2 focus:ring-2 focus:ring-blue-400">
         </div>
 
-        {{-- Descripción --}}
         <div>
             <label class="block text-sm font-medium text-gray-700 mb-1">Descripción</label>
             <textarea name="descripcion" rows="3" required
                       class="w-full border border-gray-300 rounded-md px-4 py-2 focus:ring-2 focus:ring-blue-400">{{ old('descripcion', $ropa->descripcion) }}</textarea>
         </div>
 
-        {{-- Categoría / Género --}}
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
                 <label class="block text-sm font-medium text-gray-700 mb-1">Categoría</label>
@@ -60,7 +57,15 @@
             </div>
         </div>
 
-        {{-- Stock por talla --}}
+        <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Estilo</label>
+            <select name="estilo" required class="w-full border border-gray-300 rounded-md px-4 py-2">
+                <option value="claro" {{ old('estilo', $ropa->estilo)==='claro' ? 'selected' : '' }}>Claro</option>
+                <option value="oscuro" {{ old('estilo', $ropa->estilo)==='oscuro' ? 'selected' : '' }}>Oscuro</option>
+            </select>
+            @error('estilo')<p class="text-xs text-red-600 mt-1">{{ $message }}</p>@enderror
+        </div>
+
         <div>
             <label class="block text-sm font-medium text-gray-700 mb-1">Stock por talla</label>
             <div class="flex flex-wrap gap-6">
@@ -80,14 +85,12 @@
             </div>
         </div>
 
-        {{-- Precio --}}
         <div>
             <label class="block text-sm font-medium text-gray-700 mb-1">Precio</label>
             <input type="number" step="0.01" name="precio" value="{{ old('precio', $ropa->precio) }}" required
                    class="w-full border border-gray-300 rounded-md px-4 py-2 focus:ring-2 focus:ring-blue-400">
         </div>
 
-        {{-- Imágenes existentes (solo eliminar, SIN principal) --}}
         @if ($ropa->imagenes->count())
             <div>
                 <p class="text-sm font-medium text-gray-700 mb-2">Imágenes existentes</p>
@@ -108,7 +111,6 @@
             </div>
         @endif
 
-        {{-- Subir nuevas --}}
         <div>
             <label class="block text-sm font-medium text-gray-700 mb-1">Imágenes (podés subir nuevas)</label>
             <input type="file" name="imagenes[]" multiple accept="image/*"
@@ -118,7 +120,6 @@
             </p>
         </div>
 
-        {{-- Acciones --}}
         <div class="flex justify-end gap-2">
             <a href="{{ route('ropas.index') }}"
                class="bg-gray-200 text-gray-800 px-4 py-2 rounded hover:bg-gray-300">

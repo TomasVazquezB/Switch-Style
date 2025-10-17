@@ -18,21 +18,18 @@
     <form action="{{ route('accesorios.store') }}" method="POST" enctype="multipart/form-data" class="space-y-6">
         @csrf
 
-        {{-- Título --}}
         <div>
             <label class="block text-sm font-medium text-gray-700 mb-1">Título</label>
             <input type="text" name="titulo" value="{{ old('titulo') }}" required
                    class="w-full border border-gray-300 rounded-md px-4 py-2 focus:ring-2 focus:ring-blue-400">
         </div>
 
-        {{-- Descripción --}}
         <div>
             <label class="block text-sm font-medium text-gray-700 mb-1">Descripción</label>
             <textarea name="descripcion" rows="3" required
                       class="w-full border border-gray-300 rounded-md px-4 py-2 focus:ring-2 focus:ring-blue-400">{{ old('descripcion') }}</textarea>
         </div>
 
-        {{-- Precio / Stock / Categoría --}}
         <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
             <div>
                 <label class="block text-sm font-medium text-gray-700 mb-1">Precio</label>
@@ -59,7 +56,15 @@
             </div>
         </div>
 
-        {{-- Imágenes --}}
+        <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Estilo</label>
+            <select name="estilo" required class="w-full border border-gray-300 rounded-md px-4 py-2">
+                <option value="claro" {{ old('estilo','claro')==='claro' ? 'selected' : '' }}>Claro</option>
+                <option value="oscuro" {{ old('estilo')==='oscuro' ? 'selected' : '' }}>Oscuro</option>
+            </select>
+            @error('estilo')<p class="text-xs text-red-600 mt-1">{{ $message }}</p>@enderror
+        </div>
+
         <div>
             <label class="block text-sm font-medium text-gray-700 mb-1">Imágenes (podés subir varias)</label>
             <input id="imagenes" type="file" name="imagenes[]" multiple accept="image/*"
@@ -67,12 +72,9 @@
             <p class="text-xs text-gray-500 mt-1">
                 La primera imagen será la <strong>principal</strong>. Máx. 2 MB por imagen.
             </p>
-
-            {{-- Previsualización --}}
             <div id="preview" class="mt-3 flex flex-wrap gap-3"></div>
         </div>
 
-        {{-- Acciones --}}
         <div class="flex justify-end gap-2">
             <a href="{{ route('accesorios.index') }}"
                class="bg-gray-200 text-gray-800 px-4 py-2 rounded hover:bg-gray-300">
@@ -86,7 +88,6 @@
     </form>
 </div>
 
-{{-- Script simple para previsualizar imágenes --}}
 <script>
 document.getElementById('imagenes')?.addEventListener('change', function (e) {
     const cont = document.getElementById('preview');

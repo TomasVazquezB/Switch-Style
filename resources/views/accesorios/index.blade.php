@@ -13,7 +13,21 @@
 
     @php
         $soloAccesorios = ['Collares', 'Anillos', 'Aritos'];
+        $theme = request('theme', 'light');
     @endphp
+
+    <div class="flex items-center justify-end mb-6">
+        <div class="inline-flex rounded overflow-hidden border">
+            <a href="{{ request()->fullUrlWithQuery(['theme' => 'light']) }}"
+               class="px-4 py-2 text-sm {{ ($theme==='light' || $theme==='claro') ? 'bg-gray-900 text-white' : 'bg-white text-gray-700' }}">
+                Claro
+            </a>
+            <a href="{{ request()->fullUrlWithQuery(['theme' => 'dark']) }}"
+               class="px-4 py-2 text-sm {{ ($theme==='dark' || $theme==='oscuro') ? 'bg-gray-900 text-white' : 'bg-white text-gray-700' }}">
+                Oscuro
+            </a>
+        </div>
+    </div>
 
     <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-6">
         <form method="GET" class="flex flex-wrap gap-4 items-end">
@@ -34,6 +48,15 @@
                             </option>
                         @endif
                     @endforeach
+                </select>
+            </div>
+
+            <div>
+                <label class="block text-sm font-medium text-gray-600">Estilo</label>
+                <select name="estilo" class="border border-gray-300 rounded px-3 py-2">
+                    <option value="">Todos</option>
+                    <option value="claro" {{ request('estilo') === 'claro' ? 'selected' : '' }}>Claro</option>
+                    <option value="oscuro" {{ request('estilo') === 'oscuro' ? 'selected' : '' }}>Oscuro</option>
                 </select>
             </div>
 
@@ -58,22 +81,22 @@
                     <th class="px-4 py-2 border">Precio</th>
                     <th class="px-4 py-2 border">Stock</th>
                     <th class="px-4 py-2 border">Categoría</th>
+                    <th class="px-4 py-2 border">Estilo</th>
                     <th class="px-4 py-2 border">Acciones</th>
                 </tr>
             </thead>
             <tbody>
                 @forelse($accesorios as $accesorio)
                     <tr class="border-t align-top">
-                        {{-- Todas las imágenes del accesorio --}}
                         <td class="px-4 py-2 border">
                             @if($accesorio->imagenes->count())
                                 <div class="flex flex-wrap gap-2 max-w-[260px]">
                                     @foreach($accesorio->imagenes as $img)
-    <img src="{{ Storage::disk(config('filesystems.default'))->url($img->ruta) }}"
-         onerror="this.onerror=null;this.src='{{ asset('images/placeholder.png') }}';"
-         class="w-16 h-16 object-cover rounded shadow"
-         alt="{{ $accesorio->titulo }}">
-@endforeach
+                                        <img src="{{ Storage::disk(config('filesystems.default'))->url($img->ruta) }}"
+                                             onerror="this.onerror=null;this.src='{{ asset('images/placeholder.png') }}';"
+                                             class="w-16 h-16 object-cover rounded shadow"
+                                             alt="{{ $accesorio->titulo }}">
+                                    @endforeach
                                 </div>
                             @else
                                 <img src="{{ asset('images/placeholder.png') }}"
@@ -86,6 +109,7 @@
                         <td class="px-4 py-2 border">${{ number_format($accesorio->precio, 2, ',', '.') }}</td>
                         <td class="px-4 py-2 border">{{ $accesorio->stock }}</td>
                         <td class="px-4 py-2 border">{{ $accesorio->categoria->nombre ?? '-' }}</td>
+                        <td class="px-4 py-2 border uppercase text-xs">{{ $accesorio->estilo }}</td>
 
                         <td class="px-4 py-2 border text-center space-x-2">
                             <a href="{{ route('accesorios.edit', $accesorio->id) }}"
@@ -103,7 +127,7 @@
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="6" class="text-center px-4 py-6 text-gray-500 italic">
+                        <td colspan="7" class="text-center px-4 py-6 text-gray-500 italic">
                             No hay accesorios que coincidan.
                         </td>
                     </tr>
