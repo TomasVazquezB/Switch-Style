@@ -12,10 +12,10 @@
     @endif
 
     @php
-        // Para impedir elegir accesorios en esta vista
         $accesorios = ['Collares', 'Anillos', 'Aritos'];
         $categoriaSeleccionada = $categorias->firstWhere('id', request('categoria_id'));
         $themeLocal = request('theme', $theme ?? 'light');
+        $paramsBase = request()->except(['page']);
     @endphp
 
     @if($categoriaSeleccionada && in_array($categoriaSeleccionada->nombre, $accesorios))
@@ -58,7 +58,6 @@
                 </select>
             </div>
 
-            {{-- Filtro de Estilo --}}
             <div>
                 <label class="block text-sm font-medium text-gray-600">Estilo</label>
                 <select name="estilo" class="border border-gray-300 rounded px-3 py-2">
@@ -74,13 +73,12 @@
             </button>
         </form>
 
-        {{-- Toggle de tema (mismo comportamiento que en Accesorios) --}}
         <div class="inline-flex rounded overflow-hidden border">
-            <a href="{{ request()->fullUrlWithQuery(['theme' => 'light']) }}"
+            <a href="{{ route('ropas.index', array_merge($paramsBase, ['theme' => 'light', 'estilo' => 'claro'])) }}"
                class="px-4 py-2 text-sm {{ ($themeLocal==='light' || $themeLocal==='claro') ? 'bg-gray-900 text-white' : 'bg-white text-gray-700' }}">
                 Claro
             </a>
-            <a href="{{ request()->fullUrlWithQuery(['theme' => 'dark']) }}"
+            <a href="{{ route('ropas.index', array_merge($paramsBase, ['theme' => 'dark', 'estilo' => 'oscuro'])) }}"
                class="px-4 py-2 text-sm {{ ($themeLocal==='dark' || $themeLocal==='oscuro') ? 'bg-gray-900 text-white' : 'bg-white text-gray-700' }}">
                 Oscuro
             </a>

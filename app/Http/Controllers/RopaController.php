@@ -13,19 +13,18 @@ class RopaController extends Controller
 {
     public function index(Request $request)
     {
-        // Tema UI con default (evita null)
         $theme = $request->query('theme', 'light');
+        $t = strtolower((string) $theme);
+        $themeStyle = $t === 'dark' || $t === 'oscuro' ? 'oscuro'
+                     : ($t === 'light' || $t === 'claro' ? 'claro' : null);
 
-        // Admin ve todo; resto ve propias (con guardia de auth)
         $esAdmin = auth()->check() && strtolower((string) auth()->user()->Tipo_Usuario) === 'admin';
         $query   = $esAdmin ? Ropa::query() : Ropa::propias();
 
-        // Excluir categorías de accesorios (defensa en back)
         $query->whereHas('categoria', function ($q) {
             $q->whereNotIn('nombre', ['Collares', 'Aritos', 'Anillos']);
         });
 
-        // Filtros
         if ($request->filled('busqueda')) {
             $query->where('titulo', 'like', '%' . $request->busqueda . '%');
         }
@@ -36,8 +35,7 @@ class RopaController extends Controller
             $query->where('genero_id', $request->genero_id);
         }
 
-        // Estilo (claro/oscuro) desde select o theme
-        $estilo = $request->get('estilo') ?: $theme;
+        $estilo = $request->get('estilo') ?: $themeStyle;
         if ($estilo) {
             if (method_exists(new \App\Models\Ropa, 'scopeDelEstilo')) {
                 $query->delEstilo($estilo);
@@ -46,13 +44,11 @@ class RopaController extends Controller
             }
         }
 
-        // Eager loading + orden + paginación
         $ropas = $query->with(['imagenes', 'categoria', 'genero', 'tallas'])
             ->latest()
             ->paginate(8)
             ->appends($request->query());
 
-        // Datos para selects
         $categorias = Categoria::whereNotIn('nombre', ['Collares', 'Aritos', 'Anillos'])
             ->orderBy('nombre')->get();
         $generos = Genero::orderBy('nombre')->get();
@@ -158,7 +154,6 @@ class RopaController extends Controller
                 'estilo'       => $request->estilo,
             ]);
 
-            // sync tallas
             $syncData = [];
             foreach ($request->tallas as $tallaData) {
                 $cant = (int)($tallaData['cantidad'] ?? 0);
@@ -168,7 +163,6 @@ class RopaController extends Controller
             }
             $ropa->tallas()->sync($syncData);
 
-            // borrar imágenes marcadas
             $idsBorrar = (array) $request->input('borrar', []);
             if (!empty($idsBorrar)) {
                 $imagenes = $ropa->imagenes()->whereIn('id', $idsBorrar)->get();
@@ -180,7 +174,6 @@ class RopaController extends Controller
                 }
             }
 
-            // nuevas imágenes
             if ($request->hasFile('imagenes')) {
                 foreach ($request->file('imagenes') as $imagen) {
                     $ruta = $imagen->store('ropa', $disk);
@@ -214,17 +207,19 @@ class RopaController extends Controller
         return redirect()->route('ropas.index')->with('success', 'Prenda eliminada.');
     }
 
-    // === APIs opcionales ===
     public function apiIndex(Request $request)
     {
         $theme = $request->query('theme', 'light');
+        $t = strtolower((string) $theme);
+        $themeStyle = $t === 'dark' || $t === 'oscuro' ? 'oscuro'
+                     : ($t === 'light' || $t === 'claro' ? 'claro' : null);
 
         $query = Ropa::with(['imagenes', 'categoria', 'genero'])
             ->whereHas('categoria', function ($q) {
                 $q->whereNotIn('nombre', ['Anillos', 'Collares', 'Aritos']);
             });
 
-        $estilo = $request->get('estilo') ?: $theme;
+        $estilo = $request->get('estilo') ?: $themeStyle;
         if ($estilo) {
             $query->where('estilo', $estilo);
         }
