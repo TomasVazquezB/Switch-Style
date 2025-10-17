@@ -14,20 +14,8 @@
     @php
         $soloAccesorios = ['Collares', 'Anillos', 'Aritos'];
         $theme = request('theme', 'light');
+        $paramsBase = request()->except(['page']);
     @endphp
-
-    <div class="flex items-center justify-end mb-6">
-        <div class="inline-flex rounded overflow-hidden border">
-            <a href="{{ request()->fullUrlWithQuery(['theme' => 'light']) }}"
-               class="px-4 py-2 text-sm {{ ($theme==='light' || $theme==='claro') ? 'bg-gray-900 text-white' : 'bg-white text-gray-700' }}">
-                Claro
-            </a>
-            <a href="{{ request()->fullUrlWithQuery(['theme' => 'dark']) }}"
-               class="px-4 py-2 text-sm {{ ($theme==='dark' || $theme==='oscuro') ? 'bg-gray-900 text-white' : 'bg-white text-gray-700' }}">
-                Oscuro
-            </a>
-        </div>
-    </div>
 
     <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-6">
         <form method="GET" class="flex flex-wrap gap-4 items-end">
@@ -66,10 +54,23 @@
             </button>
         </form>
 
-        <a href="{{ route('accesorios.create') }}"
-           class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 transition text-center">
-            + Agregar accesorio
-        </a>
+        <div class="flex items-center gap-3">
+            <div class="inline-flex rounded overflow-hidden border">
+                <a href="{{ route('accesorios.index', array_merge($paramsBase, ['theme' => 'light', 'estilo' => 'claro'])) }}"
+                   class="px-4 py-2 text-sm {{ ($theme==='light' || $theme==='claro') ? 'bg-gray-900 text-white' : 'bg-white text-gray-700' }}">
+                    Claro
+                </a>
+                <a href="{{ route('accesorios.index', array_merge($paramsBase, ['theme' => 'dark', 'estilo' => 'oscuro'])) }}"
+                   class="px-4 py-2 text-sm {{ ($theme==='dark' || $theme==='oscuro') ? 'bg-gray-900 text-white' : 'bg-white text-gray-700' }}">
+                    Oscuro
+                </a>
+            </div>
+
+            <a href="{{ route('accesorios.create') }}"
+               class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 transition text-center">
+                + Agregar accesorio
+            </a>
+        </div>
     </div>
 
     <div class="overflow-x-auto">
