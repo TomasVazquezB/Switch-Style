@@ -24,6 +24,11 @@ class Ropa extends Model
         'estilo' => 'string',
     ];
 
+    protected $attributes = [
+        'estilo' => 'claro',
+    ];
+
+
     public function usuario()
     {
         return $this->belongsTo(User::class, 'ID_Usuario');
@@ -51,6 +56,8 @@ class Ropa extends Model
             ->withTimestamps();
     }
 
+
+
     public function scopePropias($query, $userId = null)
     {
         $id = $userId ?? optional(auth()->user())->ID_Usuario;
@@ -70,5 +77,12 @@ class Ropa extends Model
 
         $value = $map[strtolower($theme)] ?? null;
         return $value ? $query->where('estilo', $value) : $query;
+    }
+
+
+    public function setEstiloAttribute($value): void
+    {
+        $v = strtolower((string) $value);
+        $this->attributes['estilo'] = in_array($v, ['claro','oscuro'], true) ? $v : 'claro';
     }
 }
