@@ -12,6 +12,8 @@ class User extends Authenticatable
 
     protected $table = 'usuario';
     protected $primaryKey = 'ID_Usuario';
+    public $incrementing = true;
+    protected $keyType = 'int';
     public $timestamps = false;
 
     protected $fillable = [
@@ -30,6 +32,11 @@ class User extends Authenticatable
     }
 
     public function getAuthIdentifierName()
+    {
+        return 'ID_Usuario';
+    }
+
+    public function username()
     {
         return 'Correo_Electronico';
     }
