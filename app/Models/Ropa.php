@@ -16,7 +16,7 @@ class Ropa extends Model
         'categoria_id',
         'genero_id',
         'ID_Usuario',
-        'estilo', // ← NUEVO: 'claro' | 'oscuro'
+        'estilo',
     ];
 
     protected $casts = [
@@ -47,20 +47,17 @@ class Ropa extends Model
     public function tallas()
     {
         return $this->belongsToMany(Talla::class, 'ropa_talla')
-                    ->withPivot('cantidad')
-                    ->withTimestamps();
+            ->withPivot('cantidad')
+            ->withTimestamps();
     }
 
     public function scopePropias($query, $userId = null)
     {
-        return $query->where('ID_Usuario', $userId ?? auth()->id());
+        $id = $userId ?? optional(auth()->user())->ID_Usuario;
+        return $id ? $query->where('ID_Usuario', $id) : $query;
     }
 
-    /**
-     * Filtra por tema (acepta 'light'/'dark' o 'claro'/'oscuro')
-     * Uso: Ropa::delEstilo($request->query('theme'))->get();
-     */
-    public function scopeDelEstilo($query, $theme)
+    public function scopeDelEstilo($query, $theme = null)
     {
         if (!$theme) return $query;
 
