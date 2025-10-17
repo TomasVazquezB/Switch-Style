@@ -13,7 +13,7 @@
 
     @php
         $soloAccesorios = ['Collares', 'Anillos', 'Aritos'];
-        $theme = request('theme', 'light');
+        $themeLocal = request('theme', 'light');
         $paramsBase = request()->except(['page']);
     @endphp
 
@@ -57,11 +57,11 @@
         <div class="flex items-center gap-3">
             <div class="inline-flex rounded overflow-hidden border">
                 <a href="{{ route('accesorios.index', array_merge($paramsBase, ['theme' => 'light', 'estilo' => 'claro'])) }}"
-                   class="px-4 py-2 text-sm {{ ($theme==='light' || $theme==='claro') ? 'bg-gray-900 text-white' : 'bg-white text-gray-700' }}">
+                   class="px-4 py-2 text-sm {{ ($themeLocal==='light' || $themeLocal==='claro') ? 'bg-gray-900 text-white' : 'bg-white text-gray-700' }}">
                     Claro
                 </a>
                 <a href="{{ route('accesorios.index', array_merge($paramsBase, ['theme' => 'dark', 'estilo' => 'oscuro'])) }}"
-                   class="px-4 py-2 text-sm {{ ($theme==='dark' || $theme==='oscuro') ? 'bg-gray-900 text-white' : 'bg-white text-gray-700' }}">
+                   class="px-4 py-2 text-sm {{ ($themeLocal==='dark' || $themeLocal==='oscuro') ? 'bg-gray-900 text-white' : 'bg-white text-gray-700' }}">
                     Oscuro
                 </a>
             </div>
