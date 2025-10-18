@@ -288,7 +288,7 @@ body.dark-mode .summary-line span {
 /* Corrige visibilidad de texto y controles en modo oscuro */
 body.dark-mode .cart-product,
 body.dark-mode .cart-product * {
-  color: #000 !important; /* texto negro visible sobre fondo blanco */
+  color: #ffffff !important; /* texto negro visible sobre fondo blanco */
   fill: #000 !important; /* íconos o SVG */
 }
 
@@ -318,3 +318,150 @@ body.dark-mode .cart-qty-controls button:hover {
   color: #333 !important; /* leve cambio al pasar el mouse */
   border-color: #333 !important;
 }
+
+/* --- RESET LOCAL --- */
+.cart-product {
+  transition: all 0.3s ease;
+  border-radius: 14px;
+  padding: 18px;
+  margin-bottom: 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
+}
+
+/* --- MODO CLARO --- */
+body.light-mode .cart-product {
+  background-color: #f3f3f3;
+  color: #111;
+}
+
+body.light-mode .cart-product h4,
+body.light-mode .cart-product p,
+body.light-mode .cart-product input {
+  color: #111;
+}
+
+body.light-mode .cart-product button {
+  background-color: #111;
+  color: #fff;
+  border: none;
+}
+
+body.light-mode .cart-product button:hover {
+  background-color: #333;
+}
+
+/* --- MODO OSCURO --- */
+body.dark-mode .cart-product {
+  background-color: #1c1c1c;
+  color: #f3f3f3;
+  box-shadow: 0 2px 8px rgba(255, 255, 255, 0.1);
+}
+
+body.dark-mode .cart-product h4,
+body.dark-mode .cart-product p,
+body.dark-mode .cart-product input {
+  color: #f3f3f3;
+}
+
+body.dark-mode .cart-product button {
+  background-color: #fff;
+  color: #000;
+  border: none;
+}
+
+body.dark-mode .cart-product button:hover {
+  background-color: #ddd;
+}
+
+/* --- IMAGEN --- */
+.cart-product img {
+  width: 110px;
+  height: 110px;
+  border-radius: 10px;
+  object-fit: cover;
+  margin-bottom: 10px;
+}
+
+/* --- INFO TEXTO --- */
+.cart-product-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  width: 100%;
+}
+
+/* --- CANTIDAD --- */
+.cart-qty-controls {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.cart-qty-controls input {
+  width: 45px;
+  text-align: center;
+  border-radius: 6px;
+  border: 1px solid rgba(120, 120, 120, 0.3);
+  background-color: transparent;
+  outline: none;
+  padding: 4px;
+}
+
+/* --- BOTÓN ELIMINAR --- */
+.remove-btn {
+  margin-top: 10px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  border-radius: 8px;
+  padding: 7px 12px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+/* --- SUAVIZAR EFECTOS HOVER --- */
+.cart-product:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
+}
+
+body.dark-mode .cart-product:hover {
+  box-shadow: 0 4px 10px rgba(255, 255, 255, 0.08);
+}
+
+/* --- NOMBRE DEL PRODUCTO --- */
+body.dark-mode .cart-product h4 {
+  color: #f5f5f5 !important; /* texto claro sobre fondo oscuro */
+}
+
+body.light-mode .cart-product h4 {
+  color: #111 !important; /* texto oscuro sobre fondo claro */
+}
+
+/* --- PRECIO --- */
+body.dark-mode .cart-product p {
+  color: #e0e0e0 !important;
+}
+
+body.light-mode .cart-product p {
+  color: #222 !important;
+}
+
+/* --- BOTONES + Y - --- */
+body.dark-mode .cart-product .cart-qty-controls button {
+  color: #f5f5f5 !important; /* blanco sobre fondo oscuro */
+
+  background: transparent;
+}
+
+body.light-mode .cart-product .cart-qty-controls button {
+  color: #111 !important; /* negro sobre fondo claro */
+  
+  background: transparent;
+}
+
+
+
