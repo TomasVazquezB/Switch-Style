@@ -86,11 +86,7 @@ const Carrito = () => {
                         const producto = buscarProducto(item);
                         if (!producto) return null;
 
-                        const imagen = item.ruta_imagen
-                            ? item.ruta_imagen
-                            : producto.ruta_imagen?.startsWith('http')
-                                ? producto.ruta_imagen
-                                : `${axios.defaults.baseURL}/storage/${producto.ruta_imagen}`;
+                        const imagen = item.ruta_imagen ? item.ruta_imagen : producto.ruta_imagen?.startsWith('http') ? producto.ruta_imagen : `${axios.defaults.baseURL}/storage/${producto.ruta_imagen}`;
                         const talla = item.talla ? ` | ${item.talla}` : '';
 
                         return (
