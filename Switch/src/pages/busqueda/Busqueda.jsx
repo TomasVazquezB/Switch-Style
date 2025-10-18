@@ -3,7 +3,6 @@ import { useLocation, Link } from "react-router-dom";
 import { DataContext } from "../../context/DataContext";
 import "./busqueda.css";
 
-// === 🖼️ Configuración de imágenes ===
 const BUCKET_BASE = (import.meta.env.VITE_ASSETS_BASE || "").replace(/\/+$/, "");
 const BACKEND_BASE = import.meta.env.VITE_API_URL || "https://switchstyle.laravel.cloud";
 const PLACEHOLDER =
@@ -18,7 +17,6 @@ const PLACEHOLDER =
 function toBucketUrl(rawPath) {
   if (!rawPath) return PLACEHOLDER;
 
-  // Si ya es una URL completa
   if (/^https?:\/\//i.test(rawPath)) return rawPath;
 
   let key = String(rawPath)
@@ -27,17 +25,14 @@ function toBucketUrl(rawPath) {
     .replace(/^public\//, "")
     .replace(/^storage\//, "");
 
-  // Normalizar rutas posibles
   if (!key.startsWith("imagenes/")) {
     if (/^ropa\//i.test(key)) key = key.replace(/^ropa\//i, "imagenes/ropa/");
     if (/^accesorios\//i.test(key))
       key = key.replace(/^accesorios\//i, "imagenes/accesorios/");
   }
 
-  // 🔹 Generar URL final confiable
   const BASE = import.meta.env.VITE_API_URL || "https://switchstyle.laravel.cloud";
 
-  // Siempre apunta al storage del backend
   return `${BASE}/storage/${encodeURI(key)}`;
 }
 
@@ -49,15 +44,7 @@ const ProductoItem = ({ id, img, nombre, precio, esFavorito, onToggleFavorito })
         <div className="busqueda-page-info">
           <h3 className="busqueda-page-title-producto">{nombre}</h3>
           <p className="busqueda-page-precio-producto">${precio}</p>
-          <div
-            className="busqueda-page-favorito"
-            onClick={(e) => {
-              e.preventDefault();
-              onToggleFavorito();
-            }}
-          >
-            {esFavorito ? "❤️" : "🤍"} Favorito
-          </div>
+          <div className="busqueda-page-favorito" onClick={(e) => {e.preventDefault();onToggleFavorito();}}>{esFavorito ? "❤️" : "🤍"} Favorito</div>
         </div>
       </div>
     </Link>
@@ -122,29 +109,17 @@ const Busqueda = () => {
       ) : !query ? (
         <p className="busqueda-page-message">Ingresa algo para buscar</p>
       ) : resultados.length === 0 ? (
-        <p className="busqueda-page-message">
-          No se encontraron productos que coincidan con "{query}"
-        </p>
+        <p className="busqueda-page-message">No se encontraron productos que coincidan con "{query}"</p>
       ) : (
         <div className="busqueda-page-grid">
           {resultados.map((item) => {
             const raw = item.imagen_url || item.ruta_imagen || item?.imagenes?.[0]?.ruta || "";
             const imageUrl = toBucketUrl(raw);
-
-            // 🧠 Debug visual (quítalo si no lo necesitás)
             console.log("🖼️ RAW:", raw);
             console.log("✅ FINAL URL:", imageUrl);
 
             return (
-              <ProductoItem
-                key={item.id}
-                id={item.id}
-                img={imageUrl}
-                nombre={item.titulo || item.Titulo}
-                precio={item.precio || item.Precio}
-                esFavorito={favoritos.includes(item.id)}
-                onToggleFavorito={() => toggleFavorito(item.id)}
-              />
+              <ProductoItem key={item.id} id={item.id} img={imageUrl} nombre={item.titulo || item.Titulo} precio={item.precio || item.Precio} esFavorito={favoritos.includes(item.id)} onToggleFavorito={() => toggleFavorito(item.id)}/>
             );
           })}
         </div>
