@@ -31,7 +31,7 @@ class Kernel extends HttpKernel
 
         'api' => [
             // 🔹 Esto permite que tu frontend (React) use cookies de Sanctum
-            \Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful::class,
+           /*  \Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful::class, */
 
             // 🔹 Necesarios para sesiones con Sanctum
             \Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse::class,
