@@ -13,6 +13,7 @@ class VerifyCsrfToken extends Middleware
      */
     protected $except = [
         'api/*', // Exime todas las rutas que empiecen con /api/
+        'sanctum/csrf-cookie',
         'api/login',
         'api/register',
         'api/logout',
