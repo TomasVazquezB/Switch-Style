@@ -214,3 +214,11 @@
 .dark-mode .range span {
   color: white;
 }
+
+.usuario-subido {
+  font-size: 0.75rem;
+  color: #6b7280;
+  margin-bottom: 20px;
+  padding: 20px;
+  margin: 10px;
+}

@@ -1,20 +1,28 @@
 import axios from "axios";
 import { obtenerToken } from "./auth";
 
+const BASE_URL = import.meta.env.VITE_API_URL || "https://switchstyle.laravel.cloud/api";
+const ROOT_URL = BASE_URL.replace(/\/api$/, ""); // 🔹 Quita el /api del final
+
 const api = axios.create({
-  baseURL: "/api",
-  headers: {"Content-Type": "application/json",Accept: "application/json",},
-  withCredentials: true, 
+  baseURL: BASE_URL,
+  headers: {
+    "Content-Type": "application/json",
+    Accept: "application/json",
+  },
+  withCredentials: true, // ✅ Necesario para cookies CSRF y sesiones
 });
 
+// 🧠 Helper para leer cookies
 function getCookie(name) {
   const match = document.cookie.match(new RegExp("(^| )" + name + "=([^;]+)"));
   return match ? decodeURIComponent(match[2]) : null;
 }
 
+// ✅ CORREGIDO: Llama al endpoint correcto (sin /api)
 export const csrf = async () => {
   try {
-    await axios.get("https://switchstyle.laravel.cloud/sanctum/csrf-cookie", {
+    await axios.get(`${ROOT_URL}/sanctum/csrf-cookie`, {
       withCredentials: true,
     });
     console.log("✅ CSRF cookie obtenida correctamente");
@@ -24,14 +32,17 @@ export const csrf = async () => {
   }
 };
 
+// 🔐 Interceptor para incluir token CSRF y Bearer
 api.interceptors.request.use(
   (config) => {
     const xsrfToken = getCookie("XSRF-TOKEN");
-    if (xsrfToken) {config.headers["X-XSRF-TOKEN"] = xsrfToken;
+    if (xsrfToken) {
+      config.headers["X-XSRF-TOKEN"] = xsrfToken;
     }
 
     const token = obtenerToken?.();
-    if (token) {config.headers.Authorization = `Bearer ${token}`;
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
     }
 
     return config;
@@ -42,7 +53,8 @@ api.interceptors.request.use(
 api.interceptors.response.use(
   (response) => response,
   (error) => {
-    if (!error.response) {console.error("❌ Error de red o CORS:", error);
+    if (!error.response) {
+      console.error("❌ Error de red o CORS:", error);
     } else {
       console.error(`⚠️ HTTP ${error.response.status}:`, error.response.data || error.message);
     }

@@ -54,11 +54,12 @@ const Carrito = () => {
         const producto = buscarProducto(item);
         const tallaData = producto?.tallas?.find(t => t.nombre === item.talla);
 
-        let stockDisponible = producto?.stock || producto?.cantidad || 1;
-        if (tallaData) stockDisponible = tallaData.pivot?.cantidad || 1;
+        let stockDisponible = producto?.stock || producto?.cantidad || 100; 
+        if (tallaData) stockDisponible = tallaData.pivot?.cantidad || 100;
 
         if (nuevaCantidad < 1) return;
-        if (nuevaCantidad > stockDisponible) {toast.error(`Stock máximo disponible: ${stockDisponible}`);
+        if (nuevaCantidad > stockDisponible) {
+            toast.error(`Stock máximo disponible: ${stockDisponible}`);
             return;
         }
 
@@ -86,10 +87,10 @@ const Carrito = () => {
                         const producto = buscarProducto(item);
                         if (!producto) return null;
 
-                        const imagen = item.ruta_imagen
-                            ? item.ruta_imagen
-                            : producto.ruta_imagen?.startsWith('http')
-                                ? producto.ruta_imagen
+                        const imagen = item.ruta_imagen 
+                            ? item.ruta_imagen 
+                            : producto.ruta_imagen?.startsWith('http') 
+                                ? producto.ruta_imagen 
                                 : `${axios.defaults.baseURL}/storage/${producto.ruta_imagen}`;
                         const talla = item.talla ? ` | ${item.talla}` : '';
 
@@ -103,7 +104,12 @@ const Carrito = () => {
                                     <p>{moneda}{parseFloat(producto.precio).toFixed(2)}{talla}</p>
                                     <div className="cart-qty-controls">
                                         <button onClick={() => actualizarCantidad(index, item.cantidad - 1)}>-</button>
-                                        <input type="number" value={item.cantidad} min="1" onChange={(e) => actualizarCantidad(index, parseInt(e.target.value))} />
+                                        <input 
+                                            type="number" 
+                                            value={item.cantidad} 
+                                            min="1" 
+                                            onChange={(e) => actualizarCantidad(index, parseInt(e.target.value))} 
+                                        />
                                         <button onClick={() => actualizarCantidad(index, item.cantidad + 1)}>+</button>
                                         <br/>
                                     </div>

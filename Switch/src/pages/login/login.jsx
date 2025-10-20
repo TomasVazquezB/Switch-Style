@@ -1,3 +1,4 @@
+// src/pages/Login/LoginPage.jsx
 import React, { useState, useContext } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import api, { csrf } from "../../api/axios";
@@ -5,7 +6,10 @@ import { DataContext } from "../../context/DataContext.jsx";
 import "./login.css";
 
 export function LoginPage() {
-  const [formData, setFormData] = useState({ identificador: "", contrasena: "" });
+  const [formData, setFormData] = useState({
+    identificador: "",
+    contrasena: "",
+  });
   const [error, setError] = useState(null);
   const navigate = useNavigate();
   const { setUsuario } = useContext(DataContext);
@@ -19,27 +23,25 @@ export function LoginPage() {
     setError(null);
 
     try {
-      // 1️⃣ Obtener cookie CSRF antes de hacer login
+      // 1️⃣ Obtener cookie CSRF antes de login
       await csrf();
 
-      // 2️⃣ Enviar la solicitud de login
+      // 2️⃣ Enviar solicitud de inicio de sesión al backend
       const response = await api.post(
-        "/login",
+        "login",
         {
           email: formData.identificador.trim(),
           password: formData.contrasena.trim(),
         },
-        {
-          withCredentials: true, // 🔑 para enviar cookies CSRF
-        }
+        { withCredentials: true }
       );
 
-      // 3️⃣ Guardar datos del usuario
+      // 3️⃣ Guardar el usuario en el contexto y en localStorage
       const user = response.data.user || response.data;
       localStorage.setItem("usuario", JSON.stringify(user));
       setUsuario(user);
 
-      alert(`Bienvenido ${user.Nombre || user.name || ""}`);
+      alert(`✅ Bienvenido ${user.Nombre || user.name || ""}`);
 
       // 4️⃣ Redirigir según el rol del usuario
       if (user.Tipo_Usuario === "Admin") {
@@ -51,13 +53,13 @@ export function LoginPage() {
       console.error("❌ Error al iniciar sesión:", err);
 
       if (err.response?.status === 419) {
-        setError("Error de sesión (CSRF). Refresca la página e inténtalo otra vez");
+        setError("Error de sesión (CSRF). Refresca la página e inténtalo otra vez.");
       } else if (err.response?.status === 401) {
         setError("Usuario o contraseña incorrectos.");
       } else if (err.response?.status === 422) {
-        setError("Por favor completa todos los campos correctamente");
+        setError("Por favor completa todos los campos correctamente.");
       } else {
-        setError(err.response?.data?.message || "Error inesperado al iniciar sesión");
+        setError(err.response?.data?.message || "Error inesperado al iniciar sesión.");
       }
     }
   };
