@@ -320,57 +320,45 @@ const Header = ({ toggleTheme, darkMode }) => {
               </Nav>
             </Container>
 
-            {/* 🔍 BUSCADOR CON SUGERENCIAS EN TIEMPO REAL */}
-            <div className="search-bar" style={{ position: "relative" }}>
-              <form onSubmit={handleSearch} className="search-form">
-                <input
-                  type="text"
-                  placeholder="Buscar"
-                  value={searchQuery}
-                  onChange={(e) => {
-                    setSearchQuery(e.target.value);
-                    setShowSuggestions(true);
-                  }}
-                  onFocus={() => setShowSuggestions(true)}
-                  onBlur={() => setTimeout(() => setShowSuggestions(false), 150)}
-                  className="search-input"
-                />
-                <button type="submit" className="search-icon-btn">
-                  <FaSearch size={18} />
-                </button>
-                
-{showSuggestions && filteredSuggestions.length > 0 && (
-  <div
-    className={`search-suggestions ${darkMode ? "dark" : "light"}`}
-  >
-    {filteredSuggestions.map((p) => {
-      const imagen = toBucketUrl(p.imagen_url || p.ruta_imagen || p.imagen);
-      return (
-        <div
-          key={p.id}
-          className="suggestion-item"
-          onClick={() => handleSuggestionClick(p.titulo)}
-        >
-          <img
-            src={imagen}
-            alt={p.titulo}
-            className="suggestion-img"
-            onError={(e) => (e.target.src = PLACEHOLDER)}
-          />
-          <div className="suggestion-info">
-            <span className="suggestion-title">{p.titulo}</span>
-            <span className="suggestion-price">
-              ${p.precio || p.Precio}
-            </span>
-          </div>
-        </div>
-      );
-    })}
-  </div>
-)}
-              </form>
-            </div>
+      
+<div className="search-bar" style={{ position: "relative" }}>
+  <form onSubmit={handleSearch} className="search-form">
+    <input
+      type="text"
+      placeholder="Buscar"
+      value={searchQuery}
+      onChange={(e) => {
+        setSearchQuery(e.target.value);
+        setShowSuggestions(true);
+      }}
+      onFocus={() => setShowSuggestions(true)}
+      onBlur={() => setTimeout(() => setShowSuggestions(false), 150)}
+      className="search-input"
+    />
+    <button type="submit" className="search-icon-btn">
+      <FaSearch size={18} />
+    </button>
 
+    {showSuggestions && filteredSuggestions.length > 0 && (
+      <div className={`search-suggestions ${darkMode ? "dark" : "light"}`}>
+        {filteredSuggestions.map((p) => (
+          <div
+            key={p.id}
+            className="suggestion-item"
+            onClick={() => handleSuggestionClick(p.titulo)}
+          >
+            <div className="suggestion-info">
+              <span className="suggestion-title">{p.titulo}</span>
+              <span className="suggestion-price">
+                ${p.precio || p.Precio}
+              </span>
+            </div>
+          </div>
+        ))}
+      </div>
+    )}
+  </form>
+</div>
             <Nav.Link onClick={goToCart} className="carrito">
               <FaShoppingCart
                 size={21}
@@ -380,7 +368,7 @@ const Header = ({ toggleTheme, darkMode }) => {
               />
             </Nav.Link>
 
-            {/* 👤 Perfil */}
+            
             <Nav className="ms-auto">
               <div className="profile-container">
                 <Nav.Link
@@ -427,7 +415,7 @@ const Header = ({ toggleTheme, darkMode }) => {
                           : "text-gray-800 hover:bg-gray-100"
                       }`}
                     >
-                      Ir al Gestor de Productos
+                      Ir al panel de Productos
                     </a>
                     <button
                       onClick={handleLogout}
