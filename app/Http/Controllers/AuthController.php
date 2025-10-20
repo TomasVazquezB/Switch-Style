@@ -12,6 +12,18 @@ class AuthController extends Controller
 {
     public function login(Request $request)
     {
+
+        // 🔍 DEBUG TEMPORAL — ver qué middleware se están aplicando
+        if ($request->has('debug')) {
+            return response()->json([
+                'debug' => [
+                    'middleware' => app('router')->getCurrentRoute()->gatherMiddleware(),
+                    'cookies' => $request->cookies->all(),
+                    'headers' => $request->headers->all(),
+                ],
+            ]);
+        }
+        
         $request->validate([
             'email'    => 'required|email',
             'password' => 'required|string',
