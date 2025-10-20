@@ -12,7 +12,7 @@ class Kernel extends HttpKernel
      * @var array
      */
     protected $middleware = [
-    \Fruitcake\Cors\HandleCors::class,
+    /* \Fruitcake\Cors\HandleCors::class, */
     \App\Http\Middleware\TrustProxies::class,
     \Illuminate\Http\Middleware\HandleCors::class,
     \App\Http\Middleware\PreventRequestsDuringMaintenance::class,
@@ -40,12 +40,12 @@ class Kernel extends HttpKernel
         'api' => [
             // 🔹 Esto permite que tu frontend (React) use cookies de Sanctum
            /*  \Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful::class, */
+           \Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful::class, // ✅ MUY IMPORTANTE
 
             // 🔹 Necesarios para sesiones con Sanctum
             \Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse::class,
             \Illuminate\Session\Middleware\StartSession::class,
             \Illuminate\View\Middleware\ShareErrorsFromSession::class,
-            \Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful::class, // ✅ MUY IMPORTANTE
             'throttle:api',
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
         ],
