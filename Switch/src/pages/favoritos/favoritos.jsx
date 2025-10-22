@@ -1,11 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import axios from '../../api/axios';
 import './favoritos.css';
 
-// === 🖼️ Configuración de imágenes ===
-const BUCKET_BASE = (import.meta.env.VITE_ASSETS_BASE || "").replace(/\/+$/, "");
 const PLACEHOLDER =
   "data:image/svg+xml;utf8," +
   encodeURIComponent(
@@ -19,24 +17,30 @@ function toBucketUrl(rawPath) {
   if (!rawPath) return PLACEHOLDER;
   if (/^https?:\/\//i.test(rawPath)) return rawPath;
 
-  let key = String(rawPath)
-    .replace(/^https?:\/\/[^/]+\/?/, "")
-    .replace(/^\/+/, "")
-    .replace(/^storage\//, "")
-    .replace(/^public\//, "");
-
-  if (/^ropa\//i.test(key)) key = key.replace(/^ropa\//i, "imagenes/ropa/");
-  if (/^accesorios\//i.test(key)) key = key.replace(/^accesorios\//i, "imagenes/accesorios/");
-
-  return BUCKET_BASE ? `${BUCKET_BASE}/${encodeURI(key)}` : PLACEHOLDER;
+  const BASE = import.meta.env.VITE_API_URL || "https://switchstyle.laravel.cloud";
+  const key = rawPath.replace(/^\/?/, "");
+  return `${BASE}/storage/${encodeURI(key)}`;
 }
 
 const Favoritos = () => {
+  const navigate = useNavigate();
   const [favoritos, setFavoritos] = useState([]);
   const [ropaFavorita, setRopaFavorita] = useState([]);
   const [accesoriosFavoritos, setAccesoriosFavoritos] = useState([]);
+  const [usuario, setUsuario] = useState(null);
 
+  // 🔒 Verificar login al cargar
   useEffect(() => {
+    const user = JSON.parse(localStorage.getItem('user')) || null;
+    setUsuario(user);
+
+    if (!user) {
+      toast.warning("Debes iniciar sesión para ver tus favoritos 🔐", { autoClose: 5000 }); // más tiempo visible
+      // redirige después de 5 segundos
+      const timeout = setTimeout(() => navigate('/login'), 5000);
+      return () => clearTimeout(timeout);
+    }
+
     const fav = JSON.parse(localStorage.getItem('favoritos')) || [];
     setFavoritos(fav);
 
@@ -53,8 +57,9 @@ const Favoritos = () => {
         console.error(err);
       }
     };
+
     fetchFavoritos();
-  }, []);
+  }, [navigate]);
 
   const handleQuitar = (id) => {
     const nuevos = favoritos.filter(f => f !== id);
@@ -64,6 +69,18 @@ const Favoritos = () => {
     setAccesoriosFavoritos(prev => prev.filter(p => p.id !== id));
     toast.info("Producto quitado de favoritos 🤍");
   };
+
+  if (!usuario) {
+    return (
+      <div className="favoritos-page text-center mt-16">
+        <h2 className="text-3xl font-semibold mb-6">Favoritos</h2>
+        <p className="text-gray-600 text-lg">
+          Debes <Link to="/login" className="text-blue-500 underline">iniciar sesión</Link> para ver tus productos favoritos
+        </p>
+        <p className="text-gray-500 mt-4">Serás redirigido automáticamente al inicio de sesión en unos segundos...</p>
+      </div>
+    );
+  }
 
   const renderTarjetas = (lista, tipo) => (
     <div className="mb-12">
@@ -76,7 +93,7 @@ const Favoritos = () => {
           return (
             <div key={producto.id} className="favoritos-page-card">
               <Link to={`/producto/${tipo}/${producto.id}`}>
-                <img src={imageUrl} alt={producto.titulo} />
+                <img src={imageUrl} alt={producto.titulo} onError={(e) => e.target.src = PLACEHOLDER} />
                 <div className="favoritos-page-info">
                   <h4 className="favoritos-page-title">{producto.titulo}</h4>
                   <p className="favoritos-page-price">
@@ -88,10 +105,10 @@ const Favoritos = () => {
                 <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor"
                      viewBox="0 0 24 24" stroke="none" className="w-5 h-5">
                   <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5
-                           2 5.42 4.42 3 7.5 3c1.74 0 3.41 0.81 4.5 2.09
-                           C13.09 3.81 14.76 3 16.5 3
-                           19.58 3 22 5.42 22 8.5
-                           c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
+                            2 5.42 4.42 3 7.5 3c1.74 0 3.41 0.81 4.5 2.09
+                            C13.09 3.81 14.76 3 16.5 3
+                            19.58 3 22 5.42 22 8.5
+                            c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
                 </svg>
                 Quitar de favoritos
               </button>

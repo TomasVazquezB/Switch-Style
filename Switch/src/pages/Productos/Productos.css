@@ -74,23 +74,22 @@
 }
 
 .button.carrito {
-    background-color: #000;
+    background-color: #16a34a; /* verde */
     color: #fff;
     border: none;
+    padding: 0.6rem 1rem;      /* altura ok */
+    font-size: 0.95rem;
+    border-radius: 0.35rem;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+    max-width: 280px;          /* ancho máximo */
+    text-align: center;        /* texto centrado */
+    white-space: nowrap;       /* evita que se rompa en varias líneas */
 }
 
 .button.carrito:hover {
-    background-color: #1a1a1a;
-}
-
-.button.comprar {
-    background-color: #16a34a;
-    color: #fff;
-    border: none;
-}
-
-.button.comprar:hover {
     background-color: #15803d;
+    transform: scale(1.02);
 }
 
 .tab-button {
@@ -311,4 +310,36 @@ body.dark-mode label.text-gray-700 {
   color: #ffcc00;
   font-weight: 600;
   margin-top: 0.5rem;
+}
+
+.payment-info {
+  margin: 0.5rem 0;
+  font-size: 0.9rem;
+  color: #000; /* Color por defecto (modo claro) */
+  transition: color 0.3s;
+}
+
+/* Modo oscuro */
+.dark .payment-info {
+  color: #fff;
+}
+
+/* ===== AJUSTE NOMBRE Y PRECIO ===== */
+.producto-info h2 {
+    margin-top: 14px;       /* baja el título */
+    margin-bottom: 0.25rem; /* espacio mínimo abajo */
+    line-height: 1.2;
+    font-size: 2rem;
+}
+
+.producto-info p.precio {
+    margin-top: 13px;
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+/* Modo oscuro */
+.dark .producto-info h2,
+.dark .producto-info p.precio {
+    color: #ffffff;
 }
