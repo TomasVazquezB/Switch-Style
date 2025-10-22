@@ -3,8 +3,6 @@ import { useLocation, Link } from "react-router-dom";
 import { DataContext } from "../../context/DataContext";
 import "./busqueda.css";
 
-const BUCKET_BASE = (import.meta.env.VITE_ASSETS_BASE || "").replace(/\/+$/, "");
-const BACKEND_BASE = import.meta.env.VITE_API_URL || "https://switchstyle.laravel.cloud";
 const PLACEHOLDER =
   "data:image/svg+xml;utf8," +
   encodeURIComponent(
@@ -16,35 +14,40 @@ const PLACEHOLDER =
 
 function toBucketUrl(rawPath) {
   if (!rawPath) return PLACEHOLDER;
-
   if (/^https?:\/\//i.test(rawPath)) return rawPath;
 
-  let key = String(rawPath)
-    .replace(/^https?:\/\/[^/]+\/?/, "")
-    .replace(/^\/+/, "")
-    .replace(/^public\//, "")
-    .replace(/^storage\//, "");
+  // Eliminamos 'public/' o 'storage/' al inicio si existe
+  let key = rawPath.replace(/^\/?(public|storage)\//i, "");
 
-  if (!key.startsWith("imagenes/")) {
-    if (/^ropa\//i.test(key)) key = key.replace(/^ropa\//i, "imagenes/ropa/");
-    if (/^accesorios\//i.test(key))
-      key = key.replace(/^accesorios\//i, "imagenes/accesorios/");
-  }
+  // Aseguramos que todas las rutas apunten a storage/
+  key = `storage/${key}`;
 
   const BASE = import.meta.env.VITE_API_URL || "https://switchstyle.laravel.cloud";
 
-  return `${BASE}/storage/${encodeURI(key)}`;
+  return `${BASE}/${encodeURI(key)}`;
 }
 
 const ProductoItem = ({ id, img, nombre, precio, esFavorito, onToggleFavorito }) => {
   return (
     <Link to={`/producto/ropa/${id}`} className="busqueda-page-card-link">
       <div className="busqueda-page-card">
-        <img src={img} alt={nombre} />
+        <img
+          src={img}
+          alt={nombre}
+          onError={(e) => (e.target.src = PLACEHOLDER)}
+        />
         <div className="busqueda-page-info">
           <h3 className="busqueda-page-title-producto">{nombre}</h3>
           <p className="busqueda-page-precio-producto">${precio}</p>
-          <div className="busqueda-page-favorito" onClick={(e) => {e.preventDefault();onToggleFavorito();}}>{esFavorito ? "❤️" : "🤍"} Favorito</div>
+          <div
+            className="busqueda-page-favorito"
+            onClick={(e) => {
+              e.preventDefault();
+              onToggleFavorito();
+            }}
+          >
+            {esFavorito ? "❤️" : "🤍"} Favorito
+          </div>
         </div>
       </div>
     </Link>
@@ -119,7 +122,15 @@ const Busqueda = () => {
             console.log("✅ FINAL URL:", imageUrl);
 
             return (
-              <ProductoItem key={item.id} id={item.id} img={imageUrl} nombre={item.titulo || item.Titulo} precio={item.precio || item.Precio} esFavorito={favoritos.includes(item.id)} onToggleFavorito={() => toggleFavorito(item.id)}/>
+              <ProductoItem
+                key={item.id}
+                id={item.id}
+                img={imageUrl}
+                nombre={item.titulo || item.Titulo}
+                precio={item.precio || item.Precio}
+                esFavorito={favoritos.includes(item.id)}
+                onToggleFavorito={() => toggleFavorito(item.id)}
+              />
             );
           })}
         </div>
