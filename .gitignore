@@ -4,7 +4,6 @@
 
 # Composer / Laravel
 /vendor/
-composer.lock
 composer.phar
 /vendor/composer/installed.json
 
