@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # =====================================
 # LARAVEL + REACT (Switch-Style)
 # =====================================
@@ -16,53 +17,93 @@ package-lock.json
 
 # Build outputs
 /public/build/
+=======
+/.phpunit.cache
+/node_modules
+/public/build
+>>>>>>> parent of c941f5e0 (Normalize line endings & clean ignored files)
 /public/hot
 /public/storage
-/.vite/
-vite.config.js.timestamp-*
-vite.config.ts.timestamp-*
-
-# Storage & Cache
 /storage/*.key
-/storage/*.log
-/storage/framework/*
-/storage/logs/*
-/bootstrap/cache/*
-/bootstrap/cache/packages.php
-/bootstrap/cache/services.php
+/storage/pail
+/vendor
+.phpactor.json
+.phpunit.result.cache
+Homestead.json
+Homestead.yaml
+npm-debug.log
+yarn-error.log
+/auth.json
+/.fleet
+/.idea
+/.nova
+/.vscode
+/.zed
+
+# Laravel core
+/vendor/
+node_modules/
+npm-debug.log
+yarn-error.log
 
 # Environment
 .env
-.env.*
-!.env.example
+.env.backup
+.env.local
+.env.production
+.env.development
 
-# PHPUnit / Tests
-.phpunit.result.cache
-/.phpunit.cache
+# Laravel specific
+/public/storage
+/storage/*.key
+/storage/*.log
+/storage/framework/*
+/bootstrap/cache/*
+/vendor/composer/installed.json
 
-# IDE / Editors
+# IDE / OS
 .idea/
 .vscode/
-.fleet/
-.zed/
-.phpactor.json
 *.sublime-project
 *.sublime-workspace
-
-# OS / Misc
 .DS_Store
 Thumbs.db
-*.stackdump
-*.bak
-*.tmp
-desktop.ini
 
-# Homestead / Nova
-Homestead.json
-Homestead.yaml
-.nova/
+# Logs
+*.log
+*.stackdump
+
+# Composer PHARs
+composer.phar
 
 # Coverage / Reports
 coverage/
 phpunit.xml
 phpunit.xml.dist
+
+# Misc
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+* text=auto
+
+# Código: LF
+*.js     text eol=lf
+*.jsx    text eol=lf
+*.ts     text eol=lf
+*.tsx    text eol=lf
+*.css    text eol=lf
+*.scss   text eol=lf
+*.php    text eol=lf
+*.blade.php text eol=lf
+*.json   text eol=lf
+*.sh     text eol=lf
+*.yml    text eol=lf
+*.yaml   text eol=lf
+
+# Windows scripts: CRLF
+*.bat    text eol=crlf
+*.cmd    text eol=crlf
+*.ps1    text eol=crlf
