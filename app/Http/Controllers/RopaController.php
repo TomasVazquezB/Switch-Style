@@ -205,42 +205,54 @@ class RopaController extends Controller
     }
 
     public function apiIndex(Request $request)
-    {
-        $theme = $request->query('theme', 'light');
-        $t = strtolower((string) $theme);
-        $themeStyle = $t === 'dark' || $t === 'oscuro' ? 'oscuro' : ($t === 'light' || $t === 'claro' ? 'claro' : null);
+{
+    $theme = strtolower((string) $request->query('theme', ''));
+    $themeStyle = $theme === 'dark' || $theme === 'oscuro' ? 'oscuro'
+                 : ($theme === 'light' || $theme === 'claro' ? 'claro' : null);
 
-        $query = Ropa::with(['usuario:ID_Usuario,Nombre','imagenes','categoria','genero'])
-            ->whereHas('usuario')
-            ->whereHas('categoria', function ($q) {
-                $q->whereNotIn('nombre', ['Anillos', 'Collares', 'Aritos']);
-            });
+    $q = Ropa::with(['usuario:ID_Usuario,Nombre','imagenes','categoria','genero','tallas'])
+        ->whereHas('usuario')
+        ->whereHas('categoria', fn($z) => $z->whereNotIn('nombre', ['Anillos','Collares','Aritos']));
 
-        $estilo = $request->get('estilo') ?: $themeStyle;
-        if ($estilo) {
-            $query->where('estilo', $estilo);
-        }
+    // estilo (claro/oscuro)
+    $estilo = $request->input('estilo') ?: $themeStyle;
+    if ($estilo) $q->where('estilo', $estilo);
 
-        if ($request->filled('genero')) {
-            $nombreGenero = strtolower($request->genero);
-            $query->whereHas('genero', function ($q) use ($nombreGenero) {
-                $q->whereRaw('LOWER(nombre) = ?', [$nombreGenero]);
-            });
-        }
-        if ($request->filled('precio_min')) {
-            $query->where('precio', '>=', $request->precio_min);
-        }
-        if ($request->filled('precio_max')) {
-            $query->where('precio', '<=', $request->precio_max);
-        }
-        if ($request->filled('talla')) {
-            $query->whereHas('tallas', function ($q) use ($request) {
-                $q->where('nombre', $request->talla);
-            });
-        }
-
-        return $query->get();
+    // genero por nombre
+    if ($request->filled('genero')) {
+        $gen = $request->input('genero');
+        $q->whereHas('genero', fn($z) => $z->whereRaw('LOWER(nombre) = ?', [mb_strtolower($gen,'UTF-8')]));
     }
+
+    // categorias: array o CSV, por nombre
+    if ($request->filled('categorias')) {
+        $cats = is_array($request->categorias) ? $request->categorias : explode(',', $request->categorias);
+        $cats = array_map(fn($v)=>mb_strtolower(trim($v),'UTF-8'), $cats);
+        $q->whereHas('categoria', fn($z) => $z->whereIn(DB::raw('LOWER(nombre)'), $cats));
+    }
+
+    // tallas: array o CSV, por nombre, con stock
+    if ($request->filled('tallas')) {
+        $tallas = is_array($request->tallas) ? $request->tallas : explode(',', $request->tallas);
+        $tallas = array_map(fn($v)=>mb_strtolower(trim($v),'UTF-8'), $tallas);
+        $q->whereHas('tallas', fn($z) => $z->whereIn(DB::raw('LOWER(nombre)'), $tallas)
+                                          ->where('ropa_talla.cantidad','>',0));
+    }
+
+    // precio (opcional)
+    if ($request->filled('precio_min')) $q->where('precio','>=',(float)$request->precio_min);
+    if ($request->filled('precio_max')) $q->where('precio','<=',(float)$request->precio_max);
+
+    // orden
+    match ($request->input('orden')) {
+        'precio_asc'  => $q->orderBy('precio','asc'),
+        'precio_desc' => $q->orderBy('precio','desc'),
+        default       => $q->latest(),
+    };
+
+    return response()->json($q->get());
+}
+
 
     public function apiShow($id)
     {

@@ -12,6 +12,7 @@ use App\Http\Controllers\ProductoController;
 // ---------------------------
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
+Route::get('/usuarios/{id}', [UserController::class, 'showPublic']);
 
 // Productos principales
 Route::get('/ropa', [RopaController::class, 'apiIndex']);
