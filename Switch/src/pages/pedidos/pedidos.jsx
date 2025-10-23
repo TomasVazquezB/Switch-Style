@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useContext } from "react";
-import api from "../../api/axios.js";
 import { DataContext } from "../../context/DataContext.jsx";
+import api from "../../api/axios.js";
 import "./pedidos.css";
 
 export function MisPedidos() {
@@ -10,6 +10,11 @@ export function MisPedidos() {
   const { usuario } = useContext(DataContext) || {};
 
   useEffect(() => {
+    if (!usuario) {
+      setLoading(false);
+      return;
+    }
+
     const fetchPedidos = async () => {
       try {
         setLoading(true);
@@ -24,29 +29,46 @@ export function MisPedidos() {
     };
 
     fetchPedidos();
-  }, []);
+  }, [usuario]);
 
   if (loading)
     return <div className="pedidos-loading">Cargando tus pedidos...</div>;
 
+  if (!usuario) {
+    return (
+      <div className="cartel-sesion">
+        <div className="cartel-sesion-contenido">
+          <h2>🔒 Debes iniciar sesión para ver tus pedidos</h2>
+          <p>Inicia sesión para acceder al historial de tus compras</p>
+        </div>
+      </div>
+    );
+  }
+
   if (error)
     return (
-      <div className="pedidos-error"><p>{error}</p></div>
+      <div className="pedidos-error">
+        <p>{error}</p>
+      </div>
     );
 
   return (
     <div className="mis-pedidos-container">
-      <h1 className="titulo-pedidos">{usuario ? `Pedidos de ${usuario.Nombre || usuario.name}` : "Mis Pedidos"}</h1>
+      <h1 className="titulo-pedidos">
+        {`Pedidos de ${usuario.Nombre || usuario.name}`}
+      </h1>
 
       {pedidos.length === 0 ? (
-        <p className="sin-pedidos">No tienes pedidos registrados todavía.</p>
+        <p className="sin-pedidos">No tienes pedidos registrados todavía</p>
       ) : (
         <div className="lista-pedidos">
           {pedidos.map((pedido) => (
             <div key={pedido.id} className="pedido-card">
               <div className="pedido-header">
                 <span className="pedido-id">#{pedido.id}</span>
-                <span className={`estado ${pedido.estado.toLowerCase()}`}>{pedido.estado}</span>
+                <span className={`estado ${pedido.estado.toLowerCase()}`}>
+                  {pedido.estado}
+                </span>
               </div>
               <div className="pedido-detalle">
                 <p><strong>Fecha:</strong> {new Date(pedido.created_at).toLocaleDateString()}</p>
@@ -61,4 +83,4 @@ export function MisPedidos() {
   );
 }
 
-export default MisPedidos; 
+export default MisPedidos;
