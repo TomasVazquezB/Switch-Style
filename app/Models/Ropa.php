@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Storage;
 
 class Ropa extends Model
@@ -18,6 +19,8 @@ class Ropa extends Model
         'precio' => 'decimal:2',
         'estilo' => 'string',
     ];
+
+    protected $with = ['usuario','imagenes'];
 
     public function usuario()   { return $this->belongsTo(User::class, 'ID_Usuario'); }
     public function imagenes()  { return $this->hasMany(Imagen::class, 'ropa_id'); }
@@ -45,6 +48,10 @@ class Ropa extends Model
 
     protected static function booted()
     {
+        static::addGlobalScope('withExistingUser', function (Builder $q) {
+            $q->whereHas('usuario');
+        });
+
         static::deleting(function (Ropa $ropa) {
             if (!empty($ropa->ruta_imagen) && !preg_match('#^https?://#i', $ropa->ruta_imagen)) {
                 $disk = config('filesystems.default');
