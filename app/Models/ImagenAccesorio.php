@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
 
 class ImagenAccesorio extends Model
 {
@@ -15,6 +16,18 @@ class ImagenAccesorio extends Model
 
     public function accesorio()
     {
-        return $this->belongsTo(Accesorio::class);
+        return $this->belongsTo(Accesorio::class, 'accesorio_id');
+    }
+
+    protected static function booted()
+    {
+        static::deleting(function (ImagenAccesorio $img) {
+            if (!empty($img->ruta) && !preg_match('#^https?://#i', $img->ruta)) {
+                $disk = config('filesystems.default');
+                if (Storage::disk($disk)->exists($img->ruta)) {
+                    Storage::disk($disk)->delete($img->ruta);
+                }
+            }
+        });
     }
 }

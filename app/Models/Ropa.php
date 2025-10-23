@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
 
 class Ropa extends Model
 {
@@ -18,29 +19,51 @@ class Ropa extends Model
         'estilo' => 'string',
     ];
 
-    // Relaciones
     public function usuario()   { return $this->belongsTo(User::class, 'ID_Usuario'); }
     public function imagenes()  { return $this->hasMany(Imagen::class, 'ropa_id'); }
     public function categoria() { return $this->belongsTo(Categoria::class); }
     public function genero()    { return $this->belongsTo(Genero::class); }
+
     public function tallas()
     {
         return $this->belongsToMany(Talla::class, 'ropa_talla')
             ->withPivot('cantidad')->withTimestamps();
     }
 
-    // Scope propias (según tu proyecto)
     public function scopePropias($query, $userId = null)
     {
         return $query->where('ID_Usuario', $userId ?? auth()->id());
     }
 
-    // Scope de estilo (claro/oscuro)
     public function scopeDelEstilo($query, $estilo = null)
     {
         if (!$estilo) return $query;
         $estilo = strtolower($estilo);
         if (!in_array($estilo, ['claro','oscuro'])) return $query;
         return $query->where('estilo', $estilo);
+    }
+
+    protected static function booted()
+    {
+        static::deleting(function (Ropa $ropa) {
+            if (!empty($ropa->ruta_imagen) && !preg_match('#^https?://#i', $ropa->ruta_imagen)) {
+                $disk = config('filesystems.default');
+                if (Storage::disk($disk)->exists($ropa->ruta_imagen)) {
+                    Storage::disk($disk)->delete($ropa->ruta_imagen);
+                }
+            }
+
+            $ropa->imagenes()->each(function ($img) {
+                if (!empty($img->ruta) && !preg_match('#^https?://#i', $img->ruta)) {
+                    $disk = config('filesystems.default');
+                    if (Storage::disk($disk)->exists($img->ruta)) {
+                        Storage::disk($disk)->delete($img->ruta);
+                    }
+                }
+                $img->delete();
+            });
+
+            $ropa->tallas()->detach();
+        });
     }
 }
