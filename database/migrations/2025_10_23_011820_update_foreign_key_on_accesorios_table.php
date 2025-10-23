@@ -9,13 +9,17 @@ return new class extends Migration
 {
     public function up(): void
     {
-        if (!Schema::hasTable('accesorios') || !Schema::hasColumn('accesorios', 'ID_Usuario')) {
-            return;
-        }
+        if (!Schema::hasTable('accesorios') || !Schema::hasColumn('accesorios','ID_Usuario')) return;
 
         Schema::table('accesorios', function (Blueprint $table) {
             $table->unsignedInteger('ID_Usuario')->change();
         });
+
+        DB::statement("
+            DELETE a FROM accesorios a
+            LEFT JOIN usuario u ON u.ID_Usuario = a.ID_Usuario
+            WHERE u.ID_Usuario IS NULL
+        ");
 
         $exists = collect(DB::select("
             SELECT CONSTRAINT_NAME
@@ -37,9 +41,7 @@ return new class extends Migration
 
     public function down(): void
     {
-        if (!Schema::hasTable('accesorios') || !Schema::hasColumn('accesorios', 'ID_Usuario')) {
-            return;
-        }
+        if (!Schema::hasTable('accesorios') || !Schema::hasColumn('accesorios','ID_Usuario')) return;
 
         $fks = DB::select("
             SELECT CONSTRAINT_NAME
@@ -54,10 +56,6 @@ return new class extends Migration
             foreach ($fks as $fk) {
                 $table->dropForeign($fk->CONSTRAINT_NAME);
             }
-        });
-
-        Schema::table('accesorios', function (Blueprint $table) {
-            $table->unsignedBigInteger('ID_Usuario')->change();
         });
     }
 };
