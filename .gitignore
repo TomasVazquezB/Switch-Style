@@ -1,27 +1,10 @@
-<<<<<<< HEAD
 # =====================================
-# LARAVEL + REACT (Switch-Style)
+# Laravel + React (Switch-Style)
 # =====================================
 
-# Composer / Laravel
-/vendor/
-composer.phar
-/vendor/composer/installed.json
-
-# NPM / React / Vite
-node_modules/
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-package-lock.json
-
-# Build outputs
-/public/build/
-=======
 /.phpunit.cache
 /node_modules
 /public/build
->>>>>>> parent of c941f5e0 (Normalize line endings & clean ignored files)
 /public/hot
 /public/storage
 /storage/*.key
@@ -42,7 +25,7 @@ yarn-error.log
 
 # Laravel core
 /vendor/
-node_modules/
+/node_modules/
 npm-debug.log
 yarn-error.log
 
@@ -87,23 +70,6 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
-* text=auto
-
-# Código: LF
-*.js     text eol=lf
-*.jsx    text eol=lf
-*.ts     text eol=lf
-*.tsx    text eol=lf
-*.css    text eol=lf
-*.scss   text eol=lf
-*.php    text eol=lf
-*.blade.php text eol=lf
-*.json   text eol=lf
-*.sh     text eol=lf
-*.yml    text eol=lf
-*.yaml   text eol=lf
-
-# Windows scripts: CRLF
-*.bat    text eol=crlf
-*.cmd    text eol=crlf
-*.ps1    text eol=crlf
+# =====================================
+# Fin del .gitignore
+# =====================================
