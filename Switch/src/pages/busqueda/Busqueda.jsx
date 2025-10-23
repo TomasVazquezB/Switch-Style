@@ -1,6 +1,8 @@
 import React, { useContext, useEffect, useState } from "react";
 import { useLocation, Link } from "react-router-dom";
 import { DataContext } from "../../context/DataContext";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import "./busqueda.css";
 
 const PLACEHOLDER =
@@ -15,49 +17,37 @@ const PLACEHOLDER =
 function toBucketUrl(rawPath) {
   if (!rawPath) return PLACEHOLDER;
   if (/^https?:\/\//i.test(rawPath)) return rawPath;
-
-  // Eliminamos 'public/' o 'storage/' al inicio si existe
   let key = rawPath.replace(/^\/?(public|storage)\//i, "");
-
-  // Aseguramos que todas las rutas apunten a storage/
   key = `storage/${key}`;
-
   const BASE = import.meta.env.VITE_API_URL || "https://switchstyle.laravel.cloud";
-
   return `${BASE}/${encodeURI(key)}`;
 }
 
-const ProductoItem = ({ id, img, nombre, precio, esFavorito, onToggleFavorito }) => {
-  return (
-    <Link to={`/producto/ropa/${id}`} className="busqueda-page-card-link">
-      <div className="busqueda-page-card">
-        <img
-          src={img}
-          alt={nombre}
-          onError={(e) => (e.target.src = PLACEHOLDER)}
-        />
-        <div className="busqueda-page-info">
-          <h3 className="busqueda-page-title-producto">{nombre}</h3>
-          <p className="busqueda-page-precio-producto">${precio}</p>
-          <div
-            className="busqueda-page-favorito"
-            onClick={(e) => {
-              e.preventDefault();
-              onToggleFavorito();
-            }}
-          >
-            {esFavorito ? "❤️" : "🤍"} Favorito
-          </div>
+const ProductoItem = ({ id, img, nombre, precio, esFavorito, onToggleFavorito }) => (
+  <Link to={`/producto/ropa/${id}`} className="busqueda-page-card-link">
+    <div className="busqueda-page-card">
+      <img src={img} alt={nombre} onError={(e) => (e.target.src = PLACEHOLDER)} />
+      <div className="busqueda-page-info">
+        <h3 className="busqueda-page-title-producto">{nombre}</h3>
+        <p className="busqueda-page-precio-producto">${precio}</p>
+        <div
+          className="busqueda-page-favorito"
+          onClick={(e) => {
+            e.preventDefault();
+            onToggleFavorito();
+          }}
+        >
+          {esFavorito ? "❤️" : "🤍"} Favorito
         </div>
       </div>
-    </Link>
-  );
-};
+    </div>
+  </Link>
+);
 
 const Busqueda = () => {
   const location = useLocation();
   const query = new URLSearchParams(location.search).get("q")?.toLowerCase() || "";
-  const { productos, loading, darkMode } = useContext(DataContext);
+  const { productos, loading, darkMode, usuario } = useContext(DataContext);
 
   const [resultados, setResultados] = useState([]);
   const [favoritos, setFavoritos] = useState(() => {
@@ -66,29 +56,13 @@ const Busqueda = () => {
   });
 
   useEffect(() => {
-    if (!query || !productos || productos.length === 0) {
+    if (!query || !productos?.length) {
       setResultados([]);
       return;
     }
 
     const filtrados = productos.filter((p) => {
-      const titulo = (p.Titulo || p.titulo || "").toLowerCase();
-      const descripcion = (p.Descripcion || p.descripcion || "").toLowerCase();
-      const categoria = (p.categoria?.nombre || p.Categoria || "").toLowerCase();
-      const tipo = (p.tipo?.nombre || p.Tipo || "").toLowerCase();
-      const genero = (p.genero?.nombre || p.Genero || "").toLowerCase();
-
-      if (["accesorio", "accesorios", "accessory", "accessories"].includes(query)) {
-        return (
-          tipo.includes("accesorio") ||
-          categoria.includes("accesorio") ||
-          titulo.includes("accesorio") ||
-          descripcion.includes("accesorio") ||
-          (p.ruta_imagen && p.ruta_imagen.toLowerCase().includes("accesorios"))
-        );
-      }
-
-      const texto = `${titulo} ${descripcion} ${categoria} ${tipo} ${genero}`;
+      const texto = `${(p.Titulo || p.titulo || "").toLowerCase()} ${(p.Descripcion || p.descripcion || "").toLowerCase()} ${(p.categoria?.nombre || p.Categoria || "").toLowerCase()} ${(p.tipo?.nombre || p.Tipo || "").toLowerCase()} ${(p.genero?.nombre || p.Genero || "").toLowerCase()}`;
       return texto.includes(query);
     });
 
@@ -96,8 +70,19 @@ const Busqueda = () => {
   }, [query, productos]);
 
   const toggleFavorito = (id) => {
+    if (!usuario) {
+      toast.warning("Debes iniciar sesión para agregar a favoritos 🔐", {
+        position: "top-right", 
+        autoClose: 4000,
+        theme: darkMode ? "dark" : "light",
+      });
+      return;
+    }
+
     setFavoritos((prev) => {
-      const nuevos = prev.includes(id) ? prev.filter((f) => f !== id) : [...prev, id];
+      const nuevos = prev.includes(id)
+        ? prev.filter((f) => f !== id)
+        : [...prev, id];
       localStorage.setItem("favoritos", JSON.stringify(nuevos));
       return nuevos;
     });
@@ -112,14 +97,14 @@ const Busqueda = () => {
       ) : !query ? (
         <p className="busqueda-page-message">Ingresa algo para buscar</p>
       ) : resultados.length === 0 ? (
-        <p className="busqueda-page-message">No se encontraron productos que coincidan con "{query}"</p>
+        <p className="busqueda-page-message">
+          No se encontraron productos que coincidan con "{query}"
+        </p>
       ) : (
         <div className="busqueda-page-grid">
           {resultados.map((item) => {
             const raw = item.imagen_url || item.ruta_imagen || item?.imagenes?.[0]?.ruta || "";
             const imageUrl = toBucketUrl(raw);
-            console.log("🖼️ RAW:", raw);
-            console.log("✅ FINAL URL:", imageUrl);
 
             return (
               <ProductoItem
@@ -135,6 +120,15 @@ const Busqueda = () => {
           })}
         </div>
       )}
+
+      <ToastContainer
+        position="top-right" 
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        draggable
+        pauseOnHover
+      />
     </div>
   );
 };

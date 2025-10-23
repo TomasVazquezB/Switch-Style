@@ -104,3 +104,39 @@
     box-shadow: 0 2px 8px rgba(255, 255, 255, 0.05);
   }
 }
+
+.cartel-sesion {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 70vh;
+  text-align: center;
+  transition: all 0.3s ease;
+}
+
+.dark-mode .cartel-sesion {
+  background-color: var(--color-bg-dark, #121212);
+  color: var(--color-text-dark, #ffffff);
+}
+
+.light-mode .cartel-sesion {
+  background-color: var(--color-bg, #f8f9fa);
+  color: var(--color-text, #1a1a1a);
+}
+
+.cartel-sesion-contenido {
+  padding: 2rem 4rem;
+  border-radius: 16px;
+  backdrop-filter: blur(12px);
+  max-width: 700px;
+}
+
+.dark-mode .cartel-sesion-contenido {
+  background: var(--card-bg-dark, rgba(41, 40, 40, 0.6));
+  box-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
+}
+
+.light-mode .cartel-sesion-contenido {
+  background: var(--card-bg, rgba(255, 255, 255, 0.6));
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+}

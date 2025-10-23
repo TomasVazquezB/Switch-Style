@@ -14,7 +14,6 @@ const PLACEHOLDER =
     </svg>`
   );
 
-// Normaliza ruta de imagen del bucket
 function toAccesorioImageUrl(rawPath) {
   if (!rawPath) return PLACEHOLDER;
   if (/^https?:\/\//i.test(rawPath)) return rawPath;
@@ -28,7 +27,6 @@ function toAccesorioImageUrl(rawPath) {
   return BUCKET_BASE ? `${BUCKET_BASE}/accesorios/${encodeURI(key)}` : PLACEHOLDER;
 }
 
-// Detecta tema visual
 function getThemeAsEstilo() {
   const ls = (localStorage.getItem('theme') || '').toLowerCase();
   const isDark = ls === 'dark' || document.documentElement.classList.contains('dark');
@@ -60,7 +58,6 @@ const MainAccesorios = () => {
   const [precioMin] = useState(100);
   const [precioMax, setPrecioMax] = useState(350);
 
-  // Trae accesorios desde el backend
   useEffect(() => {
     let cancel = false;
     (async () => {
@@ -82,19 +79,17 @@ const MainAccesorios = () => {
     };
   }, [estilo, categorias]);
 
-  // Precio máximo dinámico basado en los productos actuales
   const maxPrice = useMemo(() => {
     const precios = productos.map((p) => Number(p?.precio || 0));
     const max = Math.max(350, ...(precios.length ? precios : [0]));
     return Number.isFinite(max) ? max : 350;
   }, [productos]);
 
-  // 🔧 Sincroniza el slider para que tome automáticamente el precio máximo (igual que en Hombres)
   useEffect(() => {
     setPrecioMax((prev) => (prev < maxPrice ? maxPrice : prev));
   }, [maxPrice]);
 
-  // Aplica filtro por precio y orden
+
   useEffect(() => {
     let temp = [...productos];
 
