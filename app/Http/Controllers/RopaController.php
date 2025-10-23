@@ -44,7 +44,7 @@ class RopaController extends Controller
             }
         }
 
-        $ropas = $query->with(['usuario:id,ID_Usuario,Nombre','imagenes','categoria','genero','tallas'])
+        $ropas = $query->with(['usuario:ID_Usuario,Nombre','imagenes','categoria','genero','tallas'])
             ->latest()
             ->paginate(8)
             ->appends($request->query());
@@ -210,7 +210,7 @@ class RopaController extends Controller
         $t = strtolower((string) $theme);
         $themeStyle = $t === 'dark' || $t === 'oscuro' ? 'oscuro' : ($t === 'light' || $t === 'claro' ? 'claro' : null);
 
-        $query = Ropa::with(['usuario:id,ID_Usuario,Nombre','imagenes','categoria','genero'])
+        $query = Ropa::with(['usuario:ID_Usuario,Nombre','imagenes','categoria','genero'])
             ->whereHas('usuario')
             ->whereHas('categoria', function ($q) {
                 $q->whereNotIn('nombre', ['Anillos', 'Collares', 'Aritos']);
@@ -245,7 +245,7 @@ class RopaController extends Controller
     public function apiShow($id)
     {
         try {
-            $ropa = Ropa::with(['usuario:id,ID_Usuario,Nombre','imagenes','categoria','genero','tallas'])
+            $ropa = Ropa::with(['usuario:ID_Usuario,Nombre','imagenes','categoria','genero','tallas'])
                 ->whereHas('usuario')
                 ->findOrFail($id);
 

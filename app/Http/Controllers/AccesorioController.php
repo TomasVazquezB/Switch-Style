@@ -29,7 +29,7 @@ class AccesorioController extends Controller
 
         $query->delEstilo($theme);
 
-        $accesorios = $query->with(['usuario:id,ID_Usuario,Nombre','imagenes','categoria'])
+        $accesorios = $query->with(['usuario:ID_Usuario,Nombre','imagenes','categoria'])
             ->latest()
             ->paginate(8)
             ->appends($request->query());
@@ -207,7 +207,7 @@ class AccesorioController extends Controller
     {
         $theme = $request->query('theme');
 
-        $query = Accesorio::with(['usuario:id,ID_Usuario,Nombre','imagenes','categoria'])
+        $query = Accesorio::with(['usuario:ID_Usuario,Nombre','imagenes','categoria'])
             ->whereHas('usuario')
             ->delEstilo($theme);
 
@@ -220,7 +220,7 @@ class AccesorioController extends Controller
 
     public function apiShow($id)
     {
-        $accesorio = Accesorio::with(['usuario:id,ID_Usuario,Nombre','imagenes','categoria'])
+        $accesorio = Accesorio::with(['usuario:ID_Usuario,Nombre','imagenes','categoria'])
             ->whereHas('usuario')
             ->findOrFail($id);
 
