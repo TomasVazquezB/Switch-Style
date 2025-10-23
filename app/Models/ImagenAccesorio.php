@@ -9,14 +9,21 @@ class ImagenAccesorio extends Model
 {
     protected $table = 'imagenes_accesorios';
 
-    protected $fillable = [
-        'ruta',
-        'accesorio_id',
-    ];
+    protected $fillable = ['ruta', 'accesorio_id', 'es_principal'];
+
+    protected $appends = ['url'];
 
     public function accesorio()
     {
         return $this->belongsTo(Accesorio::class, 'accesorio_id');
+    }
+
+    public function getUrlAttribute(): ?string
+    {
+        if (!$this->ruta) return null;
+        if (preg_match('#^https?://#i', $this->ruta)) return $this->ruta;
+        $disk = config('filesystems.default');
+        return Storage::disk($disk)->exists($this->ruta) ? Storage::disk($disk)->url($this->ruta) : null;
     }
 
     protected static function booted()
