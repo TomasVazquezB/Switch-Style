@@ -15,12 +15,12 @@ class RopaController extends Controller
     {
         $theme = $request->query('theme', 'light');
         $t = strtolower((string) $theme);
-        $themeStyle = $t === 'dark' || $t === 'oscuro' ? 'oscuro' : ($t === 'light' || $t === 'claro' ? 'claro' : null);
+        $themeStyle = $t === 'dark' || $t === 'oscuro' ? 'oscuro'
+                     : ($t === 'light' || $t === 'claro' ? 'claro' : null);
 
         $esAdmin = auth()->check() && strtolower((string) auth()->user()->Tipo_Usuario) === 'admin';
         $query   = $esAdmin ? Ropa::query() : Ropa::propias();
 
-        $query->whereHas('usuario');
         $query->whereHas('categoria', function ($q) {
             $q->whereNotIn('nombre', ['Collares', 'Aritos', 'Anillos']);
         });
@@ -44,12 +44,13 @@ class RopaController extends Controller
             }
         }
 
-        $ropas = $query->with(['usuario:id,ID_Usuario,Nombre','imagenes','categoria','genero','tallas'])
+        $ropas = $query->with(['imagenes', 'categoria', 'genero', 'tallas'])
             ->latest()
             ->paginate(8)
             ->appends($request->query());
 
-        $categorias = Categoria::whereNotIn('nombre', ['Collares', 'Aritos', 'Anillos'])->orderBy('nombre')->get();
+        $categorias = Categoria::whereNotIn('nombre', ['Collares', 'Aritos', 'Anillos'])
+            ->orderBy('nombre')->get();
         $generos = Genero::orderBy('nombre')->get();
 
         return view('ropas.index', compact('ropas', 'categorias', 'generos', 'theme'));
@@ -58,7 +59,8 @@ class RopaController extends Controller
     public function create()
     {
         return view('ropas.create', [
-            'categorias' => Categoria::whereNotIn('nombre', ['Anillos', 'Collares', 'Aritos'])->orderBy('nombre')->get(),
+            'categorias' => Categoria::whereNotIn('nombre', ['Anillos', 'Collares', 'Aritos'])
+                ->orderBy('nombre')->get(),
             'tallas'  => \App\Models\Talla::orderBy('nombre')->get(),
             'generos' => \App\Models\Genero::orderBy('nombre')->get(),
         ]);
@@ -116,7 +118,8 @@ class RopaController extends Controller
 
         return view('ropas.edit', [
             'ropa'       => $ropa,
-            'categorias' => Categoria::whereNotIn('nombre', ['Anillos', 'Collares', 'Aritos'])->orderBy('nombre')->get(),
+            'categorias' => Categoria::whereNotIn('nombre', ['Anillos', 'Collares', 'Aritos'])
+                ->orderBy('nombre')->get(),
             'tallas'  => \App\Models\Talla::orderBy('nombre')->get(),
             'generos' => \App\Models\Genero::orderBy('nombre')->get(),
         ]);
@@ -208,10 +211,10 @@ class RopaController extends Controller
     {
         $theme = $request->query('theme', 'light');
         $t = strtolower((string) $theme);
-        $themeStyle = $t === 'dark' || $t === 'oscuro' ? 'oscuro' : ($t === 'light' || $t === 'claro' ? 'claro' : null);
+        $themeStyle = $t === 'dark' || $t === 'oscuro' ? 'oscuro'
+                     : ($t === 'light' || $t === 'claro' ? 'claro' : null);
 
-        $query = Ropa::with(['usuario:id,ID_Usuario,Nombre','imagenes','categoria','genero'])
-            ->whereHas('usuario')
+        $query = Ropa::with(['imagenes', 'categoria', 'genero'])
             ->whereHas('categoria', function ($q) {
                 $q->whereNotIn('nombre', ['Anillos', 'Collares', 'Aritos']);
             });
@@ -245,10 +248,7 @@ class RopaController extends Controller
     public function apiShow($id)
     {
         try {
-            $ropa = Ropa::with(['usuario:id,ID_Usuario,Nombre','imagenes','categoria','genero','tallas'])
-                ->whereHas('usuario')
-                ->findOrFail($id);
-
+            $ropa = Ropa::with(['imagenes', 'categoria', 'genero', 'tallas'])->findOrFail($id);
             return response()->json($ropa);
         } catch (\Exception $e) {
             return response()->json([

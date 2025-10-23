@@ -15,10 +15,9 @@ class AccesorioController extends Controller
     {
         $theme = $request->query('theme');
 
-        $esAdmin = auth()->check() && strtolower((string) auth()->user()->Tipo_Usuario) === 'admin';
-        $query = $esAdmin ? Accesorio::query() : Accesorio::where('ID_Usuario', auth()->user()->ID_Usuario);
-
-        $query->whereHas('usuario');
+        $query = auth()->user()->Tipo_Usuario === 'admin'
+            ? Accesorio::query()
+            : Accesorio::where('ID_Usuario', auth()->id());
 
         if ($request->filled('busqueda')) {
             $query->where('titulo', 'like', '%' . $request->busqueda . '%');
@@ -29,10 +28,10 @@ class AccesorioController extends Controller
 
         $query->delEstilo($theme);
 
-        $accesorios = $query->with(['usuario:id,ID_Usuario,Nombre','imagenes','categoria'])
-            ->latest()
-            ->paginate(8)
-            ->appends($request->query());
+        $accesorios = $query->with(['imagenes', 'categoria'])
+                            ->latest()
+                            ->paginate(8)
+                            ->appends($request->query());
 
         $categorias = Categoria::whereIn('nombre', ['Anillos', 'Collares', 'Aritos'])->get();
 
@@ -66,7 +65,7 @@ class AccesorioController extends Controller
                 'precio'       => $request->precio,
                 'stock'        => $request->stock,
                 'categoria_id' => $request->categoria_id,
-                'ID_Usuario'   => auth()->user()->ID_Usuario,
+                'ID_Usuario'   => auth()->id(),
                 'estilo'       => $request->estilo,
             ]);
 
@@ -207,9 +206,7 @@ class AccesorioController extends Controller
     {
         $theme = $request->query('theme');
 
-        $query = Accesorio::with(['usuario:id,ID_Usuario,Nombre','imagenes','categoria'])
-            ->whereHas('usuario')
-            ->delEstilo($theme);
+        $query = Accesorio::with('imagenes', 'categoria')->delEstilo($theme);
 
         if ($request->filled('categoria_id')) {
             $query->where('categoria_id', $request->categoria_id);
@@ -220,9 +217,7 @@ class AccesorioController extends Controller
 
     public function apiShow($id)
     {
-        $accesorio = Accesorio::with(['usuario:id,ID_Usuario,Nombre','imagenes','categoria'])
-            ->whereHas('usuario')
-            ->findOrFail($id);
+        $accesorio = Accesorio::with(['imagenes', 'categoria'])->findOrFail($id);
 
         return response()->json([
             'id'          => $accesorio->id,
@@ -234,7 +229,6 @@ class AccesorioController extends Controller
             'categoria'   => $accesorio->categoria,
             'imagenes'    => $accesorio->imagenes,
             'estilo'      => $accesorio->estilo,
-            'usuario'     => $accesorio->usuario,
         ]);
     }
 }
