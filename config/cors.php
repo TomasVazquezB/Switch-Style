@@ -12,24 +12,27 @@ return [
     |
     */
 
-    
-    'paths' => ['api/*', 'sanctum/csrf-cookie', 'login', 'logout'], 
+return [
+    'paths' => ['api/*', 'sanctum/csrf-cookie', 'login', 'logout'],
 
-    'allowed_methods' => ['*'], // Todos los métodos HTTP permitidos (GET, POST, etc.)
+    'allowed_methods' => ['*'],
 
     'allowed_origins' => [
-        'http://localhost:5173',           // Vite local
-        'https://switchstyle.laravel.cloud', // Producción
-        'https://switchstyle.vercel.app',  // Frontend producción
+        'http://localhost:5173',
+        'http://localhost:5174',     
+        'http://127.0.0.1:5173',   
+        'http://127.0.0.1:5174',     
+        'https://switchstyle.laravel.cloud',
+        'https://switchstyle.vercel.app',
     ],
 
-    'allowed_origins_patterns' => [],
+    'allowed_origins_patterns' => ['#^https://.*switchstyle.*\.vercel\.app$#'],
 
-    'allowed_headers' => ['*'], // Todos los headers permitidos
-
+    'allowed_headers' => ['*'],
     'exposed_headers' => [],
+    'max_age' => 0,
 
-    'max_age' => 0, // Tiempo de cache para preflight (en segundos)
+    'supports_credentials' => true,
+];
 
-    'supports_credentials' => true, // Permite cookies y credenciales
 ];
