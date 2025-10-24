@@ -145,7 +145,7 @@ const MainHombres = () => {
             <div className="flex flex-col gap-2 text-sm font-light text-gray-700 dark:text-gray-200">
               {CATEGORIES_DB.map((cat) => (
                 <label key={cat} className="flex items-center gap-2">
-                  <input type="checkbox" value={cat} onChange={toggleSubCategoria} />
+                  <input type="checkbox" className='me-2' value={cat} onChange={toggleSubCategoria} />
                   {cat}
                 </label>
               ))}
@@ -200,7 +200,7 @@ const MainHombres = () => {
           <select
             value={sortTipo}
             onChange={(e) => setSortTipo(e.target.value)}
-            className="border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-900 text-sm px-2 py-1 rounded"
+            className="border border-gray-300 dark:border-gray-700 dark:bg-gray-900 text-sm px-2 py-1 rounded"
           >
             <option value="relevante">Ordenar por: Relevante</option>
             <option value="low-high">Ordenar por: de menor a mayor</option>
@@ -234,8 +234,6 @@ const MainHombres = () => {
     )}
   </div>
 );
-
-
             return (
               <article
                 key={item.id}
