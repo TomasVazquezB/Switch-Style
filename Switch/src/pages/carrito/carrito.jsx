@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import { PayPalButtons } from "@paypal/react-paypal-js";
 import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import axios from '../../api/axios'; 
+import { useNavigate } from "react-router-dom"; 
 import './carrito.css';
 
 const Carrito = () => {
+    const navigate = useNavigate(); 
+
     const [carritoData, setCarritoData] = useState(() => {
         try {
             const saved = localStorage.getItem('carrito');
@@ -76,6 +79,14 @@ const Carrito = () => {
         localStorage.setItem('carrito', JSON.stringify(actualizado));
     };
 
+     const handleProceedToPayment = () => {
+         if (carritoData.length === 0) {
+             toast.error("Tu carrito está vacío");
+             return;
+         }
+         navigate("/confpago"); 
+     };
+
     return (
         <div className="cart-container">
             <div className="cart-items">
@@ -137,9 +148,7 @@ const Carrito = () => {
                      <span className="total-label">Total</span>
                      <span className="total-amount">{moneda}{calcularTotal()}</span>
                 </div>
-                <div className="pay-buttons">
-                    <PayPalButtons style={{ layout: 'vertical' }} />
-                </div>
+                     <button className="buttom-pago" onClick={handleProceedToPayment}>Proceder al Pago 💰</button> 
             </div>
         </div>
     );

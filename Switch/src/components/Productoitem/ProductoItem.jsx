@@ -68,19 +68,6 @@ const ProductoItem = ({ id, img, nombre, precio, tipo }) => {
           <p className="text-sm mt-1 opacity-90">{moneda}{precio}</p>
         </div>
       </Link>
-
-      <div className="p-4 pt-0">
-        <button
-          onClick={handleAgregarAlCarrito}
-          className={`w-full mt-2 text-sm font-semibold py-2 px-4 rounded-lg transition-all duration-300
-            ${darkMode 
-              ? 'bg-white text-black hover:bg-gray-200' 
-              : 'bg-black text-white hover:bg-gray-800'
-            }`}
-        >
-          Agregar al carrito
-        </button>
-      </div>
     </div>
   );
 };

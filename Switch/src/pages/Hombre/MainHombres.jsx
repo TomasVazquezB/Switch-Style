@@ -234,8 +234,6 @@ const MainHombres = () => {
     )}
   </div>
 );
-
-
             return (
               <article
                 key={item.id}

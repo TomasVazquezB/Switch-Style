@@ -124,7 +124,7 @@ const MainAccesorios = () => {
             <div className="flex flex-col gap-2 text-sm font-light text-gray-700">
               {CATEGORIES_DB.map((cat) => (
                 <label key={cat} className="flex items-center gap-2">
-                  <input type="checkbox" value={cat} onChange={toggleCategoria} />
+                  <input type="checkbox" className='me-2' value={cat} onChange={toggleCategoria} />
                   {cat}
                 </label>
               ))}
