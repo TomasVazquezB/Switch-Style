@@ -145,7 +145,7 @@ const MainHombres = () => {
             <div className="flex flex-col gap-2 text-sm font-light text-gray-700 dark:text-gray-200">
               {CATEGORIES_DB.map((cat) => (
                 <label key={cat} className="flex items-center gap-2">
-                  <input type="checkbox" value={cat} onChange={toggleSubCategoria} />
+                  <input type="checkbox" className='me-2' value={cat} onChange={toggleSubCategoria} />
                   {cat}
                 </label>
               ))}
