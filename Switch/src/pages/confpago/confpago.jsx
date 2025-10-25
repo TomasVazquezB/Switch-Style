@@ -116,7 +116,7 @@ export default function ConfPago() {
     <div className="confpago-page">
       <div className="confpago-container confpago-single">
         <div className="confpago-left">
-          <h2>Datos de Envío</h2>
+          <h2 className="datos-envio">Datos de Envío</h2>
 
           <div className="confpago-grid-2">
             <label className="confpago-label">
@@ -172,36 +172,19 @@ export default function ConfPago() {
 
           <label className="confpago-label">
             <span className="confpago-label-text">Referencias (opcional)</span>
-            <textarea
-              className="confpago-textarea"
-              name="referencias"
-              rows={2}
-              value={form.referencias}
-              onChange={onChange}
-            />
+            <textarea className="confpago-textarea" name="referencias" rows={2} value={form.referencias} onChange={onChange}/>
           </label>
 
           <h3 className="confpago-h3">Entrega</h3>
           <div className="confpago-grid-2">
             <label className="confpago-label">
               <span className="confpago-label-text">Fecha de entrega *</span>
-              <input
-                className="confpago-input"
-                type="date"
-                name="entregaFecha"
-                value={form.entregaFecha}
-                onChange={onChange}
-                min={new Date().toISOString().slice(0, 10)}
-              />
+              <input className="confpago-input" type="date" name="entregaFecha" value={form.entregaFecha} onChange={onChange} min={new Date().toISOString().slice(0, 10)}/>
             </label>
+       
             <label className="confpago-label">
               <span className="confpago-label-text">Franja horaria *</span>
-              <select
-                className="confpago-input"
-                name="entregaFranja"
-                value={form.entregaFranja}
-                onChange={onChange}
-              >
+              <select className="confpago-input" name="entregaFranja" value={form.entregaFranja} onChange={onChange}>
                 <option>09:00-12:00</option>
                 <option>12:00-15:00</option>
                 <option>15:00-18:00</option>
@@ -211,12 +194,8 @@ export default function ConfPago() {
           </div>
 
           <div className="confpago-actions">
-            <button type="button" className="confpago-btn confpago-btn-sec" onClick={volverAlCarrito}>
-              ← Volver al carrito
-            </button>
-            <button type="button" className="confpago-btn confpago-btn-prim" onClick={continuarAPago}>
-              Continuar al pago
-            </button>
+            <button type="button" className="confpago-btn confpago-btn-sec" onClick={volverAlCarrito}>← Volver al carrito</button>
+            <button type="button" className="confpago-btn confpago-btn-prim" onClick={continuarAPago}>Continuar al pago</button>
           </div>
         </div>
       </div>

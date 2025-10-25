@@ -140,10 +140,6 @@ const Carrito = () => {
                     <span>Subtotal</span>
                     <span>{moneda}{calcularTotal()}</span>
                 </div>
-                <div className="summary-line">
-                    <span>Estimacion de Envio y Impuestos</span>
-                    <span>{moneda}0.00</span>
-                </div>
                 <div className="total">
                      <span className="total-label">Total</span>
                      <span className="total-amount">{moneda}{calcularTotal()}</span>

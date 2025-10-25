@@ -9,7 +9,6 @@ export default function Pago() {
   const navigate = useNavigate();
   const [payload, setPayload] = useState(null);
   const [loading, setLoading] = useState(false);
-
   const [productos, setProductos] = useState([]);
   const [accesorios, setAccesorios] = useState([]);
 
@@ -46,10 +45,7 @@ export default function Pago() {
     if (!payload) return "0.00";
     const sum = payload.carrito.reduce((acc, item) => {
       const prod = buscarProducto(item);
-      const unit =
-        parseFloat(prod?.precio ?? 0) ||
-        parseFloat(item?.precio ?? 0) ||
-        0;
+      const unit = parseFloat(prod?.precio ?? 0) || parseFloat(item?.precio ?? 0) || 0;
       return acc + unit * (item.cantidad || 1);
     }, 0);
     const calc = Number.isFinite(sum) && sum > 0 ? sum : Number(payload.subtotal || 0);
@@ -114,7 +110,6 @@ export default function Pago() {
   return (
     <div className="pago-uni-container">
       <h2>CONFIRMACIÓN DE PAGO</h2>
-
       <section className="pago-card">
         <h3 className="pago-h3">Dirección de envío</h3>
         <p className="pago-muted">
@@ -128,9 +123,7 @@ export default function Pago() {
           {envio?.direccion?.ciudad}, {envio?.direccion?.provincia} ({envio?.direccion?.codigoPostal})
         </p>
         <p className="pago-muted">Entrega: {envio?.entrega?.fecha} · {envio?.entrega?.franja}</p>
-        <button className="pago-btn-link" onClick={() => navigate("/confpago")}>
-          Cambiar datos de envío
-        </button>
+        <button className="pago-btn-link" onClick={() => navigate("/confpago")}>Cambiar datos de envío</button>
       </section>
 
       <section className="pago-card">
@@ -138,20 +131,14 @@ export default function Pago() {
         {payload.carrito.map((item, idx) => {
           const p = buscarProducto(item);
           const img = p || item ? getImagen(item, p) : "";
-          const unit =
-            parseFloat(p?.precio ?? 0) ||
-            parseFloat(item?.precio ?? 0) ||
-            0;
+          const unit = parseFloat(p?.precio ?? 0) || parseFloat(item?.precio ?? 0) || 0;
           const line = (unit * (item.cantidad || 1)).toFixed(2);
           return (
             <div key={idx} className="pago-resumen-item">
               {img ? <img src={img} alt={p?.titulo || "Producto"} /> : <div className="pago-ph" />}
               <div className="pago-resumen-info">
                 <div className="pago-tit">{p?.titulo || item?.titulo || "Producto"}</div>
-                <div className="pago-sub">
-                  {moneda}{unit.toFixed(2)} · x{item.cantidad}
-                  {item.talla ? ` · Talle ${item.talla}` : ""}
-                </div>
+                <div className="pago-sub"> {moneda}{unit.toFixed(2)} · x{item.cantidad} {item.talla ? ` · Talle ${item.talla}` : ""}</div>
               </div>
               <div className="pago-resumen-linea">{moneda}{line}</div>
             </div>
@@ -176,23 +163,11 @@ export default function Pago() {
 
       <section className="pago-card">
  
-
   <div className="pago-pay-wrap">
-    <PayPalButtons
-      style={{ layout: "vertical", height: 48, shape: "rect", label: "paypal", tagline: false }}
-      createOrder={createOrder}
-      onApprove={onApprove}
-      onError={onError}
-      disabled={loading}
-      forceReRender={[total]}
-    />
+    <PayPalButtons style={{ layout: "vertical", height: 48, shape: "rect", label: "paypal", tagline: false }} createOrder={createOrder} onApprove={onApprove} onError={onError} disabled={loading} forceReRender={[total]}/>
   </div>
 </section>
-
-
-      <p className="pago-muted pago-nota-final">
-        Al confirmar el pago, registraremos tu pedido y lo verás en <b>Mis Pedidos</b>.
-      </p>
+      <p className="pago-muted pago-nota-final">Al confirmar el pago, registraremos tu pedido y lo verás en <b>Mis Pedidos</b></p>
     </div>
   );
 }

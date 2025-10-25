@@ -66,9 +66,7 @@ export function MisPedidos() {
             <div key={pedido.id} className="pedido-card">
               <div className="pedido-header">
                 <span className="pedido-id">#{pedido.id}</span>
-                <span className={`estado ${pedido.estado.toLowerCase()}`}>
-                  {pedido.estado}
-                </span>
+                <span className={`estado ${pedido.estado.toLowerCase()}`}>{pedido.estado}</span>
               </div>
               <div className="pedido-detalle">
                 <p><strong>Fecha:</strong> {new Date(pedido.created_at).toLocaleDateString()}</p>
