@@ -320,9 +320,13 @@ const Header = ({ toggleTheme, darkMode }) => {
               </Nav>
             </Container>
 
-      
 <div className="search-bar" style={{ position: "relative" }}>
-  <form onSubmit={handleSearch} className="search-form">
+  <form
+    className="search-form"
+    onSubmit={(e) => {
+      e.preventDefault(); 
+    }}
+  >
     <input
       type="text"
       placeholder="Buscar"
@@ -335,7 +339,8 @@ const Header = ({ toggleTheme, darkMode }) => {
       onBlur={() => setTimeout(() => setShowSuggestions(false), 150)}
       className="search-input"
     />
-    <button type="submit" className="search-icon-btn">
+
+    <button type="button" className="search-icon-btn">
       <FaSearch size={18} />
     </button>
 
@@ -359,6 +364,7 @@ const Header = ({ toggleTheme, darkMode }) => {
     )}
   </form>
 </div>
+
             <Nav.Link onClick={goToCart} className="carrito">
               <FaShoppingCart
                 size={21}
