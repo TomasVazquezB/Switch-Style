@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import axios from '../../api/axios'; 
+import { publicApi } from '../../api/axios';
 import { useNavigate } from "react-router-dom"; 
 import './carrito.css';
 
@@ -27,8 +27,8 @@ const Carrito = () => {
         const fetchData = async () => {
             try {
                 const [ropaRes, accesoriosRes] = await Promise.all([
-                    axios.get('/ropa'),
-                    axios.get('/accesorios')
+                    publicApi.get('/ropa'),
+                    publicApi.get('/accesorios')
                 ]);
                 setProductos(ropaRes.data);
                 setAccesorios(accesoriosRes.data);
@@ -102,8 +102,8 @@ const Carrito = () => {
                         const imagen = item.ruta_imagen 
                             ? item.ruta_imagen 
                             : producto.ruta_imagen?.startsWith('http') 
-                                ? producto.ruta_imagen 
-                                : `${axios.defaults.baseURL}/storage/${producto.ruta_imagen}`;
+                                ? item.ruta_imagen 
+                                : toImageUrl(producto.ruta_imagen);
                         const talla = item.talla ? ` | ${item.talla}` : '';
 
                         return (

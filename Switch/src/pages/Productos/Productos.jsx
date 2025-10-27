@@ -1,28 +1,28 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import axios from "../../api/axios";
+import { publicApi } from "../../api/axios";
 import { toast } from "react-toastify";
 import "./Productos.css";
 
-const BUCKET_BASE = (import.meta.env.VITE_ASSETS_BASE || "").replace(/\/+$/, "");
-const PLACEHOLDER =
-  "data:image/svg+xml;utf8," +
-  encodeURIComponent(
-    `<svg xmlns="http://www.w3.org/2000/svg" width="800" height="600">
-      <rect width="100%" height="100%" fill="#f3f4f6"/>
-      <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle"
-        font-family="Arial" font-size="24" fill="#9ca3af">Sin imagen</text></svg>`
-  );
+const BUCKET_BASE = (import.meta.env.VITE_ASSETS_BASE || '').replace(/\/+$/, '');
+const PLACEHOLDER = 'data:image/svg+xml;utf8,' + encodeURIComponent(
+  `<svg xmlns="http://www.w3.org/2000/svg" width="800" height="600">
+    <rect width="100%" height="100%" fill="#f3f4f6"/>
+    <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle"
+      font-family="Arial" font-size="24" fill="#9ca3af">Sin imagen</text>
+  </svg>`
+);
 
-function toBucketUrl(rawPath) {
+function toImageUrl(rawPath) {
   if (!rawPath) return PLACEHOLDER;
   if (/^https?:\/\//i.test(rawPath)) return rawPath;
-  const key = String(rawPath)
-    .replace(/^https?:\/\/[^/]+\/?/, "")
-    .replace(/^\/+/, "")
-    .replace(/^storage\//, "");
+  let key = String(rawPath)
+    .replace(/^https?:\/\/[^/]+\/?/, '')
+    .replace(/^\/+/, '')
+    .replace(/^storage\//, '');
   return BUCKET_BASE ? `${BUCKET_BASE}/${encodeURI(key)}` : PLACEHOLDER;
 }
+
 
 const Productos = ({ darkMode }) => {
   const { tipo, productoId } = useParams();
@@ -67,7 +67,7 @@ const Productos = ({ darkMode }) => {
 
   useEffect(() => {
     const endpoint = tipo.includes("accesorio") ? "accesorios" : "ropa";
-    axios
+    publicApi
       .get(`/${endpoint}/${productoId}`)
       .then((res) => {
         const data = res.data || {};
@@ -120,7 +120,7 @@ const Productos = ({ darkMode }) => {
     if (cantidad < 1 || (tipo.includes("ropa") && cantidad > stockDisponible)) return toast.error("Cantidad inválida");
 
     const key = productoData?.imagenes?.[0]?.ruta || imgKey || "";
-    const imgUrl = toBucketUrl(key);
+    const imgUrl =  toImageUrl(key);
 
     const nuevoItem = {
       producto_id: productoData.id,
@@ -166,7 +166,7 @@ const Productos = ({ darkMode }) => {
             return (
               <img
                 key={index}
-                src={toBucketUrl(key)}
+                src={ toImageUrl(key)}
                 alt={`Miniatura ${index + 1}`}
                 onClick={() => setImgKey(key)}
                 className={`thumbnail ${active ? "active" : ""} h-24 w-20 object-cover rounded cursor-pointer`}
@@ -177,7 +177,7 @@ const Productos = ({ darkMode }) => {
 
         {/* Imagen principal */}
         <div style={{ backgroundColor: "#fff", padding: "1rem", borderRadius: "0.75rem" }}>
-          <img src={toBucketUrl(imgKey)} alt="Producto" className="main-image" />
+          <img src={ toImageUrl(imgKey)} alt="Producto" className="main-image" />
         </div>
 
         {/* Información */}
