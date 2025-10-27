@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import ProductoItem from '../../components/Productoitem/ProductoItem';
-import axios from '../../api/axios';
+import { publicApi } from '../../api/axios';
 import './MainMujeres.css';
 
 const BUCKET_BASE = (import.meta.env.VITE_ASSETS_BASE || '').replace(/\/+$/, '');
@@ -80,7 +80,7 @@ const MainMujeres = () => {
     let cancel = false;
     (async () => {
       try {
-        const res = await axios.get('/ropa', {
+        const res = await publicApi.get('/ropa', {
           params: {
             genero: 'Mujer',
             estilo,
