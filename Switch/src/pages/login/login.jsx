@@ -1,4 +1,4 @@
-// src/pages/Login/LoginPage.jsx
+
 import React, { useState, useContext } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import api, { csrf } from "../../api/axios";
@@ -24,11 +24,17 @@ export function LoginPage() {
 
     try {
       // 1️⃣ Obtener cookie CSRF antes de login
-      await csrf();
+      
+      await api.get("/sanctum/csrf-cookie");
+      console.log('document.cookie (en host actual):', document.cookie);
+      fetch('https://switchstyle.laravel.cloud/sanctum/csrf-cookie', { credentials: 'include' })
+        .then(() => console.log('fetch ok'))
+        .catch(e => console.log('fetch error', e));
+
 
       // 2️⃣ Enviar solicitud de inicio de sesión al backend
       const response = await api.post(
-        "login",
+        "/api/login",
         {
           email: formData.identificador.trim(),
           password: formData.contrasena.trim(),

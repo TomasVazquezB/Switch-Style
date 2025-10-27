@@ -18,6 +18,11 @@ export default defineConfig({
         secure: false,
         cookieDomainRewrite: "localhost",
       },
+      "/storage": {
+        target: "https://switchstyle.laravel.cloud",
+        changeOrigin: true,
+        secure: false,
+      },
     },
   },
 });
