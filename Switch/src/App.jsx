@@ -15,11 +15,8 @@ import MainAccesorios from './pages/Accesorios/MainAccesorios.jsx';
 import Productos from './pages/Productos/Productos.jsx';
 import Favoritos from './pages/favoritos/favoritos.jsx';
 import ErrorBoundary from './components/Error/ErrorBoundary';
-import Busqueda from './pages/busqueda/Busqueda.jsx';
 import Pedidos from "./pages/pedidos/pedidos.jsx";
 import ConfPago from "./pages/confpago/confpago.jsx";
-import Pago from "./pages/pago/pago.jsx";
-
 import { ToastContainer } from 'react-toastify';
 import { PayPalScriptProvider } from "@paypal/react-paypal-js";
 import 'react-toastify/dist/ReactToastify.css';
@@ -50,7 +47,6 @@ function App() {
         <main className="app-content">
           <ErrorBoundary>
             <Routes>
-              <Route path="/buscar" element={<Busqueda />} />
               <Route path="/" element={<PageTitle title="Switch Style"><Home darkMode={darkMode} /></PageTitle>} />
               <Route path="/FAQ" element={<PageTitle title="Preguntas Frecuentes"><FAQPage /></PageTitle>} />
               <Route path="/quienessomos" element={<PageTitle title="Quiénes Somos"><QuienesSomosPage /></PageTitle>} />
@@ -64,8 +60,7 @@ function App() {
               <Route path="/producto/:tipo/:productoId" element={<Productos darkMode={darkMode} />} />
               <Route path="/favoritos" element={<PageTitle title="Favoritos"><Favoritos /></PageTitle>} />
               <Route path="/pedidos" element={<PageTitle title="Mis Pedidos"><Pedidos/></PageTitle>} />
-              <Route path="/confpago" element={<PageTitle title="Confirmar pago"><ConfPago /></PageTitle>} />
-              <Route path="/pago" element={<PageTitle title="Pago"><Pago /></PageTitle>} />
+              <Route path="/confpago" element={<PageTitle title="Pago"><ConfPago /></PageTitle>} />
             </Routes>
           </ErrorBoundary>
         </main>

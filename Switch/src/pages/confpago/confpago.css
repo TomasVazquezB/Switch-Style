@@ -1,13 +1,13 @@
-.confpago-page .confpago-container {
-  max-width: 960px;
-  margin: 24px auto;
-  padding: 10px 4px;
-}
+:root {
+  --bg-page: #ffffff;
+  --bg-card: #ffffff;
+  --border-card: #e5e7eb;
+  --text-primary: #111827;
+  --text-muted: #6b7280;
+  --bg-placeholder: #f3f4f6;
 
-.light-mode .confpago-page {
   --bg-color: #f9fafb;
   --border-color: #e5e7eb;
-  --text-color: #111827;
   --input-border: #d1d5db;
   --input-focus: #2c2c2c;
   --focus-shadow: rgba(0, 0, 0, 0.4);
@@ -18,13 +18,19 @@
   --btn-sec-border: #d1d5db;
 }
 
-.dark-mode .confpago-page {
+.dark-mode {
+  --bg-page: #121212;
+  --bg-card: #313233;
+  --border-card: #a1a1a1;
+  --text-primary: #f9fafb;
+  --text-muted: #9ca3af;
+  --bg-placeholder: #374151;
   --bg-color: #1d1e1f;
   --border-color: #d0d3d8;
   --text-color: #f1f5f9;
   --input-border: #2f2f31;
-  --input-focus: #000000;
-  --focus-shadow: rgba(55, 56, 56, 0.4);
+  --input-focus: #ffffff;
+  --focus-shadow: rgba(255, 255, 255, 0.2);
   --btn-prim-bg: #484849;
   --btn-prim-text: #ffffff;
   --btn-sec-bg: #313233;
@@ -32,106 +38,105 @@
   --btn-sec-border: #232324;
 }
 
-.datos-envio {
-  margin-bottom: 14px;
+.conf-pago {
+  margin-top: -10px;
+  text-align: center;
+  margin-bottom: 8px;
+  padding: auto;  
 }
 
-.light-mode .datos-envio {
-  color: #252525;
+.light-mode .conf-pago { color: #000000; }
+.dark-mode .conf-pago { color: #ffffff; }
+
+.confpago-page, .pago-uni-container {
+  max-width: 1200px;
+  margin: 24px auto;
+  padding: 12px;
+  display: flex;
+  flex-direction: row; 
+  gap: 20px;
+  color: var(--text-primary);
+  background: var(--bg-page);
+  font-family: 'Inter', sans-serif;
 }
 
-.dark-mode .datos-envio {
-  color: #f1f1f1;
+.confpago-pago-container {
+  flex: 50%;
+  display: flex;
+  margin-left: 600px;
+  flex-direction: column;
+  gap: 24px;
 }
 
-.confpago-page .confpago-single {
-  display: block;
+.nota-final {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  margin-top: 12px;
+  font-weight: 600;
 }
 
-.confpago-page .confpago-left {
+.light-mode .nota-final { 
+ color: #080808; 
+}
+
+.dark-mode .nota-final { 
+ color: #d4d4d4; 
+}
+
+.confpago-datos-container {
+  flex: 1 1 55%;
   background-color: var(--bg-color);
   border: 1px solid var(--border-color);
   border-radius: 16px;
-  padding: 20px;
-  color: var(--text-color);
+  padding: 34px 24px;
+  margin-left: -540px;
+  color: var(--text-primary);
+  transition: all 0.3s ease;
 }
 
-.confpago-page h2 {
-  margin-top: 0;
-  color: var(--text-color);
-}
-
-.confpago-page .confpago-h3 {
-  margin: 16px 0 8px;
-  color: var(--text-color);
-}
-
-/* ============================================================
-   Grillas
-   ============================================================ */
-.confpago-page .confpago-grid-2,
-.confpago-page .confpago-grid-3 {
+.confpago-grid-2,
+.confpago-grid-3 {
   display: grid;
   gap: 12px;
-  margin-bottom: 10px;
-}
-.confpago-page .confpago-grid-2 {
-  grid-template-columns: 1fr 1fr;
-}
-.confpago-page .confpago-grid-3 {
-  grid-template-columns: 1.2fr .6fr .8fr;
+  margin-bottom: 12px;
 }
 
-/* ============================================================
-   Etiquetas e inputs
-   ============================================================ */
-.confpago-page .confpago-label {
+.confpago-grid-2 { grid-template-columns: 1fr 1fr; }
+.confpago-grid-3 { grid-template-columns: 1.3fr 0.7fr 1fr; }
+
+.confpago-label {
   display: flex;
   flex-direction: column;
   gap: 6px;
 }
 
-.confpago-page .confpago-label-text {
-  font-size: 0.9rem;
-  color: var(--text-color);
-}
-
-.confpago-page .confpago-input,
-.confpago-page .confpago-textarea {
+.confpago-input, .confpago-textarea {
   border: 1px solid var(--input-border);
   border-radius: 14px;
   padding: 10px 18px;
   font-size: 0.95rem;
   outline: none;
-  background: #ffffff; /* Fondo puro en modo claro */
-  color: var(--text-color);
+  background: var(--bg-color);
+  color: var(--text-primary);
   transition: border 0.3s, box-shadow 0.3s, background 0.3s, color 0.3s;
 }
 
-@media (prefers-color-scheme: dark) {
-  .confpago-page .confpago-input,
-  .confpago-page .confpago-textarea {
-    background: #1f1f1f; /* Fondo oscuro en modo oscuro */
-  }
-}
-
-.confpago-page .confpago-input:focus,
-.confpago-page .confpago-textarea:focus {
+.confpago-input:focus, .confpago-textarea:focus {
   border-color: var(--input-focus);
   box-shadow: 0 0 0 2px var(--focus-shadow);
 }
 
-/* ============================================================
-   Botones y acciones
-   ============================================================ */
-.confpago-page .confpago-actions {
+/* ===========================
+   BOTONES
+   =========================== */
+.confpago-actions {
   display: flex;
   gap: 12px;
   justify-content: flex-end;
   margin-top: 8px;
 }
 
-.confpago-page .confpago-btn {
+.confpago-btn {
   border-radius: 999px;
   padding: 10px 16px;
   border: 1px solid transparent;
@@ -139,42 +144,87 @@
   transition: background 0.3s, color 0.3s, border 0.3s, box-shadow 0.3s;
 }
 
-.confpago-page .confpago-btn:focus {
-  outline: none;
-  box-shadow: 0 0 0 2px var(--focus-shadow);
+.confpago-btn:focus { outline: none; box-shadow: 0 0 0 2px var(--focus-shadow); }
+.confpago-btn-prim { background: var(--btn-prim-bg); color: var(--btn-prim-text); }
+.confpago-btn-sec { background: var(--btn-sec-bg); color: var(--btn-sec-text); border-color: var(--btn-sec-border); }
+.confpago-btn:hover { opacity: 0.9; }
+
+/* ===========================
+   PAGO CARD
+   =========================== */
+.pago-card {
+  width: 100%;
+  max-width: 900px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-card);
+  border-radius: 16px;
+  padding: 20px;
+  box-sizing: border-box;
 }
 
-.confpago-page .confpago-btn-prim {
-  background: var(--btn-prim-bg);
-  color: var(--btn-prim-text);
+.pago-resumen-item {
+  display: grid;
+  grid-template-columns: 64px 1fr minmax(120px, auto);
+  gap: 12px;
+  align-items: center;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--border-card);
+}
+.pago-resumen-item:last-child { border-bottom: 0; }
+
+.pago-resumen-item img, .pago-ph {
+  width: 64px;
+  height: 64px;
+  border-radius: 10px;
+  object-fit: cover;
+  background: var(--bg-placeholder);
 }
 
-.confpago-page .confpago-btn-prim:hover {
-  opacity: 0.9;
+.pago-resumen-info .pago-tit { font-weight: 600; line-height: 1.2; }
+.pago-resumen-info .pago-sub { color: var(--text-muted); font-size: 0.9rem; }
+
+.pago-resumen-linea { font-weight: 700; justify-self: end; text-align: right; min-width: 120px; }
+
+.pago-resumen-unificado .pago-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 8px 0;
+  color: var(--text-primary);
 }
 
-.confpago-page .confpago-btn-sec {
-  background: var(--btn-sec-bg);
-  color: var(--btn-sec-text);
-  border-color: var(--btn-sec-border);
+.pago-resumen-unificado .pago-total {
+  font-size: 1.05rem;
+  font-weight: 700;
 }
 
-.confpago-page .confpago-btn-sec:hover {
-  opacity: 0.9;
+.pago-pay-wrap {
+  width: 100%;
+  max-width: 750px;
+  margin: 8px auto 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
 
-/* ============================================================
-   Responsive
-   ============================================================ */
+/* ===========================
+   RESPONSIVE
+   =========================== */
 @media (max-width: 960px) {
-  .confpago-page .confpago-grid-3 {
-    grid-template-columns: 1fr 1fr 1fr;
+  .confpago-page {
+    flex-direction: column;
   }
+  .confpago-grid-3 { grid-template-columns: 1fr 1fr 1fr; }
 }
 
 @media (max-width: 640px) {
-  .confpago-page .confpago-grid-2,
-  .confpago-page .confpago-grid-3 {
-    grid-template-columns: 1fr;
-  }
+  .confpago-grid-2, .confpago-grid-3 { grid-template-columns: 1fr; }
+  .pago-resumen-item { grid-template-columns: 56px 1fr auto; }
+  .pago-resumen-item img, .pago-ph { width: 56px; height: 56px; }
+  .pago-resumen-linea { min-width: 96px; }
+  .confpago-datos-container, .confpago-pago-container { padding: 24px; }
+}
+
+@media (max-width: 480px) {
+  .pago-pay-wrap { max-width: 420px; }
 }
