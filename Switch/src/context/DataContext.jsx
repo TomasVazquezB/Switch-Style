@@ -1,5 +1,5 @@
 import React, { createContext, useState, useEffect } from "react";
-import api, { csrf } from "../api/axios";
+import api, { csrf, publicApi } from "../api/axios"; // 👈 agregamos publicApi
 import { guardarUsuario, obtenerUsuario, cerrarSesion } from "../api/auth";
 
 const DataContext = createContext();
@@ -11,6 +11,7 @@ const DataProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  // Inicializa CSRF antes de loguearse
   const initCsrf = async () => {
     try {
       await csrf();
@@ -20,6 +21,7 @@ const DataProvider = ({ children }) => {
     }
   };
 
+  // LOGIN
   const login = async (email, password) => {
     try {
       await initCsrf();
@@ -36,6 +38,7 @@ const DataProvider = ({ children }) => {
     }
   };
 
+  // LOGOUT
   const logout = async () => {
     try {
       await api.post("/logout");
@@ -47,18 +50,40 @@ const DataProvider = ({ children }) => {
     }
   };
 
+  // PRODUCTOS (usa publicApi, no api)
   const fetchProductos = async () => {
     try {
       const [ropaRes, accesoriosRes] = await Promise.all([
-        api.get("/ropa"),
-        api.get("/accesorios"),
+        publicApi.get("/ropa"),        // 👈 usa publicApi
+        publicApi.get("/accesorios"),  // 👈 usa publicApi
       ]);
 
       const ropaData = Array.isArray(ropaRes.data) ? ropaRes.data : [];
       const accesoriosData = Array.isArray(accesoriosRes.data) ? accesoriosRes.data : [];
 
-      const ropaNormalizada = ropaData.map((producto) => ({...producto, imagen_url: producto.Imagen ? `https://switchstyle.laravel.cloud/storage/${producto.Imagen}` : null, titulo: producto.Titulo || producto.titulo || "", tipo: producto.Tipo || producto.tipo || "", descripcion: producto.Descripcion || producto.descripcion || "", categoria: "Ropa", tipoProducto: "ropa",}));
-      const accesoriosNormalizados = accesoriosData.map((producto) => ({...producto, imagen_url: producto.ruta_imagen ? `${api.defaults.baseURL}/storage/${producto.ruta_imagen}` : null,titulo: producto.titulo || producto.Titulo || "", tipo: "Accesorio", descripcion: producto.descripcion || producto.Descripcion || "", categoria: "Accesorios", tipoProducto: "accesorio",}));
+      const ropaNormalizada = ropaData.map((producto) => ({
+        ...producto,
+        imagen_url: producto.Imagen
+          ? `https://switchstyle.laravel.cloud/storage/${producto.Imagen}`
+          : null,
+        titulo: producto.Titulo || producto.titulo || "",
+        tipo: producto.Tipo || producto.tipo || "",
+        descripcion: producto.Descripcion || producto.descripcion || "",
+        categoria: "Ropa",
+        tipoProducto: "ropa",
+      }));
+
+      const accesoriosNormalizados = accesoriosData.map((producto) => ({
+        ...producto,
+        imagen_url: producto.ruta_imagen
+          ? `https://switchstyle.laravel.cloud/storage/${producto.ruta_imagen}`
+          : null,
+        titulo: producto.titulo || producto.Titulo || "",
+        tipo: "Accesorio",
+        descripcion: producto.descripcion || producto.Descripcion || "",
+        categoria: "Accesorios",
+        tipoProducto: "accesorio",
+      }));
 
       setProductos([...ropaNormalizada, ...accesoriosNormalizados]);
     } catch (err) {
@@ -68,6 +93,7 @@ const DataProvider = ({ children }) => {
     }
   };
 
+  // USUARIOS (solo si hay login)
   const fetchUsuarios = async () => {
     try {
       await initCsrf();
@@ -79,6 +105,7 @@ const DataProvider = ({ children }) => {
     }
   };
 
+  // EFECTO INICIAL
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
@@ -90,7 +117,22 @@ const DataProvider = ({ children }) => {
   }, [usuario]);
 
   return (
-    <DataContext.Provider value={{productos,usuarios,usuario,loading,error,login,logout,fetchProductos,fetchUsuarios,}}>{children}</DataContext.Provider>
+    <DataContext.Provider
+      value={{
+        productos,
+        usuarios,
+        usuario,
+        setUsuario,
+        loading,
+        error,
+        login,
+        logout,
+        fetchProductos,
+        fetchUsuarios,
+      }}
+    >
+      {children}
+    </DataContext.Provider>
   );
 };
 

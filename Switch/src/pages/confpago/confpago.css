@@ -5,7 +5,6 @@
   --text-primary: #111827;
   --text-muted: #6b7280;
   --bg-placeholder: #f3f4f6;
-
   --bg-color: #f9fafb;
   --border-color: #e5e7eb;
   --input-border: #d1d5db;
@@ -25,47 +24,88 @@
   --text-primary: #f9fafb;
   --text-muted: #9ca3af;
   --bg-placeholder: #374151;
-  --bg-color: #1d1e1f;
+  --bg-color: #313233;
   --border-color: #d0d3d8;
   --text-color: #f1f5f9;
-  --input-border: #2f2f31;
+  --input-border: hsl(240, 4%, 64%);
   --input-focus: #ffffff;
   --focus-shadow: rgba(255, 255, 255, 0.2);
-  --btn-prim-bg: #484849;
+  --btn-prim-bg: #5d5d63;
   --btn-prim-text: #ffffff;
-  --btn-sec-bg: #313233;
+  --btn-sec-bg: #484b4e;
   --btn-sec-text: #f1f5f9;
-  --btn-sec-border: #232324;
+  --btn-sec-border: #3f3f46;
 }
 
-.conf-pago {
-  margin-top: -10px;
+/* ===========================
+   TITULO PRINCIPAL
+   =========================== */
+.conf-pago1 {
+  margin-top: -40px;
   text-align: center;
-  margin-bottom: 8px;
-  padding: auto;  
+  margin-right: -2790px;
+  margin-left: 220px;
+  margin-bottom: 40px;
+  padding: auto;
+  font-size: 1.8rem;
+  font-weight: 700;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-.light-mode .conf-pago { color: #000000; }
-.dark-mode .conf-pago { color: #ffffff; }
+.light-mode .conf-pago1 { color: #000000; }
+.dark-mode .conf-pago1 { color: #ffffff; }
 
-.confpago-page, .pago-uni-container {
-  max-width: 1200px;
-  margin: 24px auto;
-  padding: 12px;
+/* ===========================
+   CONTENEDORES PRINCIPALES
+   =========================== */
+.confpago-page,
+.pago-uni-container {
+  max-width: 1900px;
+  margin: 60px auto 24px auto;
+  padding: 0 20px;
   display: flex;
-  flex-direction: row; 
-  gap: 20px;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 40px;
   color: var(--text-primary);
   background: var(--bg-page);
   font-family: 'Inter', sans-serif;
 }
 
+/* ===========================
+   DATOS DE ENVÍO (IZQUIERDA)
+   =========================== */
+.confpago-datos-container {
+  flex: 1 1 93%;
+  background-color: var(--bg-color);
+  border: 1px solid var(--border-color);
+  border-radius: 16px;
+  padding: 24px 24px;
+  margin: 13px;
+  margin-left: 1100px; /* base */
+  margin-right: auto; /* empuja hacia el borde izquierdo */
+  transform: translateX(-20px); /* lo acerca más al borde */
+  color: var(--text-primary);
+  transition: all 0.3s ease;
+  box-sizing: border-box;
+  align-self: flex-start;
+}
+
+/* ===========================
+   PAGO (DERECHA)
+   =========================== */
 .confpago-pago-container {
-  flex: 50%;
+  flex: 1 1 24%;
   display: flex;
-  margin-left: 600px;
   flex-direction: column;
   gap: 24px;
+  margin: 10px;
+  margin-right: 5px;
+  box-sizing: border-box;
+  align-self: flex-start;
 }
 
 .nota-final {
@@ -75,24 +115,8 @@
   font-weight: 600;
 }
 
-.light-mode .nota-final { 
- color: #080808; 
-}
-
-.dark-mode .nota-final { 
- color: #d4d4d4; 
-}
-
-.confpago-datos-container {
-  flex: 1 1 55%;
-  background-color: var(--bg-color);
-  border: 1px solid var(--border-color);
-  border-radius: 16px;
-  padding: 34px 24px;
-  margin-left: -540px;
-  color: var(--text-primary);
-  transition: all 0.3s ease;
-}
+.light-mode .nota-final { color: #080808; }
+.dark-mode .nota-final { color: #ffffff; }
 
 .confpago-grid-2,
 .confpago-grid-3 {
@@ -110,7 +134,8 @@
   gap: 6px;
 }
 
-.confpago-input, .confpago-textarea {
+.confpago-input,
+.confpago-textarea {
   border: 1px solid var(--input-border);
   border-radius: 14px;
   padding: 10px 18px;
@@ -121,7 +146,8 @@
   transition: border 0.3s, box-shadow 0.3s, background 0.3s, color 0.3s;
 }
 
-.confpago-input:focus, .confpago-textarea:focus {
+.confpago-input:focus,
+.confpago-textarea:focus {
   border-color: var(--input-focus);
   box-shadow: 0 0 0 2px var(--focus-shadow);
 }
@@ -144,9 +170,22 @@
   transition: background 0.3s, color 0.3s, border 0.3s, box-shadow 0.3s;
 }
 
-.confpago-btn:focus { outline: none; box-shadow: 0 0 0 2px var(--focus-shadow); }
-.confpago-btn-prim { background: var(--btn-prim-bg); color: var(--btn-prim-text); }
-.confpago-btn-sec { background: var(--btn-sec-bg); color: var(--btn-sec-text); border-color: var(--btn-sec-border); }
+.confpago-btn:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px var(--focus-shadow);
+}
+
+.confpago-btn-prim {
+  background: var(--btn-prim-bg);
+  color: var(--btn-prim-text);
+}
+
+.confpago-btn-sec {
+  background: var(--btn-sec-bg);
+  color: var(--btn-sec-text);
+  border-color: var(--btn-sec-border);
+}
+
 .confpago-btn:hover { opacity: 0.9; }
 
 /* ===========================
@@ -170,9 +209,11 @@
   padding: 10px 0;
   border-bottom: 1px solid var(--border-card);
 }
+
 .pago-resumen-item:last-child { border-bottom: 0; }
 
-.pago-resumen-item img, .pago-ph {
+.pago-resumen-item img,
+.pago-ph {
   width: 64px;
   height: 64px;
   border-radius: 10px;
@@ -183,7 +224,12 @@
 .pago-resumen-info .pago-tit { font-weight: 600; line-height: 1.2; }
 .pago-resumen-info .pago-sub { color: var(--text-muted); font-size: 0.9rem; }
 
-.pago-resumen-linea { font-weight: 700; justify-self: end; text-align: right; min-width: 120px; }
+.pago-resumen-linea {
+  font-weight: 700;
+  justify-self: end;
+  text-align: right;
+  min-width: 120px;
+}
 
 .pago-resumen-unificado .pago-row {
   display: flex;
@@ -207,24 +253,166 @@
   gap: 10px;
 }
 
+.datos-envio {
+  margin-top: 3px;
+  margin-bottom: 20px;
+}
+
+.light-mode .datos-envio {
+  color: #000000;
+}
+
+.dark-mode .datos-envio {
+   color: white;
+}
+
+.light-mode .confpago-h3 {
+ color: #000000;
+}
+
+.dark-mode .confpago-h3 { 
+  color: white;
+}
+
+.direccion-envio {
+  margin-bottom: 15px;
+}
+
+.light-mode .direccion-envio {
+  color: #000000;
+}
+
+.dark-mode .direccion-envio {
+  color: white;
+}
+
+.light-mode .tus-envios {
+  color: #000000;
+}
+
+.dark-mode .tus-envios {
+  color: white;
+}
+
+.light-mode .subtotal {
+  color: #000000;
+}
+
+.dark-mode .subtotal {
+  color: white;
+}
+
+.light-mode .total-pago {
+  color: #000000;
+}
+
+.dark-mode .total-pago {
+  color: white;
+}
+
+.light-mode .pago-muted {
+  color: #6b7280;
+}
+
+.dark-mode .pago-muted {
+  color: #9ca3af;
+}
+
+.light-mode .envio {
+  color: #000000;
+}
+
+.dark-mode .envio {
+  color: white;
+}
+
+.light-mode .confpago-label-text {
+  color: #000000;
+}
+
+.dark-mode .confpago-label-text {
+  color: white;
+}
+
 /* ===========================
    RESPONSIVE
    =========================== */
-@media (max-width: 960px) {
-  .confpago-page {
+@media (max-width: 1024px) {
+  .confpago-page,
+  .pago-uni-container {
     flex-direction: column;
+    align-items: center;
+    gap: 32px;
+    margin-top: 60px;
   }
-  .confpago-grid-3 { grid-template-columns: 1fr 1fr 1fr; }
+
+  .confpago-datos-container,
+  .confpago-pago-container {
+    max-width: 95%;
+    transform: none; /* elimina el desplazamiento en móviles */
+  }
 }
 
 @media (max-width: 640px) {
-  .confpago-grid-2, .confpago-grid-3 { grid-template-columns: 1fr; }
-  .pago-resumen-item { grid-template-columns: 56px 1fr auto; }
-  .pago-resumen-item img, .pago-ph { width: 56px; height: 56px; }
+  .confpago-grid-2,
+  .confpago-grid-3 {
+    grid-template-columns: 1fr;
+  }
+
+  .pago-resumen-item {
+    grid-template-columns: 56px 1fr auto;
+  }
+
+  .pago-resumen-item img,
+  .pago-ph {
+    width: 56px;
+    height: 56px;
+  }
+
   .pago-resumen-linea { min-width: 96px; }
-  .confpago-datos-container, .confpago-pago-container { padding: 24px; }
+
+  .confpago-datos-container,
+  .confpago-pago-container {
+    padding: 24px;
+    width: 100%;
+  }
+
+  .confpago-page,
+  .pago-uni-container {
+    padding: 0 10px;
+  }
 }
 
 @media (max-width: 480px) {
   .pago-pay-wrap { max-width: 420px; }
+}
+
+/* ===========================
+   POPUP
+   =========================== */
+.popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+}
+
+.popup-box {
+  background: #fff;
+  padding: 2rem;
+  border-radius: 1rem;
+  text-align: center;
+  box-shadow: 0 0 15px rgba(0,0,0,0.3);
+  animation: fadeIn 0.4s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: scale(0.9); }
+  to { opacity: 1; transform: scale(1); }
 }
