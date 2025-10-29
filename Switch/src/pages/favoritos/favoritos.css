@@ -8,6 +8,14 @@
   color: #ffffff;
 }
 
+.light-mode .favoritos-2 {
+  color: #111827;
+}
+
+.dark-mode .favoritos-2 {
+  color: #ffffff;
+}
+
 .favoritos-page {
   padding: 2rem 4rem;
   max-width: 1900px;

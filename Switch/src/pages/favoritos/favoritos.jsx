@@ -73,11 +73,10 @@ const Favoritos = () => {
   if (!usuario) {
     return (
       <div className="favoritos-page text-center mt-16">
-        <h2 className="text-3xl font-semibold mb-6">Favoritos</h2>
-        <p className="text-gray-600 text-lg">
-          Debes <Link to="/login" className="text-blue-500 underline">iniciar sesión</Link> para ver tus productos favoritos
-        </p>
+        <h2 className="favoritos-2">Favoritos</h2>
+        <p className="text-gray-600 text-lg">Debes iniciar sesión para ver tus productos favoritos</p>
         <p className="text-gray-500 mt-4">Serás redirigido automáticamente al inicio de sesión en unos segundos...</p>
+        <Link to="/login"></Link>
       </div>
     );
   }

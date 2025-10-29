@@ -60,7 +60,7 @@ function App() {
               <Route path="/producto/:tipo/:productoId" element={<Productos darkMode={darkMode} />} />
               <Route path="/favoritos" element={<PageTitle title="Favoritos"><Favoritos /></PageTitle>} />
               <Route path="/pedidos" element={<PageTitle title="Mis Pedidos"><Pedidos/></PageTitle>} />
-              <Route path="/confpago" element={<PageTitle title="Pago"><ConfPago /></PageTitle>} />
+              <Route path="/confpago" element={<PageTitle title="Confirmar Pago"><ConfPago /></PageTitle>} />
             </Routes>
           </ErrorBoundary>
         </main>

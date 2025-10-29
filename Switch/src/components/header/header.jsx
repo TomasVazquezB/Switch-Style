@@ -8,10 +8,9 @@ import { NavLink, useNavigate, Link } from "react-router-dom";
 import { FaSearch, FaShoppingCart, FaUser } from "react-icons/fa";
 import { BsMoon, BsSun } from "react-icons/bs";
 import { useLocation } from "react-router-dom";
-import { DataContext } from "../../context/DataContext"; // 👈 agregado para obtener productos globales
-import axios from "../../api/axios"; // ✅ agregado para manejar imágenes del backend
+import { DataContext } from "../../context/DataContext"; 
+import axios from "../../api/axios"; 
 
-// === 🖼️ Configuración de imágenes ===
 const BUCKET_BASE = (import.meta.env.VITE_ASSETS_BASE || "").replace(/\/+$/, "");
 const PLACEHOLDER =
   "data:image/svg+xml;utf8," +
@@ -46,7 +45,7 @@ const Header = ({ toggleTheme, darkMode }) => {
   const [showSuggestions, setShowSuggestions] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
-  const { productos } = useContext(DataContext); // 👈 obtiene todos los productos (hombres, mujeres, kids, accesorios)
+  const { productos } = useContext(DataContext); 
 
   const handleClick = (e) => {
     const links = document.querySelectorAll(".nav-link");
@@ -124,7 +123,6 @@ const Header = ({ toggleTheme, darkMode }) => {
       isActive ? "active-link" : ""
     }`;
 
-  // 🔍 Filtra productos que coincidan con el texto (incluye accesorios)
   const filteredSuggestions =
     searchQuery.length > 0
       ? productos
@@ -136,13 +134,12 @@ const Header = ({ toggleTheme, darkMode }) => {
           .slice(0, 5)
       : [];
 
-  // ✅ Generar URL correcta para las imágenes
   const getImageUrl = (p) => {
     if (!p) return "";
     if (p.imagen_url && p.imagen_url.startsWith("http")) return p.imagen_url;
     if (p.ruta_imagen && p.ruta_imagen.startsWith("http")) return p.ruta_imagen;
     if (p.ruta_imagen) return `${axios.defaults.baseURL}/storage/${p.ruta_imagen}`;
-    return "https://via.placeholder.com/60x60?text=No+Image"; // Fallback
+    return "https://via.placeholder.com/60x60?text=No+Image"; 
   };
 
   return (
@@ -152,67 +149,33 @@ const Header = ({ toggleTheme, darkMode }) => {
           darkMode ? "bg-ultra-light" : "bg-ultra-dark"
         } text-center pt-4 pb-2`}
       >
-        <p className="offer-bar-text">
-          ¡Registrate para obtener ofertas unicas y obten un 15% en tu primer
-          compra!
-        </p>
+        <p className="offer-bar-text">¡Registrate para obtener ofertas unicas y obten un 15% en tu primer compra!</p>
       </div>
 
-      <Navbar
-        expand="lg"
-        className={`navbar-top ${darkMode ? "bg-dark" : "bg-light"}`}
-      >
+      <Navbar expand="lg" className={`navbar-top ${darkMode ? "bg-dark" : "bg-light"}`}>
         <Container fluid>
           <Navbar.Brand as={NavLink} to="/" onClick={() => navigate("/")}>
-            <img
-              src="https://res.cloudinary.com/switchstyle/image/upload/v1756993378/Logo%20Switch%20Style.png"
-              width="90"
-              height="50"
-              className="d-inline-block align-top"
-              alt="Logo"
-            />
+            <img src="https://res.cloudinary.com/switchstyle/image/upload/v1756993378/Logo%20Switch%20Style.png" width="90" height="50" className="d-inline-block align-top" alt="Logo"/>
           </Navbar.Brand>
           <Navbar.Toggle aria-controls="navbarNav" />
           <Navbar.Collapse id="navbarNav">
             <Nav className="me-auto">
               <div className="mode-switch">
-                <BsMoon
-                  className={`mode-icon ${darkMode ? "active" : "inactive"}`}
-                />
+                <BsMoon className={`mode-icon ${darkMode ? "active" : "inactive"}`}/>
                 <label className="switch">
-                  <input
-                    type="checkbox"
-                    onChange={toggleTheme}
-                    checked={darkMode}
-                  />
+                  <input type="checkbox" onChange={toggleTheme} checked={darkMode}/>
                   <span className="slider"></span>
                 </label>
-                <BsSun
-                  className={`mode-icon ${darkMode ? "inactive" : "active"}`}
-                />
+                <BsSun className={`mode-icon ${darkMode ? "inactive" : "active"}`}/>
               </div>
             </Nav>
 
             <Container fluid>
-              <Nav
-                className="navbar-ropa"
-                style={{ justifyContent: "space-evenly", width: "100%" }}
-              >
+              <Nav className="navbar-ropa" style={{ justifyContent: "space-evenly", width: "100%" }}>
                 <div className="nav-dropdown">
-                  <Nav.Link
-                    as={NavLink}
-                    to="/MainHombres"
-                    className={({ isActive }) => getLinkClass(isActive)}
-                  >
-                    Hombres
-                  </Nav.Link>
+                  <Nav.Link as={NavLink} to="/MainHombres" className={({ isActive }) => getLinkClass(isActive)}>Hombres</Nav.Link>
                   <div className="dropdown-menu">
-                    <NavLink
-                      to="/ropa/hombres/remeras"
-                      className={({ isActive }) => getLinkClass(isActive)}
-                    >
-                      Remeras
-                    </NavLink>
+                    <NavLink to="/ropa/hombres/remeras" className={({ isActive }) => getLinkClass(isActive)}>Remeras</NavLink>
                     <NavLink
                       to="/ropa/hombres/pantalones"
                       className={({ isActive }) => getLinkClass(isActive)}
@@ -321,42 +284,17 @@ const Header = ({ toggleTheme, darkMode }) => {
             </Container>
 
 <div className="search-bar" style={{ position: "relative" }}>
-  <form
-    className="search-form"
-    onSubmit={(e) => {
-      e.preventDefault(); 
-    }}
-  >
-    <input
-      type="text"
-      placeholder="Buscar"
-      value={searchQuery}
-      onChange={(e) => {
-        setSearchQuery(e.target.value);
-        setShowSuggestions(true);
-      }}
-      onFocus={() => setShowSuggestions(true)}
-      onBlur={() => setTimeout(() => setShowSuggestions(false), 150)}
-      className="search-input"
-    />
-
-    <button type="button" className="search-icon-btn">
-      <FaSearch size={18} />
-    </button>
+  <form className="search-form" onSubmit={(e) => {e.preventDefault(); }}>
+    <input type="text" placeholder="Buscar" value={searchQuery} onChange={(e) => {setSearchQuery(e.target.value); setShowSuggestions(true); }} onFocus={() => setShowSuggestions(true)} onBlur={() => setTimeout(() => setShowSuggestions(false), 150)} className="search-input"/>
+    <button type="button" className="search-icon-btn"><FaSearch size={18}/></button>
 
     {showSuggestions && filteredSuggestions.length > 0 && (
       <div className={`search-suggestions ${darkMode ? "dark" : "light"}`}>
         {filteredSuggestions.map((p) => (
-          <div
-            key={p.id}
-            className="suggestion-item"
-            onClick={() => handleSuggestionClick(p.titulo)}
-          >
+          <div key={p.id} className="suggestion-item" onClick={() => handleSuggestionClick(p.titulo)}>
             <div className="suggestion-info">
               <span className="suggestion-title">{p.titulo}</span>
-              <span className="suggestion-price">
-                ${p.precio || p.Precio}
-              </span>
+              <span className="suggestion-price">${p.precio || p.Precio}</span>
             </div>
           </div>
         ))}

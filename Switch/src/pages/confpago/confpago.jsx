@@ -6,21 +6,7 @@ import { PayPalButtons } from "@paypal/react-paypal-js";
 import "react-toastify/dist/ReactToastify.css";
 import "./confpago.css";
 
-const emptyForm = {
-  nombre: "",
-  apellido: "",
-  email: "",
-  telefono: "",
-  calle: "",
-  numero: "",
-  pisoDepto: "",
-  ciudad: "",
-  provincia: "",
-  codigoPostal: "",
-  referencias: "",
-  entregaFecha: "",
-  entregaFranja: "09:00-12:00",
-};
+const emptyForm = {nombre: "", apellido: "", email: "", telefono: "", calle: "", numero: "", pisoDepto: "", ciudad: "", provincia: "", codigoPostal: "", referencias: "", entregaFecha: "", entregaFranja: "09:00-12:00",};
 
 export default function ConfPago() {
   const navigate = useNavigate();
@@ -48,8 +34,6 @@ export default function ConfPago() {
   const [productos, setProductos] = useState([]);
   const [accesorios, setAccesorios] = useState([]);
   const [loading, setLoading] = useState(false);
-
-  // 👇 Nuevo estado para el popup
   const [showPopup, setShowPopup] = useState(false);
 
   useEffect(() => {
@@ -74,18 +58,7 @@ export default function ConfPago() {
   };
 
   const validar = () => {
-    const req = [
-      "nombre",
-      "apellido",
-      "email",
-      "telefono",
-      "calle",
-      "numero",
-      "ciudad",
-      "provincia",
-      "codigoPostal",
-      "entregaFecha",
-    ];
+    const req = ["nombre","apellido","email","telefono","calle","numero","ciudad","provincia","codigoPostal","entregaFecha",];
     for (const k of req) {
       if (!String(form[k] || "").trim()) {
         toast.error(`Falta completar: ${k}`);
@@ -93,7 +66,7 @@ export default function ConfPago() {
       }
     }
     if (!carrito?.length) {
-      toast.error("Tu carrito está vacío.");
+      toast.error("Tu carrito está vacío");
       return false;
     }
     return true;
@@ -127,7 +100,6 @@ export default function ConfPago() {
       subtotal: 0,
       moneda: "$",
     };
-
     setPayload(payloadData);
     localStorage.setItem("checkout_payload", JSON.stringify(payloadData));
   };
@@ -213,8 +185,6 @@ export default function ConfPago() {
 
   return (
     <div className="confpago-page pago-uni-container">
-      <h2 className="conf-pago1">CONFIRMACIÓN DE PAGO</h2>
-
       {showPopup && (
         <div className="popup-overlay">
           <div className="popup-box">
@@ -307,60 +277,60 @@ export default function ConfPago() {
         </div>
       </div>
 
-      {payload && (
-        <div className="confpago-pago-container">
-          <section className="pago-card">
-            <h3 className="direccion-envio">Dirección de envío</h3>
-            <p className="pagomuted">{payload.envio?.nombre} {payload.envio?.apellido} · {payload.envio?.telefono}</p>
-            <p>{payload.envio?.direccion?.calle} {payload.envio?.direccion?.numero} {payload.envio?.direccion?.pisoDepto && `, ${payload.envio?.direccion?.pisoDepto}`}</p>
-            <p>{payload.envio?.direccion?.ciudad}, {payload.envio?.direccion?.provincia} ({payload.envio?.direccion?.codigoPostal})</p>
-            <p className="pagomuted">Entrega: {payload.envio?.entrega?.fecha} · {payload.envio?.entrega?.franja}</p>
-          </section>
-
-      <section className="pago-card pago-resumen-unificado">
-      <h3 className="tus-envios">Tus productos</h3>
-  {payload.carrito.map((item, idx) => {
-    const p = buscarProducto(item);
-    const img = getImagen(item, p);
-    const unit = parseFloat(p?.precio ?? 0) || parseFloat(item?.precio ?? 0) || 0;
-    const line = (unit * (item.cantidad || 1)).toFixed(2);
-    return (
-      <div key={idx} className="pago-resumen-item">
-        {img ? (
-          <img src={img} alt={p?.titulo || item?.titulo || "Producto"} />
-        ) : (
-          <div className="pago-ph" />
-        )}
-        <div className="pago-resumen-info">
-          <div className="pago-tit">{p?.titulo || item?.titulo || "Producto"}</div>
-          <div className="pago-sub">{payload.moneda}{unit.toFixed(2)} · x{item.cantidad}{" "} {item.talla ? `· Talle ${item.talla}` : ""}</div>      
-        </div>
+{payload && (
+    <section className="pago-card">
+      <div className="pago-bloque-envio">
+        <h3 className="tus-envios">Confirmacion de Pago</h3>
+        <p className="pagomuted">{payload.envio?.nombre} {payload.envio?.apellido} · {payload.envio?.telefono}</p>
+        <p>{payload.envio?.direccion?.calle} {payload.envio?.direccion?.numero}{" "} {payload.envio?.direccion?.pisoDepto && `, ${payload.envio?.direccion?.pisoDepto}`}</p>
+        <p>{payload.envio?.direccion?.ciudad}, {payload.envio?.direccion?.provincia} ({payload.envio?.direccion?.codigoPostal})</p>
+        <p className="pagomuted">Entrega: {payload.envio?.entrega?.fecha} · {payload.envio?.entrega?.franja}</p>
       </div>
-    );
-  })}
-  
-  <div className="pago-resumen-unificado-total">
-    <div className="pago-row">
-      <span className="subtotal">Subtotal</span>
-      <strong>{payload.moneda}{subtotal}</strong>
-    </div>
-    <div className="pago-row">
-      <span className="envio">Envío</span>
-      <span className="pago-muted">Se calculará si aplica</span>
-    </div>
-    <div className="pago-row pago-total">
-      <span className="total-pago">Total</span>
-      <strong>{payload.moneda}{total}</strong>
-    </div>
-  </div>
-  <br/>
-  <div className="pago-pay-wrap">
-    <PayPalButtons style={{layout: "vertical", height: 48, shape: "rect", label: "paypal", tagline: false,}} createOrder={createOrder} onApprove={onApprove} onError={onError} disabled={loading} forceReRender={[total]}/>
-    <p className="nota-final">Al confirmar el pago, registraremos tu pedido y lo verás en Mis Pedidos</p>
-  </div>
-</section>
+
+      <hr className="pago-divisor" />
+      <div className="pago-bloque-productos">
+        {payload.carrito.map((item, idx) => {
+          const p = buscarProducto(item);
+          const img = getImagen(item, p);
+          const unit = parseFloat(p?.precio ?? 0) || parseFloat(item?.precio ?? 0) || 0;
+          const line = (unit * (item.cantidad || 1)).toFixed(2);
+          return (
+            <div key={idx} className="pago-resumen-item">
+              {img ? (
+                <img src={img} alt={p?.titulo || item?.titulo || "Producto"} />
+              ) : (
+                <div className="pago-ph" />
+              )}
+              <div className="pago-resumen-info">
+                <div className="pago-tit">{p?.titulo || item?.titulo || "Producto"}</div>
+                <div className="pago-sub">{payload.moneda}{unit.toFixed(2)} · x{item.cantidad}{" "} {item.talla ? `· Talle ${item.talla}` : ""}</div>
+              </div>
+              </div>
+          );
+        })}
+      </div>
+
+     <br/>
+      <div className="pago-resumen-unificado-total">
+        <div className="pago-row">
+          <span className="subtotal">Subtotal:</span>
+          <strong className="subtotal2">{payload.moneda}{subtotal}</strong>
+        </div>
+        <br/>
+        <div className="pago-row">
+          <span className="envio">Envío:</span>
+          <span className="pago-muted">Se calculará si aplica</span>
+        </div>
+        <br />
+        <div className="pago-row pago-total">
+          <span className="total-pago">Total:</span>
+          <strong className="total-pago2">{payload.moneda}{total}</strong>
+        </div>
+        <br/>
+        <PayPalButtons style={{layout: "vertical", height: 48, shape: "rect", label: "paypal", tagline: false,}} createOrder={createOrder} onApprove={onApprove} onError={onError} disabled={loading}forceReRender={[total]}/>
+        <p className="nota-final">Al confirmar el pago, registraremos tu pedido y lo verás en Mis Pedidos</p>
+      </div>
+    </section>
+)}
         </div>
       )} 
-    </div>
-  );
-}

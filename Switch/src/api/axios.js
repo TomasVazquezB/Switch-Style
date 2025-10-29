@@ -4,7 +4,6 @@ import { obtenerToken } from "./auth";
 export const BASE_URL = "https://switchstyle.laravel.cloud/api";
 export const ROOT_URL = "https://switchstyle.laravel.cloud";
 
-// --- API protegida (login, usuarios, etc.) ---
 const api = axios.create({
   baseURL: "/",
   headers: {
@@ -14,7 +13,6 @@ const api = axios.create({
   withCredentials: true,
 });
 
-// --- API pública (productos, imágenes, etc.) ---
 export const publicApi = axios.create({
   baseURL: "/api",
   headers: {
