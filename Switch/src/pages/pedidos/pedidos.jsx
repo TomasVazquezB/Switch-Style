@@ -22,7 +22,7 @@ export function MisPedidos() {
         setPedidos(response.data || []);
       } catch (err) {
         console.error("❌ Error al obtener pedidos:", err);
-        setError("No se pudieron cargar tus pedidos.");
+        setError("No se pudieron cargar tus pedidos. Por favor, intenta nuevamente más tarde");
       } finally {
         setLoading(false);
       }

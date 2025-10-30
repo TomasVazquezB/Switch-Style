@@ -1,3 +1,4 @@
+// src/pages/Favoritos.jsx
 import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
@@ -28,28 +29,51 @@ const Favoritos = () => {
   const [ropaFavorita, setRopaFavorita] = useState([]);
   const [accesoriosFavoritos, setAccesoriosFavoritos] = useState([]);
   const [usuario, setUsuario] = useState(null);
+  const [loading, setLoading] = useState(true); // ⬅️ Nuevo flag para carga segura
 
-  // 🔒 Verificar login al cargar
+  // 🔒 Verificar login y token al montar
   useEffect(() => {
-    const user = JSON.parse(localStorage.getItem('user')) || null;
-    setUsuario(user);
+    const storedUser = JSON.parse(localStorage.getItem('user')) || null;
+    const token = localStorage.getItem('token');
 
-    if (!user) {
-      toast.warning("Debes iniciar sesión para ver tus favoritos 🔐", { autoClose: 5000 }); // más tiempo visible
-      // redirige después de 5 segundos
-      const timeout = setTimeout(() => navigate('/login'), 5000);
+    if (!storedUser || !token) {
+      toast.warning("Debes iniciar sesión para ver tus favoritos 🔐", { autoClose: 4000 });
+      const timeout = setTimeout(() => navigate('/login'), 4000);
+      setLoading(false);
       return () => clearTimeout(timeout);
     }
 
-    const fav = JSON.parse(localStorage.getItem('favoritos')) || [];
-    setFavoritos(fav);
+    // ✅ Configurar axios con el token
+    axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
 
-    const fetchFavoritos = async () => {
+    // Validar usuario en backend antes de seguir
+    const validarSesion = async () => {
+      try {
+        const { data } = await axios.get('/user'); // <-- Ruta que devuelve usuario autenticado
+        if (!data || !data.id) throw new Error('Usuario no válido');
+        setUsuario(data);
+        await cargarFavoritos();
+      } catch (err) {
+        console.error('Error validando sesión', err);
+        toast.error("Sesión expirada, por favor inicia sesión nuevamente");
+        localStorage.removeItem('user');
+        localStorage.removeItem('token');
+        navigate('/login');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    const cargarFavoritos = async () => {
+      const fav = JSON.parse(localStorage.getItem('favoritos')) || [];
+      setFavoritos(fav);
+
       try {
         const [ropaRes, accRes] = await Promise.all([
           axios.get('/ropa'),
           axios.get('/accesorios')
         ]);
+
         setRopaFavorita(ropaRes.data.filter(p => fav.includes(p.id)));
         setAccesoriosFavoritos(accRes.data.filter(p => fav.includes(p.id)));
       } catch (err) {
@@ -58,7 +82,7 @@ const Favoritos = () => {
       }
     };
 
-    fetchFavoritos();
+    validarSesion();
   }, [navigate]);
 
   const handleQuitar = (id) => {
@@ -70,6 +94,17 @@ const Favoritos = () => {
     toast.info("Producto quitado de favoritos 🤍");
   };
 
+  // Estado de carga
+  if (loading) {
+    return (
+      <div className="favoritos-page text-center mt-16">
+        <h2 className="favoritos-2">Favoritos</h2>
+        <p className="text-gray-500 text-lg">Verificando tu sesión...</p>
+      </div>
+    );
+  }
+
+  // Usuario no logueado
   if (!usuario) {
     return (
       <div className="favoritos-page text-center mt-16">
