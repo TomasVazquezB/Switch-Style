@@ -18,7 +18,7 @@ import ErrorBoundary from './components/Error/ErrorBoundary';
 import Pedidos from "./pages/pedidos/pedidos.jsx";
 import ConfPago from "./pages/confpago/confpago.jsx";
 import { ToastContainer } from 'react-toastify';
-import Busqueda from './pages/busqueda/busqueda.jsx';
+import Busqueda from './pages/busqueda/Busqueda.jsx';
 import { PayPalScriptProvider } from "@paypal/react-paypal-js";
 import 'react-toastify/dist/ReactToastify.css';
 import '/index.css';
