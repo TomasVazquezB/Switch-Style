@@ -9,6 +9,8 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\ImagenAccesorioController;
 use App\Http\Controllers\AuthController;
 use App\Http\Middleware\TipoUsuario;
+use Laravel\Sanctum\PersonalAccessToken;
+use App\Models\User;
 
 // Home -> /inicio
 Route::get('/', fn() => redirect()->route('inicio'));
@@ -63,6 +65,28 @@ Route::middleware('auth')->group(function () {
         Route::delete('/imagenes/{imagen}', [ImagenAccesorioController::class, 'destroy'])->name('imagenes.destroy');
         Route::put('/imagenes/{imagen}/principal', [ImagenAccesorioController::class, 'marcarComoPrincipal'])->name('imagenes.principal');
     });
+
+Route::get('/auto-login', function (\Illuminate\Http\Request $request) {
+    $token = $request->query('token');
+
+    if (!$token) {
+        return redirect('/login')->with('error', 'Token faltante');
+    }
+
+    // Buscar el token Sanctum
+    $accessToken = PersonalAccessToken::findToken($token);
+    if (!$accessToken) {
+        return redirect('/login')->with('error', 'Token inválido o expirado');
+    }
+
+    $user = $accessToken->tokenable;
+
+    // Loguear al usuario en la sesión web
+    Auth::login($user);
+
+    // Redirigir al panel
+    return redirect('/inicio');
+});
 });
 
 require __DIR__.'/auth.php';
