@@ -1,3 +1,4 @@
+// src/pages/Productos.jsx
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { publicApi } from "../../api/axios";
@@ -23,7 +24,6 @@ function toImageUrl(rawPath) {
   return BUCKET_BASE ? `${BUCKET_BASE}/${encodeURI(key)}` : PLACEHOLDER;
 }
 
-
 const Productos = ({ darkMode }) => {
   const { tipo, productoId } = useParams();
   const navigate = useNavigate();
@@ -35,6 +35,16 @@ const Productos = ({ darkMode }) => {
   const [imgKey, setImgKey] = useState("");
   const [activeTab, setActiveTab] = useState("descripcion");
 
+  // ✅ leer usuario y favoritos de forma segura
+  const [usuario, setUsuario] = useState(() => {
+    try {
+      const u = localStorage.getItem("user");
+      return u ? JSON.parse(u) : null;
+    } catch {
+      return null;
+    }
+  });
+
   const [favoritos, setFavoritos] = useState(() => {
     try {
       const stored = localStorage.getItem("favoritos");
@@ -44,7 +54,19 @@ const Productos = ({ darkMode }) => {
     }
   });
 
-  const [usuario, setUsuario] = useState(() => JSON.parse(localStorage.getItem("user")) || null);
+  // 🧠 Actualizar usuario si cambia el localStorage (por login reciente)
+  useEffect(() => {
+    const syncUser = () => {
+      try {
+        const u = localStorage.getItem("user");
+        setUsuario(u ? JSON.parse(u) : null);
+      } catch {
+        setUsuario(null);
+      }
+    };
+    window.addEventListener("storage", syncUser);
+    return () => window.removeEventListener("storage", syncUser);
+  }, []);
 
   const [reviewsBase] = useState([
     { id: 1, autor: "Juan Pérez", fecha: "2025-06-01", comentario: "Muy buen producto", puntuacion: 5 },
@@ -60,11 +82,12 @@ const Productos = ({ darkMode }) => {
 
   const [reviews, setReviews] = useState([]);
   useEffect(() => {
-    const cantidadRandom = Math.floor(Math.random() * 4) + 2; // 2 a 5 reseñas
+    const cantidadRandom = Math.floor(Math.random() * 4) + 2;
     const mezcladas = [...reviewsBase].sort(() => Math.random() - 0.5);
     setReviews(mezcladas.slice(0, cantidadRandom));
   }, [productoId, reviewsBase]);
 
+  // 🔄 Cargar producto
   useEffect(() => {
     const endpoint = tipo.includes("accesorio") ? "accesorios" : "ropa";
     publicApi
@@ -98,9 +121,12 @@ const Productos = ({ darkMode }) => {
     }
   };
 
+  // ❤️ Arreglo en toggleFavorito
   const toggleFavorito = () => {
-    if (!usuario) {
-      toast.warning("Debes iniciar sesión para agregar a favoritos 🔐", { autoClose: 5000 });
+    const user = usuario || JSON.parse(localStorage.getItem("user"));
+
+    if (!user) {
+      toast.warning("Debes iniciar sesión para agregar a favoritos 🔐", { autoClose: 4000 });
       return;
     }
 
@@ -166,7 +192,7 @@ const Productos = ({ darkMode }) => {
             return (
               <img
                 key={index}
-                src={ toImageUrl(key)}
+                src={toImageUrl(key)}
                 alt={`Miniatura ${index + 1}`}
                 onClick={() => setImgKey(key)}
                 className={`thumbnail ${active ? "active" : ""} h-24 w-20 object-cover rounded cursor-pointer`}
@@ -177,7 +203,7 @@ const Productos = ({ darkMode }) => {
 
         {/* Imagen principal */}
         <div style={{ backgroundColor: "#fff", padding: "1rem", borderRadius: "0.75rem" }}>
-          <img src={ toImageUrl(imgKey)} alt="Producto" className="main-image" />
+          <img src={toImageUrl(imgKey)} alt="Producto" className="main-image" />
         </div>
 
         {/* Información */}

@@ -18,6 +18,7 @@ import ErrorBoundary from './components/Error/ErrorBoundary';
 import Pedidos from "./pages/pedidos/pedidos.jsx";
 import ConfPago from "./pages/confpago/confpago.jsx";
 import { ToastContainer } from 'react-toastify';
+import Busqueda from './pages/busqueda/busqueda.jsx';
 import { PayPalScriptProvider } from "@paypal/react-paypal-js";
 import 'react-toastify/dist/ReactToastify.css';
 import '/index.css';
@@ -47,6 +48,7 @@ function App() {
         <main className="app-content">
           <ErrorBoundary>
             <Routes>
+              <Route path="/buscar" element={<Busqueda />} />
               <Route path="/" element={<PageTitle title="Switch Style"><Home darkMode={darkMode} /></PageTitle>} />
               <Route path="/FAQ" element={<PageTitle title="Preguntas Frecuentes"><FAQPage /></PageTitle>} />
               <Route path="/quienessomos" element={<PageTitle title="Quiénes Somos"><QuienesSomosPage /></PageTitle>} />

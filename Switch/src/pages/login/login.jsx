@@ -24,7 +24,7 @@ export function LoginPage() {
 
     try {
       // 1️⃣ Obtener cookie CSRF antes de login
-      
+
       await api.get("/sanctum/csrf-cookie");
       console.log('document.cookie (en host actual):', document.cookie);
       fetch('https://switchstyle.laravel.cloud/sanctum/csrf-cookie', { credentials: 'include' })
@@ -55,6 +55,10 @@ export function LoginPage() {
       } else {
         navigate("/");
       }
+      setTimeout(() => {
+        window.location.reload();
+      }, 300);
+
     } catch (err) {
       console.error("❌ Error al iniciar sesión:", err);
 
