@@ -181,7 +181,6 @@ body.dark-mode .thumbnail {
   border: 1px solid #333 !important;
 }
 
-/* Texto dentro del botón de tallas */
 body.dark-mode .talla-btn {
   color: #000000 !important;
   background-color: #ffffff !important;
@@ -193,34 +192,28 @@ body.dark-mode .talla-btn.active {
   border-color: #fff;
 }
 
-/* ----------- MODO CLARO ----------- */
 body.light-mode .content {
   color: #000000;
 }
 
-/* Precio (blanco sobre blanco → negro visible) */
 body.light-mode p[style*="color: #ffffff"] {
   color: #000000 !important;
 }
 
-/* "Tallas disponibles" */
 body.light-mode p[style*="font-weight: 500"] {
   color: #000000 !important;
 }
 
-/* Descripción */
 body.light-mode p[style*="color: #444"] {
   color: #111111 !important;
 }
 
-/* Referencia de imagen del producto */
 body.light-mode .thumbnail {
   color: #000000 !important;
   background-color: #ffffff !important;
   border: 1px solid #ccc !important;
 }
 
-/* Texto dentro del botón de tallas */
 body.light-mode .talla-btn {
   color: #ffffff !important;
   background-color: #000000 !important;
@@ -233,25 +226,20 @@ body.light-mode .talla-btn.active {
 }
 
 body.dark-mode .main-image {
-  color: #000000; /* modo oscuro */
+  color: #000000; 
 }
 
-/* Texto del label "Cantidad" */
 label.text-gray-700 {
-  color: #222 !important; /* Modo claro */
+  color: #222 !important; 
 }
 
-/* En modo oscuro */
 body.dark-mode label.text-gray-700 {
   color: #f0f0f0 !important;
 }
 
-/* ======== CARTAS DE REVIEWS ======== */
-
-/* --- MODO CLARO (por defecto) --- */
 .review-card {
-  background-color: #ffffff;             /* blanco puro */
-  color: #1c1c1c;                        /* texto oscuro */
+  background-color: #ffffff;           
+  color: #1c1c1c;                        
   padding: 1rem 1.5rem;
   border-radius: 10px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
@@ -264,10 +252,9 @@ body.dark-mode label.text-gray-700 {
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
-/* --- MODO OSCURO --- */
 .dark .review-card {
-  background-color: #2b2b2b;             /* gris medio para contraste */
-  color: #f0f0f0;                        /* texto claro */
+  background-color: #2b2b2b;             
+  color: #f0f0f0;                        
   border: 1px solid rgba(255, 255, 255, 0.1);
   box-shadow: 0 2px 10px rgba(255, 255, 255, 0.05);
 }
@@ -276,7 +263,6 @@ body.dark-mode label.text-gray-700 {
   box-shadow: 0 4px 14px rgba(255, 255, 255, 0.12);
 }
 
-/* --- Texto interno --- */
 .review-author {
   font-weight: 600;
   color:#f0f0f0;
@@ -315,19 +301,17 @@ body.dark-mode label.text-gray-700 {
 .payment-info {
   margin: 0.5rem 0;
   font-size: 0.9rem;
-  color: #000; /* Color por defecto (modo claro) */
+  color: #000; 
   transition: color 0.3s;
 }
 
-/* Modo oscuro */
 .dark .payment-info {
   color: #fff;
 }
 
-/* ===== AJUSTE NOMBRE Y PRECIO ===== */
 .producto-info h2 {
-    margin-top: 14px;       /* baja el título */
-    margin-bottom: 0.25rem; /* espacio mínimo abajo */
+    margin-top: 14px;       
+    margin-bottom: 0.25rem;
     line-height: 1.2;
     font-size: 2rem;
 }
@@ -338,7 +322,6 @@ body.dark-mode label.text-gray-700 {
     font-weight: bold;
 }
 
-/* Modo oscuro */
 .dark .producto-info h2,
 .dark .producto-info p.precio {
     color: #ffffff;
