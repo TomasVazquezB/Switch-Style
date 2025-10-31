@@ -9,11 +9,11 @@ const PLACEHOLDER =
   encodeURIComponent(
     `<svg xmlns="http://www.w3.org/2000/svg" width="800" height="600">
       <rect width="100%" height="100%" fill="#f3f4f6"/>
-      <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" font-family="Arial" font-size="24" fill="#9ca3af">Sin imagen</text>
+      <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle"
+            font-family="Arial" font-size="24" fill="#9ca3af">Sin imagen</text>
     </svg>`
   );
 
-// Normaliza cualquier ruta que venga del backend a la URL final del bucket
 function toRopaImageUrl(rawPath) {
   if (!rawPath) return PLACEHOLDER;
   if (/^https?:\/\//i.test(rawPath)) return rawPath;
@@ -27,28 +27,6 @@ function toRopaImageUrl(rawPath) {
   return BUCKET_BASE ? `${BUCKET_BASE}/ropa/${encodeURI(key)}` : PLACEHOLDER;
 }
 
-// Lee el theme (claro/oscuro) desde localStorage o la clase html.dark
-function getThemeAsEstilo() {
-  const ls = (localStorage.getItem('theme') || '').toLowerCase();
-  const isDark = ls === 'dark' || document.documentElement.classList.contains('dark');
-  return isDark ? 'oscuro' : 'claro';
-}
-function useThemeEstilo() {
-  const [estilo, setEstilo] = useState(getThemeAsEstilo());
-  useEffect(() => {
-    const sync = () => setEstilo(getThemeAsEstilo());
-    window.addEventListener('storage', sync);
-    const mo = new MutationObserver(sync);
-    mo.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
-    return () => {
-      window.removeEventListener('storage', sync);
-      mo.disconnect();
-    };
-  }, []);
-  return estilo;
-}
-
-// OJO: corregimos el typo "Pantalónes" -> "Pantalones"
 const CATEGORIES_DB = [
   'Remeras',
   'Camisas',
@@ -60,26 +38,24 @@ const CATEGORIES_DB = [
 
 const ALL_SIZES = ['S', 'M', 'L', 'XL', 'XXL'];
 
-const MainHombres = () => {
-  const estilo = useThemeEstilo();
+const MainHombres = ({ darkMode }) => {
   const [productos, setProductos] = useState([]);
-  const [subCategoria, setSubCategoria] = useState([]); // array de nombres de categoría
-  const [tallas, setTallas] = useState([]); // array de nombres de talla
+  const [subCategoria, setSubCategoria] = useState([]);
+  const [tallas, setTallas] = useState([]);
   const [sortTipo, setSortTipo] = useState('relevante');
   const [precioMin] = useState(100);
   const [precioMax, setPrecioMax] = useState(350);
 
-  // Traer productos del backend con los filtros actuales
   useEffect(() => {
     let cancel = false;
-    (async () => {
+    async function fetchData() {
       try {
         const res = await publicApi.get('/ropa', {
           params: {
+            theme: darkMode ? 'dark' : 'light',
             genero: 'Hombre',
-            estilo,
-            categorias: subCategoria, // ej. ['Remeras','Camisas']
-            tallas,                   // ej. ['M','L']
+            categorias: subCategoria,
+            tallas,
             orden:
               sortTipo === 'low-high'
                 ? 'precio_asc'
@@ -90,16 +66,16 @@ const MainHombres = () => {
         });
         if (!cancel) setProductos(Array.isArray(res.data) ? res.data : []);
       } catch (e) {
-        console.error('❌ Error al obtener productos:', e);
+        console.error('Error al obtener productos:', e);
         if (!cancel) setProductos([]);
       }
-    })();
+    }
+    fetchData();
     return () => {
       cancel = true;
     };
-  }, [estilo, subCategoria, tallas, sortTipo]);
+  }, [darkMode, subCategoria, tallas, sortTipo]);
 
-  // Calcular el precio máximo dinámico según resultados
   const maxPrice = useMemo(() => {
     const precios = productos.map((p) => Number(p?.precio || 0));
     const max = Math.max(350, ...(precios.length ? precios : [0]));
@@ -110,42 +86,50 @@ const MainHombres = () => {
     setPrecioMax((prev) => (prev < maxPrice ? maxPrice : prev));
   }, [maxPrice]);
 
-  // Filtro de precio + orden local (el resto ya viene del backend)
   const filtroProductos = useMemo(() => {
     let temp = [...productos];
-
     temp = temp.filter((item) => {
       const precio = Number(item?.precio || 0);
       return precio >= precioMin && precio <= Number(precioMax);
     });
-
-    if (sortTipo === 'low-high') temp.sort((a, b) => Number(a.precio) - Number(b.precio));
-    else if (sortTipo === 'high-low') temp.sort((a, b) => Number(b.precio) - Number(a.precio));
-
+    if (sortTipo === 'low-high') {
+      temp.sort((a, b) => Number(a.precio) - Number(b.precio));
+    } else if (sortTipo === 'high-low') {
+      temp.sort((a, b) => Number(b.precio) - Number(a.precio));
+    }
     return temp;
   }, [productos, precioMin, precioMax, sortTipo]);
 
-  // Handlers UI
   const toggleSubCategoria = (e) => {
     const value = e.target.value;
     setSubCategoria((prev) =>
       prev.includes(value) ? prev.filter((i) => i !== value) : [...prev, value]
     );
   };
+
   const toggleTallaManual = (size) => {
-    setTallas((prev) => (prev.includes(size) ? prev.filter((t) => t !== size) : [...prev, size]));
+    setTallas((prev) =>
+      prev.includes(size)
+        ? prev.filter((t) => t !== size)
+        : [...prev, size]
+    );
   };
 
   return (
     <div className="content">
-      <section className="sidebar top-0 left-0 h-screen overflow-y-auto bg-white dark:bg-gray-900 border-r px-4 py-6">
+      <section className="sidebar top-0 left-0 h-screen overflow-y-auto bg-white border-r px-4 py-6">
         <div className="sidebar-content">
           <div className="mb-4">
             <h4 className="mb-3">CATEGORIA</h4>
-            <div className="flex flex-col gap-2 text-sm font-light text-gray-700 dark:text-gray-200">
+            <div className="filter-categorias">
               {CATEGORIES_DB.map((cat) => (
-                <label key={cat} className="flex items-center gap-2">
-                  <input type="checkbox" className='me-2' value={cat} onChange={toggleSubCategoria} />
+                <label key={cat}>
+                  <input
+                    type="checkbox"
+                    value={cat}
+                    onChange={toggleSubCategoria}
+                    checked={subCategoria.includes(cat)}
+                  />
                   {cat}
                 </label>
               ))}
@@ -156,20 +140,17 @@ const MainHombres = () => {
 
           <div className="mb-4">
             <h4 className="mb-3">TALLA</h4>
-            <div className="flex flex-wrap gap-3 text-sm font-light text-gray-700 dark:text-gray-200">
+            <div className="filter-tallas">
               {ALL_SIZES.map((size) => (
-                <button
+                <div
                   key={size}
-                  type="button"
                   onClick={() => toggleTallaManual(size)}
-                  className={`px-4 py-2 border rounded-full text-sm transition-colors duration-200 ${
-                    tallas.includes(size)
-                      ? 'bg-black text-white border-black hover:bg-gray-800 dark:bg-white dark:text-black dark:border-white'
-                      : 'bg-white text-black border-gray-400 hover:bg-gray-100 dark:bg-gray-900 dark:text-white dark:border-gray-600'
+                  className={`talla-item ${
+                    tallas.includes(size) ? 'active' : ''
                   }`}
                 >
                   {size}
-                </button>
+                </div>
               ))}
             </div>
           </div>
@@ -196,17 +177,18 @@ const MainHombres = () => {
       </section>
 
       <div className="main pl-[220px] px-8 py-2">
-        <div className="flex justify-end mb-3">
-          <select
-            value={sortTipo}
-            onChange={(e) => setSortTipo(e.target.value)}
-            className="border border-gray-300 dark:border-gray-700 dark:bg-gray-900 text-sm px-2 py-1 rounded"
-          >
-            <option value="relevante">Ordenar por: Relevante</option>
-            <option value="low-high">Ordenar por: de menor a mayor</option>
-            <option value="high-low">Ordenar por: mayor a menor</option>
-          </select>
-        </div>
+        <div className="flex w-full mb-3">
+  <select
+    value={sortTipo}
+    onChange={(e) => setSortTipo(e.target.value)}
+    className="border border-gray-300 text-sm px-2 py-1 rounded ml-auto"
+  >
+    <option value="relevante">ORDENAR POR: RELEVANTE</option>
+    <option value="low-high">ORDENAR POR: DE MENOR A MAYOR</option>
+    <option value="high-low">ORDENAR POR: MAYOR A MENOR</option>
+  </select>
+</div>
+
 
         <div className="product-grid grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {filtroProductos.map((item) => {
@@ -217,27 +199,23 @@ const MainHombres = () => {
               item?.imagenes?.[0]?.ruta ||
               '';
             const imageUrl = toRopaImageUrl(rawPath);
-
-            // nombre del uploader directo del payload
             const uploader =
               item?.usuario?.Nombre ??
               item?.user?.name ??
               item?.usuario_nombre ??
               null;
-
-            // Pasamos 'nombre' como JSX: título + "Subido por" (quedará antes del precio)
-           const tituloConUploader = (
-  <div className="titulo-bloque">
-    <span className="titulo-ropa">{item.titulo}</span>
-    {uploader && (
-      <span className="subido-por">Subido por: {uploader}</span>
-    )}
-  </div>
-);
+            const tituloConUploader = (
+              <div className="titulo-bloque">
+                <span className="titulo-ropa">{item.titulo}</span>
+                {uploader && (
+                  <span className="subido-por">Subido por: {uploader}</span>
+                )}
+              </div>
+            );
             return (
               <article
                 key={item.id}
-                className="rounded border overflow-hidden bg-white dark:bg-gray-800 transition"
+                className="rounded border overflow-hidden bg-white transition"
               >
                 <ProductoItem
                   id={item.id}
@@ -249,9 +227,8 @@ const MainHombres = () => {
               </article>
             );
           })}
-
           {!filtroProductos.length && (
-            <p className="col-span-full text-sm opacity-70 dark:text-gray-300">
+            <p className="col-span-full text-sm opacity-70">
               No encontramos resultados con los filtros seleccionados
             </p>
           )}
