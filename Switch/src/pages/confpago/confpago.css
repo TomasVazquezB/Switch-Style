@@ -104,16 +104,11 @@
   font-size: 0.95rem;
   outline: none;
   background: #ffffff; /* Fondo puro en modo claro */
-  color: var(--text-color);
+  color:#000000;
   transition: border 0.3s, box-shadow 0.3s, background 0.3s, color 0.3s;
 }
 
-@media (prefers-color-scheme: dark) {
-  .confpago-page .confpago-input,
-  .confpago-page .confpago-textarea {
-    background: #1f1f1f; /* Fondo oscuro en modo oscuro */
-  }
-}
+
 
 .confpago-page .confpago-input:focus,
 .confpago-page .confpago-textarea:focus {
@@ -175,4 +170,108 @@
   .confpago-page .confpago-grid-3 {
     grid-template-columns: 1fr;
   }
+}
+
+/* ---------- GENERAL ---------- */
+.confpago-page {
+  display: flex;
+  justify-content: center;
+  padding: 2rem;
+  color: #fff; /* texto general en blanco */
+}
+
+/* ---------- CONTENEDOR ---------- */
+.confpago-container {
+  width: 100%;
+  max-width: 900px;
+  background: #111; /* fondo oscuro */
+  border-radius: 16px;
+  padding: 2rem;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+}
+
+/* ---------- LABELS Y TEXTOS ---------- */
+.confpago-label-text {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 0.4rem;
+  color: #eaeaea; /* gris claro legible */
+}
+
+/* ---------- INPUTS Y TEXTAREAS ---------- */
+.confpago-input,
+.confpago-textarea,
+.confpago-select {
+  width: 100%;
+  padding: 0.7rem 1rem;
+  border: 1px solid #333;
+  border-radius: 8px;
+  background: #1a1a1a; /* fondo más claro que el container */
+  color: #f5f5f5; /* texto visible */
+  font-size: 0.95rem;
+  transition: all 0.2s ease;
+}
+
+.confpago-input:focus,
+.confpago-textarea:focus,
+.confpago-select:focus {
+  outline: none;
+  border-color: #00aaff;
+  box-shadow: 0 0 6px #00aaff66;
+}
+
+/* ---------- BOTONES ---------- */
+.confpago-btn {
+  padding: 0.8rem 1.5rem;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background 0.2s;
+}
+
+.confpago-btn-prim {
+  background: #00aaff;
+  color: #fff;
+}
+
+.confpago-btn-prim:hover {
+  background: #0090e0;
+}
+
+.confpago-btn-sec {
+  background: transparent;
+  border: 1px solid #666;
+  color: #ccc;
+}
+
+.confpago-btn-sec:hover {
+  background: #222;
+}
+
+/* ---------- GRID Y LAYOUT ---------- */
+.confpago-grid-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.confpago-grid-3 {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 1rem;
+}
+
+.confpago-actions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 2rem;
+}
+
+/* ---------- TITULOS ---------- */
+.datos-envio,
+.confpago-h3 {
+  color: #fff;
+  font-weight: 700;
+  margin-bottom: 1rem;
 }
