@@ -44,8 +44,8 @@
   color: #f1f1f1;
 }
 
-.confpago-page .confpago-single {
-  display: block;
+.dark-mode .confirmacion-i {
+  color: #f1f1f1;
 }
 
 .confpago-page .confpago-left {
@@ -162,6 +162,7 @@
 .confpago-page .confpago-btn-sec:hover {
   opacity: 0.9;
 }
+
 
 @media (max-width: 960px) {
   .confpago-page .confpago-grid-3 {

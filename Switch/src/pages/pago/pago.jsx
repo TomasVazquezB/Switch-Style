@@ -108,20 +108,13 @@ export default function Pago() {
   const { envio, moneda } = payload;
 
   return (
-    <div className="pago-uni-container">
-      <h2 classname = "confirmarcion-pago">Confirmacion de Pago</h2>
+      <div className="pago-uni-container">
+      <h2 classname="confirmarcion-pago">Confirmacion de Pago</h2>
       <section className="pago-card">
-        <h3 className="pago-h3">Dirección de envío</h3>
-        <p className="pago-muted">
-          {envio?.nombre} {envio?.apellido} · {envio?.telefono}
-        </p>
-        <p>
-          {envio?.direccion?.calle} {envio?.direccion?.numero}
-          {envio?.direccion?.pisoDepto ? `, ${envio?.direccion?.pisoDepto}` : ""}
-        </p>
-        <p>
-          {envio?.direccion?.ciudad}, {envio?.direccion?.provincia} ({envio?.direccion?.codigoPostal})
-        </p>
+        <h3 className="direccion-envio">Dirección de envío</h3>
+        <p className="pago-muted">{envio?.nombre} {envio?.apellido} · {envio?.telefono}</p>
+        <p>{envio?.direccion?.calle} {envio?.direccion?.numero} {envio?.direccion?.pisoDepto ? `, ${envio?.direccion?.pisoDepto}` : ""}</p>
+        <p>{envio?.direccion?.ciudad}, {envio?.direccion?.provincia} ({envio?.direccion?.codigoPostal})</p>
         <p className="pago-muted">Entrega: {envio?.entrega?.fecha} · {envio?.entrega?.franja}</p>
         <button className="pago-btn-link" onClick={() => navigate("/confpago")}>Cambiar datos de envío</button>
       </section>
@@ -148,7 +141,7 @@ export default function Pago() {
 
       <section className="pago-card pago-resumen-unificado">
         <div className="pago-row">
-          <span classname="subtotal">Subtotal</span>
+          <span classname="sub-total">Subtotal</span>
           <strong>{moneda}{subtotal}</strong>
         </div>
         <div className="pago-row">

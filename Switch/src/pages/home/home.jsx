@@ -1,3 +1,4 @@
+// src/pages/Home/Home.jsx
 import React, { useState, useEffect, useContext } from 'react';
 import { FaChevronLeft, FaChevronRight, FaSyncAlt, FaTruck, FaUndo } from 'react-icons/fa';
 import './home.css';
@@ -10,7 +11,6 @@ import { useNavigate } from 'react-router-dom';
 import banner1 from '../../assets/banner1.jpg';
 import banner2 from '../../assets/banner2.jpg';
 import banner3 from '../../assets/banner3.jpg';
-
 import DB1 from '../../assets/p_img27.png';
 import DB2 from '../../assets/p_img46.png';
 import DB3 from '../../assets/p_img44.png';
@@ -18,7 +18,6 @@ import DB4 from '../../assets/p_img23.png';
 import DB5 from '../../assets/p_img26.png';
 import DB6 from '../../assets/p_img25.png';
 import DB7 from '../../assets/p_img32.png';
-
 import img1 from '../../assets/p_img1.png';
 import img2 from '../../assets/p_img2.png';
 import img3 from '../../assets/p_img3.png';
@@ -52,6 +51,13 @@ const Home = ({ darkMode }) => {
     return () => clearInterval(interval);
   }, []);
 
+  useEffect(() => {
+    const tutorialShown = localStorage.getItem('tutorialShown');
+    if (!tutorialShown) {
+      setShowModal(true);
+    }
+  }, []);
+
   const handlePrev = () => {
     setCurrentIndex(prevIndex => (prevIndex - cardsPerSlide + lastAddedImages.length) % lastAddedImages.length);
   };
@@ -60,18 +66,44 @@ const Home = ({ darkMode }) => {
     setCurrentIndex(prevIndex => (prevIndex + cardsPerSlide) % lastAddedImages.length);
   };
 
-  const closeModal = () => { setShowModal(false); };
+  const closeModal = () => {
+    setShowModal(false);
+    localStorage.setItem('tutorialShown', 'true'); 
+  };
 
   return (
     <ErrorBoundary>
       <div className={`home-index ${darkMode ? 'dark' : 'light'}`}>
+        
+     {showModal && (
+  <div className="tutorial-modal-backdrop">
+    <div className="tutorial-modal">
+      <h2>¡Bienvenido a Switch Style! 👋</h2>
+      <p>En este sitio encontrarás un <strong>Switch</strong> que te permite cambiar entre el modo claro y el modo oscuro.  
+        Esta función adapta la apariencia del sitio según el momento del día:  
+        si es de día, verás estilos pensados para el día, y si es de noche, diseños ideales para la noche.
+        <br /><br />
+        Puedes encontrar el interruptor en la esquina superior derecha.  
+        Al activarlo, todo el sitio cambiará automáticamente su aspecto.
+      </p>
+      <button className="tutorial-btn" onClick={closeModal}>¡Entendido!</button>
+    </div>
+  </div>
+)}
+        {/* CONTENIDO PRINCIPAL */}
         <div id="varkalaCarousel" className="carousel slide varkala-carousel" data-bs-ride="carousel" data-bs-interval="5000">
           <div className="carousel-wrapper">
-            <Carousel autoPlay infiniteLoop interval={5000} showThumbs={false} showStatus={false} showIndicators={true} swipeable emulateTouch stopOnHover dynamicHeight={false} renderArrowPrev={(onClickHandler, hasPrev, label) => hasPrev && (<button type="button" onClick={onClickHandler} title={label} className="custom-carousel-arrow left"><FaChevronLeft /></button>)
-              }
-
-              renderArrowNext={(onClickHandler, hasNext, label) => hasNext && (<button type="button" onClick={onClickHandler} title={label} className="custom-carousel-arrow right"><FaChevronRight /></button>)
-              }
+            <Carousel autoPlay infiniteLoop interval={5000} showThumbs={false} showStatus={false} showIndicators swipeable emulateTouch stopOnHover dynamicHeight={false}
+              renderArrowPrev={(onClickHandler, hasPrev, label) => hasPrev && (
+                <button type="button" onClick={onClickHandler} title={label} className="custom-carousel-arrow left">
+                  <FaChevronLeft />
+                </button>
+              )}
+              renderArrowNext={(onClickHandler, hasNext, label) => hasNext && (
+                <button type="button" onClick={onClickHandler} title={label} className="custom-carousel-arrow right">
+                  <FaChevronRight />
+                </button>
+              )}
             >
               <div>
                 <img src={banner1} alt="Slide 1" />
@@ -100,10 +132,9 @@ const Home = ({ darkMode }) => {
             </Carousel>
           </div>
         </div>
-
         <div>
           <h2 className="mas-buscado">Lo más buscado</h2>
-          <br />
+          <br/>
           <div className="card-container">
             {cardImages.map((image, index) => (
               <div className="card-home" key={index}>
@@ -125,13 +156,13 @@ const Home = ({ darkMode }) => {
               <FaTruck size={45} />
               <br />
               <h3 className="service-title">Entregas en 72 horas</h3>
-              <p className="service-description">Tu pedido será entregado un plazo máximo de 72 horas</p>
+              <p className="service-description">Tu pedido será entregado en un máximo de 72 horas</p>
             </div>
             <div className="service-item">
               <FaUndo size={45} />
               <br />
               <h3 className="service-title">14 días de devolución</h3>
-              <p className="service-description">Si no estás satisfecho con tu compra, tenes 14 días para devolver tu pedido</p>
+              <p className="service-description">Si no estás satisfecho con tu compra, tenés 14 días para devolverla</p>
             </div>
           </div>
         </div>
@@ -141,7 +172,7 @@ const Home = ({ darkMode }) => {
           <div className="carousel-cards-wrapper" style={{ '--cards-per-slide': cardsPerSlide }}>
             <button className="carousel-cards-btn" onClick={handlePrev} aria-label="Anterior"><FaChevronLeft /></button>
 
-            <div className="carousel-cards-track" style={{width: `${(lastAddedImages.length / cardsPerSlide) * 100}%`, transform: `translateX(-${currentIndex * (100 / cardsPerSlide)}%)`}}>
+            <div className="carousel-cards-track" style={{ width: `${(lastAddedImages.length / cardsPerSlide) * 100}%`, transform: `translateX(-${currentIndex * (100 / cardsPerSlide)}%)` }}>
               {lastAddedImages.map((img, idx) => (
                 <div className="carousel-card-home" key={idx} style={{ flex: `0 0 calc(100% / ${cardsPerSlide})` }}>
                   <img src={img} alt={`Prenda ${idx + 1}`} />

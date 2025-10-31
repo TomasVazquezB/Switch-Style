@@ -22,6 +22,14 @@
   text-align: center;
 }
 
+.light-mode .direccion-envio{
+  color: #252525;
+}
+
+.dark-mode .direccion-envio{
+  color: #f1f1f1;
+}
+
 .light-mode .confirmarcion-pago{
   color: #252525;
 }
@@ -38,11 +46,11 @@
   color: #f1f1f1;
 }
 
-.light-mode .subtotal{
+.light-mode .sub-total{
   color: #252525;
 }
 
-.dark-mode .subtotal{
+.dark-mode .sub-total{
   color: #f1f1f1;
 }
 
@@ -109,7 +117,6 @@
   margin-top: 8px;
 }
 
-/* 🔹 Items del resumen */
 .pago-resumen-item {
   display: grid;
   grid-template-columns: 64px 1fr minmax(120px, auto);

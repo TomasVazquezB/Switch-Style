@@ -886,7 +886,64 @@ html {
 
   }
 } 
+.tutorial-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0,0,0,0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+}
 
-.dark .card-home:hover {
-  box-shadow: 0 12px 25px rgba(255, 255, 255, 0.322);
+.tutorial-modal {
+  background: #fff;
+  color: #222;
+  padding: 2rem;
+  border-radius: 16px;
+  max-width: 400px;
+  text-align: center;
+  box-shadow: 0 0 20px rgba(0,0,0,0.3);
+}
+
+.tutorial-modal h2 {
+  margin-bottom: 1rem;
+}
+
+.tutorial-btn {
+  margin-top: 1.5rem;
+  padding: 0.6rem 1.2rem;
+  background-color: #000;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.tutorial-btn:hover {
+  background-color: #333;
+}
+
+@keyframes rotateLight {
+  from { transform: rotateY(-180deg) scale(0.8); opacity: 0; }
+  to { transform: rotateY(0deg) scale(1); opacity: 1; }
+}
+
+@keyframes rotateDark {
+  from { transform: rotateY(180deg) scale(0.8); opacity: 0; }
+  to { transform: rotateY(0deg) scale(1); opacity: 1; }
+}
+
+.home-index.light .tutorial-modal {
+  animation: rotateLight 0.8s ease forwards;
+}
+
+.home-index.dark .tutorial-modal {
+  animation: rotateDark 0.8s ease forwards;
+}
+
+.tutorial-modal {
+  transform-style: preserve-3d;
+  backface-visibility: hidden;
+  transition: transform 0.8s ease;
 }
