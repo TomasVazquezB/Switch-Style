@@ -14,7 +14,7 @@ export const csrf = async () => {
 };
 
 const api = axios.create({
-  baseURL: ROOT_URL,
+  baseURL: "/",
   headers: {
     "Content-Type": "application/json",
     Accept: "application/json",
