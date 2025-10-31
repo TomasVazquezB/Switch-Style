@@ -1,0 +1,197 @@
+:root {
+  --bg-page: #ffffff;
+  --bg-card: #ffffff;
+  --text-primary: #111827;
+  --text-muted: #6b7280;
+  --border-card: #e5e7eb;
+  --bg-placeholder: #f3f4f6;
+}
+
+.dark-mode {
+  --bg-page: #121212;
+  --bg-card: #1f1f1f;
+  --text-primary: #f9fafb;
+  --text-muted: #f1f1f1;
+  --border-card: #665959;
+  --bg-placeholder: #2e2b2b;
+}
+
+.confirmarcion-pago {
+  font-size: 1.5rem;
+  font-weight: 700;
+  text-align: center;
+}
+
+.light-mode .confirmarcion-pago{
+  color: #252525;
+}
+
+.dark-mode .confirmarcion-pago{
+  color: #f1f1f1;
+}
+
+.light-mode .tus-productos{
+  color: #252525;
+}
+
+.dark-mode .tus-productos{
+  color: #f1f1f1;
+}
+
+.light-mode .subtotal{
+  color: #252525;
+}
+
+.dark-mode .subtotal{
+  color: #f1f1f1;
+}
+
+.light-mode .envio-pago{
+  color: #252525;
+}
+
+.dark-mode .envio-pago{
+  color: #f1f1f1;
+}
+
+.light-mode .total-pago{
+  color: #252525;
+}
+
+.dark-mode .total-pago{
+  color: #f1f1f1;
+}
+
+.light-mode .nota-final{
+  color: #252525;
+}
+
+.dark-mode .nota-final{
+  color: #f1f1f1;
+}
+
+.pago-uni-container {
+  max-width: 960px;
+  margin: 24px auto;
+  padding: 0 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  align-items: center;
+  background: var(--bg-page);
+  color: var(--text-primary);
+  transition: background 0.3s ease, color 0.3s ease;
+}
+
+/* 🔹 Card de resumen */
+.pago-card {
+  width: 100%;
+  max-width: 900px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-card);
+  border-radius: 16px;
+  padding: 20px;
+  box-sizing: border-box;
+  transition: background 0.3s ease, border 0.3s ease, color 0.3s ease;
+}
+
+/* 🔹 Textos */
+.confirmarcion-pago { color: var(--text-primary); }
+.pago-muted { color: var(--text-muted); }
+
+/* 🔹 Botón enlace */
+.pago-btn-link {
+  background: transparent;
+  border: none;
+  color: #2563eb;
+  cursor: pointer;
+  padding: 0;
+  margin-top: 8px;
+}
+
+/* 🔹 Items del resumen */
+.pago-resumen-item {
+  display: grid;
+  grid-template-columns: 64px 1fr minmax(120px, auto);
+  gap: 12px;
+  align-items: center;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--border-card);
+}
+
+.pago-resumen-item:last-child {
+  border-bottom: 0;
+}
+
+.pago-resumen-item img,
+.pago-ph {
+  width: 64px;
+  height: 64px;
+  border-radius: 10px;
+  object-fit: cover;
+  background: var(--bg-placeholder);
+}
+
+/* 🔹 Info de producto */
+.pago-resumen-info .pago-tit {
+  font-weight: 600;
+  line-height: 1.2;
+}
+.pago-resumen-info .pago-sub {
+  color: var(--text-muted);
+  font-size: 0.9rem;
+}
+
+/* 🔹 Línea total */
+.pago-resumen-linea {
+  font-weight: 700;
+  justify-self: end;
+  text-align: right;
+  min-width: 120px;
+}
+
+/* 🔹 Totales */
+.pago-resumen-unificado {
+  width: 100%;
+  max-width: 900px;
+}
+
+.pago-resumen-unificado .pago-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 8px 0;
+}
+
+.pago-resumen-unificado .pago-total {
+  font-size: 1.05rem;
+  font-weight: 700;
+}
+
+/* 🔹 Otros */
+.pago-pay-block { margin-top: 8px; }
+.pago-nota-final { text-align: center; }
+
+@media (max-width: 640px) {
+  .pago-uni-container { padding: 0 16px; }
+  .pago-resumen-item { grid-template-columns: 56px 1fr auto; }
+  .pago-resumen-item img, .pago-ph { width: 56px; height: 56px; }
+  .pago-resumen-linea { min-width: 96px; }
+}
+
+.pago-pay-wrap {
+  width: 100%;
+  max-width: 750px;
+  margin: 8px auto 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.pago-card .paypal-buttons {
+  width: 100%;
+}
+
+@media (max-width: 480px) {
+  .pago-pay-wrap { max-width: 420px; }
+}

@@ -17,6 +17,7 @@ import Favoritos from './pages/favoritos/favoritos.jsx';
 import ErrorBoundary from './components/Error/ErrorBoundary';
 import Pedidos from "./pages/pedidos/pedidos.jsx";
 import ConfPago from "./pages/confpago/confpago.jsx";
+import Pago from "./pages/pago/pago.jsx";
 import { ToastContainer } from 'react-toastify';
 import Busqueda from './pages/busqueda/Busqueda.jsx';
 import { PayPalScriptProvider } from "@paypal/react-paypal-js";
@@ -46,7 +47,6 @@ function App() {
   return (
     <PayPalScriptProvider options={{ clientId: "AbSH4YtXgr7HDRqfrLVMI8GJRF_iOK10cGwbs_NiwJN96bDp6GcZsOERyV4T29kvRE1o2D--KJAXFJE3" }}>
       <div className="app-wrapper">
-        {/* le pasamos toggleTheme y darkMode al header */}
         <Header toggleTheme={toggleTheme} darkMode={darkMode} />
 
         <main className="app-content">
@@ -175,6 +175,8 @@ function App() {
                   </PageTitle>
                 }
               />
+
+                <Route path="/pago" element={<PageTitle title="Pago"><Pago /></PageTitle>} />
             </Routes>
           </ErrorBoundary>
         </main>
