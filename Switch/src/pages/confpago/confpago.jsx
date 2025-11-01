@@ -46,6 +46,12 @@ export default function ConfPago() {
     localStorage.setItem("checkout_info", JSON.stringify(form));
   }, [form]);
 
+  useEffect(() => {
+    const saved = localStorage.getItem("checkout_info");
+    if (!saved) setForm(emptyForm);
+  }, []);
+
+
   const onChange = (e) => {
     const { name, value } = e.target;
     setForm((f) => ({ ...f, [name]: value }));
@@ -102,7 +108,6 @@ export default function ConfPago() {
       },
       facturacion: "igual",
       carrito,
-      subtotal: 0, 
       moneda: "$",
     };
 
@@ -172,16 +177,16 @@ export default function ConfPago() {
 
           <label className="confpago-label">
             <span className="confpago-label-text">Referencias (opcional)</span>
-            <textarea className="confpago-textarea" name="referencias" rows={2} value={form.referencias} onChange={onChange}/>
+            <textarea className="confpago-textarea" name="referencias" rows={2} value={form.referencias} onChange={onChange} />
           </label>
 
           <h3 className="confpago-h3">Entrega</h3>
           <div className="confpago-grid-2">
             <label className="confpago-label">
               <span className="confpago-label-text">Fecha de entrega *</span>
-              <input className="confpago-input" type="date" name="entregaFecha" value={form.entregaFecha} onChange={onChange} min={new Date().toISOString().slice(0, 10)}/>
+              <input className="confpago-input" type="date" name="entregaFecha" value={form.entregaFecha} onChange={onChange} min={new Date().toISOString().slice(0, 10)} />
             </label>
-       
+
             <label className="confpago-label">
               <span className="confpago-label-text">Franja horaria *</span>
               <select className="confpago-input" name="entregaFranja" value={form.entregaFranja} onChange={onChange}>
