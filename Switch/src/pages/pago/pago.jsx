@@ -21,25 +21,45 @@ export default function Pago() {
     }
     setPayload(p);
 
-    Promise.all([axios.get("/ropa"), axios.get("/accesorios")])
-      .then(([r1, r2]) => {
-        setProductos(r1.data || []);
-        setAccesorios(r2.data || []);
-      })
-      .catch(() => {});
+    // 👇 Usamos publicApi, no axios (para evitar CORS y Auth)
+    import("../../api/axios").then(({ publicApi }) => {
+      Promise.all([publicApi.get("/ropa"), publicApi.get("/accesorios")])
+        .then(([r1, r2]) => {
+          setProductos(r1.data || []);
+          setAccesorios(r2.data || []);
+        })
+        .catch((err) => {
+          console.error("Error al obtener productos:", err);
+          setProductos([]);
+          setAccesorios([]);
+        });
+    });
   }, [navigate]);
 
+
   const buscarProducto = (item) => {
-    const fuente = item.tipo === "accesorio" ? accesorios : productos;
-    return fuente.find((p) => p.id === item.producto_id);
+    const fuente = item.tipoProducto === "accesorio" ? accesorios : productos;
+    return fuente.find((p) => p.id === item.id || p.id === item.producto_id);
   };
 
+
   const getImagen = (item, prod) => {
-    if (item?.ruta_imagen) return item.ruta_imagen;
-    const raw = prod?.ruta_imagen || "";
+    const raw = item?.ruta_imagen || prod?.ruta_imagen || "";
     if (!raw) return "";
-    return /^https?:\/\//i.test(raw) ? raw : `${axios.defaults.baseURL}/storage/${raw}`;
+
+    // Si ya es una URL completa (Cloudinary, Laravel, etc.), la devolvemos tal cual
+    if (/^https?:\/\//i.test(raw)) return raw;
+
+    // Si el path empieza con "storage", agregamos el dominio sin "/api"
+    if (raw.startsWith("storage/") || raw.includes("/accesorios/") || raw.includes("/ropa/")) {
+      return `https://switchstyle.laravel.cloud/${raw.replace(/^api\//, "")}`;
+    }
+
+    // Si el path es relativo (sin "storage/"), lo normalizamos
+    return `https://switchstyle.laravel.cloud/storage/${raw.replace(/^api\//, "")}`;
   };
+
+
 
   const subtotal = useMemo(() => {
     if (!payload) return "0.00";
@@ -68,7 +88,10 @@ export default function Pago() {
       localStorage.removeItem("carrito");
       localStorage.removeItem("checkout_info");
       localStorage.removeItem("checkout_payload");
-      toast.success("¡Pedido creado con éxito!");
+      setPayload(null);
+      setProductos([]);
+      setAccesorios([]);
+      toast.success("¡Pedido completado!");
       navigate("/pedidos");
     } catch (e) {
       console.error(e);
@@ -108,8 +131,8 @@ export default function Pago() {
   const { envio, moneda } = payload;
 
   return (
-      <div className="pago-uni-container">
-      <h2 classname="confirmarcion-pago">Confirmacion de Pago</h2>
+    <div className="pago-uni-container">
+      <h2 className="confirmarcion-pago">Confirmacion de Pago</h2>
       <section className="pago-card">
         <h3 className="direccion-envio">Dirección de envío</h3>
         <p className="pago-muted">{envio?.nombre} {envio?.apellido} · {envio?.telefono}</p>
@@ -141,7 +164,7 @@ export default function Pago() {
 
       <section className="pago-card pago-resumen-unificado">
         <div className="pago-row">
-          <span classname="sub-total">Subtotal</span>
+          <span className="sub-total">Subtotal</span>
           <strong>{moneda}{subtotal}</strong>
         </div>
         <div className="pago-row">
@@ -155,11 +178,11 @@ export default function Pago() {
       </section>
 
       <section className="pago-card">
- 
-  <div className="pago-pay-wrap">
-    <PayPalButtons style={{ layout: "vertical", height: 48, shape: "rect", label: "paypal", tagline: false }} createOrder={createOrder} onApprove={onApprove} onError={onError} disabled={loading} forceReRender={[total]}/>
-  </div>
-</section>
+
+        <div className="pago-pay-wrap">
+          <PayPalButtons style={{ layout: "vertical", height: 48, shape: "rect", label: "paypal", tagline: false }} createOrder={createOrder} onApprove={onApprove} onError={onError} disabled={loading} forceReRender={[total]} />
+        </div>
+      </section>
       <p className="nota-final">Al confirmar el pago, registraremos tu pedido y lo verás en <b>Mis Pedidos</b></p>
     </div>
   );
