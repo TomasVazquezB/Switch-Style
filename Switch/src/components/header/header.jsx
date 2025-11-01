@@ -48,7 +48,6 @@ const Header = ({ toggleTheme, darkMode }) => {
   const location = useLocation();
   const { productos } = useContext(DataContext);
 
-  // --- efectos del usuario ---
   useEffect(() => {
     const actualizarUsuario = () => {
       const userData = localStorage.getItem("usuario");

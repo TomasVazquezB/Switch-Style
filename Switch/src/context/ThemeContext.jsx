@@ -5,7 +5,6 @@ const ThemeContext = createContext();
 export function ThemeProvider({ children }) {
   const [theme, setTheme] = useState('light');
 
-  // Agrega o quita clases al <body> para los estilos globales
   useEffect(() => {
     document.body.classList.toggle('modo-oscuro', theme === 'dark');
     document.body.classList.toggle('modo-claro', theme === 'light');

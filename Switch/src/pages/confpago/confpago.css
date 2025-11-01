@@ -66,9 +66,6 @@
   color: var(--text-color);
 }
 
-/* ============================================================
-   Grillas
-   ============================================================ */
 .confpago-page .confpago-grid-2,
 .confpago-page .confpago-grid-3 {
   display: grid;
@@ -82,9 +79,6 @@
   grid-template-columns: 1.2fr .6fr .8fr;
 }
 
-/* ============================================================
-   Etiquetas e inputs
-   ============================================================ */
 .confpago-page .confpago-label {
   display: flex;
   flex-direction: column;
@@ -103,12 +97,10 @@
   padding: 10px 18px;
   font-size: 0.95rem;
   outline: none;
-  background: #ffffff; /* Fondo puro en modo claro */
+  background: #ffffff;
   color:#000000;
   transition: border 0.3s, box-shadow 0.3s, background 0.3s, color 0.3s;
 }
-
-
 
 .confpago-page .confpago-input:focus,
 .confpago-page .confpago-textarea:focus {
@@ -116,9 +108,6 @@
   box-shadow: 0 0 0 2px var(--focus-shadow);
 }
 
-/* ============================================================
-   Botones y acciones
-   ============================================================ */
 .confpago-page .confpago-actions {
   display: flex;
   gap: 12px;
@@ -172,33 +161,27 @@
   }
 }
 
-/* ---------- GENERAL ---------- */
 .confpago-page {
   display: flex;
   justify-content: center;
   padding: 2rem;
-  color: #fff; /* texto general en blanco */
+  color: #fff;
 }
 
-/* ---------- CONTENEDOR ---------- */
 .confpago-container {
   width: 100%;
   max-width: 900px;
-  background: #111; /* fondo oscuro */
   border-radius: 16px;
   padding: 2rem;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
 }
 
-/* ---------- LABELS Y TEXTOS ---------- */
 .confpago-label-text {
   display: block;
   font-weight: 600;
   margin-bottom: 0.4rem;
-  color: #eaeaea; /* gris claro legible */
+  color: #eaeaea;
 }
 
-/* ---------- INPUTS Y TEXTAREAS ---------- */
 .confpago-input,
 .confpago-textarea,
 .confpago-select {
@@ -206,8 +189,8 @@
   padding: 0.7rem 1rem;
   border: 1px solid #333;
   border-radius: 8px;
-  background: #1a1a1a; /* fondo más claro que el container */
-  color: #f5f5f5; /* texto visible */
+  background: #1a1a1a; 
+  color: #f5f5f5;
   font-size: 0.95rem;
   transition: all 0.2s ease;
 }
@@ -216,11 +199,10 @@
 .confpago-textarea:focus,
 .confpago-select:focus {
   outline: none;
-  border-color: #00aaff;
-  box-shadow: 0 0 6px #00aaff66;
+  border-color: #000000;
+  box-shadow: 0 0 6px #00000066;
 }
 
-/* ---------- BOTONES ---------- */
 .confpago-btn {
   padding: 0.8rem 1.5rem;
   border: none;
@@ -231,12 +213,12 @@
 }
 
 .confpago-btn-prim {
-  background: #00aaff;
+  background: #161616;
   color: #fff;
 }
 
 .confpago-btn-prim:hover {
-  background: #0090e0;
+  background: #161616;
 }
 
 .confpago-btn-sec {
@@ -249,7 +231,6 @@
   background: #222;
 }
 
-/* ---------- GRID Y LAYOUT ---------- */
 .confpago-grid-2 {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -268,7 +249,6 @@
   margin-top: 2rem;
 }
 
-/* ---------- TITULOS ---------- */
 .datos-envio,
 .confpago-h3 {
   color: #fff;

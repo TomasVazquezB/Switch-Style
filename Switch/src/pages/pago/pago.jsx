@@ -141,7 +141,7 @@ export default function Pago() {
 
       <section className="pago-card pago-resumen-unificado">
         <div className="pago-row">
-          <span classname="sub-total">Subtotal</span>
+          <span classname="subtotal">Subtotal</span>
           <strong>{moneda}{subtotal}</strong>
         </div>
         <div className="pago-row">
