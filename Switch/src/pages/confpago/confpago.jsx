@@ -108,6 +108,7 @@ export default function ConfPago() {
       },
       facturacion: "igual",
       carrito,
+      subtotal: 0,
       moneda: "$",
     };
 
