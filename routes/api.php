@@ -13,7 +13,7 @@ use App\Http\Controllers\ProductoController;
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
 Route::get('/usuarios/{id}', [UserController::class, 'showPublic']);
-
+Route::middleware('auth:sanctum')->post('/logout', [AuthController::class, 'logout']);
 // Productos principales
 Route::get('/ropa', [RopaController::class, 'apiIndex']);
 Route::get('/ropa/{id}', [RopaController::class, 'apiShow']);
