@@ -14,7 +14,6 @@ const PLACEHOLDER =
     </svg>`
   );
 
-// Igual que en Hombres: normalizamos la ruta al bucket "ropa/"
 function toRopaImageUrl(rawPath) {
   if (!rawPath) return PLACEHOLDER;
   if (/^https?:\/\//i.test(rawPath)) return rawPath;
@@ -28,28 +27,6 @@ function toRopaImageUrl(rawPath) {
   return BUCKET_BASE ? `${BUCKET_BASE}/ropa/${encodeURI(key)}` : PLACEHOLDER;
 }
 
-// Lee el theme actual y lo mapea a estilo (claro/oscuro)
-function getThemeAsEstilo() {
-  const ls = (localStorage.getItem('theme') || '').toLowerCase();
-  const isDark = ls === 'dark' || document.documentElement.classList.contains('dark');
-  return isDark ? 'oscuro' : 'claro';
-}
-function useThemeEstilo() {
-  const [estilo, setEstilo] = useState(getThemeAsEstilo());
-  useEffect(() => {
-    const sync = () => setEstilo(getThemeAsEstilo());
-    window.addEventListener('storage', sync);
-    const mo = new MutationObserver(sync);
-    mo.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
-    return () => {
-      window.removeEventListener('storage', sync);
-      mo.disconnect();
-    };
-  }, []);
-  return estilo;
-}
-
-// Lista de categorías (podés ajustarla a las de tu DB)
 const CATEGORIES_DB = [
   'Remeras',
   'Camisas',
@@ -58,32 +35,27 @@ const CATEGORIES_DB = [
   'Pantalones',
   'Faldas',
   'Vestidos',
-  'Botas',
   'Zapatillas',
 ];
 
-// Tallas típicas para mujeres (ajustá si querés agregar XS/XXL)
-const ALL_SIZES = ['XS', 'S', 'M', 'L', 'XL'];
+const ALL_SIZES = ['S', 'M', 'L', 'XL', 'XXL'];
 
-const MainMujeres = () => {
-  const estilo = useThemeEstilo();
-
+const MainMujeres = ({ darkMode }) => {
   const [productos, setProductos] = useState([]);
-  const [subCategoria, setSubCategoria] = useState([]); // array de nombres de categoría
-  const [tallas, setTallas] = useState([]); // array de nombres de talla
+  const [subCategoria, setSubCategoria] = useState([]);
+  const [tallas, setTallas] = useState([]);
   const [sortTipo, setSortTipo] = useState('relevante');
   const [precioMin] = useState(100);
   const [precioMax, setPrecioMax] = useState(350);
 
-  // Trae del backend con los mismos params que Hombres
   useEffect(() => {
     let cancel = false;
-    (async () => {
+    async function fetchData() {
       try {
         const res = await publicApi.get('/ropa', {
           params: {
+            theme: darkMode ? 'dark' : 'light',
             genero: 'Mujer',
-            estilo,
             categorias: subCategoria,
             tallas,
             orden:
@@ -96,16 +68,16 @@ const MainMujeres = () => {
         });
         if (!cancel) setProductos(Array.isArray(res.data) ? res.data : []);
       } catch (e) {
-        console.error('❌ Error al obtener productos (Mujeres):', e);
+        console.error('Error al obtener productos:', e);
         if (!cancel) setProductos([]);
       }
-    })();
+    }
+    fetchData();
     return () => {
       cancel = true;
     };
-  }, [estilo, subCategoria, tallas, sortTipo]);
+  }, [darkMode, subCategoria, tallas, sortTipo]);
 
-  // Precio máximo dinámico
   const maxPrice = useMemo(() => {
     const precios = productos.map((p) => Number(p?.precio || 0));
     const max = Math.max(350, ...(precios.length ? precios : [0]));
@@ -116,22 +88,20 @@ const MainMujeres = () => {
     setPrecioMax((prev) => (prev < maxPrice ? maxPrice : prev));
   }, [maxPrice]);
 
-  // Filtro local de precio + orden (lo demás ya viene filtrado del backend)
   const filtroProductos = useMemo(() => {
     let temp = [...productos];
-
     temp = temp.filter((item) => {
       const precio = Number(item?.precio || 0);
       return precio >= precioMin && precio <= Number(precioMax);
     });
-
-    if (sortTipo === 'low-high') temp.sort((a, b) => Number(a.precio) - Number(b.precio));
-    else if (sortTipo === 'high-low') temp.sort((a, b) => Number(b.precio) - Number(a.precio));
-
+    if (sortTipo === 'low-high') {
+      temp.sort((a, b) => Number(a.precio) - Number(b.precio));
+    } else if (sortTipo === 'high-low') {
+      temp.sort((a, b) => Number(b.precio) - Number(a.precio));
+    }
     return temp;
   }, [productos, precioMin, precioMax, sortTipo]);
 
-  // Handlers UI
   const toggleSubCategoria = (e) => {
     const value = e.target.value;
     setSubCategoria((prev) =>
@@ -140,7 +110,11 @@ const MainMujeres = () => {
   };
 
   const toggleTallaManual = (size) => {
-    setTallas((prev) => (prev.includes(size) ? prev.filter((t) => t !== size) : [...prev, size]));
+    setTallas((prev) =>
+      prev.includes(size)
+        ? prev.filter((t) => t !== size)
+        : [...prev, size]
+    );
   };
 
   return (
@@ -149,10 +123,15 @@ const MainMujeres = () => {
         <div className="sidebar-content">
           <div className="mb-4">
             <h4 className="mb-3">CATEGORIA</h4>
-            <div className="flex flex-col gap-2 text-sm font-light text-gray-700">
+            <div className="filter-categorias">
               {CATEGORIES_DB.map((cat) => (
-                <label key={cat} className="flex items-center gap-2">
-                  <input type="checkbox" className='me-2' value={cat} onChange={toggleSubCategoria} />
+                <label key={cat}>
+                  <input
+                    type="checkbox"
+                    value={cat}
+                    onChange={toggleSubCategoria}
+                    checked={subCategoria.includes(cat)}
+                  />
                   {cat}
                 </label>
               ))}
@@ -163,20 +142,17 @@ const MainMujeres = () => {
 
           <div className="mb-4">
             <h4 className="mb-3">TALLA</h4>
-            <div className="flex flex-wrap gap-3 text-sm font-light text-gray-700">
+            <div className="filter-tallas">
               {ALL_SIZES.map((size) => (
-                <button
+                <div
                   key={size}
-                  type="button"
                   onClick={() => toggleTallaManual(size)}
-                  className={`px-4 py-2 border rounded-full text-sm transition-colors duration-200 ${
-                    tallas.includes(size)
-                      ? 'bg-black text-white border-black hover:bg-gray-800'
-                      : 'bg-white text-black border-gray-400 hover:bg-gray-100'
+                  className={`talla-item ${
+                    tallas.includes(size) ? 'active' : ''
                   }`}
                 >
                   {size}
-                </button>
+                </div>
               ))}
             </div>
           </div>
@@ -203,15 +179,15 @@ const MainMujeres = () => {
       </section>
 
       <div className="main pl-[220px] px-8 py-2">
-        <div className="flex justify-end mb-3">
+        <div className="flex w-full mb-3">
           <select
             value={sortTipo}
             onChange={(e) => setSortTipo(e.target.value)}
-            className="border border-gray-300 text-sm px-2 py-1 rounded"
+            className="border border-gray-300 text-sm px-2 py-1 rounded ml-auto"
           >
-            <option value="relevante">Ordenar por: Relevante</option>
-            <option value="low-high">Ordenar por: de menor a mayor</option>
-            <option value="high-low">Ordenar por: mayor a menor</option>
+            <option value="relevante">ORDENAR POR: RELEVANTE</option>
+            <option value="low-high">ORDENAR POR: DE MENOR A MAYOR</option>
+            <option value="high-low">ORDENAR POR: MAYOR A MENOR</option>
           </select>
         </div>
 
@@ -224,21 +200,19 @@ const MainMujeres = () => {
               item?.imagenes?.[0]?.ruta ||
               '';
             const imageUrl = toRopaImageUrl(rawPath);
-
             const uploader =
               item?.usuario?.Nombre ??
               item?.user?.name ??
               item?.usuario_nombre ??
               null;
-
-            // Título grande + “Subido por” gris claro (va antes del precio)
             const tituloConUploader = (
               <div className="titulo-bloque">
                 <span className="titulo-ropa">{item.titulo}</span>
-                {uploader && <span className="subido-por">Subido por: {uploader}</span>}
+                {uploader && (
+                  <span className="subido-por">Subido por: {uploader}</span>
+                )}
               </div>
             );
-
             return (
               <article
                 key={item.id}
@@ -254,7 +228,6 @@ const MainMujeres = () => {
               </article>
             );
           })}
-
           {!filtroProductos.length && (
             <p className="col-span-full text-sm opacity-70">
               No encontramos resultados con los filtros seleccionados

@@ -24,13 +24,10 @@ export function LoginPage() {
 
     try {
       // 1️⃣ Obtener cookie CSRF antes de login
-
       await api.get("/sanctum/csrf-cookie");
-      console.log('document.cookie (en host actual):', document.cookie);
-      fetch('https://switchstyle.laravel.cloud/sanctum/csrf-cookie', { credentials: 'include' })
-        .then(() => console.log('fetch ok'))
-        .catch(e => console.log('fetch error', e));
-
+      await fetch("https://switchstyle.laravel.cloud/sanctum/csrf-cookie", {
+        credentials: "include",
+      });
 
       // 2️⃣ Enviar solicitud de inicio de sesión al backend
       const response = await api.post(
@@ -43,21 +40,50 @@ export function LoginPage() {
       );
 
       // 3️⃣ Guardar el usuario en el contexto y en localStorage
-      const user = response.data.user || response.data;
-      localStorage.setItem("usuario", JSON.stringify(user));
-      setUsuario(user);
+      const user = response.data.user || response.data.usuario || response.data;
 
-      alert(`✅ Bienvenido ${user.Nombre || user.name || ""}`);
+      // Normalizamos las claves del usuario
+      const usuarioNormalizado = {
+        id: user.id || user.ID || null,
+        nombre: user.nombre || user.Nombre || user.name || "Usuario",
+        correo: user.correo || user.email || user.Correo_Electronico || "",
+        rol: user.rol || user.Tipo_Usuario || "Usuario",
+      };
+
+      localStorage.setItem("usuario", JSON.stringify(usuarioNormalizado));
+      setUsuario(usuarioNormalizado);
+
+      alert(`✅ Bienvenido ${usuarioNormalizado.nombre}`);
 
       // 4️⃣ Redirigir según el rol del usuario
       if (user.Tipo_Usuario === "Admin") {
-        window.location.href = "https://switchstyle.laravel.cloud/admin";
+        try {
+          // Enviar login también al backend de Laravel Cloud
+          await fetch("https://switchstyle.laravel.cloud/login", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            credentials: "include",
+            body: JSON.stringify({
+              email: formData.identificador.trim(),
+              password: formData.contrasena.trim(),
+            }),
+          });
+        } catch (err) {
+          console.error("Error iniciando sesión en Laravel Cloud:", err);
+        }
+
+        // Luego redirigir al panel
+        window.location.href = "https://switchstyle.laravel.cloud/inicio";
       } else {
         navigate("/");
+        setTimeout(() => window.location.reload(), 300);
       }
+
+
+     /*  // 5️⃣ Refrescamos la página para cargar datos del contexto
       setTimeout(() => {
         window.location.reload();
-      }, 300);
+      }, 300); */
 
     } catch (err) {
       console.error("❌ Error al iniciar sesión:", err);

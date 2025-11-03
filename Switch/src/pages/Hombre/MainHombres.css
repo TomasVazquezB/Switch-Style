@@ -1,265 +1,105 @@
-/* ================================
-   MAIN LAYOUT
-================================= */
-.content {
-  display: flex;
-  max-width: 100%;
-  margin: 0 auto;
-  background-color: white;
-}
-
+/* Contenedor general de la sidebar */
 .sidebar {
   width: 250px;
   min-width: 250px;
   padding: 1.5rem;
   border-right: 2px solid #000;
   margin-bottom: 50px;
+  background-color: #fff;
+  color: #000;
+  font-family: Arial, sans-serif;
 }
 
-
-
+/* Títulos de bloque (CATEGORIA / TALLA / PRECIO) */
 .sidebar h4 {
   font-size: 18px;
   margin-bottom: 10px;
   font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  color: #000;
 }
 
-.sidebar .range {
+/* Línea divisoria entre secciones */
+.sidebar-section {
+  margin-bottom: 24px;
+  border-bottom: 1px solid #bfbfbf;
+  padding-bottom: 20px;
+}
+
+/* ============ CATEGORÍA ============ */
+
+/* Envuelve la lista de checkboxes */
+.filter-categorias {
+  display: flex;
+  flex-direction: column; /* <-- esto fuerza una por línea */
+  gap: 8px;
+  margin-top: 12px;
+  font-size: 14px;
+  color: #000;
+}
+
+/* Cada fila categoría (checkbox + label) */
+.filter-categorias label {
   display: flex;
   align-items: center;
+  gap: 8px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.filter-categorias input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  accent-color: #000;
+  cursor: pointer;
+}
+
+/* ============ TALLA ============ */
+
+/* Contenedor de talles */
+.filter-tallas {
+  display: flex;
+  flex-direction: column; /* <-- una por línea */
+  margin-top: 12px;
+  gap: 8px;
+  font-size: 14px;
+  color: #000;
+}
+
+/* Cada item de talla */
+.talla-item {
+  border: 1px solid #bfbfbf;
+  padding: 10px 12px;
+  font-weight: 500;
+  text-align: left;
+  cursor: pointer;
+  background-color: #fff;
+  min-width: 60px;
+  line-height: 1;
+}
+
+/* Estado activo/seleccionado si querés marcar la talla elegida */
+.talla-item.active {
+  background-color: #000;
+  color: #fff;
+  border-color: #000;
+}
+
+/* ============ PRECIO ============ */
+
+.price-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   gap: 10px;
   font-size: 14px;
+  color: #000;
+  flex-wrap: wrap;
 }
 
 .sidebar input[type="range"] {
-  width: 100%;
-  accent-color: black;
-}
-
-.main {
   flex: 1;
-  padding: 1.5rem;
-}
-
-.product-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 30px;
-}
-
-/* ================================
-   TARJETAS DE PRODUCTO
-================================= */
-.card {
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  overflow: hidden;
-  padding: 12px;
-  transition: all 0.2s ease-in-out;
-  background: #fff;
-}
-
-.card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-}
-
-.card img {
-  width: 100%;
-  height: 300px;
-  object-fit: contain;
-  transition: transform 0.3s ease-in-out;
-}
-
-.card img:hover {
-  transform: scale(1.05);
-}
-
-.card p {
-  margin-top: 8px;
-  font-size: 14px;
-}
-
-.card .precio {
-  font-weight: 600;
-}
-
-/* ================================
-   BLOQUE TÍTULO + SUBIDO POR
-================================= */
-.product-grid .titulo-bloque {
-  display: flex;
-  flex-direction: column;
-  margin-top: 10px;
-}
-
-/* Título más grande */
-.product-grid .titulo-ropa {
-  font-size: 1.35rem !important;  /* text-xl */
-  font-weight: 700;
-  line-height: 1.3;
-  color: #111827 !important;      /* gris oscuro elegante */
-  text-transform: uppercase;
-}
-
-.dark-mode .product-grid .titulo-ropa {
-  color: #ffffff !important;
-}
-
-/* Texto "Subido por" más claro */
-.product-grid .subido-por {
-  margin-top: 4px;
-  font-size: 0.8rem !important;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-  color: #9ca3af !important;      /* gris claro */
-}
-
-.dark-mode .product-grid .subido-por {
-  color: #9ca3af !important;      /* gris claro también en oscuro */
-}
-
-/* ================================
-   USUARIO SUBIDO (OLD CLASS)
-   — ya no se usa, pero lo dejamos neutral
-================================= */
-.usuario-subido {
-  font-size: 0.8rem;
-  color: #9ca3af;
-  margin: 4px 0 0;
-  padding: 0;
-}
-
-/* ================================
-   LIGHT / DARK MODE STYLES
-================================= */
-.light-mode .sidebar {
-  background-color: #ffffff;
-  color: #000000;
-}
-
-.light-mode .sidebar h4 {
-  color: #111;
-}
-
-.light-mode .sidebar input[type="checkbox"] {
-  accent-color: #000000;
-}
-
-.light-mode .range span {
-  color: #000000;
-}
-
-.light-mode .main {
-  background-color: #f9f9f9;
-  color: #000000;
-}
-
-.dark-mode .sidebar {
-  background-color: #1e1e1e;
-  color: #f1f1f1;
-}
-
-.dark-mode .sidebar h4 {
-  color: #ffffff;
-}
-
-.dark-mode .sidebar input[type="checkbox"] {
-  accent-color: #ffffff;
-}
-
-.dark-mode .range span {
-  color: #ffffff;
-}
-
-.dark-mode .main {
-  background-color: #121212;
-  color: #f1f1f1;
-}
-
-.dark-mode select {
-  background-color: #2a2a2a;
-  color: #ffffff;
-  border-color: #555;
-}
-
-.light-mode select {
-  background-color: #ffffff;
-  color: #000000;
-}
-
-.dark-mode .app-content,
-.dark-mode .content {
-  background-color: #121212;
-  color: #f1f1f1;
-}
-
-.light-mode .app-content,
-.light-mode .content {
-  background-color: #ffffff;
-  color: #000000;
-}
-
-.dark-mode .sidebar {
-  background-color: #1e1e1e !important;
-  color: #ffffff !important;
-  border-color: #333 !important;
-}
-
-.light-mode .sidebar {
-  background-color: #ffffff;
-  color: #000000;
-  border-color: #ddd;
-}
-
-.dark-mode .sidebar-content {
-  background-color: transparent;
-}
-
-.dark-mode .sidebar input[type="checkbox"] {
-  accent-color: #ffffff;
-}
-
-.dark-mode .sidebar label {
-  color: #ffffff;
-}
-
-.dark-mode .sidebar .border {
-  border-color: #333;
-}
-
-.dark-mode .sidebar button {
-  background-color: #2a2a2a;
-  color: white;
-  border-color: #444;
-}
-
-.dark-mode .sidebar button:hover {
-  background-color: #3a3a3a;
-}
-
-.dark-mode .range input[type="range"] {
-  background-color: #444;
-}
-
-/* ================================
-   RANGO DE PRECIOS
-================================= */
-.range {
-  background-color: white;
-  padding: 10px;
-  border-radius: 6px;
-  transition: background-color 0.3s ease;
-}
-
-.dark-mode .range {
-  background-color: #1e1e1e;
-}
-
-.range span {
-  color: black;
-}
-
-.dark-mode .range span {
-  color: white;
+  accent-color: #000;
+  min-width: 120px;
 }

@@ -285,11 +285,11 @@
 }
 
 .light-mode .search-btn {
-  color: #000000;
+  color: #292626;
 }
 
 .dark-mode .search-form {
-  background-color: #2a2a2a;
+  background-color: #222020;
   color: #ffffff;
   border: 1px solid #555555;
 }
@@ -468,6 +468,7 @@ body {
  background-color: #444;
  border: #000;
 }
+
 .suggestion-item {
   display: flex;
   align-items: center;

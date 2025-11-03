@@ -13,13 +13,19 @@ public class RegisterRequest {
     @SerializedName("password")
     private String password;
 
-    public RegisterRequest(String nombre, String correo, String password) {
+    @SerializedName("tipo") // nuevo campo
+    private String tipo;
+
+    public RegisterRequest(String nombre, String correo, String password, String tipo) {
         this.nombre = nombre;
         this.correo = correo;
         this.password = password;
+        this.tipo = tipo;
     }
 
     public String getNombre() { return nombre; }
     public String getCorreo() { return correo; }
     public String getPassword() { return password; }
+
+    public String getTipo() {return tipo;}
 }

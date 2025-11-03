@@ -97,7 +97,7 @@ public class Register extends AppCompatActivity {
     private void registerUser(String nameUser, String emailUser, String passUser) {
         ApiService apiService = RetrofitClient.getClient().create(ApiService.class);
 
-        RegisterRequest request = new RegisterRequest(nameUser, emailUser, passUser);
+        RegisterRequest request = new RegisterRequest(nameUser, emailUser, passUser, "Usuario");
 
         Call<AuthResponse> call = apiService.register(request);
         call.enqueue(new Callback<AuthResponse>() {
@@ -112,8 +112,19 @@ public class Register extends AppCompatActivity {
                     Toast.makeText(Register.this, "Registro exitoso", Toast.LENGTH_SHORT).show();
                     startActivity(new Intent(Register.this, LoginActivity.class));
                     finish();
+                } else if (response.errorBody() != null) {
+                    // Mostrar error legible del backend
+                    try {
+                        String errorResponse = response.errorBody().string();
+                        Log.e("Register", "Error response: " + response.code() + " " + errorResponse);
+
+                        // Solo mostrar mensaje principal del JSON si Laravel lo envía
+                        Toast.makeText(Register.this, errorResponse, Toast.LENGTH_LONG).show();
+                    } catch (Exception e) {
+                        Log.e("Register", "Error parseando error: " + e.getMessage());
+                        Toast.makeText(Register.this, "Error en el registro", Toast.LENGTH_SHORT).show();
+                    }
                 } else {
-                    Log.e("Register", "Error response: " + response.code());
                     Toast.makeText(Register.this, "Error en el registro", Toast.LENGTH_SHORT).show();
                 }
             }

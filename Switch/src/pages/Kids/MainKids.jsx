@@ -14,7 +14,6 @@ const PLACEHOLDER =
     </svg>`
   );
 
-// Normaliza cualquier ruta a la URL final del bucket /ropa
 function toRopaImageUrl(rawPath) {
   if (!rawPath) return PLACEHOLDER;
   if (/^https?:\/\//i.test(rawPath)) return rawPath;
@@ -28,28 +27,7 @@ function toRopaImageUrl(rawPath) {
   return BUCKET_BASE ? `${BUCKET_BASE}/ropa/${encodeURI(key)}` : PLACEHOLDER;
 }
 
-// Lee el theme (claro/oscuro) desde localStorage o la clase html.dark
-function getThemeAsEstilo() {
-  const ls = (localStorage.getItem('theme') || '').toLowerCase();
-  const isDark = ls === 'dark' || document.documentElement.classList.contains('dark');
-  return isDark ? 'oscuro' : 'claro';
-}
-function useThemeEstilo() {
-  const [estilo, setEstilo] = useState(getThemeAsEstilo());
-  useEffect(() => {
-    const sync = () => setEstilo(getThemeAsEstilo());
-    window.addEventListener('storage', sync);
-    const mo = new MutationObserver(sync);
-    mo.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
-    return () => {
-      window.removeEventListener('storage', sync);
-      mo.disconnect();
-    };
-  }, []);
-  return estilo;
-}
-
-// Categorías disponibles (ajustá con las de tu DB)
+// categorías visibles en el sidebar
 const CATEGORIES_DB = [
   'Remeras',
   'Camisas',
@@ -58,32 +36,28 @@ const CATEGORIES_DB = [
   'Pantalones',
   'Faldas',
   'Vestidos',
-  'Botas',
   'Zapatillas',
 ];
 
-// Tallas para chicos (ajustá si usás numéricas)
+// talles que mostrás para chicos
 const ALL_SIZES = ['S', 'M', 'L', 'XL'];
 
-const MainKids = () => {
-  const estilo = useThemeEstilo();
-
+const MainKids = ({ darkMode }) => {
   const [productos, setProductos] = useState([]);
-  const [subCategoria, setSubCategoria] = useState([]); // nombres de categoría
-  const [tallas, setTallas] = useState([]); // nombres de talla
+  const [subCategoria, setSubCategoria] = useState([]);
+  const [tallas, setTallas] = useState([]);
   const [sortTipo, setSortTipo] = useState('relevante');
   const [precioMin] = useState(100);
   const [precioMax, setPrecioMax] = useState(350);
 
-  // Trae del backend con los mismos params que en Hombres/Mujeres
   useEffect(() => {
     let cancel = false;
-    (async () => {
+    async function fetchData() {
       try {
         const res = await publicApi.get('/ropa', {
           params: {
-            genero: 'Chicos', // asegúrate que coincida con tu tabla de géneros
-            estilo,
+            theme: darkMode ? 'dark' : 'light',
+            genero: 'Chicos',
             categorias: subCategoria,
             tallas,
             orden:
@@ -96,16 +70,16 @@ const MainKids = () => {
         });
         if (!cancel) setProductos(Array.isArray(res.data) ? res.data : []);
       } catch (error) {
-        console.error('❌ Error al obtener productos (Chicos):', error);
+        console.error('Error al obtener productos (Chicos):', error);
         if (!cancel) setProductos([]);
       }
-    })();
+    }
+    fetchData();
     return () => {
       cancel = true;
     };
-  }, [estilo, subCategoria, tallas, sortTipo]);
+  }, [darkMode, subCategoria, tallas, sortTipo]);
 
-  // Precio máximo dinámico
   const maxPrice = useMemo(() => {
     const precios = productos.map((p) => Number(p?.precio || 0));
     const max = Math.max(350, ...(precios.length ? precios : [0]));
@@ -116,7 +90,6 @@ const MainKids = () => {
     setPrecioMax((prev) => (prev < maxPrice ? maxPrice : prev));
   }, [maxPrice]);
 
-  // Filtro local de precio + orden (lo demás ya viene filtrado del backend)
   const filtroProductos = useMemo(() => {
     let temp = [...productos];
 
@@ -125,13 +98,15 @@ const MainKids = () => {
       return precio >= precioMin && precio <= Number(precioMax);
     });
 
-    if (sortTipo === 'low-high') temp.sort((a, b) => Number(a.precio) - Number(b.precio));
-    else if (sortTipo === 'high-low') temp.sort((a, b) => Number(b.precio) - Number(a.precio));
+    if (sortTipo === 'low-high') {
+      temp.sort((a, b) => Number(a.precio) - Number(b.precio));
+    } else if (sortTipo === 'high-low') {
+      temp.sort((a, b) => Number(b.precio) - Number(a.precio));
+    }
 
     return temp;
   }, [productos, precioMin, precioMax, sortTipo]);
 
-  // Handlers UI
   const toggleSubCategoria = (e) => {
     const value = e.target.value;
     setSubCategoria((prev) =>
@@ -140,19 +115,29 @@ const MainKids = () => {
   };
 
   const toggleTallaManual = (size) => {
-    setTallas((prev) => (prev.includes(size) ? prev.filter((t) => t !== size) : [...prev, size]));
+    setTallas((prev) =>
+      prev.includes(size)
+        ? prev.filter((t) => t !== size)
+        : [...prev, size]
+    );
   };
 
   return (
     <div className="content">
       <section className="sidebar top-0 left-0 h-screen overflow-y-auto bg-white border-r px-4 py-6">
         <div className="sidebar-content">
+          {/* === CATEGORÍA === */}
           <div className="mb-4">
             <h4 className="mb-3">CATEGORIA</h4>
-            <div className="flex flex-col gap-2 text-sm font-light text-gray-700">
+            <div className="filter-categorias">
               {CATEGORIES_DB.map((cat) => (
-                <label key={cat} className="flex items-center gap-2">
-                  <input type="checkbox" className='me-2' value={cat} onChange={toggleSubCategoria} />
+                <label key={cat}>
+                  <input
+                    type="checkbox"
+                    value={cat}
+                    onChange={toggleSubCategoria}
+                    checked={subCategoria.includes(cat)}
+                  />
                   {cat}
                 </label>
               ))}
@@ -161,28 +146,27 @@ const MainKids = () => {
 
           <hr className="my-4" />
 
+          {/* === TALLA === */}
           <div className="mb-4">
             <h4 className="mb-3">TALLA</h4>
-            <div className="flex flex-wrap gap-3 text-sm font-light text-gray-700">
+            <div className="filter-tallas">
               {ALL_SIZES.map((size) => (
-                <button
+                <div
                   key={size}
-                  type="button"
                   onClick={() => toggleTallaManual(size)}
-                  className={`px-4 py-2 border rounded-full text-sm transition-colors duration-200 ${
-                    tallas.includes(size)
-                      ? 'bg-black text-white border-black hover:bg-gray-800'
-                      : 'bg-white text-black border-gray-400 hover:bg-gray-100'
+                  className={`talla-item ${
+                    tallas.includes(size) ? 'active' : ''
                   }`}
                 >
                   {size}
-                </button>
+                </div>
               ))}
             </div>
           </div>
 
           <hr className="my-4" />
 
+          {/* === PRECIO === */}
           <div className="mb-4">
             <h4>PRECIO</h4>
             <div className="range flex items-center gap-2">
@@ -202,16 +186,16 @@ const MainKids = () => {
         </div>
       </section>
 
-      <div className="main pl-[220px] px-8 py-6">
-        <div className="flex justify-end mb-2">
+      <div className="main pl-[220px] px-8 py-2">
+        <div className="flex w-full mb-3">
           <select
             value={sortTipo}
             onChange={(e) => setSortTipo(e.target.value)}
-            className="border border-gray-300 text-sm px-2 py-1 rounded"
+            className="border border-gray-300 text-sm px-2 py-1 rounded ml-auto"
           >
-            <option value="relevante">Ordenar por: Relevante</option>
-            <option value="low-high">Ordenar por: de menor a mayor</option>
-            <option value="high-low">Ordenar por: mayor a menor</option>
+            <option value="relevante">ORDENAR POR: RELEVANTE</option>
+            <option value="low-high">ORDENAR POR: DE MENOR A MAYOR</option>
+            <option value="high-low">ORDENAR POR: MAYOR A MENOR</option>
           </select>
         </div>
 
@@ -231,16 +215,20 @@ const MainKids = () => {
               item?.usuario_nombre ??
               null;
 
-            // Título grande + “Subido por” (va antes del precio)
             const tituloConUploader = (
               <div className="titulo-bloque">
                 <span className="titulo-ropa">{item.titulo}</span>
-                {uploader && <span className="subido-por">Subido por: {uploader}</span>}
+                {uploader && (
+                  <span className="subido-por">Subido por: {uploader}</span>
+                )}
               </div>
             );
 
             return (
-              <article key={item.id} className="rounded border overflow-hidden bg-white transition">
+              <article
+                key={item.id}
+                className="rounded border overflow-hidden bg-white transition"
+              >
                 <ProductoItem
                   id={item.id}
                   img={imageUrl}
