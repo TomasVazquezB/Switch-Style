@@ -66,9 +66,6 @@ Route::middleware('auth')->group(function () {
         Route::put('/imagenes/{imagen}/principal', [ImagenAccesorioController::class, 'marcarComoPrincipal'])->name('imagenes.principal');
     });
 
-Route::middleware('auth')->get('/user', function (\Illuminate\Http\Request $request) {
-    return response()->json($request->user());
-});
 
 Route::get('/auto-login', function (\Illuminate\Http\Request $request) {
     $token = $request->query('token');
