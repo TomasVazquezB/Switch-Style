@@ -1,5 +1,6 @@
 package com.example.switchstyle.api;
 
+import okhttp3.Request;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import okhttp3.OkHttpClient;
@@ -16,8 +17,15 @@ public class RetrofitClient {
             logging.setLevel(HttpLoggingInterceptor.Level.BODY);
 
             OkHttpClient client = new OkHttpClient.Builder()
+                    .addInterceptor(chain -> {
+                        Request request = chain.request().newBuilder()
+                                .addHeader("Accept", "application/json")
+                                .build();
+                        return chain.proceed(request);
+                    })
                     .addInterceptor(logging)
                     .build();
+
 
             retrofit = new Retrofit.Builder()
                     .baseUrl("https://switchstyle.laravel.cloud/")
