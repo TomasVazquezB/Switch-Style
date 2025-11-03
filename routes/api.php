@@ -7,6 +7,13 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AccesorioController;
 use App\Http\Controllers\ProductoController;
 
+// ✅ ENDPOINTS PARA ANDROID (token-based)
+Route::prefix('mobile')->group(function () {
+    Route::post('/login', [AuthController::class, 'login']);
+    Route::post('/register', [AuthController::class, 'register']);
+    Route::middleware('auth:sanctum')->post('/logout', [AuthController::class, 'logout']);
+});
+
 // ---------------------------
 // ✅ Rutas públicas
 // ---------------------------
