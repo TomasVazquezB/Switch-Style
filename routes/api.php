@@ -6,6 +6,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AccesorioController;
 use App\Http\Controllers\ProductoController;
+use Illuminate\Http\Request;
 
 // ✅ ENDPOINTS PARA ANDROID (token-based)
 Route::prefix('mobile')->group(function () {
@@ -44,5 +45,4 @@ Route::middleware('auth:sanctum')->group(function () {
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return response()->json($request->user());
-
 });
