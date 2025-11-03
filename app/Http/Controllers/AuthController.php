@@ -69,18 +69,10 @@ class AuthController extends Controller
 
         $user = User::find($id);
         $token = $user->createToken('auth_token')->plainTextToken;
-        
-        // Para mobile
-return response()->json([
-    'message' => 'Registro exitoso',
-    'user'    => [
-        'id'     => $user->ID_Usuario,
-        'nombre' => $user->Nombre,
-        'correo' => $user->Correo_Electronico,
-        'rol'    => $user->Tipo_Usuario,
-    ],
-    'token'   => $token,
-]);
+
+            // 🔹 Detectar si es mobile según la ruta
+          $isMobile = $request->is('api/mobile/*');
+          $key = $isMobile ? 'user' : 'usuario';
 
         return response()->json([
             'message' => 'Usuario registrado exitosamente',
