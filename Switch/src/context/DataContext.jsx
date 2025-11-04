@@ -1,5 +1,5 @@
 import React, { createContext, useState, useEffect } from "react";
-import api, { csrf, publicApi } from "../api/axios"; 
+import api, { csrf, publicApi } from "../api/axios";
 import { guardarUsuario, obtenerUsuario, cerrarSesion } from "../api/auth";
 
 const DataContext = createContext();
@@ -50,14 +50,14 @@ const DataProvider = ({ children }) => {
   const fetchProductos = async () => {
     try {
       const [ropaRes, accesoriosRes] = await Promise.all([
-        publicApi.get("/ropa"),       
-        publicApi.get("/accesorios"),  
+        publicApi.get("/ropa"),
+        publicApi.get("/accesorios"),
       ]);
 
       const ropaData = Array.isArray(ropaRes.data) ? ropaRes.data : [];
       const accesoriosData = Array.isArray(accesoriosRes.data) ? accesoriosRes.data : [];
-      const ropaNormalizada = ropaData.map((producto) => ({...producto,imagen_url: producto.Imagen ? `https://switchstyle.laravel.cloud/storage/${producto.Imagen}`: null, titulo: producto.Titulo || producto.titulo || "", tipo: producto.Tipo || producto.tipo || "", descripcion: producto.Descripcion || producto.descripcion || "", categoria: "Ropa", tipoProducto: "ropa",}));
-      const accesoriosNormalizados = accesoriosData.map((producto) => ({...producto,imagen_url: producto.ruta_imagen ? `https://switchstyle.laravel.cloud/storage/${producto.ruta_imagen}` : null, titulo: producto.titulo || producto.Titulo || "",tipo: "Accesorio",descripcion: producto.descripcion || producto.Descripcion || "", categoria: "Accesorios",tipoProducto: "accesorio",}));
+      const ropaNormalizada = ropaData.map((producto) => ({ ...producto, imagen_url: producto.Imagen ? `https://switchstyle.laravel.cloud/storage/${producto.Imagen}` : null, titulo: producto.Titulo || producto.titulo || "", tipo: producto.Tipo || producto.tipo || "", descripcion: producto.Descripcion || producto.descripcion || "", categoria: "Ropa", tipoProducto: "ropa", }));
+      const accesoriosNormalizados = accesoriosData.map((producto) => ({ ...producto, imagen_url: producto.ruta_imagen ? `https://switchstyle.laravel.cloud/storage/${producto.ruta_imagen}` : null, titulo: producto.titulo || producto.Titulo || "", tipo: "Accesorio", descripcion: producto.descripcion || producto.Descripcion || "", categoria: "Accesorios", tipoProducto: "accesorio", }));
 
       setProductos([...ropaNormalizada, ...accesoriosNormalizados]);
     } catch (err) {
@@ -67,29 +67,30 @@ const DataProvider = ({ children }) => {
     }
   };
 
-  const fetchUsuarios = async () => {
+  const fetchUsuario = async () => {
     try {
       await initCsrf();
-      const response = await api.get("/usuario");
-      setUsuarios(response.data);
+      const { data } = await api.get("/api/usuario"); // o "/api/usuario" según tu backend
+      setUsuario(data);
     } catch (err) {
-      console.error("❌ Error al obtener usuarios:", err);
-      setError("Error al obtener usuarios");
+      console.error("❌ Error al obtener usuario:", err);
+      setError("Error al obtener usuario");
     }
   };
+
 
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
       await fetchProductos();
-      if (usuario) await fetchUsuarios();
+      if (usuario) await fetchUsuario();
       setLoading(false);
     };
     fetchData();
   }, [usuario]);
 
   return (
-    <DataContext.Provider value={{productos,usuarios,usuario,setUsuario,loading,error,login,logout,fetchProductos,fetchUsuarios,}}>{children}</DataContext.Provider>
+    <DataContext.Provider value={{ productos, usuarios, usuario, setUsuario, loading, error, login, logout, fetchProductos, fetchUsuario, }}>{children}</DataContext.Provider>
   );
 };
 
