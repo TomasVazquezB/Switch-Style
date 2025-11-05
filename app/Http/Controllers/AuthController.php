@@ -83,9 +83,18 @@ class AuthController extends Controller
             ],
             'token' => $token,
         ], 201);
+
+        } catch (\Exception $e) {
+        // 🚨 ESTE BLOQUE SE ACTIVARÁ CON EL ERROR EXACTO 🚨
+        return response()->json([
+            'status' => 'error_debug',
+            'message' => 'Fallo de inserción o modelo. ¡Verifique el error en la línea!',
+            'error_detalle_completo' => $e->getMessage(),
+            'line' => $e->getLine(), // <-- La línea de error
+            'file' => $e->getFile(),
+        ], 200); // <-- CÓDIGO 200 CLAVE para evitar censura
     }
-    
-   
+}
     // =======================================================
     // Funcción de Logout (Se mantiene igual)
     // =======================================================
