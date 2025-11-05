@@ -11,7 +11,7 @@ use Illuminate\Http\Request;
 // ✅ ENDPOINTS PARA ANDROID (token-based)
 Route::prefix('mobile')->group(function () {
     Route::post('/login', [AuthController::class, 'login']);
-    Route::post('/register', [AuthController::class, 'register']);
+    Route::post('/register', [AuthController::class, 'registerMobile']);
     Route::middleware('auth:sanctum')->post('/logout', [AuthController::class, 'logout']);
     
 });
