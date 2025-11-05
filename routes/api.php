@@ -46,3 +46,5 @@ Route::middleware('auth:sanctum')->group(function () {
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return response()->json($request->user());
 });
+
+Route::middleware(['cors'])->post('/crear-pedido', [PedidoController::class, 'store']);
