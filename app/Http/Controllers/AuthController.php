@@ -101,7 +101,6 @@ public function registerMobile(Request $request)
             // Usar Hash::make asegura compatibilidad con el login del sitio web y móvil.
             'Contraseña'        => Hash::make($request->password), 
             'Tipo_Usuario'      => $request->tipo ?? 'Usuario',
-            'Fecha_Registro'    => now(),
         ]);
         
         // 3. GENERACIÓN del Token Sanctum
