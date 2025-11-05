@@ -50,6 +50,9 @@ class AuthController extends Controller
         ]);
     }
 
+    // =======================================================
+    // ✅ FUNCIÓN ORIGINAL: Se mantiene para la Web (Genera Token)
+    // =======================================================
     public function register(Request $request)
     {
         $request->validate([
@@ -60,11 +63,11 @@ class AuthController extends Controller
         ]);
 
         $id = DB::table('usuario')->insertGetId([
-            'Nombre'            => $request->nombre,
+            'Nombre'             => $request->nombre,
             'Correo_Electronico'=> $request->correo,
-            'Contraseña'        => bcrypt($request->password),
-            'Tipo_Usuario'      => $request->tipo ?? 'Usuario',
-            'Fecha_Registro'    => now(),
+            'Contraseña'         => bcrypt($request->password),
+            'Tipo_Usuario'       => $request->tipo ?? 'Usuario',
+            'Fecha_Registro'     => now(),
         ]);
 
         $user = User::find($id);
@@ -81,7 +84,47 @@ class AuthController extends Controller
             'token' => $token,
         ], 201);
     }
+    
+    // =======================================================
+    // 📱 FUNCIÓN NUEVA: Para Android (NO Genera Token, Evita Error 500)
+    // =======================================================
+    public function registerMobile(Request $request)
+    {
+        // 1. Validación (Misma que la original)
+        $request->validate([
+            'nombre'  => 'required|string|max:100',
+            'correo'  => 'required|email|unique:usuario,Correo_Electronico',
+            'password'=> 'required|string|min:6',
+            'tipo'    => 'nullable|string|in:Free,Premium,Admin,Usuario',
+        ]);
 
+        // 2. Inserción en la base de datos (Misma que la original, usando Hash::make por buena práctica)
+        $id = DB::table('usuario')->insertGetId([
+            'Nombre'             => $request->nombre,
+            'Correo_Electronico'=> $request->correo,
+            'Contraseña'         => Hash::make($request->password), // Sustitución segura de bcrypt
+            'Tipo_Usuario'       => $request->tipo ?? 'Usuario',
+            'Fecha_Registro'     => now(),
+        ]);
+        
+        // 3. Respuesta para Android: OMITIMOS LA CREACIÓN DE TOKEN PARA EVITAR EL ERROR 500
+        $token = null; 
+
+        return response()->json([
+            'message' => 'Usuario registrado exitosamente',
+            'user' => [ // Cambiamos a 'user' para mayor consistencia con el modelo de Android
+                'id'     => $id,
+                'nombre' => $request->nombre,
+                'correo' => $request->correo,
+                'rol'    => $request->tipo ?? 'Usuario',
+            ],
+            'token' => $token,
+        ], 201);
+    }
+    
+    // =======================================================
+    // Funcción de Logout (Se mantiene igual)
+    // =======================================================
     public function logout(Request $request)
     {
         $request->user()->tokens()->delete();
