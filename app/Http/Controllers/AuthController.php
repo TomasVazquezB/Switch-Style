@@ -70,10 +70,6 @@ class AuthController extends Controller
         $user = User::find($id);
         $token = $user->createToken('auth_token')->plainTextToken;
 
-            // 🔹 Detectar si es mobile según la ruta
-          $isMobile = $request->is('api/mobile/*');
-          $key = $isMobile ? 'user' : 'usuario';
-
         return response()->json([
             'message' => 'Usuario registrado exitosamente',
             'usuario' => [
@@ -86,6 +82,51 @@ class AuthController extends Controller
         ], 201);
     }
 
+public function registerMobile(Request $request)
+{
+    // 1. VALIDACIÓN (misma lógica que el método web)
+    $request->validate([
+        'nombre'  => 'required|string|max:100',
+        'correo'  => 'required|email|unique:usuario,Correo_Electronico',
+        'password'=> 'required|string|min:6',
+        'tipo'    => 'nullable|string|in:Free,Premium,Admin,Usuario',
+    ]);
+
+    try {
+        // 2. CREACIÓN: Usamos User::create() para que el modelo Eloquent sea válido.
+        // Esto previene el Error 500 al llamar a $user->createToken().
+        $user = User::create([
+            'Nombre'            => $request->nombre,
+            'Correo_Electronico'=> $request->correo,
+            // Usar Hash::make asegura compatibilidad con el login del sitio web y móvil.
+            'Contraseña'        => Hash::make($request->password), 
+            'Tipo_Usuario'      => $request->tipo ?? 'Usuario',
+            'Fecha_Registro'    => now(),
+        ]);
+        
+        // 3. GENERACIÓN del Token Sanctum
+        $token = $user->createToken('auth_token')->plainTextToken;
+        $id = $user->ID_Usuario; 
+
+        // 4. RESPUESTA EXITOSA (201 Created)
+        return response()->json([
+            'message' => 'Usuario registrado exitosamente',
+            'user' => [ // Usamos 'user' como clave para que sea fácil de manejar en Android
+                'id'     => $id,
+                'nombre' => $request->nombre,
+                'correo' => $request->correo,
+                'rol'    => $request->tipo ?? 'Usuario',
+            ],
+            'token' => $token, 
+        ], 201);
+
+    } catch (\Exception $e) {
+        // En caso de que la validación falle o haya un error de base de datos
+        \Log::error('Error en registerMobile: ' . $e->getMessage(), ['trace' => $e->getTraceAsString()]);
+        return response()->json(['message' => 'Error interno del servidor al registrar. Por favor, revise el Logcat.'], 500);
+    }
+}
+    
     public function logout(Request $request)
     {
         $request->user()->tokens()->delete();
