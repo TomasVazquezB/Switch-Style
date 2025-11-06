@@ -90,19 +90,7 @@ class AuthController extends Controller
             'token' => $token,
         ], 201);
 
-          } catch (\Throwable $e) {
-        // Loguear el error exacto
-        Log::error('💥 Error en registro móvil: ' . $e->getMessage(), [
-            'trace' => $e->getTraceAsString()
-        ]);
-
-        return response()->json([
-            'message' => 'Server Error',
-            'error' => $e->getMessage(),
-        ], 500);
-    }
-}
-}
+     
     // =======================================================
     // Funcción de Logout (Se mantiene igual)
     // =======================================================
