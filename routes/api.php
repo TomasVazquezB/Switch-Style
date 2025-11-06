@@ -6,6 +6,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AccesorioController;
 use App\Http\Controllers\ProductoController;
+use App\Http\Controllers\PedidoController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
@@ -66,4 +67,8 @@ Route::post('/crear-pedido', function (Request $request) {
             'metodo' => $request->input('metodo_pago', 'simulado'),
         ],
     ], 201);
+});
+Route::middleware('auth:sanctum')->group(function () {
+    Route::post('/crear-pedido', [PedidoController::class, 'crear']);
+    Route::get('/mis-pedidos', [PedidoController::class, 'misPedidos']);
 });
