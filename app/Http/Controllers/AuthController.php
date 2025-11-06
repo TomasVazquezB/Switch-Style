@@ -6,7 +6,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
 use App\Models\User;
 
 class AuthController extends Controller
@@ -85,7 +84,6 @@ class AuthController extends Controller
             'token' => $token,
         ], 201);
 
-     
     // =======================================================
     // Funcción de Logout (Se mantiene igual)
     // =======================================================
