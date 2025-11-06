@@ -70,7 +70,7 @@ class AuthController extends Controller
             'Fecha_Registro'     => now(),
         ]);
 
-        $user = User::find($id);        
+        $user = User::find($id);
         $token = $user->createToken('auth_token')->plainTextToken;
 
         return response()->json([
@@ -83,7 +83,7 @@ class AuthController extends Controller
             ],
             'token' => $token,
         ], 201);
-
+}
     // =======================================================
     // Funcción de Logout (Se mantiene igual)
     // =======================================================
