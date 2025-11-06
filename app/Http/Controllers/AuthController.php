@@ -71,12 +71,7 @@ class AuthController extends Controller
             'Fecha_Registro'     => now(),
         ]);
 
-        $user = User::find($id);
-
-         if (!$user) {
-            throw new \Exception("No se encontró el usuario recién creado (ID: $id)");
-        }
-        
+        $user = User::find($id);        
         $token = $user->createToken('auth_token')->plainTextToken;
 
         return response()->json([
