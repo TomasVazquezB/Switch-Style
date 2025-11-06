@@ -38,12 +38,13 @@ const Productos = ({ darkMode }) => {
 
   const [usuario, setUsuario] = useState(() => {
     try {
-      const u = localStorage.getItem("user");
+      const u = localStorage.getItem("usuario"); // 👈 mismo nombre que en Favoritos
       return u ? JSON.parse(u) : null;
     } catch {
       return null;
     }
   });
+
 
   const [favoritos, setFavoritos] = useState(() => {
     try {
@@ -124,7 +125,7 @@ const Productos = ({ darkMode }) => {
   };
 
   const toggleFavorito = () => {
-    const user = usuario || JSON.parse(localStorage.getItem("user"));
+    const user = usuario || JSON.parse(localStorage.getItem("usuario"));
 
     if (!user) {
       toast.warning("Debes iniciar sesión para agregar a favoritos 🔐", { autoClose: 4000 });
@@ -220,9 +221,8 @@ const Productos = ({ darkMode }) => {
                 src={toImageUrl(key)}
                 alt={`Miniatura ${index + 1}`}
                 onClick={() => setImgKey(key)}
-                className={`thumbnail ${
-                  active ? "active" : ""
-                } h-24 w-20 object-cover rounded cursor-pointer`}
+                className={`thumbnail ${active ? "active" : ""
+                  } h-24 w-20 object-cover rounded cursor-pointer`}
               />
             );
           })}
@@ -306,9 +306,8 @@ const Productos = ({ darkMode }) => {
                   <button
                     key={index}
                     onClick={() => handleSeleccionTalla(t.nombre)}
-                    className={`talla-btn ${
-                      talla === t.nombre ? "active" : ""
-                    }`}
+                    className={`talla-btn ${talla === t.nombre ? "active" : ""
+                      }`}
                   >
                     {t.nombre}
                   </button>
@@ -380,17 +379,15 @@ const Productos = ({ darkMode }) => {
         >
           <button
             onClick={() => setActiveTab("descripcion")}
-            className={`tab-button ${
-              activeTab === "descripcion" ? "active" : ""
-            }`}
+            className={`tab-button ${activeTab === "descripcion" ? "active" : ""
+              }`}
           >
             Descripción
           </button>
           <button
             onClick={() => setActiveTab("reviews")}
-            className={`tab-button ${
-              activeTab === "reviews" ? "active" : ""
-            }`}
+            className={`tab-button ${activeTab === "reviews" ? "active" : ""
+              }`}
           >
             Reviews ({reviews.length})
           </button>

@@ -45,3 +45,28 @@ export const publicApi = axios.create({
 });
 
 export default api;
+
+// 🔹 Nueva instancia para endpoints del backend (como /user)
+export const backendApi = axios.create({
+  baseURL: ROOT_URL, // 👉 apunta al backend Laravel
+  headers: {
+    "Content-Type": "application/json",
+    Accept: "application/json",
+  },
+  withCredentials: true, // necesario para Sanctum
+});
+
+// Copiamos los interceptores de api (para token + CSRF)
+backendApi.interceptors.request.use(
+  (config) => {
+    const xsrfToken = getCookie("XSRF-TOKEN");
+    if (xsrfToken) config.headers["X-XSRF-TOKEN"] = xsrfToken;
+
+    const token = obtenerToken?.();
+    if (token) config.headers.Authorization = `Bearer ${token}`;
+
+    return config;
+  },
+  (error) => Promise.reject(error)
+);
+

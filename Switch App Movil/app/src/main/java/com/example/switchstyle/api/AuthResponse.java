@@ -10,7 +10,7 @@ public class AuthResponse {
     @SerializedName("message")
     private String message;
 
-    @SerializedName("user") // 🔹 Coincide con tu backend
+    @SerializedName("user")
     private User user;
 
     public String getToken() { return token; }

@@ -29,7 +29,7 @@ public class MyApp extends Application {
             public void onActivityStopped(@NonNull Activity activity) {
                 isActivityChangingConfigurations = activity.isChangingConfigurations();
                 if (--activityReferences == 0 && !isActivityChangingConfigurations) {
-                    Log.d("MyApp", "⏸ App en background. Cerrando sesión.");
+                    Log.d("MyApp", "⏸ App en background. Cerrando sesión");
                     session.clearSession();
                 }
             }

@@ -12,7 +12,6 @@ public class RetrofitClient {
 
     public static Retrofit getClient() {
         if (retrofit == null) {
-            // Para ver los logs de red (útil para debug)
             HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
             logging.setLevel(HttpLoggingInterceptor.Level.BODY);
 
@@ -25,7 +24,6 @@ public class RetrofitClient {
                     })
                     .addInterceptor(logging)
                     .build();
-
 
             retrofit = new Retrofit.Builder()
                     .baseUrl("https://switchstyle.laravel.cloud/")

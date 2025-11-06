@@ -1,6 +1,5 @@
 package com.example.switchstyle;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -9,64 +8,62 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-
 import com.example.switchstyle.api.ApiService;
 import com.example.switchstyle.api.AuthResponse;
 import com.example.switchstyle.api.RegisterRequest;
 import com.example.switchstyle.api.RetrofitClient;
 import com.example.switchstyle.api.SessionManager;
-
+import org.json.JSONObject;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 public class Register extends AppCompatActivity {
 
-    private EditText etNombre, etEmail, etPassword;
+    private EditText etNombre, etApellido, etEmail, etPassword;
     private SessionManager session;
+    private static final String TAG = "RegisterActivity";
 
-    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registro);
+        setTitle("Registro");
 
         session = new SessionManager(this);
 
-        // EditTexts
         etNombre = findViewById(R.id.Nombre);
+        etApellido = findViewById(R.id.Apellido);
         etEmail = findViewById(R.id.Email);
-        etPassword = findViewById(R.id.password);
+        etPassword = findViewById(R.id.Contraseña);
 
-        // Buttons
-        Button btnRegister = findViewById(R.id.btnIrRegistro);
+        Button btnRegister = findViewById(R.id.Button_registro);
         Button btnIrLogin = findViewById(R.id.buttonIrALogin);
 
-        // Navbar
         LinearLayout navHome = findViewById(R.id.nav_home);
-        LinearLayout navRegister = findViewById(R.id.nav_register);
         LinearLayout navCatalogs = findViewById(R.id.nav_catalogs);
 
-        // ✅ Registro
         if (btnRegister != null) {
             btnRegister.setOnClickListener(v -> {
+                Log.d("ButtonCheck", "¡Hiciste click en el botón de Registrar!");
+
                 String nameUser = etNombre.getText().toString().trim();
+                String apellidoUser = etApellido.getText().toString().trim();
                 String emailUser = etEmail.getText().toString().trim();
                 String passUser = etPassword.getText().toString().trim();
 
-                if (TextUtils.isEmpty(nameUser) || TextUtils.isEmpty(emailUser) || TextUtils.isEmpty(passUser)) {
+                if (TextUtils.isEmpty(nameUser) || TextUtils.isEmpty(apellidoUser) ||
+                        TextUtils.isEmpty(emailUser) || TextUtils.isEmpty(passUser)) {
                     Toast.makeText(Register.this, "Todos los campos son obligatorios", Toast.LENGTH_SHORT).show();
                     return;
                 }
 
-                registerUser(nameUser, emailUser, passUser);
+                registerUser(nameUser, apellidoUser, emailUser, passUser);
             });
         }
 
-        // ✅ Ir a Login
         if (btnIrLogin != null) {
             btnIrLogin.setOnClickListener(v -> {
                 startActivity(new Intent(Register.this, LoginActivity.class));
@@ -74,14 +71,9 @@ public class Register extends AppCompatActivity {
             });
         }
 
-        // ✅ Navbar
         if (navHome != null) navHome.setOnClickListener(v -> {
             startActivity(new Intent(Register.this, MainActivity.class));
             finishAffinity();
-        });
-
-        if (navRegister != null) navRegister.setOnClickListener(v -> {
-            // Ya estamos en Register, no hacemos nada
         });
 
         if (navCatalogs != null) navCatalogs.setOnClickListener(v -> {
@@ -94,45 +86,50 @@ public class Register extends AppCompatActivity {
         });
     }
 
-    private void registerUser(String nameUser, String emailUser, String passUser) {
+    private void registerUser(String nameUser, String apellidoUser, String emailUser, String passUser) {
         ApiService apiService = RetrofitClient.getClient().create(ApiService.class);
-
-        RegisterRequest request = new RegisterRequest(nameUser, emailUser, passUser, "Usuario");
+        RegisterRequest request = new RegisterRequest(nameUser, apellidoUser, emailUser, passUser, "Usuario");
 
         Call<AuthResponse> call = apiService.register(request);
         call.enqueue(new Callback<AuthResponse>() {
             @Override
             public void onResponse(@NonNull Call<AuthResponse> call, @NonNull Response<AuthResponse> response) {
-                if (response.isSuccessful() && response.body() != null) {
-                    AuthResponse auth = response.body();
-
-                    if (auth.getToken() != null) session.saveToken(auth.getToken());
-                    if (auth.getUser() != null) session.saveUser(auth.getUser());
-
-                    Toast.makeText(Register.this, "Registro exitoso", Toast.LENGTH_SHORT).show();
+                if (response.isSuccessful()) {
+                    Toast.makeText(Register.this, "✅ Registro exitoso. Por favor, inicia sesión", Toast.LENGTH_LONG).show();
+                    Log.i(TAG, "Registro exitoso. Redirigiendo a Login");
                     startActivity(new Intent(Register.this, LoginActivity.class));
                     finish();
                 } else if (response.errorBody() != null) {
-                    // Mostrar error legible del backend
                     try {
                         String errorResponse = response.errorBody().string();
-                        Log.e("Register", "Error response: " + response.code() + " " + errorResponse);
+                        Log.e(TAG, "Error del Servidor - Código: " + response.code() + ", Cuerpo: " + errorResponse);
 
-                        // Solo mostrar mensaje principal del JSON si Laravel lo envía
-                        Toast.makeText(Register.this, errorResponse, Toast.LENGTH_LONG).show();
+                        JSONObject jsonObject = new JSONObject(errorResponse);
+                        String errorMessage = "Error en el registro";
+
+                        if (response.code() == 422) {
+                            errorMessage = jsonObject.optString("message", "Datos inválidos (422)");
+                        } else if (response.code() == 500) {
+                            String apiMessage = jsonObject.optString("message", "Error interno (500)");
+                            errorMessage = "Error 500: " + apiMessage + " (Revisa el log de Laravel).";
+                        }
+
+                        Toast.makeText(Register.this, errorMessage, Toast.LENGTH_LONG).show();
+
                     } catch (Exception e) {
-                        Log.e("Register", "Error parseando error: " + e.getMessage());
-                        Toast.makeText(Register.this, "Error en el registro", Toast.LENGTH_SHORT).show();
+                        Log.e(TAG, "Error al procesar el error del servidor: " + e.getMessage());
+                        Toast.makeText(Register.this, "Error desconocido al registrar. Código: " + response.code(), Toast.LENGTH_SHORT).show();
                     }
                 } else {
-                    Toast.makeText(Register.this, "Error en el registro", Toast.LENGTH_SHORT).show();
+                    Log.e(TAG, "Error: Respuesta no exitosa o cuerpo nulo. Código: " + response.code());
+                    Toast.makeText(Register.this, "Error en el registro. Respuesta inesperada. Código: " + response.code(), Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(@NonNull Call<AuthResponse> call, @NonNull Throwable t) {
-                Log.e("Register", "Failure: " + t.getMessage());
-                Toast.makeText(Register.this, "Fallo en la conexión: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                Log.e(TAG, "FAILURE - Conexión fallida: " + t.getMessage(), t);
+                Toast.makeText(Register.this, "🔴 Fallo de conexión. Revisa tu red o la URL base. Mensaje: " + t.getMessage(), Toast.LENGTH_LONG).show();
             }
         });
     }

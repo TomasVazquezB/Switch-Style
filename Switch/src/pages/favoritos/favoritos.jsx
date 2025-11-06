@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import axios from '../../api/axios';
+import { backendApi as axios } from '../../api/axios';
 import './favoritos.css';
 
 const PLACEHOLDER =
@@ -15,13 +15,32 @@ const PLACEHOLDER =
   );
 
 function toBucketUrl(rawPath) {
+  const BUCKET_BASE = (import.meta.env.VITE_ASSETS_BASE || "").replace(/\/+$/, "");
+  const PLACEHOLDER =
+    "data:image/svg+xml;utf8," +
+    encodeURIComponent(
+      `<svg xmlns='http://www.w3.org/2000/svg' width='800' height='600'>
+        <rect width='100%' height='100%' fill='#f3f4f6'/>
+        <text x='50%' y='50%' dominant-baseline='middle' text-anchor='middle'
+          font-family='Arial' font-size='24' fill='#9ca3af'>Sin imagen</text>
+      </svg>`
+    );
+
   if (!rawPath) return PLACEHOLDER;
+
+  // Si ya es una URL completa
   if (/^https?:\/\//i.test(rawPath)) return rawPath;
 
-  const BASE = import.meta.env.VITE_API_URL || "https://switchstyle.laravel.cloud";
-  const key = rawPath.replace(/^\/?/, "");
-  return `${BASE}/storage/${encodeURI(key)}`;
+  // Limpieza de path
+  let key = String(rawPath)
+    .replace(/^https?:\/\/[^/]+\/?/, "")
+    .replace(/^\/+/, "")
+    .replace(/^storage\//, "");
+
+  // Arma la URL final desde el bucket
+  return BUCKET_BASE ? `${BUCKET_BASE}/${encodeURI(key)}` : PLACEHOLDER;
 }
+
 
 const Favoritos = () => {
   const navigate = useNavigate();
@@ -33,36 +52,16 @@ const Favoritos = () => {
 
   // 🔒 Verificar login y token al montar
   useEffect(() => {
-    const storedUser = JSON.parse(localStorage.getItem('user')) || null;
-    const token = localStorage.getItem('token');
+    const storedUser = JSON.parse(localStorage.getItem('usuario')) || null;
 
-    if (!storedUser || !token) {
+    if (!storedUser) {
       toast.warning("Debes iniciar sesión para ver tus favoritos 🔐", { autoClose: 4000 });
       const timeout = setTimeout(() => navigate('/login'), 4000);
       setLoading(false);
       return () => clearTimeout(timeout);
     }
 
-    // ✅ Configurar axios con el token
-    axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-
-    // Validar usuario en backend antes de seguir
-    const validarSesion = async () => {
-      try {
-        const { data } = await axios.get('/user'); // <-- Ruta que devuelve usuario autenticado
-        if (!data || !data.id) throw new Error('Usuario no válido');
-        setUsuario(data);
-        await cargarFavoritos();
-      } catch (err) {
-        console.error('Error validando sesión', err);
-        toast.error("Sesión expirada, por favor inicia sesión nuevamente");
-        localStorage.removeItem('user');
-        localStorage.removeItem('token');
-        navigate('/login');
-      } finally {
-        setLoading(false);
-      }
-    };
+    setUsuario(storedUser);
 
     const cargarFavoritos = async () => {
       const fav = JSON.parse(localStorage.getItem('favoritos')) || [];
@@ -70,19 +69,24 @@ const Favoritos = () => {
 
       try {
         const [ropaRes, accRes] = await Promise.all([
-          axios.get('/ropa'),
-          axios.get('/accesorios')
+          axios.get('/api/ropa'),
+          axios.get('/api/accesorios')
         ]);
 
-        setRopaFavorita(ropaRes.data.filter(p => fav.includes(p.id)));
-        setAccesoriosFavoritos(accRes.data.filter(p => fav.includes(p.id)));
+        const ropaFav = ropaRes.data.filter(p => fav.includes(p.id));
+        const accFav = accRes.data.filter(p => fav.includes(p.id));
+
+        setRopaFavorita(ropaFav);
+        setAccesoriosFavoritos(accFav);
       } catch (err) {
-        toast.error("Error al cargar favoritos");
+        toast.error("Error al cargar productos favoritos 😞");
         console.error(err);
+      } finally {
+        setLoading(false);
       }
     };
 
-    validarSesion();
+    cargarFavoritos();
   }, [navigate]);
 
   const handleQuitar = (id) => {
@@ -137,7 +141,7 @@ const Favoritos = () => {
               </Link>
               <button onClick={() => handleQuitar(producto.id)} className="favoritos-page-remove">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor"
-                     viewBox="0 0 24 24" stroke="none" className="w-5 h-5">
+                  viewBox="0 0 24 24" stroke="none" className="w-5 h-5">
                   <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5
                             2 5.42 4.42 3 7.5 3c1.74 0 3.41 0.81 4.5 2.09
                             C13.09 3.81 14.76 3 16.5 3
@@ -163,7 +167,7 @@ const Favoritos = () => {
         <>
           {ropaFavorita.length > 0 && renderTarjetas(ropaFavorita, 'ropa')}
           <br />
-          <hr className="mb-6"/>
+          <hr className="mb-6" />
           <br />
           {accesoriosFavoritos.length > 0 && renderTarjetas(accesoriosFavoritos, 'accesorio')}
         </>
