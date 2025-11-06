@@ -7,6 +7,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AccesorioController;
 use App\Http\Controllers\ProductoController;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
  //✅ ENDPOINTS PARA ANDROID (token-based)
  Route::prefix('mobile')->group(function () {
@@ -52,3 +53,17 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::middleware(['cors'])->post('/crear-pedido', [PedidoController::class, 'store']);
+
+Route::post('/crear-pedido', function (Request $request) {
+    // Simula un pedido exitoso
+    $fakeId = 'PED-' . strtoupper(Str::random(8));
+
+    return response()->json([
+        'message' => 'Pedido creado correctamente (simulado)',
+        'pedido' => [
+            'id' => $fakeId,
+            'total' => $request->input('total'),
+            'metodo' => $request->input('metodo_pago', 'simulado'),
+        ],
+    ], 201);
+});
