@@ -13,6 +13,11 @@ use Illuminate\Http\Request;
     Route::post('/login', [AuthController::class, 'login']);
     Route::post('/register', [AuthController::class, 'register']);
     Route::middleware('auth:sanctum')->post('/logout', [AuthController::class, 'logout']);  
+    Route::get('/ropa', [RopaController::class, 'apiIndex']);
+    Route::get('/ropa/{id}', [RopaController::class, 'apiShow']);
+    Route::get('/accesorios', [AccesorioController::class, 'apiIndex']);
+    Route::get('/accesorios/{id}', [AccesorioController::class, 'apiShow']);
+    Route::apiResource('productos', ProductoController::class)->only(['index', 'show']);
 });
 
 
