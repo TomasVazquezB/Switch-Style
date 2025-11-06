@@ -112,6 +112,8 @@ public class CatalogoProductos extends AppCompatActivity {
         call.enqueue(new Callback<List<Product>>() {
             @Override
             public void onResponse(@NonNull Call<List<Product>> call, @NonNull Response<List<Product>> response) {
+               isLoading = false;
+
                 if (response.isSuccessful() && response.body() != null) {
                     publicaciones.clear();
 
@@ -123,28 +125,28 @@ public class CatalogoProductos extends AppCompatActivity {
 
                         boolean esFavorito = favManager.esFavorito(p.getId());
 
-                        Publicacion pub = new Publicacion(
-                                p.getId(),
-                                p.getNombre(),
-                                p.getTipo(),
-                                imagenes,
-                                esFavorito
-                        );
+                        Publicacion pub = new Publicacion(p.getId(), p.getNombre(), p.getTipo(), imagenes, esFavorito);
 
                         publicaciones.add(pub);
                     }
 
                     adapter.notifyDataSetChanged();
+
+                    if (publicaciones.isEmpty()) {
+                        Toast.makeText(CatalogoProductos.this, "No hay productos disponibles 😕", Toast.LENGTH_SHORT).show();
+                    }
+
                 } else {
-                    Log.e("CatalogoProductos", "Respuesta no exitosa: " + response.code());
+                    Log.e("CatalogoProductos", "Error al cargar catálogo: código " + response.code());
+                    Toast.makeText(CatalogoProductos.this, "Error al cargar el catálogo. Código " + response.code(), Toast.LENGTH_SHORT).show();
                 }
-                isLoading = false;
             }
 
             @Override
             public void onFailure(@NonNull Call<List<Product>> call, @NonNull Throwable t) {
                 isLoading = false;
-                Log.e("CatalogoProductos", "Error: " + t.getMessage());
+                Log.e("CatalogoProductos", "Fallo al cargar catálogo: " + t.getMessage());
+                Toast.makeText(CatalogoProductos.this, "No se pudo cargar el catálogo 😞", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -190,14 +192,9 @@ public class CatalogoProductos extends AppCompatActivity {
             holder.viewPagerImagenes.setAdapter(imagenAdapter);
 
             holder.tvContadorImagenes.setVisibility(publicacion.urlsImagenes.size() > 1 ? View.VISIBLE : View.GONE);
-            holder.tvContadorImagenes.setText(holder.tvContadorImagenes.getContext().getString(
-                    R.string.contador_imagenes, 1, publicacion.urlsImagenes.size()
-            ));
+            holder.tvContadorImagenes.setText(holder.tvContadorImagenes.getContext().getString(R.string.contador_imagenes, 1, publicacion.urlsImagenes.size()));
 
-            holder.btnMeGusta.setImageResource(
-                    publicacion.meGusta ? R.drawable.favorite_filled_24px : R.drawable.favorite_24px
-            );
-
+            holder.btnMeGusta.setImageResource(publicacion.meGusta ? R.drawable.favorite_filled_24px : R.drawable.favorite_24px);
             holder.btnMeGusta.setOnClickListener(v -> {
                 boolean nuevoEstado = !publicacion.meGusta;
                 publicacion.meGusta = nuevoEstado;
@@ -208,11 +205,8 @@ public class CatalogoProductos extends AppCompatActivity {
                     favManager.quitar(publicacion.id);
                 }
 
-                holder.btnMeGusta.setImageResource(
-                        nuevoEstado ? R.drawable.favorite_filled_24px : R.drawable.favorite_24px
-                );
+                holder.btnMeGusta.setImageResource(nuevoEstado ? R.drawable.favorite_filled_24px : R.drawable.favorite_24px);
 
-                // Sincroniza con el backend
                 ApiService apiService = RetrofitClient.getClient().create(ApiService.class);
                 Call<Void> call = apiService.setLike(publicacion.id, nuevoEstado, "Bearer " + session.getToken());
 
@@ -230,8 +224,7 @@ public class CatalogoProductos extends AppCompatActivity {
                     }
                 });
 
-                Toast.makeText(v.getContext(),
-                        nuevoEstado ? "Agregado a favoritos ❤️" : "Quitado de favoritos 🤍",
+                Toast.makeText(v.getContext(), nuevoEstado ? "Agregado a favoritos ❤️" : "Quitado de favoritos 🤍",
                         Toast.LENGTH_SHORT).show();
             });
 
@@ -242,9 +235,7 @@ public class CatalogoProductos extends AppCompatActivity {
             holder.pageChangeCallback = new ViewPager2.OnPageChangeCallback() {
                 @Override
                 public void onPageSelected(int pos) {
-                    holder.tvContadorImagenes.setText(holder.tvContadorImagenes.getContext().getString(
-                            R.string.contador_imagenes, pos + 1, publicacion.urlsImagenes.size()
-                    ));
+                    holder.tvContadorImagenes.setText(holder.tvContadorImagenes.getContext().getString(R.string.contador_imagenes, pos + 1, publicacion.urlsImagenes.size()));
                 }
             };
             holder.viewPagerImagenes.registerOnPageChangeCallback(holder.pageChangeCallback);

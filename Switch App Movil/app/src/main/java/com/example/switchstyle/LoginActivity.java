@@ -42,13 +42,11 @@ public class LoginActivity extends AppCompatActivity {
         sessionManager = new SessionManager(this);
         apiService = RetrofitClient.getClient().create(ApiService.class);
 
-        // Si ya hay sesión iniciada, ir directo al catálogo
         if (sessionManager.isLoggedIn()) {
             startActivity(new Intent(LoginActivity.this, CatalogoProductos.class));
             finish();
         }
 
-        // Login
         btnLogin.setOnClickListener(view -> {
             String emailUser = email.getText().toString().trim();
             String passUser = password.getText().toString().trim();
@@ -61,7 +59,6 @@ public class LoginActivity extends AppCompatActivity {
             loginUser(emailUser, passUser);
         });
 
-        // Navegación inferior
         navHome.setOnClickListener(v -> {
             startActivity(new Intent(LoginActivity.this, MainActivity.class));
             finish();
@@ -102,12 +99,8 @@ public class LoginActivity extends AppCompatActivity {
                         sessionManager.saveUser(auth.getUser());
                     }
 
-                    String userName = (auth.getUser() != null && auth.getUser().getNombre() != null)
-                            ? auth.getUser().getNombre()
-                            : "usuario";
-
+                    String userName = (auth.getUser() != null && auth.getUser().getNombre() != null) ? auth.getUser().getNombre() : "usuario";
                     Toast.makeText(LoginActivity.this, "Bienvenido/a " + userName, Toast.LENGTH_LONG).show();
-
                     startActivity(new Intent(LoginActivity.this, CatalogoProductos.class));
                     finish();
                 } else {

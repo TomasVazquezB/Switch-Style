@@ -15,6 +15,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        setTitle("Inicio");
 
         session = new SessionManager(this);
         verificarSesion();
@@ -26,7 +27,6 @@ public class MainActivity extends AppCompatActivity {
         });
 
         navRegister.setOnClickListener(v -> startActivity(new Intent(MainActivity.this, Register.class)));
-
         navCatalogs.setOnClickListener(v -> {
             if (session.isLoggedIn()) {
                 Intent intent = new Intent(MainActivity.this, CatalogoProductos.class);
@@ -36,7 +36,6 @@ public class MainActivity extends AppCompatActivity {
             } else {
                 setContentView(R.layout.activity_login_validation);
                 setTitle("Acceso restringido");
-
                 Button btnIrLoginDesdeValidacion = findViewById(R.id.btnIrRegistro);
                 btnIrLoginDesdeValidacion.setOnClickListener(view -> {
                     startActivity(new Intent(MainActivity.this, LoginActivity.class));

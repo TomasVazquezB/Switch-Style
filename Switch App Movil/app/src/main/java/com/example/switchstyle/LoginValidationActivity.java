@@ -13,7 +13,6 @@ public class LoginValidationActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login_validation);
         setTitle("Acceso restringido");
-
         Button btnIrLogin = findViewById(R.id.btnIrRegistro);
         btnIrLogin.setOnClickListener(v -> {
             startActivity(new Intent(LoginValidationActivity.this, LoginActivity.class));
