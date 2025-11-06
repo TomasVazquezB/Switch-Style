@@ -8,7 +8,7 @@ use App\Http\Controllers\AccesorioController;
 use App\Http\Controllers\ProductoController;
 use Illuminate\Http\Request;
 
- ✅ ENDPOINTS PARA ANDROID (token-based)
+ //✅ ENDPOINTS PARA ANDROID (token-based)
  Route::prefix('mobile')->group(function () {
     Route::post('/login', [AuthController::class, 'login']);
     Route::post('/register', [AuthController::class, 'register']);
