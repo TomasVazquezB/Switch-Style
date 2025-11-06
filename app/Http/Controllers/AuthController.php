@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use App\Models\User;
 
 class AuthController extends Controller
@@ -71,6 +72,11 @@ class AuthController extends Controller
         ]);
 
         $user = User::find($id);
+
+         if (!$user) {
+            throw new \Exception("No se encontró el usuario recién creado (ID: $id)");
+        }
+        
         $token = $user->createToken('auth_token')->plainTextToken;
 
         return response()->json([
@@ -83,6 +89,19 @@ class AuthController extends Controller
             ],
             'token' => $token,
         ], 201);
+
+          } catch (\Throwable $e) {
+        // Loguear el error exacto
+        Log::error('💥 Error en registro móvil: ' . $e->getMessage(), [
+            'trace' => $e->getTraceAsString()
+        ]);
+
+        return response()->json([
+            'message' => 'Server Error',
+            'error' => $e->getMessage(),
+        ], 500);
+    }
+}
 }
     // =======================================================
     // Funcción de Logout (Se mantiene igual)
