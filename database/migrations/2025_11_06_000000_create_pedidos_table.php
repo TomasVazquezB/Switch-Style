@@ -10,15 +10,20 @@ return new class extends Migration
     {
         Schema::create('pedidos', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
-            $table->string('direccion_envio')->nullable();
+            $table->unsignedBigInteger('ID_Usuario');
             $table->decimal('subtotal', 10, 2)->default(0);
             $table->decimal('total', 10, 2)->default(0);
             $table->string('metodo_pago')->nullable();
             $table->string('external_id')->nullable();
-            $table->string('estado')->default('pendiente');
             $table->json('extra')->nullable();
+            $table->string('estado')->default('pendiente');
+            $table->text('direccion_envio')->nullable();
             $table->timestamps();
+
+            $table->foreign('ID_Usuario')
+                  ->references('ID_Usuario')
+                  ->on('usuario')
+                  ->onDelete('cascade');
         });
     }
 
