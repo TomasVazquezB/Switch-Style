@@ -24,7 +24,7 @@ function toRopaImageUrl(rawPath) {
     .replace(/^imagenes\/ropa\//, '')
     .replace(/^imagenes\//, '')
     .replace(/^ropa\//, '');
-  return BUCKET_BASE ? `${BUCKET_BASE}/ropa/${encodeURI(key)}` : PLACEHOLDER;
+  return BUCKET_BASE ? `${BUCKET_BASE}/ropa/${encodeURIComponent(key)}` : PLACEHOLDER;
 }
 
 const CATEGORIES_DB = [
@@ -50,6 +50,7 @@ const MainKids = ({ darkMode }) => {
 
   useEffect(() => {
     let cancel = false;
+
     async function fetchData() {
       try {
         const res = await publicApi.get('/ropa', {
@@ -66,13 +67,20 @@ const MainKids = ({ darkMode }) => {
                 : 'relevante',
           },
         });
-        if (!cancel) setProductos(Array.isArray(res.data) ? res.data : []);
+
+        if (!cancel) {
+          setProductos(Array.isArray(res.data) ? res.data : []);
+        }
       } catch (error) {
         console.error('Error al obtener productos (Chicos):', error);
-        if (!cancel) setProductos([]);
+        if (!cancel) {
+          setProductos([]);
+        }
       }
     }
+
     fetchData();
+
     return () => {
       cancel = true;
     };
@@ -183,7 +191,7 @@ const MainKids = ({ darkMode }) => {
         </div>
 
         <div className="products-grid">
-          {filtroProductos.map((item) => {
+          {filtroProductos.map((item, index) => {
             const rawPath =
               item.imagen_url ||
               item.ruta ||
@@ -209,6 +217,8 @@ const MainKids = ({ darkMode }) => {
               </div>
             );
 
+            const eager = index < 8;
+
             return (
               <article key={item.id} className="product-card">
                 <ProductoItem
@@ -217,6 +227,7 @@ const MainKids = ({ darkMode }) => {
                   nombre={tituloConUploader}
                   precio={item.precio}
                   tipo="ropa"
+                  eager={eager}
                 />
               </article>
             );

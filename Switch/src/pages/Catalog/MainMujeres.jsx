@@ -24,7 +24,7 @@ function toRopaImageUrl(rawPath) {
     .replace(/^imagenes\/ropa\//, '')
     .replace(/^imagenes\//, '')
     .replace(/^ropa\//, '');
-  return BUCKET_BASE ? `${BUCKET_BASE}/ropa/${encodeURI(key)}` : PLACEHOLDER;
+  return BUCKET_BASE ? `${BUCKET_BASE}/ropa/${encodeURIComponent(key)}` : PLACEHOLDER;
 }
 
 const CATEGORIES_DB = [
@@ -50,6 +50,7 @@ const MainMujeres = ({ darkMode }) => {
 
   useEffect(() => {
     let cancel = false;
+
     async function fetchData() {
       try {
         const res = await publicApi.get('/ropa', {
@@ -66,13 +67,20 @@ const MainMujeres = ({ darkMode }) => {
                 : 'relevante',
           },
         });
-        if (!cancel) setProductos(Array.isArray(res.data) ? res.data : []);
+
+        if (!cancel) {
+          setProductos(Array.isArray(res.data) ? res.data : []);
+        }
       } catch (e) {
         console.error('Error al obtener productos:', e);
-        if (!cancel) setProductos([]);
+        if (!cancel) {
+          setProductos([]);
+        }
       }
     }
+
     fetchData();
+
     return () => {
       cancel = true;
     };
@@ -90,15 +98,18 @@ const MainMujeres = ({ darkMode }) => {
 
   const filtroProductos = useMemo(() => {
     let temp = [...productos];
+
     temp = temp.filter((item) => {
       const precio = Number(item?.precio || 0);
       return precio >= precioMin && precio <= Number(precioMax);
     });
+
     if (sortTipo === 'low-high') {
       temp.sort((a, b) => Number(a.precio) - Number(b.precio));
     } else if (sortTipo === 'high-low') {
       temp.sort((a, b) => Number(b.precio) - Number(a.precio));
     }
+
     return temp;
   }, [productos, precioMin, precioMax, sortTipo]);
 
@@ -180,7 +191,7 @@ const MainMujeres = ({ darkMode }) => {
         </div>
 
         <div className="products-grid">
-          {filtroProductos.map((item) => {
+          {filtroProductos.map((item, index) => {
             const rawPath =
               item.imagen_url ||
               item.ruta ||
@@ -206,6 +217,8 @@ const MainMujeres = ({ darkMode }) => {
               </div>
             );
 
+            const eager = index < 8;
+
             return (
               <article key={item.id} className="product-card">
                 <ProductoItem
@@ -214,6 +227,7 @@ const MainMujeres = ({ darkMode }) => {
                   nombre={tituloConUploader}
                   precio={item.precio}
                   tipo="ropa"
+                  eager={eager}
                 />
               </article>
             );

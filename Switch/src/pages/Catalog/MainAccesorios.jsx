@@ -24,7 +24,7 @@ function toAccesorioImageUrl(rawPath) {
     .replace(/^imagenes\/accesorios\//, '')
     .replace(/^imagenes\//, '')
     .replace(/^accesorios\//, '');
-  return BUCKET_BASE ? `${BUCKET_BASE}/accesorios/${encodeURI(key)}` : PLACEHOLDER;
+  return BUCKET_BASE ? `${BUCKET_BASE}/accesorios/${encodeURIComponent(key)}` : PLACEHOLDER;
 }
 
 function getThemeAsEstilo() {
@@ -64,12 +64,11 @@ const MainAccesorios = () => {
 
   useEffect(() => {
     let cancel = false;
+
     async function fetchData() {
       try {
         const res = await publicApi.get('/accesorios', {
-          params: {
-            estilo,
-          },
+          params: { estilo },
         });
         if (!cancel) {
           setProductos(Array.isArray(res.data) ? res.data : []);
@@ -79,7 +78,9 @@ const MainAccesorios = () => {
         if (!cancel) setProductos([]);
       }
     }
+
     fetchData();
+
     return () => {
       cancel = true;
     };
@@ -176,7 +177,7 @@ const MainAccesorios = () => {
         </div>
 
         <div className="products-grid">
-          {filtroProductos.map((item) => {
+          {filtroProductos.map((item, index) => {
             const rawPath =
               item.imagen_url ||
               item.ruta ||
@@ -200,6 +201,8 @@ const MainAccesorios = () => {
               </div>
             );
 
+            const eager = index < 8;
+
             return (
               <article key={item.id} className="product-card">
                 <ProductoItem
@@ -208,6 +211,7 @@ const MainAccesorios = () => {
                   nombre={tituloConUploader}
                   precio={item.precio}
                   tipo="accesorio"
+                  eager={eager}
                 />
               </article>
             );

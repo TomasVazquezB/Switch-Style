@@ -105,3 +105,4 @@ body.dark-mode input::placeholder,
 body.dark-mode textarea::placeholder {
   color: rgba(255,255,255,0.5);
 }
+
