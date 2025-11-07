@@ -36,7 +36,7 @@
                 <form method="POST" action="{{ route('logout') }}">
                     @csrf
                     <button class="bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded text-sm">
-                        Cerrar sesión
+                        Volver al inicio
                     </button>
                 </form>
             </div>
