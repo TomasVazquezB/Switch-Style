@@ -21,8 +21,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class Register extends AppCompatActivity {
-
-    private EditText etNombre, etApellido, etEmail, etPassword;
+    private EditText etNombre, etEmail, etPassword;
     private SessionManager session;
     private static final String TAG = "RegisterActivity";
 
@@ -33,9 +32,7 @@ public class Register extends AppCompatActivity {
         setTitle("Registro");
 
         session = new SessionManager(this);
-
         etNombre = findViewById(R.id.Nombre);
-        etApellido = findViewById(R.id.Apellido);
         etEmail = findViewById(R.id.Email);
         etPassword = findViewById(R.id.Contraseña);
 
@@ -50,17 +47,16 @@ public class Register extends AppCompatActivity {
                 Log.d("ButtonCheck", "¡Hiciste click en el botón de Registrar!");
 
                 String nameUser = etNombre.getText().toString().trim();
-                String apellidoUser = etApellido.getText().toString().trim();
                 String emailUser = etEmail.getText().toString().trim();
                 String passUser = etPassword.getText().toString().trim();
 
-                if (TextUtils.isEmpty(nameUser) || TextUtils.isEmpty(apellidoUser) ||
+                if (TextUtils.isEmpty(nameUser) ||
                         TextUtils.isEmpty(emailUser) || TextUtils.isEmpty(passUser)) {
                     Toast.makeText(Register.this, "Todos los campos son obligatorios", Toast.LENGTH_SHORT).show();
                     return;
                 }
 
-                registerUser(nameUser, apellidoUser, emailUser, passUser);
+                registerUser(nameUser, emailUser, passUser);
             });
         }
 
@@ -86,16 +82,16 @@ public class Register extends AppCompatActivity {
         });
     }
 
-    private void registerUser(String nameUser, String apellidoUser, String emailUser, String passUser) {
+    private void registerUser(String nameUser, String emailUser, String passUser) {
         ApiService apiService = RetrofitClient.getClient().create(ApiService.class);
-        RegisterRequest request = new RegisterRequest(nameUser, apellidoUser, emailUser, passUser, "Usuario");
+        RegisterRequest request = new RegisterRequest(nameUser, emailUser, passUser, "Free");
 
         Call<AuthResponse> call = apiService.register(request);
         call.enqueue(new Callback<AuthResponse>() {
             @Override
             public void onResponse(@NonNull Call<AuthResponse> call, @NonNull Response<AuthResponse> response) {
                 if (response.isSuccessful()) {
-                    Toast.makeText(Register.this, "✅ Registro exitoso. Por favor, inicia sesión", Toast.LENGTH_LONG).show();
+                    Toast.makeText(Register.this, "Registro exitoso. Por favor, inicia sesión", Toast.LENGTH_LONG).show();
                     Log.i(TAG, "Registro exitoso. Redirigiendo a Login");
                     startActivity(new Intent(Register.this, LoginActivity.class));
                     finish();

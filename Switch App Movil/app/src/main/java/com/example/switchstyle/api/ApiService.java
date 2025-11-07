@@ -9,7 +9,6 @@ import retrofit2.http.POST;
 import retrofit2.http.Path;
 
 public interface ApiService {
-
     @POST("api/mobile/login")
     Call<AuthResponse> login(@Body LoginRequest request);
 

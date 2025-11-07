@@ -13,14 +13,12 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
-
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -31,17 +29,14 @@ import com.example.switchstyle.api.ApiService;
 import com.example.switchstyle.api.Product;
 import com.example.switchstyle.api.RetrofitClient;
 import com.example.switchstyle.api.SessionManager;
-import com.example.switchstyle.utils.FavoritosManager;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 public class CatalogoProductos extends AppCompatActivity {
-    private RecyclerView recyclerView;
+
     private PublicacionAdapter adapter;
     private List<Publicacion> publicaciones;
     private boolean isLoading = false;
@@ -67,7 +62,7 @@ public class CatalogoProductos extends AppCompatActivity {
         setContentView(R.layout.activity_catalogo_productos);
         setTitle("Catálogo de productos");
 
-        recyclerView = findViewById(R.id.recyclerViewProductos);
+        RecyclerView recyclerView = findViewById(R.id.recyclerViewProductos);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         publicaciones = new ArrayList<>();
@@ -75,22 +70,6 @@ public class CatalogoProductos extends AppCompatActivity {
         recyclerView.setAdapter(adapter);
 
         cargarPublicaciones();
-
-        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrolled(@NonNull RecyclerView rv, int dx, int dy) {
-                super.onScrolled(rv, dx, dy);
-                LinearLayoutManager lm = (LinearLayoutManager) recyclerView.getLayoutManager();
-                if (lm != null && !isLoading) {
-                    int totalItemCount = lm.getItemCount();
-                    int lastVisibleItem = lm.findLastVisibleItemPosition();
-                    if (lastVisibleItem >= totalItemCount - 3) {
-                        cargarPublicaciones();
-                    }
-                }
-            }
-        });
-
         initNavigation();
     }
 
@@ -102,17 +81,15 @@ public class CatalogoProductos extends AppCompatActivity {
         if (navRegister != null) navRegister.setOnClickListener(v -> {});
         if (navCatalogs != null) navCatalogs.setOnClickListener(v -> {});
     }
-
     @SuppressLint("NotifyDataSetChanged")
     private void cargarPublicaciones() {
         isLoading = true;
         ApiService apiService = RetrofitClient.getClient().create(ApiService.class);
         Call<List<Product>> call = apiService.getProductos("Bearer " + session.getToken());
-
         call.enqueue(new Callback<List<Product>>() {
             @Override
             public void onResponse(@NonNull Call<List<Product>> call, @NonNull Response<List<Product>> response) {
-               isLoading = false;
+                isLoading = false;
 
                 if (response.isSuccessful() && response.body() != null) {
                     publicaciones.clear();
@@ -124,10 +101,7 @@ public class CatalogoProductos extends AppCompatActivity {
                         }
 
                         boolean esFavorito = favManager.esFavorito(p.getId());
-
-                        Publicacion pub = new Publicacion(p.getId(), p.getNombre(), p.getTipo(), imagenes, esFavorito);
-
-                        publicaciones.add(pub);
+                        publicaciones.add(new Publicacion(p.getId(), p.getNombre(), p.getTipo(), imagenes, esFavorito));
                     }
 
                     adapter.notifyDataSetChanged();
@@ -135,10 +109,9 @@ public class CatalogoProductos extends AppCompatActivity {
                     if (publicaciones.isEmpty()) {
                         Toast.makeText(CatalogoProductos.this, "No hay productos disponibles 😕", Toast.LENGTH_SHORT).show();
                     }
-
                 } else {
                     Log.e("CatalogoProductos", "Error al cargar catálogo: código " + response.code());
-                    Toast.makeText(CatalogoProductos.this, "Error al cargar el catálogo. Código " + response.code(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(CatalogoProductos.this, "Error al cargar el catálogo. Código: " + response.code(), Toast.LENGTH_SHORT).show();
                 }
             }
 
@@ -150,14 +123,12 @@ public class CatalogoProductos extends AppCompatActivity {
             }
         });
     }
-
     public static class Publicacion {
         int id;
         String nombre;
         String categoria;
         List<String> urlsImagenes;
         boolean meGusta;
-
         public Publicacion(int id, String nombre, String categoria, List<String> urlsImagenes, boolean meGusta) {
             this.id = id;
             this.nombre = nombre;
@@ -166,12 +137,10 @@ public class CatalogoProductos extends AppCompatActivity {
             this.meGusta = meGusta;
         }
     }
-
     private static class PublicacionAdapter extends RecyclerView.Adapter<PublicacionAdapter.PublicacionViewHolder> {
         private final List<Publicacion> publicaciones;
         private final SessionManager session;
         private final FavoritosManager favManager;
-
         PublicacionAdapter(List<Publicacion> publicaciones, SessionManager session, FavoritosManager favManager) {
             this.publicaciones = publicaciones;
             this.session = session;
@@ -190,41 +159,41 @@ public class CatalogoProductos extends AppCompatActivity {
             Publicacion publicacion = publicaciones.get(position);
             ImagenAdapter imagenAdapter = new ImagenAdapter(publicacion.urlsImagenes);
             holder.viewPagerImagenes.setAdapter(imagenAdapter);
-
             holder.tvContadorImagenes.setVisibility(publicacion.urlsImagenes.size() > 1 ? View.VISIBLE : View.GONE);
-            holder.tvContadorImagenes.setText(holder.tvContadorImagenes.getContext().getString(R.string.contador_imagenes, 1, publicacion.urlsImagenes.size()));
+            holder.tvContadorImagenes.setText(holder.itemView.getContext().getString(
+                    R.string.contador_imagenes, 1, publicacion.urlsImagenes.size()));
 
-            holder.btnMeGusta.setImageResource(publicacion.meGusta ? R.drawable.favorite_filled_24px : R.drawable.favorite_24px);
+            holder.btnMeGusta.setImageResource(
+                    publicacion.meGusta ? R.drawable.favorite_filled_24px : R.drawable.favorite_24px);
+
             holder.btnMeGusta.setOnClickListener(v -> {
                 boolean nuevoEstado = !publicacion.meGusta;
                 publicacion.meGusta = nuevoEstado;
 
-                if (nuevoEstado) {
-                    favManager.agregar(publicacion.id);
-                } else {
-                    favManager.quitar(publicacion.id);
-                }
+                if (nuevoEstado) favManager.agregar(publicacion.id);
+                else favManager.quitar(publicacion.id);
 
-                holder.btnMeGusta.setImageResource(nuevoEstado ? R.drawable.favorite_filled_24px : R.drawable.favorite_24px);
+                holder.btnMeGusta.setImageResource(
+                        nuevoEstado ? R.drawable.favorite_filled_24px : R.drawable.favorite_24px);
 
                 ApiService apiService = RetrofitClient.getClient().create(ApiService.class);
                 Call<Void> call = apiService.setLike(publicacion.id, nuevoEstado, "Bearer " + session.getToken());
-
                 call.enqueue(new Callback<Void>() {
                     @Override
                     public void onResponse(@NonNull Call<Void> call, @NonNull Response<Void> response) {
                         if (!response.isSuccessful()) {
-                            Log.e("setLike", "Error al cambiar estado: " + response.code());
+                            Log.e("setLike", "Error al actualizar favorito en servidor: " + response.code());
                         }
                     }
 
                     @Override
                     public void onFailure(@NonNull Call<Void> call, @NonNull Throwable t) {
-                        Log.e("setLike", "Fallo en la petición: " + t.getMessage());
+                        Log.e("setLike", "Error de red al actualizar favorito: " + t.getMessage());
                     }
                 });
 
-                Toast.makeText(v.getContext(), nuevoEstado ? "Agregado a favoritos ❤️" : "Quitado de favoritos 🤍",
+                Toast.makeText(v.getContext(),
+                        nuevoEstado ? "Agregado a favoritos ❤️" : "Quitado de favoritos 🤍",
                         Toast.LENGTH_SHORT).show();
             });
 
@@ -235,7 +204,8 @@ public class CatalogoProductos extends AppCompatActivity {
             holder.pageChangeCallback = new ViewPager2.OnPageChangeCallback() {
                 @Override
                 public void onPageSelected(int pos) {
-                    holder.tvContadorImagenes.setText(holder.tvContadorImagenes.getContext().getString(R.string.contador_imagenes, pos + 1, publicacion.urlsImagenes.size()));
+                    holder.tvContadorImagenes.setText(holder.itemView.getContext().getString(
+                            R.string.contador_imagenes, pos + 1, publicacion.urlsImagenes.size()));
                 }
             };
             holder.viewPagerImagenes.registerOnPageChangeCallback(holder.pageChangeCallback);
@@ -251,7 +221,6 @@ public class CatalogoProductos extends AppCompatActivity {
             ImageButton btnMeGusta;
             TextView tvContadorImagenes;
             ViewPager2.OnPageChangeCallback pageChangeCallback;
-
             PublicacionViewHolder(@NonNull View itemView) {
                 super(itemView);
                 viewPagerImagenes = itemView.findViewById(R.id.viewPagerImagenes);
@@ -260,13 +229,9 @@ public class CatalogoProductos extends AppCompatActivity {
             }
         }
     }
-
     private static class ImagenAdapter extends RecyclerView.Adapter<ImagenAdapter.ImagenViewHolder> {
         private final List<String> urls;
-
-        ImagenAdapter(List<String> urls) {
-            this.urls = urls;
-        }
+        ImagenAdapter(List<String> urls) { this.urls = urls; }
 
         @NonNull
         @Override
@@ -279,6 +244,7 @@ public class CatalogoProductos extends AppCompatActivity {
         public void onBindViewHolder(@NonNull ImagenViewHolder holder, int position) {
             String url = urls.get(position);
             holder.progressBar.setVisibility(View.VISIBLE);
+
             Glide.with(holder.imageView.getContext())
                     .load(url)
                     .centerCrop()
@@ -287,7 +253,7 @@ public class CatalogoProductos extends AppCompatActivity {
                         @Override
                         public boolean onLoadFailed(@Nullable GlideException e, Object model, @NonNull Target<Drawable> target, boolean isFirstResource) {
                             holder.progressBar.setVisibility(View.GONE);
-                            Log.e("GlideError", "Error loading image: " + (e != null ? e.getMessage() : "Unknown error"));
+                            Log.e("GlideError", "Error al cargar imagen: " + (e != null ? e.getMessage() : "Desconocido"));
                             return false;
                         }
 
@@ -301,14 +267,10 @@ public class CatalogoProductos extends AppCompatActivity {
         }
 
         @Override
-        public int getItemCount() {
-            return urls.size();
-        }
-
+        public int getItemCount() { return urls.size(); }
         static class ImagenViewHolder extends RecyclerView.ViewHolder {
             ImageView imageView;
             ProgressBar progressBar;
-
             ImagenViewHolder(@NonNull View itemView) {
                 super(itemView);
                 imageView = itemView.findViewById(R.id.imagenProducto);

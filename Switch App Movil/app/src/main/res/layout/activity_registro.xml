@@ -34,20 +34,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"
-                android:hint="@string/nombre"
+                android:hint="@string/nombre_y_apellido"
                 android:inputType="text"
                 android:minHeight="48dp"
                 tools:ignore="Autofill,VisualLintTextFieldSize" />
-
-            <EditText
-                android:id="@+id/Apellido"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
-                android:hint="@string/apellido"
-                android:inputType="text"
-                android:minHeight="48dp"
-                tools:ignore="Autofill,DuplicateIds,VisualLintTextFieldSize" />
 
             <EditText
                 android:id="@+id/Email"

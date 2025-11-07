@@ -8,7 +8,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.switchstyle.api.SessionManager;
 
 public class MainActivity extends AppCompatActivity {
-
     private SessionManager session;
 
     @Override
