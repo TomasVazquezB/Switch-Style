@@ -8,25 +8,23 @@ import { QuienesSomosPage } from './pages/quienessomos/quienessomos';
 import { RegistroPage } from './pages/registro/registro';
 import { LoginPage } from './pages/login/login';
 import CarritoPage from './pages/carrito/carrito.jsx';
-import MainHombresPage from './pages/Hombre/MainHombres.jsx';
-import MainMujeresPage from './pages/Mujer/MainMujeres';
-import MainKidsPage from './pages/Kids/MainKids.jsx';
-import MainAccesorios from './pages/Accesorios/MainAccesorios.jsx';
+import MainHombresPage from './pages/Catalog/MainHombres.jsx';
+import MainMujeresPage from './pages/Catalog/MainMujeres.jsx';
+import MainKidsPage from './pages/Catalog/MainKids.jsx';
+import MainAccesorios from './pages/Catalog/MainAccesorios.jsx';
 import Productos from './pages/Productos/Productos.jsx';
 import Favoritos from './pages/favoritos/favoritos.jsx';
 import ErrorBoundary from './components/Error/ErrorBoundary';
-import Pedidos from "./pages/pedidos/pedidos.jsx";
-import ConfPago from "./pages/confpago/confpago.jsx";
-import Pago from "./pages/pago/pago.jsx";
+import Pedidos from './pages/pedidos/pedidos.jsx';
+import ConfPago from './pages/confpago/confpago.jsx';
+import Pago from './pages/pago/pago.jsx';
 import { ToastContainer } from 'react-toastify';
 import Busqueda from './pages/busqueda/Busqueda.jsx';
-import { PayPalScriptProvider } from "@paypal/react-paypal-js";
+import { PayPalScriptProvider } from '@paypal/react-paypal-js';
 import 'react-toastify/dist/ReactToastify.css';
 import '/index.css';
 
 function App() {
-  // darkMode = true  -> oscuro
-  // darkMode = false -> claro
   const [darkMode, setDarkMode] = useState(() => {
     return localStorage.getItem('darkMode') === 'true';
   });
@@ -42,10 +40,15 @@ function App() {
     localStorage.setItem('darkMode', darkMode);
   }, [darkMode]);
 
-  const toggleTheme = () => setDarkMode(prev => !prev);
+  const toggleTheme = () => setDarkMode((prev) => !prev);
 
   return (
-    <PayPalScriptProvider options={{ clientId: "AbSH4YtXgr7HDRqfrLVMI8GJRF_iOK10cGwbs_NiwJN96bDp6GcZsOERyV4T29kvRE1o2D--KJAXFJE3" }}>
+    <PayPalScriptProvider
+      options={{
+        clientId:
+          'AbSH4YtXgr7HDRqfrLVMI8GJRF_iOK10cGwbs_NiwJN96bDp6GcZsOERyV4T29kvRE1o2D--KJAXFJE3',
+      }}
+    >
       <div className="app-wrapper">
         <Header toggleTheme={toggleTheme} darkMode={darkMode} />
 
@@ -176,7 +179,14 @@ function App() {
                 }
               />
 
-                <Route path="/pago" element={<PageTitle title="Pago"><Pago /></PageTitle>} />
+              <Route
+                path="/pago"
+                element={
+                  <PageTitle title="Pago">
+                    <Pago />
+                  </PageTitle>
+                }
+              />
             </Routes>
           </ErrorBoundary>
         </main>

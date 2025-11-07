@@ -4,40 +4,10 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
-import { NavLink, useNavigate } from "react-router-dom";
+import { NavLink, useNavigate, useLocation } from "react-router-dom";
 import { FaSearch, FaShoppingCart, FaUser } from "react-icons/fa";
 import { BsMoon, BsSun } from "react-icons/bs";
-import { useLocation } from "react-router-dom";
 import { DataContext } from "../../context/DataContext";
-import axios from "../../api/axios";
-
-const BUCKET_BASE = (import.meta.env.VITE_ASSETS_BASE || "").replace(/\/+$/, "");
-const PLACEHOLDER =
-  "data:image/svg+xml;utf8," +
-  encodeURIComponent(
-    `<svg xmlns='http://www.w3.org/2000/svg' width='300' height='200'>
-       <rect width='100%' height='100%' fill='#f3f4f6'/>
-       <text x='50%' y='50%' dominant-baseline='middle' text-anchor='middle'
-             font-family='Arial' font-size='16' fill='#9ca3af'>Sin imagen</text>
-     </svg>`
-  );
-
-function toBucketUrl(rawPath) {
-  if (!rawPath) return PLACEHOLDER;
-  if (/^https?:\/\//i.test(rawPath)) return rawPath;
-
-  let key = String(rawPath)
-    .replace(/^https?:\/\/[^/]+\/?/, "")
-    .replace(/^\/+/, "")
-    .replace(/^storage\//, "")
-    .replace(/^public\//, "");
-
-  if (/^ropa\//i.test(key)) key = key.replace(/^ropa\//i, "imagenes/ropa/");
-  if (/^accesorios\//i.test(key))
-    key = key.replace(/^accesorios\//i, "imagenes/accesorios/");
-
-  return BUCKET_BASE ? `${BUCKET_BASE}/${encodeURI(key)}` : PLACEHOLDER;
-}
 
 const Header = ({ toggleTheme, darkMode }) => {
   const [usuario, setUsuario] = useState(null);
@@ -51,12 +21,13 @@ const Header = ({ toggleTheme, darkMode }) => {
   useEffect(() => {
     const actualizarUsuario = () => {
       const userData = localStorage.getItem("usuario");
-      if (userData) setUsuario(JSON.parse(userData));
-      else setUsuario(null);
+      setUsuario(userData ? JSON.parse(userData) : null);
     };
     actualizarUsuario();
     window.addEventListener("usuario-actualizado", actualizarUsuario);
-    return () => window.removeEventListener("usuario-actualizado", actualizarUsuario);
+    return () => {
+      window.removeEventListener("usuario-actualizado", actualizarUsuario);
+    };
   }, []);
 
   useEffect(() => {
@@ -80,7 +51,9 @@ const Header = ({ toggleTheme, darkMode }) => {
     if (!searchQuery.trim()) return;
 
     const producto = productos.find(
-      (p) => p.titulo.toLowerCase() === searchQuery.trim().toLowerCase()
+      (p) =>
+        p.titulo &&
+        p.titulo.toLowerCase() === searchQuery.trim().toLowerCase()
     );
 
     if (producto) {
@@ -103,7 +76,10 @@ const Header = ({ toggleTheme, darkMode }) => {
   };
 
   const goToCart = () => navigate("/carrito");
-  const handleProfileClick = () => setShowProfileMenu(!showProfileMenu);
+
+  const handleProfileClick = () =>
+    setShowProfileMenu((prev) => !prev);
+
   const handleLogout = () => {
     localStorage.removeItem("usuario");
     setUsuario(null);
@@ -131,35 +107,31 @@ const Header = ({ toggleTheme, darkMode }) => {
     searchQuery.length > 0
       ? productos
           .filter((p) =>
-            `${p.titulo} ${p.tipo} ${p.descripcion}`
+            `${p.titulo || ""} ${p.tipo || ""} ${p.descripcion || ""}`
               .toLowerCase()
               .includes(searchQuery.toLowerCase())
           )
           .slice(0, 5)
       : [];
 
-  // --- Render ---
   return (
     <>
-      {/* 🔥 Barra de oferta superior */}
       <div
         className={`offer-bar ${
           darkMode ? "bg-dark text-white" : "bg-light text-dark"
-        } text-center pt-4 pb-2`}
+        } text-center pt-2 pb-1`}
       >
         <p className="offer-bar-text">
-          ¡Registrate para obtener ofertas únicas y obtené un 15% en tu primer
-          compra!
+          ¡Registrate para obtener ofertas únicas y obtené un 15% en tu primer compra!
         </p>
       </div>
 
-      {/* 🔥 Navbar principal */}
       <Navbar
         expand="lg"
         className={`navbar-top ${darkMode ? "bg-dark" : "bg-light"}`}
       >
         <Container fluid>
-          <Navbar.Brand as={NavLink} to="/" onClick={() => navigate("/")}>
+          <Navbar.Brand as={NavLink} to="/">
             <img
               src="https://res.cloudinary.com/switchstyle/image/upload/v1756993378/Logo%20Switch%20Style.png"
               width="90"
@@ -172,7 +144,6 @@ const Header = ({ toggleTheme, darkMode }) => {
           <Navbar.Toggle aria-controls="navbarNav" />
           <Navbar.Collapse id="navbarNav">
             <Nav className="me-auto align-items-center">
-              {/* 🌙☀️ Switch modo claro/oscuro */}
               <div className="mode-switch d-flex align-items-center me-3">
                 <BsMoon
                   className={`mode-icon ${
@@ -195,7 +166,6 @@ const Header = ({ toggleTheme, darkMode }) => {
               </div>
             </Nav>
 
-            {/* 🔥 Menú de secciones */}
             <Nav
               className="navbar-ropa"
               style={{ justifyContent: "space-evenly", width: "100%" }}
@@ -230,7 +200,6 @@ const Header = ({ toggleTheme, darkMode }) => {
               </Nav.Link>
             </Nav>
 
-            {/* 🔍 Buscador */}
             <div className="search-bar" style={{ position: "relative" }}>
               <form className="search-form" onSubmit={handleSearch}>
                 <input
@@ -242,7 +211,9 @@ const Header = ({ toggleTheme, darkMode }) => {
                     setShowSuggestions(true);
                   }}
                   onFocus={() => setShowSuggestions(true)}
-                  onBlur={() => setTimeout(() => setShowSuggestions(false), 150)}
+                  onBlur={() =>
+                    setTimeout(() => setShowSuggestions(false), 150)
+                  }
                   className={`search-input ${
                     darkMode ? "bg-dark text-white" : "bg-light text-dark"
                   }`}
@@ -264,7 +235,9 @@ const Header = ({ toggleTheme, darkMode }) => {
                         onClick={() => handleSuggestionClick(p)}
                       >
                         <div className="suggestion-info">
-                          <span className="suggestion-title">{p.titulo}</span>
+                          <span className="suggestion-title">
+                            {p.titulo}
+                          </span>
                           <span className="suggestion-price">
                             ${p.precio || p.Precio}
                           </span>
@@ -276,7 +249,6 @@ const Header = ({ toggleTheme, darkMode }) => {
               </form>
             </div>
 
-            {/* 🛒 Carrito */}
             <Nav.Link onClick={goToCart} className="carrito">
               <FaShoppingCart
                 size={21}
@@ -286,12 +258,15 @@ const Header = ({ toggleTheme, darkMode }) => {
               />
             </Nav.Link>
 
-            {/* 👤 Perfil */}
             <Nav className="ms-auto">
               <div className="profile-container">
                 <Nav.Link
                   as="div"
-                  onClick={usuario ? handleProfileClick : () => navigate("/login")}
+                  onClick={
+                    usuario
+                      ? handleProfileClick
+                      : () => navigate("/login")
+                  }
                   className="login-buttom"
                   style={{ cursor: "pointer" }}
                 >
@@ -312,37 +287,25 @@ const Header = ({ toggleTheme, darkMode }) => {
                     </div>
                     <NavLink
                       to="/pedidos"
-                      className={`block px-4 py-2 text-sm ${
-                        darkMode
-                          ? "text-white hover:bg-gray-700"
-                          : "text-gray-800 hover:bg-gray-100"
-                      }`}
+                      className="profile-link"
                     >
                       Mis pedidos
                     </NavLink>
                     <NavLink
                       to="/favoritos"
-                      className={`block px-4 py-2 text-sm ${
-                        darkMode
-                          ? "text-white hover:bg-gray-700"
-                          : "text-gray-800 hover:bg-gray-100"
-                      }`}
+                      className="profile-link"
                     >
                       Mis favoritos
                     </NavLink>
                     <button
                       onClick={handleGoToPanel}
-                      className={`block px-4 py-2 text-sm w-full text-left ${
-                        darkMode
-                          ? "text-white hover:bg-gray-700"
-                          : "text-gray-800 hover:bg-gray-100"
-                      }`}
+                      className="profile-link w-100 text-left"
                     >
                       Panel de Productos
                     </button>
                     <button
                       onClick={handleLogout}
-                      className="block px-4 py-2 text-sm w-full text-left"
+                      className="profile-link w-100 text-left"
                     >
                       Cerrar sesión
                     </button>

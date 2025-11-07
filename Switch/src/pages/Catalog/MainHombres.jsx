@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import ProductoItem from '../../components/Productoitem/ProductoItem';
 import { publicApi } from '../../api/axios';
-import './MainHombres.css';
+import './MainCatalog.css';
 
 const BUCKET_BASE = (import.meta.env.VITE_ASSETS_BASE || '').replace(/\/+$/, '');
 const PLACEHOLDER =
@@ -27,15 +27,7 @@ function toRopaImageUrl(rawPath) {
   return BUCKET_BASE ? `${BUCKET_BASE}/ropa/${encodeURI(key)}` : PLACEHOLDER;
 }
 
-const CATEGORIES_DB = [
-  'Remeras',
-  'Camisas',
-  'Camperas',
-  'Shorts',
-  'Pantalones',
-  'Zapatillas',
-];
-
+const CATEGORIES_DB = ['Remeras', 'Camisas', 'Camperas', 'Shorts', 'Pantalones', 'Zapatillas'];
 const ALL_SIZES = ['S', 'M', 'L', 'XL', 'XXL'];
 
 const MainHombres = ({ darkMode }) => {
@@ -109,114 +101,98 @@ const MainHombres = ({ darkMode }) => {
 
   const toggleTallaManual = (size) => {
     setTallas((prev) =>
-      prev.includes(size)
-        ? prev.filter((t) => t !== size)
-        : [...prev, size]
+      prev.includes(size) ? prev.filter((t) => t !== size) : [...prev, size]
     );
   };
 
   return (
-    <div className="content">
-      <section className="sidebar top-0 left-0 h-screen overflow-y-auto bg-white border-r px-4 py-6">
-        <div className="sidebar-content">
-          <div className="mb-4">
-            <h4 className="mb-3">CATEGORIA</h4>
-            <div className="filter-categorias">
-              {CATEGORIES_DB.map((cat) => (
-                <label key={cat}>
-                  <input
-                    type="checkbox"
-                    value={cat}
-                    onChange={toggleSubCategoria}
-                    checked={subCategoria.includes(cat)}
-                  />
-                  {cat}
-                </label>
-              ))}
-            </div>
-          </div>
-
-          <hr className="my-4" />
-
-          <div className="mb-4">
-            <h4 className="mb-3">TALLA</h4>
-            <div className="filter-tallas">
-              {ALL_SIZES.map((size) => (
-                <div
-                  key={size}
-                  onClick={() => toggleTallaManual(size)}
-                  className={`talla-item ${
-                    tallas.includes(size) ? 'active' : ''
-                  }`}
-                >
-                  {size}
-                </div>
-              ))}
-            </div>
-          </div>
-
-          <hr className="my-4" />
-
-          <div className="mb-4">
-            <h4>PRECIO</h4>
-            <div className="range flex items-center gap-2">
-              <span>${precioMin}</span>
-              <input
-                type="range"
-                min={precioMin}
-                max={maxPrice}
-                step="10"
-                value={precioMax}
-                onChange={(e) => setPrecioMax(Number(e.target.value))}
-                className="w-full"
-              />
-              <span>${precioMax}</span>
-            </div>
+    <div className="page-layout">
+      <aside className="sidebar">
+        <div className="filter-group">
+          <h4>CATEGORIA</h4>
+          <div className="filter-categorias">
+            {CATEGORIES_DB.map((cat) => (
+              <label key={cat}>
+                <input
+                  type="checkbox"
+                  value={cat}
+                  onChange={toggleSubCategoria}
+                  checked={subCategoria.includes(cat)}
+                />
+                {cat}
+              </label>
+            ))}
           </div>
         </div>
-      </section>
 
-      <div className="main pl-[220px] px-8 py-2">
-        <div className="flex w-full mb-3">
-  <select
-    value={sortTipo}
-    onChange={(e) => setSortTipo(e.target.value)}
-    className="border border-gray-300 text-sm px-2 py-1 rounded ml-auto"
-  >
-    <option value="relevante">ORDENAR POR: RELEVANTE</option>
-    <option value="low-high">ORDENAR POR: DE MENOR A MAYOR</option>
-    <option value="high-low">ORDENAR POR: MAYOR A MENOR</option>
-  </select>
-</div>
+        <div className="filter-group">
+          <h4>TALLA</h4>
+          <div className="filter-tallas">
+            {ALL_SIZES.map((size) => (
+              <div
+                key={size}
+                onClick={() => toggleTallaManual(size)}
+                className={`size-option ${tallas.includes(size) ? 'active' : ''}`}
+              >
+                {size}
+              </div>
+            ))}
+          </div>
+        </div>
 
+        <div className="filter-group">
+          <h4>PRECIO</h4>
+          <div className="price-row">
+            <span>${precioMin}</span>
+            <span>${precioMax}</span>
+          </div>
+          <input
+            type="range"
+            min={precioMin}
+            max={maxPrice}
+            step="10"
+            value={precioMax}
+            onChange={(e) => setPrecioMax(Number(e.target.value))}
+          />
+        </div>
+      </aside>
 
-        <div className="product-grid grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      <section className="main">
+        <div className="main-header">
+          <select
+            value={sortTipo}
+            onChange={(e) => setSortTipo(e.target.value)}
+          >
+            <option value="relevante">ORDENAR POR: RELEVANTE</option>
+            <option value="low-high">ORDENAR POR: DE MENOR A MAYOR</option>
+            <option value="high-low">ORDENAR POR: MAYOR A MENOR</option>
+          </select>
+        </div>
+
+        <div className="products-grid">
           {filtroProductos.map((item) => {
             const rawPath =
               item.imagen_url ||
               item.ruta ||
               item.ruta_imagen ||
-              item?.imagenes?.[0]?.ruta ||
+              (item.imagenes && item.imagenes[0] && item.imagenes[0].ruta) ||
               '';
             const imageUrl = toRopaImageUrl(rawPath);
             const uploader =
-              item?.usuario?.Nombre ??
-              item?.user?.name ??
-              item?.usuario_nombre ??
+              (item.usuario && item.usuario.Nombre) ||
+              (item.user && item.user.name) ||
+              item.usuario_nombre ||
               null;
             const tituloConUploader = (
-              <div className="titulo-bloque">
-                <span className="titulo-ropa">{item.titulo}</span>
+              <div className="product-card-body">
+                <div className="product-card-title">{item.titulo}</div>
                 {uploader && (
-                  <span className="subido-por">Subido por: {uploader}</span>
+                  <div className="product-card-meta">Subido por: {uploader}</div>
                 )}
               </div>
             );
             return (
-              <article
-                key={item.id}
-                className="rounded border overflow-hidden bg-white transition"
-              >
+              <article key={item.id} className="product-card">
                 <ProductoItem
                   id={item.id}
                   img={imageUrl}
@@ -233,7 +209,7 @@ const MainHombres = ({ darkMode }) => {
             </p>
           )}
         </div>
-      </div>
+      </section>
     </div>
   );
 };

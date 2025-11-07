@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import ProductoItem from '../../components/Productoitem/ProductoItem';
 import { publicApi } from '../../api/axios';
-import './MainAccesorios.css';
+import './MainCatalog.css';
 
 const BUCKET_BASE = (import.meta.env.VITE_ASSETS_BASE || '').replace(/\/+$/, '');
 const PLACEHOLDER =
@@ -29,9 +29,13 @@ function toAccesorioImageUrl(rawPath) {
 
 function getThemeAsEstilo() {
   const ls = (localStorage.getItem('theme') || '').toLowerCase();
-  const isDark = ls === 'dark' || document.documentElement.classList.contains('dark');
+  const isDark =
+    ls === 'dark' ||
+    document.body.classList.contains('dark-mode') ||
+    document.documentElement.classList.contains('dark');
   return isDark ? 'oscuro' : 'claro';
 }
+
 function useThemeEstilo() {
   const [estilo, setEstilo] = useState(getThemeAsEstilo());
   useEffect(() => {
@@ -39,6 +43,7 @@ function useThemeEstilo() {
     window.addEventListener('storage', sync);
     const mo = new MutationObserver(sync);
     mo.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
+    mo.observe(document.body, { attributes: true, attributeFilter: ['class'] });
     return () => {
       window.removeEventListener('storage', sync);
       mo.disconnect();
@@ -52,7 +57,6 @@ const CATEGORIES_DB = ['Anillos', 'Collares', 'Aritos'];
 const MainAccesorios = () => {
   const estilo = useThemeEstilo();
   const [productos, setProductos] = useState([]);
-  const [filtroProductos, setFiltroProductos] = useState([]);
   const [categorias, setCategorias] = useState([]);
   const [sortTipo, setSortTipo] = useState('relevante');
   const [precioMin] = useState(100);
@@ -60,24 +64,26 @@ const MainAccesorios = () => {
 
   useEffect(() => {
     let cancel = false;
-    (async () => {
+    async function fetchData() {
       try {
         const res = await publicApi.get('/accesorios', {
-          params: { estilo, categorias },
+          params: {
+            estilo,
+          },
         });
         if (!cancel) {
-          const data = Array.isArray(res.data) ? res.data : [];
-          setProductos(data);
-          setFiltroProductos(data);
+          setProductos(Array.isArray(res.data) ? res.data : []);
         }
-      } catch (error) {
-        console.error('❌ Error al obtener accesorios:', error);
+      } catch (e) {
+        console.error('Error al obtener accesorios:', e);
+        if (!cancel) setProductos([]);
       }
-    })();
+    }
+    fetchData();
     return () => {
       cancel = true;
     };
-  }, [estilo, categorias]);
+  }, [estilo]);
 
   const maxPrice = useMemo(() => {
     const precios = productos.map((p) => Number(p?.precio || 0));
@@ -89,12 +95,14 @@ const MainAccesorios = () => {
     setPrecioMax((prev) => (prev < maxPrice ? maxPrice : prev));
   }, [maxPrice]);
 
-
-  useEffect(() => {
+  const filtroProductos = useMemo(() => {
     let temp = [...productos];
 
     if (categorias.length > 0) {
-      temp = temp.filter((item) => categorias.includes(item?.categoria?.nombre));
+      temp = temp.filter((item) => {
+        const nombreCat = item?.categoria?.nombre || item?.categoria_nombre || '';
+        return categorias.includes(nombreCat);
+      });
     }
 
     temp = temp.filter((item) => {
@@ -102,11 +110,14 @@ const MainAccesorios = () => {
       return precio >= precioMin && precio <= Number(precioMax);
     });
 
-    if (sortTipo === 'low-high') temp.sort((a, b) => Number(a.precio) - Number(b.precio));
-    else if (sortTipo === 'high-low') temp.sort((a, b) => Number(b.precio) - Number(a.precio));
+    if (sortTipo === 'low-high') {
+      temp.sort((a, b) => Number(a.precio) - Number(b.precio));
+    } else if (sortTipo === 'high-low') {
+      temp.sort((a, b) => Number(b.precio) - Number(a.precio));
+    }
 
-    setFiltroProductos(temp);
-  }, [productos, categorias, precioMax, sortTipo, precioMin]);
+    return temp;
+  }, [productos, categorias, precioMin, precioMax, sortTipo]);
 
   const toggleCategoria = (e) => {
     const value = e.target.value;
@@ -116,82 +127,81 @@ const MainAccesorios = () => {
   };
 
   return (
-    <div className="content">
-      <section className="sidebar top-0 left-0 h-screen overflow-y-auto bg-white border-r px-4 py-6">
-        <div className="sidebar-content">
-          <div className="mb-4">
-            <h4 className="mb-3">CATEGORÍA</h4>
-            <div className="flex flex-col gap-2 text-sm font-light text-gray-700">
-              {CATEGORIES_DB.map((cat) => (
-                <label key={cat} className="flex items-center gap-2">
-                  <input type="checkbox" className='me-2' value={cat} onChange={toggleCategoria} />
-                  {cat}
-                </label>
-              ))}
-            </div>
-          </div>
-
-          <hr className="my-4" />
-
-          <div className="mb-4">
-            <h4 className="mb-3">PRECIO</h4>
-            <div className="range flex items-center gap-2">
-              <span>${precioMin}</span>
-              <input
-                type="range"
-                min={precioMin}
-                max={maxPrice}
-                step="10"
-                value={precioMax}
-                onChange={(e) => setPrecioMax(Number(e.target.value))}
-                className="w-full"
-              />
-              <span>${precioMax}</span>
-            </div>
+    <div className="page-layout">
+      <aside className="sidebar">
+        <div className="filter-group">
+          <h4>CATEGORIA</h4>
+          <div className="filter-categorias">
+            {CATEGORIES_DB.map((cat) => (
+              <label key={cat}>
+                <input
+                  type="checkbox"
+                  value={cat}
+                  onChange={toggleCategoria}
+                  checked={categorias.includes(cat)}
+                />
+                {cat}
+              </label>
+            ))}
           </div>
         </div>
-      </section>
 
-      <div className="main pl-[220px] px-8 py-6">
-        <div className="flex justify-end mb-2">
+        <div className="filter-group">
+          <h4>PRECIO</h4>
+          <div className="price-row">
+            <span>${precioMin}</span>
+            <span>${precioMax}</span>
+          </div>
+          <input
+            type="range"
+            min={precioMin}
+            max={maxPrice}
+            step="10"
+            value={precioMax}
+            onChange={(e) => setPrecioMax(Number(e.target.value))}
+          />
+        </div>
+      </aside>
+
+      <section className="main">
+        <div className="main-header">
           <select
             value={sortTipo}
             onChange={(e) => setSortTipo(e.target.value)}
-            className="border border-gray-300 text-sm px-2 py-1 rounded"
           >
-            <option value="relevante">Ordenar por: Relevante</option>
-            <option value="low-high">Ordenar por: de menor a mayor</option>
-            <option value="high-low">Ordenar por: mayor a menor</option>
+            <option value="relevante">ORDENAR POR: RELEVANTE</option>
+            <option value="low-high">ORDENAR POR: DE MENOR A MAYOR</option>
+            <option value="high-low">ORDENAR POR: MAYOR A MENOR</option>
           </select>
         </div>
 
-        <div className="product-grid grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="products-grid">
           {filtroProductos.map((item) => {
             const rawPath =
               item.imagen_url ||
               item.ruta ||
               item.ruta_imagen ||
-              item?.imagenes?.[0]?.ruta ||
+              (item.imagenes && item.imagenes[0] && item.imagenes[0].ruta) ||
               '';
             const imageUrl = toAccesorioImageUrl(rawPath);
+
             const uploader =
-              item?.usuario?.Nombre ??
-              item?.user?.name ??
-              item?.usuario_nombre ??
+              (item.usuario && item.usuario.Nombre) ||
+              (item.user && item.user.name) ||
+              item.usuario_nombre ||
               null;
 
             const tituloConUploader = (
-              <div className="titulo-bloque">
-                <span className="titulo-ropa">{item.titulo}</span>
-                {uploader && <span className="subido-por">Subido por: {uploader}</span>}
+              <div className="product-card-body">
+                <div className="product-card-title">{item.titulo}</div>
+                {uploader && (
+                  <div className="product-card-meta">Subido por: {uploader}</div>
+                )}
               </div>
             );
 
             return (
-              <article
-                key={item.id}
-                className="rounded border overflow-hidden bg-white transition"
-              >
+              <article key={item.id} className="product-card">
                 <ProductoItem
                   id={item.id}
                   img={imageUrl}
@@ -209,7 +219,7 @@ const MainAccesorios = () => {
             </p>
           )}
         </div>
-      </div>
+      </section>
     </div>
   );
 };

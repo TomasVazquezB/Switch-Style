@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import ProductoItem from '../../components/Productoitem/ProductoItem';
 import { publicApi } from '../../api/axios';
-import './MainMujeres.css';
+import './MainCatalog.css';
 
 const BUCKET_BASE = (import.meta.env.VITE_ASSETS_BASE || '').replace(/\/+$/, '');
 const PLACEHOLDER =
@@ -38,9 +38,9 @@ const CATEGORIES_DB = [
   'Zapatillas',
 ];
 
-const ALL_SIZES = ['S', 'M', 'L', 'XL', 'XXL'];
+const ALL_SIZES = ['S', 'M', 'L', 'XL'];
 
-const MainMujeres = ({ darkMode }) => {
+const MainKids = ({ darkMode }) => {
   const [productos, setProductos] = useState([]);
   const [subCategoria, setSubCategoria] = useState([]);
   const [tallas, setTallas] = useState([]);
@@ -55,7 +55,7 @@ const MainMujeres = ({ darkMode }) => {
         const res = await publicApi.get('/ropa', {
           params: {
             theme: darkMode ? 'dark' : 'light',
-            genero: 'Mujer',
+            genero: 'Chicos',
             categorias: subCategoria,
             tallas,
             orden:
@@ -67,8 +67,8 @@ const MainMujeres = ({ darkMode }) => {
           },
         });
         if (!cancel) setProductos(Array.isArray(res.data) ? res.data : []);
-      } catch (e) {
-        console.error('Error al obtener productos:', e);
+      } catch (error) {
+        console.error('Error al obtener productos (Chicos):', error);
         if (!cancel) setProductos([]);
       }
     }
@@ -90,15 +90,18 @@ const MainMujeres = ({ darkMode }) => {
 
   const filtroProductos = useMemo(() => {
     let temp = [...productos];
+
     temp = temp.filter((item) => {
       const precio = Number(item?.precio || 0);
       return precio >= precioMin && precio <= Number(precioMax);
     });
+
     if (sortTipo === 'low-high') {
       temp.sort((a, b) => Number(a.precio) - Number(b.precio));
     } else if (sortTipo === 'high-low') {
       temp.sort((a, b) => Number(b.precio) - Number(a.precio));
     }
+
     return temp;
   }, [productos, precioMin, precioMax, sortTipo]);
 
@@ -111,79 +114,67 @@ const MainMujeres = ({ darkMode }) => {
 
   const toggleTallaManual = (size) => {
     setTallas((prev) =>
-      prev.includes(size)
-        ? prev.filter((t) => t !== size)
-        : [...prev, size]
+      prev.includes(size) ? prev.filter((t) => t !== size) : [...prev, size]
     );
   };
 
   return (
-    <div className="content">
-      <section className="sidebar top-0 left-0 h-screen overflow-y-auto bg-white border-r px-4 py-6">
-        <div className="sidebar-content">
-          <div className="mb-4">
-            <h4 className="mb-3">CATEGORIA</h4>
-            <div className="filter-categorias">
-              {CATEGORIES_DB.map((cat) => (
-                <label key={cat}>
-                  <input
-                    type="checkbox"
-                    value={cat}
-                    onChange={toggleSubCategoria}
-                    checked={subCategoria.includes(cat)}
-                  />
-                  {cat}
-                </label>
-              ))}
-            </div>
-          </div>
-
-          <hr className="my-4" />
-
-          <div className="mb-4">
-            <h4 className="mb-3">TALLA</h4>
-            <div className="filter-tallas">
-              {ALL_SIZES.map((size) => (
-                <div
-                  key={size}
-                  onClick={() => toggleTallaManual(size)}
-                  className={`talla-item ${
-                    tallas.includes(size) ? 'active' : ''
-                  }`}
-                >
-                  {size}
-                </div>
-              ))}
-            </div>
-          </div>
-
-          <hr className="my-4" />
-
-          <div className="mb-4">
-            <h4>PRECIO</h4>
-            <div className="range flex items-center gap-2">
-              <span>${precioMin}</span>
-              <input
-                type="range"
-                min={precioMin}
-                max={maxPrice}
-                step="10"
-                value={precioMax}
-                onChange={(e) => setPrecioMax(Number(e.target.value))}
-                className="w-full"
-              />
-              <span>${precioMax}</span>
-            </div>
+    <div className="page-layout">
+      <aside className="sidebar">
+        <div className="filter-group">
+          <h4>CATEGORIA</h4>
+          <div className="filter-categorias">
+            {CATEGORIES_DB.map((cat) => (
+              <label key={cat}>
+                <input
+                  type="checkbox"
+                  value={cat}
+                  onChange={toggleSubCategoria}
+                  checked={subCategoria.includes(cat)}
+                />
+                {cat}
+              </label>
+            ))}
           </div>
         </div>
-      </section>
 
-      <div className="main pl-[220px] px-8 py-2">
-        <div className="flex w-full mb-3">
+        <div className="filter-group">
+          <h4>TALLA</h4>
+          <div className="filter-tallas">
+            {ALL_SIZES.map((size) => (
+              <div
+                key={size}
+                onClick={() => toggleTallaManual(size)}
+                className={`size-option ${tallas.includes(size) ? 'active' : ''}`}
+              >
+                {size}
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div className="filter-group">
+          <h4>PRECIO</h4>
+          <div className="price-row">
+            <span>${precioMin}</span>
+            <span>${precioMax}</span>
+          </div>
+          <input
+            type="range"
+            min={precioMin}
+            max={maxPrice}
+            step="10"
+            value={precioMax}
+            onChange={(e) => setPrecioMax(Number(e.target.value))}
+          />
+        </div>
+      </aside>
+
+      <section className="main">
+        <div className="main-header">
           <select
             value={sortTipo}
             onChange={(e) => setSortTipo(e.target.value)}
-            className="border border-gray-300 text-sm px-2 py-1 rounded ml-auto"
           >
             <option value="relevante">ORDENAR POR: RELEVANTE</option>
             <option value="low-high">ORDENAR POR: DE MENOR A MAYOR</option>
@@ -191,33 +182,35 @@ const MainMujeres = ({ darkMode }) => {
           </select>
         </div>
 
-        <div className="product-grid grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="products-grid">
           {filtroProductos.map((item) => {
             const rawPath =
               item.imagen_url ||
               item.ruta ||
               item.ruta_imagen ||
-              item?.imagenes?.[0]?.ruta ||
+              (item.imagenes && item.imagenes[0] && item.imagenes[0].ruta) ||
               '';
             const imageUrl = toRopaImageUrl(rawPath);
+
             const uploader =
-              item?.usuario?.Nombre ??
-              item?.user?.name ??
-              item?.usuario_nombre ??
+              (item.usuario && item.usuario.Nombre) ||
+              (item.user && item.user.name) ||
+              item.usuario_nombre ||
               null;
+
             const tituloConUploader = (
-              <div className="titulo-bloque">
-                <span className="titulo-ropa">{item.titulo}</span>
+              <div className="product-card-body">
+                <div className="product-card-title">{item.titulo}</div>
                 {uploader && (
-                  <span className="subido-por">Subido por: {uploader}</span>
+                  <div className="product-card-meta">
+                    Subido por: {uploader}
+                  </div>
                 )}
               </div>
             );
+
             return (
-              <article
-                key={item.id}
-                className="rounded border overflow-hidden bg-white transition"
-              >
+              <article key={item.id} className="product-card">
                 <ProductoItem
                   id={item.id}
                   img={imageUrl}
@@ -228,15 +221,16 @@ const MainMujeres = ({ darkMode }) => {
               </article>
             );
           })}
+
           {!filtroProductos.length && (
             <p className="col-span-full text-sm opacity-70">
               No encontramos resultados con los filtros seleccionados
             </p>
           )}
         </div>
-      </div>
+      </section>
     </div>
   );
 };
 
-export default MainMujeres;
+export default MainKids;
