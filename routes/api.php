@@ -53,7 +53,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return response()->json($request->user());
 });
 
-Route::middleware(['cors'])->post('/crear-pedido', [PedidoController::class, 'store']);
+Route::post('/crear-pedido', [PedidoController::class, 'crear']);
 
 Route::post('/crear-pedido', function (Request $request) {
     // Simula un pedido exitoso
@@ -68,7 +68,4 @@ Route::post('/crear-pedido', function (Request $request) {
         ],
     ], 201);
 });
-Route::middleware('auth:sanctum')->group(function () {
-    Route::post('/crear-pedido', [PedidoController::class, 'crear']);
-    Route::get('/mis-pedidos', [PedidoController::class, 'misPedidos']);
-});
+Route::middleware('auth:sanctum')->get('/mis-pedidos', [PedidoController::class, 'misPedidos']);
