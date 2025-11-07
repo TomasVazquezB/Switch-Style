@@ -15,9 +15,7 @@ public class MyApp extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-
         session = new SessionManager(this);
-
         registerActivityLifecycleCallbacks(new ActivityLifecycleCallbacks() {
             @Override
             public void onActivityStarted(@NonNull Activity activity) {

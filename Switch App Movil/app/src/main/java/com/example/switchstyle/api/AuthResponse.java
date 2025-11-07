@@ -3,10 +3,8 @@ package com.example.switchstyle.api;
 import com.google.gson.annotations.SerializedName;
 
 public class AuthResponse {
-
     @SerializedName("token")
     private String token;
-
     @SerializedName("message")
     private String message;
 

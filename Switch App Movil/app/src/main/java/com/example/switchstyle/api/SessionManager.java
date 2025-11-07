@@ -9,7 +9,6 @@ public class SessionManager {
     private static final String KEY_TOKEN = "auth_token";
     private static final String KEY_USER_ID = "user_id";
     private static final String KEY_USER_NOMBRE = "user_nombre";
-    private static final String KEY_USER_APELLIDO = "user_apellido";
     private static final String KEY_USER_CORREO = "user_correo";
     private static final String KEY_USER_ROL = "user_rol";
 
@@ -38,7 +37,6 @@ public class SessionManager {
         editor.remove(KEY_TOKEN)
                 .remove(KEY_USER_ID)
                 .remove(KEY_USER_NOMBRE)
-                .remove(KEY_USER_APELLIDO)
                 .remove(KEY_USER_CORREO)
                 .remove(KEY_USER_ROL)
                 .apply();
@@ -52,7 +50,6 @@ public class SessionManager {
         if (user == null) return;
         editor.putInt(KEY_USER_ID, user.getId());
         editor.putString(KEY_USER_NOMBRE, user.getNombre());
-        editor.putString(KEY_USER_APELLIDO, user.getApellido());
         editor.putString(KEY_USER_CORREO, user.getCorreo());
         editor.putString(KEY_USER_ROL, user.getRol());
         editor.apply();
@@ -63,7 +60,6 @@ public class SessionManager {
         User user = new User();
         user.setId(prefs.getInt(KEY_USER_ID, -1));
         user.setNombre(prefs.getString(KEY_USER_NOMBRE, null));
-        user.setApellido(prefs.getString(KEY_USER_APELLIDO, null));
         user.setCorreo(prefs.getString(KEY_USER_CORREO, null));
         user.setRol(prefs.getString(KEY_USER_ROL, null));
         return user;
