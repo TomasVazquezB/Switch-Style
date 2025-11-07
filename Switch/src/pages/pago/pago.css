@@ -202,3 +202,25 @@
 @media (max-width: 480px) {
   .pago-pay-wrap { max-width: 420px; }
 }
+
+.pago-btn-falso {
+  margin-top: 1rem;
+  width: 100%;
+  background-color: #4b5563; /* gris oscuro */
+  color: #fff;
+  font-weight: 600;
+  padding: 12px 16px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.pago-btn-falso:hover {
+  background-color: #374151;
+}
+
+.pago-btn-falso:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
