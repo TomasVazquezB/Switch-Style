@@ -47,6 +47,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);
     Route::get('/perfil', [UserController::class, 'perfil']);
     Route::get('/usuario', [UserController::class, 'index']);
+    Route::get('/mis-pedidos', [PedidoController::class, 'misPedidos']);
 });
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
@@ -55,17 +56,4 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::post('/crear-pedido', [PedidoController::class, 'crear']);
 
-Route::post('/crear-pedido', function (Request $request) {
-    // Simula un pedido exitoso
-    $fakeId = 'PED-' . strtoupper(Str::random(8));
 
-    return response()->json([
-        'message' => 'Pedido creado correctamente (simulado)',
-        'pedido' => [
-            'id' => $fakeId,
-            'total' => $request->input('total'),
-            'metodo' => $request->input('metodo_pago', 'simulado'),
-        ],
-    ], 201);
-});
-Route::get('/mis-pedidos', [PedidoController::class, 'misPedidos']);
