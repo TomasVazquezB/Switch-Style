@@ -9,23 +9,17 @@ class Pedido extends Model
 {
     use HasFactory;
 
+    protected $table = 'pedidos';
+
     protected $fillable = [
-        'user_id',
+        'ID_Usuario',
         'subtotal',
         'total',
         'metodo_pago',
         'external_id',
         'estado',
         'direccion_envio',
-        'detalles',
     ];
 
-    protected $casts = [
-        'detalles' => 'array',
-    ];
-
-    public function user()
-    {
-        return $this->belongsTo(User::class);
-    }
+    public $timestamps = true;
 }
