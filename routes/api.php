@@ -47,7 +47,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);
     Route::get('/perfil', [UserController::class, 'perfil']);
     Route::get('/usuario', [UserController::class, 'index']);
-    Route::get('/mis-pedidos', [PedidoController::class, 'misPedidos']);
+    
 });
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
@@ -55,5 +55,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::post('/crear-pedido', [PedidoController::class, 'crear']);
+
+Route::middleware('auth:sanctum')->get('/mis-pedidos', [PedidoController::class, 'misPedidos']);
 
 
