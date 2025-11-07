@@ -68,4 +68,4 @@ Route::post('/crear-pedido', function (Request $request) {
         ],
     ], 201);
 });
-Route::middleware('auth:sanctum')->get('/mis-pedidos', [PedidoController::class, 'misPedidos']);
+Route::get('/mis-pedidos', [PedidoController::class, 'misPedidos']);
