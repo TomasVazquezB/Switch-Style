@@ -10,6 +10,9 @@ class Pedido extends Model
     use HasFactory;
 
     protected $table = 'pedidos';
+    protected $primaryKey = 'id';
+    public $incrementing = true;
+    public $timestamps = true;
 
     protected $fillable = [
         'ID_Usuario',
@@ -21,5 +24,8 @@ class Pedido extends Model
         'direccion_envio',
     ];
 
-    public $timestamps = true;
+    public function usuario()
+    {
+        return $this->belongsTo(User::class, 'ID_Usuario', 'ID_Usuario');
+    }
 }
