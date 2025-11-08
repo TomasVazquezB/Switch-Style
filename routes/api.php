@@ -1,20 +1,24 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\RopaController;
-use App\Http\Controllers\UserController;
-use App\Http\Controllers\AuthController;
-use App\Http\Controllers\AccesorioController;
-use App\Http\Controllers\ProductoController;
-use App\Http\Controllers\PedidoController;
+use App\Http\Controllers\{
+    RopaController,
+    UserController,
+    AuthController,
+    AccesorioController,
+    ProductoController,
+    PedidoController
+};
 use Illuminate\Http\Request;
-use Illuminate\Support\Str;
 
- //✅ ENDPOINTS PARA ANDROID (token-based)
- Route::prefix('mobile')->group(function () {
+// ---------------------------
+// ✅ RUTAS PARA ANDROID (token-based)
+// ---------------------------
+Route::prefix('mobile')->group(function () {
     Route::post('/login', [AuthController::class, 'login']);
     Route::post('/register', [AuthController::class, 'register']);
-    Route::middleware('auth:sanctum')->post('/logout', [AuthController::class, 'logout']);  
+    Route::middleware('auth:sanctum')->post('/logout', [AuthController::class, 'logout']);
+
     Route::get('/ropa', [RopaController::class, 'apiIndex']);
     Route::get('/ropa/{id}', [RopaController::class, 'apiShow']);
     Route::get('/accesorios', [AccesorioController::class, 'apiIndex']);
@@ -22,42 +26,31 @@ use Illuminate\Support\Str;
     Route::apiResource('productos', ProductoController::class)->only(['index', 'show']);
 });
 
-
-
 // ---------------------------
-// ✅ Rutas públicas
+// ✅ RUTAS PÚBLICAS (sin login)
 // ---------------------------
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
+
 Route::get('/usuarios/{id}', [UserController::class, 'showPublic']);
-Route::middleware('auth:sanctum')->post('/logout', [AuthController::class, 'logout']);
-// Productos principales
+
 Route::get('/ropa', [RopaController::class, 'apiIndex']);
 Route::get('/ropa/{id}', [RopaController::class, 'apiShow']);
-
 Route::get('/accesorios', [AccesorioController::class, 'apiIndex']);
 Route::get('/accesorios/{id}', [AccesorioController::class, 'apiShow']);
-
 Route::apiResource('productos', ProductoController::class)->only(['index', 'show']);
 
 // ---------------------------
-// ✅ Rutas protegidas (usuarios logueados)
+// ✅ RUTAS PROTEGIDAS (auth:sanctum)
 // ---------------------------
 Route::middleware('auth:sanctum')->group(function () {
+    // 🔒 Usuario autenticado
     Route::post('/logout', [AuthController::class, 'logout']);
     Route::get('/perfil', [UserController::class, 'perfil']);
     Route::get('/usuario', [UserController::class, 'index']);
-    
+    Route::get('/user', fn(Request $request) => response()->json($request->user()));
+
+    // 🔒 Pedidos
+    Route::post('/crear-pedido', [PedidoController::class, 'crear']);
+    Route::get('/mis-pedidos', [PedidoController::class, 'misPedidos']);
 });
-
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return response()->json($request->user());
-});
-
-Route::post('/crear-pedido', [PedidoController::class, 'crear']);
-
-Route::middleware('auth:sanctum')->get('/mis-pedidos', [PedidoController::class, 'misPedidos']);
-
-Route::get('/mis-pedidos', [PedidoController::class, 'misPedidos']);
-
-
