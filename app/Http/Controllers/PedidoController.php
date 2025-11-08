@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Pedido;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Log; 
 
 class PedidoController extends Controller
 {
