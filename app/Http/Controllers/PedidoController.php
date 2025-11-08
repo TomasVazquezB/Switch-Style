@@ -35,6 +35,8 @@ class PedidoController extends Controller
                 'metodo_pago' => $request->input('metodo_pago'),
             ]);
 
+            Log::info('Usuario autenticado:', ['user' => auth()->user()]);
+
             $pedido = Pedido::create([
                 'user_id' => $user->id,
                 'subtotal'       => $request->input('subtotal', 0),
