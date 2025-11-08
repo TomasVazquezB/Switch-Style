@@ -12,6 +12,7 @@ class PedidoController extends Controller
     {
         $user = $request->user();
 
+        // 🧩 Si no hay usuario autenticado, hacemos pedido simulado
         if (!$user) {
             $fakeId = 'FAKE-' . strtoupper(Str::random(8));
             return response()->json([
@@ -25,34 +26,29 @@ class PedidoController extends Controller
             ], 201);
         }
 
-        $pedido = Pedido::create([
-            'ID_Usuario'     => $user->id, // 👈 cambiado
-            'subtotal'       => $request->input('subtotal', 0),
-            'total'          => $request->input('total', 0),
-            'metodo_pago'    => $request->input('metodo_pago', 'desconocido'),
-            'external_id'    => $request->input('external_id'),
-            'estado'         => 'pagado',
-            'direccion_envio'=> $request->input('envio.direccion.calle') ?? 'Sin dirección',
-        ]);
+        try {
+            // 🧾 Crear pedido real si hay usuario autenticado
+            $pedido = Pedido::create([
+                'ID_Usuario'     => $user->ID_Usuario,  // ⚙️ tu clave primaria personalizada
+                'subtotal'       => $request->input('subtotal', 0),
+                'total'          => $request->input('total', 0),
+                'metodo_pago'    => $request->input('metodo_pago', 'desconocido'),
+                'external_id'    => $request->input('external_id'),
+                'estado'         => 'pagado',
+                'direccion_envio'=> $request->input('envio.direccion.calle') ?? 'Sin dirección',
+            ]);
 
-        return response()->json([
-            'message' => 'Pedido creado correctamente',
-            'pedido' => $pedido
-        ], 201);
-    }
+            return response()->json([
+                'message' => 'Pedido creado correctamente',
+                'pedido' => $pedido
+            ], 201);
 
-    public function misPedidos(Request $request)
-    {
-        $user = $request->user();
-
-        if (!$user) {
-            return response()->json(['message' => 'Usuario no autenticado'], 401);
+        } catch (\Throwable $e) {
+            \Log::error('❌ Error al crear pedido: '.$e->getMessage(), ['trace' => $e->getTraceAsString()]);
+            return response()->json([
+                'message' => 'Error interno al crear el pedido',
+                'error' => $e->getMessage()
+            ], 500);
         }
-
-        $pedidos = Pedido::where('ID_Usuario', $user->id) // 👈 cambiado
-            ->orderByDesc('created_at')
-            ->get();
-
-        return response()->json($pedidos);
     }
 }
