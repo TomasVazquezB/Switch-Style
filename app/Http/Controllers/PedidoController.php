@@ -8,12 +8,10 @@ use Illuminate\Support\Str;
 
 class PedidoController extends Controller
 {
-    // 🧩 Crear pedido (desde el pago simulado o PayPal)
     public function crear(Request $request)
     {
         $user = $request->user();
 
-        // ✅ Si no hay usuario autenticado, creamos un pedido "simulado"
         if (!$user) {
             $fakeId = 'FAKE-' . strtoupper(Str::random(8));
             return response()->json([
@@ -27,9 +25,8 @@ class PedidoController extends Controller
             ], 201);
         }
 
-        // ✅ Si el usuario está autenticado, guardamos el pedido real en DB
         $pedido = Pedido::create([
-            'ID_Usuario'     => $user->ID_Usuario, // ⚠️ tu tabla usa ID_Usuario, no user_id
+            'ID_Usuario'     => $user->id, // 👈 cambiado
             'subtotal'       => $request->input('subtotal', 0),
             'total'          => $request->input('total', 0),
             'metodo_pago'    => $request->input('metodo_pago', 'desconocido'),
@@ -44,7 +41,6 @@ class PedidoController extends Controller
         ], 201);
     }
 
-    // 🧾 Obtener los pedidos del usuario autenticado
     public function misPedidos(Request $request)
     {
         $user = $request->user();
@@ -53,7 +49,7 @@ class PedidoController extends Controller
             return response()->json(['message' => 'Usuario no autenticado'], 401);
         }
 
-        $pedidos = Pedido::where('ID_Usuario', $user->ID_Usuario)
+        $pedidos = Pedido::where('ID_Usuario', $user->id) // 👈 cambiado
             ->orderByDesc('created_at')
             ->get();
 
