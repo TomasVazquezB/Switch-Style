@@ -11,26 +11,32 @@ class PedidoController extends Controller
 {
     public function crear(Request $request)
     {
-        $user = $request->user();
-
-        // 🧩 Si no hay usuario autenticado, hacemos pedido simulado
-        if (!$user) {
-            $fakeId = 'FAKE-' . strtoupper(Str::random(8));
-            return response()->json([
-                'message' => 'Pedido simulado creado correctamente',
-                'pedido' => [
-                    'id' => $fakeId,
-                    'total' => $request->input('total'),
-                    'metodo' => $request->input('metodo_pago', 'simulado'),
-                    'direccion_envio' => $request->input('envio.direccion.calle') ?? 'Sin dirección',
-                ],
-            ], 201);
-        }
-
         try {
-            // 🧾 Crear pedido real si hay usuario autenticado
+            $user = $request->user();
+
+            if (!$user) {
+                $fakeId = 'FAKE-' . strtoupper(Str::random(8));
+                return response()->json([
+                    'message' => 'Pedido simulado creado correctamente',
+                    'pedido' => [
+                        'id' => $fakeId,
+                        'total' => $request->input('total'),
+                        'metodo' => $request->input('metodo_pago', 'simulado'),
+                        'direccion_envio' => $request->input('envio.direccion.calle') ?? 'Sin dirección',
+                    ],
+                ], 201);
+            }
+
+            // 🔍 Log para ver qué datos llegan
+            Log::info('Creando pedido con datos:', [
+                'usuario' => $user->ID_Usuario,
+                'subtotal' => $request->input('subtotal'),
+                'total' => $request->input('total'),
+                'metodo_pago' => $request->input('metodo_pago'),
+            ]);
+
             $pedido = Pedido::create([
-                'ID_Usuario'     => $user->ID_Usuario,  // ⚙️ tu clave primaria personalizada
+                'ID_Usuario'     => $user->ID_Usuario,
                 'subtotal'       => $request->input('subtotal', 0),
                 'total'          => $request->input('total', 0),
                 'metodo_pago'    => $request->input('metodo_pago', 'desconocido'),
@@ -45,11 +51,8 @@ class PedidoController extends Controller
             ], 201);
 
         } catch (\Throwable $e) {
-            \Log::error('❌ Error al crear pedido: '.$e->getMessage(), ['trace' => $e->getTraceAsString()]);
-            return response()->json([
-                'message' => 'Error interno al crear el pedido',
-                'error' => $e->getMessage()
-            ], 500);
+            Log::error('❌ Error al crear pedido: '.$e->getMessage(), ['trace' => $e->getTraceAsString()]);
+            return response()->json(['error' => 'Error interno al crear el pedido', 'detalle' => $e->getMessage()], 500);
         }
     }
 }
