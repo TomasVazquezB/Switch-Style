@@ -15,7 +15,7 @@ class Pedido extends Model
     public $timestamps = true;
 
     protected $fillable = [
-        'ID_Usuario',
+        'user_id',
         'subtotal',
         'total',
         'metodo_pago',
@@ -23,6 +23,7 @@ class Pedido extends Model
         'estado',
         'direccion_envio',
     ];
+
 
     public function usuario()
     {

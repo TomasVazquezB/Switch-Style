@@ -36,7 +36,7 @@ class PedidoController extends Controller
             ]);
 
             $pedido = Pedido::create([
-                'ID_Usuario'     => $user->ID_Usuario,
+                'user_id' => $user->id,
                 'subtotal'       => $request->input('subtotal', 0),
                 'total'          => $request->input('total', 0),
                 'metodo_pago'    => $request->input('metodo_pago', 'desconocido'),
