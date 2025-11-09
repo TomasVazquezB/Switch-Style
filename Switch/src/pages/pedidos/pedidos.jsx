@@ -33,7 +33,9 @@ export function MisPedidos() {
 
 
   if (loading)
-    return <div className="pedidos-loading">Cargando tus pedidos...</div>;
+    if (!usuario?.Nombre && !usuario?.name && !usuario?.nombre) {
+      return <div className="pedidos-loading">Cargando tus pedidos...</div>;
+    }
 
   if (!usuario) {
     return (
@@ -56,7 +58,7 @@ export function MisPedidos() {
   return (
     <div className="mis-pedidos-container">
       <h1 className="titulo-pedidos">
-        {`Pedidos de ${usuario.Nombre || usuario.name || usuario.nombre || "Usuario"}`}
+        {`Pedidos de ${usuario?.Nombre ?? usuario?.name ?? usuario?.nombre ?? "Usuario"}`}
       </h1>
 
       {pedidos.length === 0 ? (
