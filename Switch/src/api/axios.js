@@ -13,6 +13,16 @@ export const csrf = async () => {
   await axios.get(`${ROOT_URL}/sanctum/csrf-cookie`, { withCredentials: true });
 };
 
+// 🔹 Instancia segura para endpoints protegidos (como /mis-pedidos)
+export const secureApi = axios.create({
+  baseURL: BASE_URL, // ✅ IMPORTANTE: apunta al backend, no al frontend
+  headers: {
+    "Content-Type": "application/json",
+    Accept: "application/json",
+  },
+  withCredentials: true, // Necesario para Sanctum
+});
+
 const api = axios.create({
   baseURL: "/",
   headers: {
@@ -70,3 +80,16 @@ backendApi.interceptors.request.use(
   (error) => Promise.reject(error)
 );
 
+// Copiamos los interceptores del api principal
+secureApi.interceptors.request.use(
+  (config) => {
+    const xsrfToken = getCookie("XSRF-TOKEN");
+    if (xsrfToken) config.headers["X-XSRF-TOKEN"] = xsrfToken;
+
+    const token = obtenerToken?.();
+    if (token) config.headers.Authorization = `Bearer ${token}`;
+
+    return config;
+  },
+  (error) => Promise.reject(error)
+);

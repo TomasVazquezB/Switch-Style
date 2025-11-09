@@ -1,9 +1,8 @@
 .mis-pedidos-container {
-  padding: 2rem;
+  background-color: #ffffff;
+  color: #000000;
   min-height: 100vh;
-  background-color: var(--bg);
-  color: var(--text);
-  transition: background-color 0.3s ease, color 0.3s ease;
+  padding: 2rem;
 }
 
 .titulo-pedidos {
@@ -21,12 +20,11 @@
 }
 
 .pedido-card {
-  background-color: var(--card);
-  color: var(--text);
-  border-radius: 1rem;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
-  padding: 1.5rem;
-  transition: transform 0.2s ease;
+  background: #f9f9f9;
+  border: 1px solid #ddd;
+  border-radius: 12px;
+  padding: 1rem 1.2rem;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
 }
 
 .pedido-card:hover {
@@ -42,7 +40,7 @@
 
 .pedido-id {
   font-weight: bold;
-  color: var(--accent);
+  color: #000000;
 }
 
 .estado {
@@ -55,10 +53,6 @@
 
 .estado.pendiente {
   background-color: #f59e0b;
-}
-
-.estado.enviado {
-  background-color: #3b82f6;
 }
 
 .estado.entregado {
@@ -74,6 +68,9 @@
   font-size: 0.95rem;
 }
 
+.estado.enviado {
+  background-color: #3b82f6;
+}
 .pedidos-loading,
 .pedidos-error,
 .sin-pedidos {

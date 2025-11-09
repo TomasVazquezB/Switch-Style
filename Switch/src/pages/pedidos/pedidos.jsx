@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useContext } from "react";
 import { DataContext } from "../../context/DataContext.jsx";
-import api from "../../api/axios.js";
+import { secureApi } from "../../api/axios";
 import "./pedidos.css";
 
 export function MisPedidos() {
@@ -10,15 +10,15 @@ export function MisPedidos() {
   const { usuario } = useContext(DataContext) || {};
 
   useEffect(() => {
-    if (!usuario) {
-      setLoading(false);
-      return;
-    }
-
     const fetchPedidos = async () => {
       try {
-        setLoading(true);
-        const response = await api.get("/mis-pedidos", { withCredentials: true });
+        await secureApi.get("https://switchstyle.laravel.cloud/sanctum/csrf-cookie", {
+          withCredentials: true,
+        });
+
+        const response = await secureApi.get("/mis-pedidos", {
+          withCredentials: true,
+        });
         setPedidos(response.data || []);
       } catch (err) {
         console.error("❌ Error al obtener pedidos:", err);
@@ -28,8 +28,9 @@ export function MisPedidos() {
       }
     };
 
-    fetchPedidos();
+    if (usuario) fetchPedidos();
   }, [usuario]);
+
 
   if (loading)
     return <div className="pedidos-loading">Cargando tus pedidos...</div>;
@@ -55,7 +56,7 @@ export function MisPedidos() {
   return (
     <div className="mis-pedidos-container">
       <h1 className="titulo-pedidos">
-        {`Pedidos de ${usuario.Nombre || usuario.name}`}
+        {`Pedidos de ${usuario.Nombre || usuario.name || usuario.nombre || "Usuario"}`}
       </h1>
 
       {pedidos.length === 0 ? (
@@ -70,7 +71,10 @@ export function MisPedidos() {
               </div>
               <div className="pedido-detalle">
                 <p><strong>Fecha:</strong> {new Date(pedido.created_at).toLocaleDateString()}</p>
-                <p><strong>Total:</strong> ${pedido.total.toFixed(2)}</p>
+                <p>
+                  <strong>Total:</strong> $
+                  {Number(pedido.total ?? 0).toFixed(2)}
+                </p>
                 <p><strong>Dirección:</strong> {pedido.direccion_envio}</p>
               </div>
             </div>
