@@ -8,6 +8,7 @@ export function MisPedidos() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const { usuario } = useContext(DataContext) || {};
+  const [nombreUsuario, setNombreUsuario] = useState("");
 
   useEffect(() => {
     const fetchPedidos = async () => {
@@ -29,6 +30,12 @@ export function MisPedidos() {
     };
 
     if (usuario) fetchPedidos();
+  }, [usuario]);
+
+  useEffect(() => {
+    if (usuario?.Nombre || usuario?.name || usuario?.nombre) {
+      setNombreUsuario(usuario.Nombre || usuario.name || usuario.nombre);
+    }
   }, [usuario]);
 
 
@@ -58,7 +65,7 @@ export function MisPedidos() {
   return (
     <div className="mis-pedidos-container">
       <h1 className="titulo-pedidos">
-        {`Pedidos de ${usuario?.Nombre ?? usuario?.name ?? usuario?.nombre ?? "Usuario"}`}
+        {`Pedidos de ${nombreUsuario || "Usuario"}`}
       </h1>
 
       {pedidos.length === 0 ? (
