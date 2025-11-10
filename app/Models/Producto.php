@@ -1,69 +1,61 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Models;
 
-use App\Models\Producto;
-use Illuminate\Http\Request;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 
-class ProductoController extends Controller
+class Producto extends Model
 {
-    // 🔹 Listar productos
-    public function index()
-    {
-        $productos = Producto::all()->map(function($producto) {
-            $producto->imagen_url = asset('storage/' . $producto->Imagen); 
-            // Esto genera la URL completa: http://tudominio.com/storage/ropa/imagen.jpg
-            return $producto;
-        });
+    use HasFactory;
 
-        return response()->json($productos);
+    /**
+     * Nombre de la tabla en la base de datos.
+     * Si tu tabla se llama "productos", cambialo a 'productos'
+     */
+    protected $table = 'producto';
+
+    /**
+     * Clave primaria de la tabla.
+     * Asegurate que coincida con el nombre real en tu base de datos
+     */
+    protected $primaryKey = 'ID_Producto';
+
+    /**
+     * Si tu tabla NO tiene las columnas created_at y updated_at
+     */
+    public $timestamps = false;
+
+    /**
+     * Campos que pueden ser asignados masivamente (fillable)
+     * Estos deben coincidir con las columnas en tu tabla
+     */
+    protected $fillable = [
+        'Nombre',
+        'Precio',
+        'Descripción',
+        'Tipo',
+        'Imagen',
+        'ID_Tienda'
+    ];
+
+    /**
+     * (Opcional) Accesor para generar automáticamente la URL completa de la imagen
+     * Ejemplo: $producto->imagen_url
+     */
+    protected $appends = ['imagen_url'];
+
+    public function getImagenUrlAttribute()
+    {
+        return asset('storage/' . $this->Imagen);
     }
 
-    // 🔹 Crear producto
-    public function store(Request $request)
+    /**
+     * (Opcional) Si querés definir la relación con Tienda
+     * Esto sirve si tenés un modelo Tienda.php
+     */
+    public function tienda()
     {
-        $data = $request->validate([
-            'Nombre' => 'required|string',
-            'Precio' => 'required|numeric',
-            'Descripción' => 'nullable|string',
-            'Tipo' => 'required|string',
-            'Imagen' => 'required|string', // nombre de archivo guardado en storage
-            'ID_Tienda' => 'required|integer'
-        ]);
-
-        $producto = Producto::create($data);
-
-        $producto->imagen_url = asset('storage/' . $producto->Imagen);
-
-        return response()->json($producto, 201);
-    }
-
-    // 🔹 Actualizar producto
-    public function update(Request $request, $id)
-    {
-        $producto = Producto::findOrFail($id);
-
-        $data = $request->validate([
-            'Nombre' => 'sometimes|string',
-            'Precio' => 'sometimes|numeric',
-            'Descripción' => 'nullable|string',
-            'Tipo' => 'sometimes|string',
-            'Imagen' => 'sometimes|string'
-        ]);
-
-        $producto->update($data);
-
-        $producto->imagen_url = asset('storage/' . $producto->Imagen);
-
-        return response()->json($producto);
-    }
-
-    // 🔹 Eliminar producto
-    public function destroy($id)
-    {
-        $producto = Producto::findOrFail($id);
-        $producto->delete();
-
-        return response()->json(['message' => 'Producto eliminado correctamente']);
+        return $this->belongsTo(Tienda::class, 'ID_Tienda', 'ID_Tienda');
     }
 }
