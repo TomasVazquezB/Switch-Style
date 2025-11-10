@@ -1,8 +1,9 @@
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "../../api/axios";
+import { backendApi as axios } from "../../api/axios";
 import { toast } from "react-toastify";
 import { PayPalButtons } from "@paypal/react-paypal-js";
+import { csrf } from "../../api/axios"; // al principio del archivo
 import "./pago.css";
 
 export default function Pago() {
@@ -75,14 +76,26 @@ export default function Pago() {
   const finalizarPedido = async ({ metodo, external_id, extra = {} }) => {
     try {
       setLoading(true);
-      await axios.post("/crear-pedido", {
-        ...payload,
-        subtotal: Number(subtotal),
-        total: Number(total),
-        metodo_pago: metodo,
-        external_id,
-        extra,
-      });
+      console.log("➡️ Posteando pedido a:", axios.defaults.baseURL);
+
+      // 👇 Paso 1: obtener CSRF
+      await csrf();
+
+      // 👇 Paso 2: enviar pedido con credenciales
+      await axios.post(
+        "/api/crear-pedido",
+        {
+          ...payload,
+          subtotal: Number(subtotal),
+          total: Number(total),
+          metodo_pago: metodo,
+          external_id,
+          extra,
+        },
+        { withCredentials: true } // 👈 asegura que se manden las cookies
+      );
+
+      // 🔹 Limpiamos todo y redirigimos
       localStorage.removeItem("carrito");
       localStorage.removeItem("checkout_info");
       localStorage.removeItem("checkout_payload");
@@ -134,8 +147,8 @@ export default function Pago() {
       <section className="pago-card">
         <h3 className="direccion-envio">Dirección de envío</h3>
         <p className="pago-muted">{envio?.nombre} {envio?.apellido} · {envio?.telefono}</p>
-        <p>{envio?.direccion?.calle} {envio?.direccion?.numero} {envio?.direccion?.pisoDepto ? `, ${envio?.direccion?.pisoDepto}` : ""}</p>
-        <p>{envio?.direccion?.ciudad}, {envio?.direccion?.provincia} ({envio?.direccion?.codigoPostal})</p>
+        <p className="pago-muted">{envio?.direccion?.calle} {envio?.direccion?.numero} {envio?.direccion?.pisoDepto ? `, ${envio?.direccion?.pisoDepto}` : ""}</p>
+        <p className="pago-muted">{envio?.direccion?.ciudad}, {envio?.direccion?.provincia} ({envio?.direccion?.codigoPostal})</p>
         <p className="pago-muted">Entrega: {envio?.entrega?.fecha} · {envio?.entrega?.franja}</p>
         <button className="pago-btn-link" onClick={() => navigate("/confpago")}>Cambiar datos de envío</button>
       </section>
@@ -176,11 +189,34 @@ export default function Pago() {
       </section>
 
       <section className="pago-card">
-
         <div className="pago-pay-wrap">
-          <PayPalButtons style={{ layout: "vertical", height: 48, shape: "rect", label: "paypal", tagline: false }} createOrder={createOrder} onApprove={onApprove} onError={onError} disabled={loading} forceReRender={[total]} />
+          <PayPalButtons
+            style={{ layout: "vertical", height: 48, shape: "rect", label: "paypal", tagline: false }}
+            createOrder={createOrder}
+            onApprove={onApprove}
+            onError={onError}
+            disabled={loading}
+            forceReRender={[total]}
+          />
         </div>
+
+        {/* 🧩 Botón de pago simulado */}
+        <button
+          type="button"
+          className="pago-btn-falso"
+          disabled={loading}
+          onClick={() =>
+            finalizarPedido({
+              metodo: "simulado",
+              external_id: "fake-" + Date.now(),
+              extra: { nota: "Pago simulado para pruebas" },
+            })
+          }
+        >
+          Confirmar pago (simulado)
+        </button>
       </section>
+
       <p className="nota-final">Al confirmar el pago, registraremos tu pedido y lo verás en <b>Mis Pedidos</b></p>
     </div>
   );

@@ -42,6 +42,12 @@ export function LoginPage() {
       // 3️⃣ Guardar el usuario en el contexto y en localStorage
       const user = response.data.user || response.data.usuario || response.data;
 
+      const token = response.data.token;
+      if (token) {
+        localStorage.setItem("token", token);
+      }
+
+
       // Normalizamos las claves del usuario
       const usuarioNormalizado = {
         id: user.id || user.ID || null,
@@ -80,10 +86,10 @@ export function LoginPage() {
       }
 
 
-     /*  // 5️⃣ Refrescamos la página para cargar datos del contexto
-      setTimeout(() => {
-        window.location.reload();
-      }, 300); */
+      /*  // 5️⃣ Refrescamos la página para cargar datos del contexto
+       setTimeout(() => {
+         window.location.reload();
+       }, 300); */
 
     } catch (err) {
       console.error("❌ Error al iniciar sesión:", err);

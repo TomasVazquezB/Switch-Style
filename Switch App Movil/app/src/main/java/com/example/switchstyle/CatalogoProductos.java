@@ -26,6 +26,7 @@ import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.example.switchstyle.api.ApiService;
+import com.example.switchstyle.api.FavoritosManager;
 import com.example.switchstyle.api.Product;
 import com.example.switchstyle.api.RetrofitClient;
 import com.example.switchstyle.api.SessionManager;
@@ -163,18 +164,16 @@ public class CatalogoProductos extends AppCompatActivity {
             holder.tvContadorImagenes.setText(holder.itemView.getContext().getString(
                     R.string.contador_imagenes, 1, publicacion.urlsImagenes.size()));
 
-            holder.btnMeGusta.setImageResource(
-                    publicacion.meGusta ? R.drawable.favorite_filled_24px : R.drawable.favorite_24px);
+            holder.btnMeGusta.setImageResource(publicacion.meGusta ? R.drawable.favorite_filled_24px : R.drawable.favorite_24px);
 
             holder.btnMeGusta.setOnClickListener(v -> {
                 boolean nuevoEstado = !publicacion.meGusta;
                 publicacion.meGusta = nuevoEstado;
 
-                if (nuevoEstado) favManager.agregar(publicacion.id);
+                if (nuevoEstado) favManager.guardar(publicacion.id);
                 else favManager.quitar(publicacion.id);
 
-                holder.btnMeGusta.setImageResource(
-                        nuevoEstado ? R.drawable.favorite_filled_24px : R.drawable.favorite_24px);
+                holder.btnMeGusta.setImageResource(nuevoEstado ? R.drawable.favorite_filled_24px : R.drawable.favorite_24px);
 
                 ApiService apiService = RetrofitClient.getClient().create(ApiService.class);
                 Call<Void> call = apiService.setLike(publicacion.id, nuevoEstado, "Bearer " + session.getToken());
@@ -192,9 +191,7 @@ public class CatalogoProductos extends AppCompatActivity {
                     }
                 });
 
-                Toast.makeText(v.getContext(),
-                        nuevoEstado ? "Agregado a favoritos ❤️" : "Quitado de favoritos 🤍",
-                        Toast.LENGTH_SHORT).show();
+                Toast.makeText(v.getContext(), nuevoEstado ? "Agregado a favoritos ❤️" : "Quitado de favoritos 🤍", Toast.LENGTH_SHORT).show();
             });
 
             if (holder.pageChangeCallback != null) {
@@ -203,8 +200,7 @@ public class CatalogoProductos extends AppCompatActivity {
 
             holder.pageChangeCallback = new ViewPager2.OnPageChangeCallback() {
                 @Override
-                public void onPageSelected(int pos) {
-                    holder.tvContadorImagenes.setText(holder.itemView.getContext().getString(
+                public void onPageSelected(int pos) {holder.tvContadorImagenes.setText(holder.itemView.getContext().getString(
                             R.string.contador_imagenes, pos + 1, publicacion.urlsImagenes.size()));
                 }
             };
