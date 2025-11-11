@@ -1,6 +1,7 @@
 package com.example.switchstyle.api;
 
 import com.google.gson.annotations.SerializedName;
+
 public class RegisterRequest {
     @SerializedName("nombre")
     private String nombre;
@@ -24,5 +25,5 @@ public class RegisterRequest {
     public String getNombre() { return nombre; }
     public String getCorreo() { return correo; }
     public String getPassword() { return password; }
-    public String getTipo() {return tipo;}
+    public String getTipo() { return tipo; }
 }

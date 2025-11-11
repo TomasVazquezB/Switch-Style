@@ -1,8 +1,10 @@
 package com.example.switchstyle.api;
 
 import com.google.gson.JsonObject;
+
 import java.util.List;
 import java.util.Map;
+
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
@@ -23,19 +25,12 @@ public interface ApiService {
     @GET("api/mobile/ropa")
     Call<List<Product>> getRopa();
 
-    @GET("favoritos")
-    Call<List<Integer>> getFavoritos(@Header("Authorization") String token);
-
-    @POST("favoritos")
-    Call<JsonObject> updateFavoritos(@Header("Authorization") String token, @Body Map<String, Object> body);
-
     @GET("api/mobile/accesorios")
     Call<List<Product>> getAccesorios();
 
-    @POST("api/mobile/productos/{id}/like")
-    Call<Void> setLike(
-            @Path("id") int productId,
-            @Body Boolean meGusta,
-            @Header("Authorization") String authHeader
+    @POST("api/favoritos/update")
+    Call<JsonObject> updateFavoritos(
+            @Header("Authorization") String token,
+            @Body Map<String, Object> data
     );
 }
