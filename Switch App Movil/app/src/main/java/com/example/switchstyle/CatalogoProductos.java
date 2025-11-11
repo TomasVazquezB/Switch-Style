@@ -45,6 +45,11 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+/**
+ * Catálogo de productos UNIFICADO (Ropa + Accesorios + Producto).
+ * Mantiene la estructura actual (item_publicacion + item_imagen)
+ * y sincroniza favoritos con backend.
+ */
 public class CatalogoProductos extends AppCompatActivity {
 
     private static final String PREFS_FAVORITOS = "favoritos_prefs";
@@ -96,25 +101,47 @@ public class CatalogoProductos extends AppCompatActivity {
         if (navCatalogs != null) navCatalogs.setOnClickListener(v -> {});
     }
 
+    /**
+     * 🔹 Carga los productos del backend (ropa + accesorios + productos)
+     */
     @SuppressLint("NotifyDataSetChanged")
     private void cargarPublicaciones() {
-        Call<List<Product>> call = apiService.getProductos("Bearer " + session.getToken());
+        publicaciones.clear();
+        adapter.notifyDataSetChanged();
+
+        String token = "Bearer " + session.getToken();
+        Set<String> favoritos = obtenerFavoritosLocales();
+
+        // Llamamos a un único endpoint unificado del backend
+        Call<List<Product>> call = apiService.getProductos(token);
+
         call.enqueue(new Callback<List<Product>>() {
             @Override
             public void onResponse(@NonNull Call<List<Product>> call, @NonNull Response<List<Product>> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     publicaciones.clear();
 
-                    Set<String> favoritos = obtenerFavoritosLocales();
-
                     for (Product p : response.body()) {
                         List<String> imagenes = new ArrayList<>();
-                        if (p.getImagen_url() != null && !p.getImagen_url().isEmpty()) {
+
+                        // Agregamos las imágenes si vienen múltiples
+                        if (p.getImagenes() != null && !p.getImagenes().isEmpty()) {
+                            imagenes.addAll(p.getImagenes());
+                        } else if (p.getImagen_url() != null && !p.getImagen_url().isEmpty()) {
                             imagenes.add(p.getImagen_url());
                         }
 
                         boolean esFav = favoritos.contains(String.valueOf(p.getId()));
-                        publicaciones.add(new Publicacion(p.getId(), p.getNombre(), p.getTipo(), imagenes, esFav));
+
+                        publicaciones.add(new Publicacion(
+                                p.getId(),
+                                p.getNombre(),
+                                p.getTipo() != null ? p.getTipo() : "Sin categoría",
+                                p.getDescripcion() != null ? p.getDescripcion() : "",
+                                p.getPrecio(),
+                                imagenes,
+                                esFav
+                        ));
                     }
 
                     adapter.notifyDataSetChanged();
@@ -122,9 +149,10 @@ public class CatalogoProductos extends AppCompatActivity {
                     if (publicaciones.isEmpty()) {
                         Toast.makeText(CatalogoProductos.this, "No hay productos disponibles 😕", Toast.LENGTH_SHORT).show();
                     }
+
                 } else {
                     Log.e("CatalogoProductos", "Error al cargar catálogo: código " + response.code());
-                    Toast.makeText(CatalogoProductos.this, "Error al cargar catálogo: " + response.code(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(CatalogoProductos.this, "Error al cargar catálogo (" + response.code() + ")", Toast.LENGTH_SHORT).show();
                 }
             }
 
@@ -136,7 +164,7 @@ public class CatalogoProductos extends AppCompatActivity {
         });
     }
 
-    // 🔹 Métodos locales de favoritos (reemplazan a FavoritosManager)
+    // 🔸 FAVORITOS LOCALES
     private Set<String> obtenerFavoritosLocales() {
         return new HashSet<>(prefs.getStringSet(KEY_FAVORITOS, new HashSet<>()));
     }
@@ -159,6 +187,7 @@ public class CatalogoProductos extends AppCompatActivity {
 
         guardarFavoritosLocales(favs);
         if (session.isLoggedIn()) sincronizarConServidor(favs);
+
         Toast.makeText(this, agregado ? "Agregado a favoritos ❤️" : "Quitado de favoritos 🤍", Toast.LENGTH_SHORT).show();
     }
 
@@ -182,24 +211,29 @@ public class CatalogoProductos extends AppCompatActivity {
         });
     }
 
-    // 🔹 Modelo
+    // 🔹 Modelo interno de publicación
     public static class Publicacion {
         int id;
         String nombre;
         String categoria;
+        String descripcion;
+        double precio;
         List<String> urlsImagenes;
         boolean meGusta;
 
-        public Publicacion(int id, String nombre, String categoria, List<String> urlsImagenes, boolean meGusta) {
+        public Publicacion(int id, String nombre, String categoria, String descripcion, double precio,
+                           List<String> urlsImagenes, boolean meGusta) {
             this.id = id;
             this.nombre = nombre;
             this.categoria = categoria;
+            this.descripcion = descripcion;
+            this.precio = precio;
             this.urlsImagenes = urlsImagenes;
             this.meGusta = meGusta;
         }
     }
 
-    // 🔹 Adaptador del catálogo
+    // 🔸 Adaptador principal
     private class PublicacionAdapter extends RecyclerView.Adapter<PublicacionAdapter.PublicacionViewHolder> {
         private final List<Publicacion> publicaciones;
 
@@ -228,7 +262,7 @@ public class CatalogoProductos extends AppCompatActivity {
         class PublicacionViewHolder extends RecyclerView.ViewHolder {
             ViewPager2 viewPagerImagenes;
             ImageButton btnMeGusta;
-            TextView tvContadorImagenes;
+            TextView tvTitulo, tvDescripcion, tvPrecio, tvContadorImagenes;
             ViewPager2.OnPageChangeCallback callback;
 
             PublicacionViewHolder(@NonNull View itemView) {
