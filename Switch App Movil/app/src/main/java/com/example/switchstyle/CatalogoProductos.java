@@ -2,6 +2,7 @@ package com.example.switchstyle;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -30,6 +31,7 @@ import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.example.switchstyle.api.ApiService;
+import com.example.switchstyle.api.Imagen;
 import com.example.switchstyle.api.Product;
 import com.example.switchstyle.api.RetrofitClient;
 import com.example.switchstyle.api.SessionManager;
@@ -45,26 +47,19 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-/**
- * Catálogo de productos UNIFICADO (Ropa + Accesorios + Producto).
- * Mantiene la estructura actual (item_publicacion + item_imagen)
- * y sincroniza favoritos con backend.
- */
 public class CatalogoProductos extends AppCompatActivity {
 
     private static final String PREFS_FAVORITOS = "favoritos_prefs";
-    private static final String KEY_FAVORITOS = "favoritos";
-
     private List<Publicacion> publicaciones;
     private PublicacionAdapter adapter;
     private SessionManager session;
     private SharedPreferences prefs;
     private ApiService apiService;
+    private String userKey; // clave única por usuario
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         session = new SessionManager(this);
         prefs = getSharedPreferences(PREFS_FAVORITOS, Context.MODE_PRIVATE);
         apiService = RetrofitClient.getClient().create(ApiService.class);
@@ -72,14 +67,17 @@ public class CatalogoProductos extends AppCompatActivity {
         if (!session.isLoggedIn()) {
             setContentView(R.layout.activity_login_validation);
             findViewById(R.id.btnIrRegistro).setOnClickListener(v -> {
-                startActivity(new android.content.Intent(this, LoginActivity.class));
+                startActivity(new Intent(this, LoginActivity.class));
                 finish();
             });
             return;
         }
 
+        // Crear una clave de favoritos única por usuario
+        userKey = "favoritos_" + session.getUserId();
+
         setContentView(R.layout.activity_catalogo_productos);
-        setTitle("Catálogo de productos");
+        setTitle("Catálogo");
 
         RecyclerView recyclerView = findViewById(R.id.recyclerViewProductos);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -88,7 +86,7 @@ public class CatalogoProductos extends AppCompatActivity {
         adapter = new PublicacionAdapter(publicaciones);
         recyclerView.setAdapter(adapter);
 
-        cargarPublicaciones();
+        cargarCatalogoCompleto();
         initNavigation();
     }
 
@@ -96,81 +94,79 @@ public class CatalogoProductos extends AppCompatActivity {
         LinearLayout navHome = findViewById(R.id.nav_home);
         LinearLayout navRegister = findViewById(R.id.nav_register);
         LinearLayout navCatalogs = findViewById(R.id.nav_catalogs);
-        if (navHome != null) navHome.setOnClickListener(v -> {});
-        if (navRegister != null) navRegister.setOnClickListener(v -> {});
-        if (navCatalogs != null) navCatalogs.setOnClickListener(v -> {});
+
+        if (navHome != null)
+            navHome.setOnClickListener(v -> Toast.makeText(this, "Inicio", Toast.LENGTH_SHORT).show());
+        if (navRegister != null)
+            navRegister.setOnClickListener(v -> Toast.makeText(this, "Registro", Toast.LENGTH_SHORT).show());
+        if (navCatalogs != null)
+            navCatalogs.setOnClickListener(v -> Toast.makeText(this, "Catálogo", Toast.LENGTH_SHORT).show());
     }
 
-    /**
-     * 🔹 Carga los productos del backend (ropa + accesorios + productos)
-     */
     @SuppressLint("NotifyDataSetChanged")
-    private void cargarPublicaciones() {
+    private void cargarCatalogoCompleto() {
         publicaciones.clear();
         adapter.notifyDataSetChanged();
 
-        String token = "Bearer " + session.getToken();
+        String token = session.getToken();
+        if (token == null || token.isEmpty()) {
+            Toast.makeText(this, "Sesión expirada. Iniciá sesión nuevamente.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         Set<String> favoritos = obtenerFavoritosLocales();
 
-        // Llamamos a un único endpoint unificado del backend
-        Call<List<Product>> call = apiService.getProductos(token);
+        cargarEndpoint(apiService.getProductos(token), favoritos);
+        cargarEndpoint(apiService.getRopa(), favoritos);
+        cargarEndpoint(apiService.getAccesorios(), favoritos);
+    }
 
+    private void cargarEndpoint(Call<List<Product>> call, Set<String> favoritos) {
         call.enqueue(new Callback<List<Product>>() {
+            @SuppressLint("NotifyDataSetChanged")
             @Override
             public void onResponse(@NonNull Call<List<Product>> call, @NonNull Response<List<Product>> response) {
                 if (response.isSuccessful() && response.body() != null) {
-                    publicaciones.clear();
-
                     for (Product p : response.body()) {
                         List<String> imagenes = new ArrayList<>();
 
-                        // Agregamos las imágenes si vienen múltiples
                         if (p.getImagenes() != null && !p.getImagenes().isEmpty()) {
-                            imagenes.addAll(p.getImagenes());
+                            for (Imagen img : p.getImagenes()) {
+                                if (img.getUrl() != null && !img.getUrl().isEmpty()) {
+                                    imagenes.add(img.getUrl());
+                                } else if (img.getRuta() != null && !img.getRuta().isEmpty()) {
+                                    imagenes.add("https://fls-9ff7de2a-dac8-4f28-a8fd-04a22564ad02.laravel.cloud/" + img.getRuta());
+                                }
+                            }
                         } else if (p.getImagen_url() != null && !p.getImagen_url().isEmpty()) {
                             imagenes.add(p.getImagen_url());
                         }
 
                         boolean esFav = favoritos.contains(String.valueOf(p.getId()));
-
-                        publicaciones.add(new Publicacion(
-                                p.getId(),
-                                p.getNombre(),
-                                p.getTipo() != null ? p.getTipo() : "Sin categoría",
-                                p.getDescripcion() != null ? p.getDescripcion() : "",
-                                p.getPrecio(),
-                                imagenes,
-                                esFav
-                        ));
+                        publicaciones.add(new Publicacion(p.getId(), imagenes, esFav));
                     }
 
                     adapter.notifyDataSetChanged();
-
-                    if (publicaciones.isEmpty()) {
-                        Toast.makeText(CatalogoProductos.this, "No hay productos disponibles 😕", Toast.LENGTH_SHORT).show();
-                    }
-
                 } else {
-                    Log.e("CatalogoProductos", "Error al cargar catálogo: código " + response.code());
-                    Toast.makeText(CatalogoProductos.this, "Error al cargar catálogo (" + response.code() + ")", Toast.LENGTH_SHORT).show();
+                    Log.e("CatalogoProductos", "Error al cargar productos: código " + response.code());
                 }
             }
 
             @Override
             public void onFailure(@NonNull Call<List<Product>> call, @NonNull Throwable t) {
-                Log.e("CatalogoProductos", "Fallo al cargar catálogo: " + t.getMessage());
-                Toast.makeText(CatalogoProductos.this, "Error de conexión 😞", Toast.LENGTH_SHORT).show();
+                Log.e("CatalogoProductos", "Fallo al cargar productos: " + t.getMessage());
+                Toast.makeText(CatalogoProductos.this, "Error al conectar con el servidor", Toast.LENGTH_SHORT).show();
             }
         });
     }
 
-    // 🔸 FAVORITOS LOCALES
+    // ==== FAVORITOS ====
     private Set<String> obtenerFavoritosLocales() {
-        return new HashSet<>(prefs.getStringSet(KEY_FAVORITOS, new HashSet<>()));
+        return new HashSet<>(prefs.getStringSet(userKey, new HashSet<>()));
     }
 
     private void guardarFavoritosLocales(Set<String> favs) {
-        prefs.edit().putStringSet(KEY_FAVORITOS, favs).apply();
+        prefs.edit().putStringSet(userKey, favs).apply();
     }
 
     private void toggleFavorito(int idProducto) {
@@ -201,7 +197,11 @@ public class CatalogoProductos extends AppCompatActivity {
         apiService.updateFavoritos(token, data).enqueue(new Callback<JsonObject>() {
             @Override
             public void onResponse(@NonNull Call<JsonObject> call, @NonNull Response<JsonObject> response) {
-                Log.d("CatalogoProductos", "Favoritos sincronizados con backend (" + response.code() + ")");
+                if (response.isSuccessful()) {
+                    Log.d("CatalogoProductos", "Favoritos sincronizados correctamente.");
+                } else {
+                    Log.e("CatalogoProductos", "Error al sincronizar favoritos: " + response.code());
+                }
             }
 
             @Override
@@ -211,29 +211,20 @@ public class CatalogoProductos extends AppCompatActivity {
         });
     }
 
-    // 🔹 Modelo interno de publicación
+    // ==== MODELO LOCAL ====
     public static class Publicacion {
         int id;
-        String nombre;
-        String categoria;
-        String descripcion;
-        double precio;
         List<String> urlsImagenes;
         boolean meGusta;
 
-        public Publicacion(int id, String nombre, String categoria, String descripcion, double precio,
-                           List<String> urlsImagenes, boolean meGusta) {
+        public Publicacion(int id, List<String> urlsImagenes, boolean meGusta) {
             this.id = id;
-            this.nombre = nombre;
-            this.categoria = categoria;
-            this.descripcion = descripcion;
-            this.precio = precio;
             this.urlsImagenes = urlsImagenes;
             this.meGusta = meGusta;
         }
     }
 
-    // 🔸 Adaptador principal
+    // ==== ADAPTER ====
     private class PublicacionAdapter extends RecyclerView.Adapter<PublicacionAdapter.PublicacionViewHolder> {
         private final List<Publicacion> publicaciones;
 
@@ -244,14 +235,14 @@ public class CatalogoProductos extends AppCompatActivity {
         @NonNull
         @Override
         public PublicacionViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_publicacion, parent, false);
+            View view = LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.item_publicacion, parent, false);
             return new PublicacionViewHolder(view);
         }
 
         @Override
         public void onBindViewHolder(@NonNull PublicacionViewHolder holder, int position) {
-            Publicacion publicacion = publicaciones.get(position);
-            holder.bind(publicacion);
+            holder.bind(publicaciones.get(position));
         }
 
         @Override
@@ -262,7 +253,7 @@ public class CatalogoProductos extends AppCompatActivity {
         class PublicacionViewHolder extends RecyclerView.ViewHolder {
             ViewPager2 viewPagerImagenes;
             ImageButton btnMeGusta;
-            TextView tvTitulo, tvDescripcion, tvPrecio, tvContadorImagenes;
+            TextView tvContadorImagenes;
             ViewPager2.OnPageChangeCallback callback;
 
             PublicacionViewHolder(@NonNull View itemView) {
@@ -288,12 +279,32 @@ public class CatalogoProductos extends AppCompatActivity {
                             : R.drawable.favorite_24px);
                 });
 
-                if (callback != null) viewPagerImagenes.unregisterOnPageChangeCallback(callback);
+                // contador inicial
+                if (publicacion.urlsImagenes != null && !publicacion.urlsImagenes.isEmpty()) {
+                    tvContadorImagenes.setText(
+                            itemView.getContext().getString(
+                                    R.string.contador_imagenes,
+                                    1,
+                                    publicacion.urlsImagenes.size()
+                            )
+                    );
+                } else {
+                    tvContadorImagenes.setText("");
+                }
+
+                if (callback != null)
+                    viewPagerImagenes.unregisterOnPageChangeCallback(callback);
+
                 callback = new ViewPager2.OnPageChangeCallback() {
                     @Override
                     public void onPageSelected(int position) {
-                        tvContadorImagenes.setText(itemView.getContext().getString(
-                                R.string.contador_imagenes, position + 1, publicacion.urlsImagenes.size()));
+                        tvContadorImagenes.setText(
+                                itemView.getContext().getString(
+                                        R.string.contador_imagenes,
+                                        position + 1,
+                                        publicacion.urlsImagenes.size()
+                                )
+                        );
                     }
                 };
                 viewPagerImagenes.registerOnPageChangeCallback(callback);
@@ -301,16 +312,19 @@ public class CatalogoProductos extends AppCompatActivity {
         }
     }
 
-    // 🔹 Adaptador de imágenes
+    // ==== ADAPTADOR DE IMÁGENES ====
     private static class ImagenAdapter extends RecyclerView.Adapter<ImagenAdapter.ImagenViewHolder> {
         private final List<String> urls;
 
-        ImagenAdapter(List<String> urls) { this.urls = urls; }
+        ImagenAdapter(List<String> urls) {
+            this.urls = urls;
+        }
 
         @NonNull
         @Override
         public ImagenViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_imagen, parent, false);
+            View view = LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.item_imagen, parent, false);
             return new ImagenViewHolder(view);
         }
 
@@ -319,20 +333,25 @@ public class CatalogoProductos extends AppCompatActivity {
             String url = urls.get(position);
             holder.progressBar.setVisibility(View.VISIBLE);
 
+            if (url == null || url.isEmpty()) {
+                holder.progressBar.setVisibility(View.GONE);
+                return;
+            }
+
             Glide.with(holder.imageView.getContext())
                     .load(url)
                     .centerCrop()
                     .diskCacheStrategy(DiskCacheStrategy.ALL)
                     .listener(new RequestListener<Drawable>() {
                         @Override
-                        public boolean onLoadFailed(@Nullable GlideException e, Object model, @NonNull Target<Drawable> target, boolean isFirstResource) {
+                        public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
                             holder.progressBar.setVisibility(View.GONE);
                             Log.e("GlideError", "Error al cargar imagen: " + (e != null ? e.getMessage() : "Desconocido"));
                             return false;
                         }
 
                         @Override
-                        public boolean onResourceReady(@NonNull Drawable resource, @NonNull Object model, @NonNull Target<Drawable> target, @NonNull DataSource dataSource, boolean isFirstResource) {
+                        public boolean onResourceReady(@NonNull Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
                             holder.progressBar.setVisibility(View.GONE);
                             return false;
                         }

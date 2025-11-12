@@ -1,6 +1,7 @@
 <component name="ProjectDictionaryState">
   <dictionary name="project">
     <words>
+      <w>accesorio</w>
       <w>actualizar</w>
       <w>agregado</w>
       <w>agregar</w>
@@ -12,6 +13,7 @@
       <w>descripcion</w>
       <w>disponibles</w>
       <w>electronico</w>
+      <w>estilo</w>
       <w>exitosa</w>
       <w>fallida</w>
       <w>favorito</w>
@@ -34,6 +36,7 @@
       <w>petición</w>
       <w>precio</w>
       <w>procesar</w>
+      <w>producto</w>
       <w>pudo</w>
       <w>quitado</w>
       <w>quitar</w>
@@ -41,7 +44,10 @@
       <w>respuesta</w>
       <w>revisa</w>
       <w>servidor</w>
+      <w>sincronizados</w>
+      <w>sincronizar</w>
       <w>tipo</w>
+      <w>titulo</w>
     </words>
   </dictionary>
 </component>
