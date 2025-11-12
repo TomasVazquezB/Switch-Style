@@ -73,11 +73,10 @@ public class CatalogoProductos extends AppCompatActivity {
             return;
         }
 
-        // Crear una clave de favoritos única por usuario
         userKey = "favoritos_" + session.getUserId();
 
         setContentView(R.layout.activity_catalogo_productos);
-        setTitle("Catálogo");
+        setTitle("Catálogo de Productos");
 
         RecyclerView recyclerView = findViewById(R.id.recyclerViewProductos);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
