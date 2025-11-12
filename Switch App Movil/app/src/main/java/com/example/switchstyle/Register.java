@@ -50,8 +50,7 @@ public class Register extends AppCompatActivity {
                 String emailUser = etEmail.getText().toString().trim();
                 String passUser = etPassword.getText().toString().trim();
 
-                if (TextUtils.isEmpty(nameUser) ||
-                        TextUtils.isEmpty(emailUser) || TextUtils.isEmpty(passUser)) {
+                if (TextUtils.isEmpty(nameUser) || TextUtils.isEmpty(emailUser) || TextUtils.isEmpty(passUser)) {
                     Toast.makeText(Register.this, "Todos los campos son obligatorios", Toast.LENGTH_SHORT).show();
                     return;
                 }
