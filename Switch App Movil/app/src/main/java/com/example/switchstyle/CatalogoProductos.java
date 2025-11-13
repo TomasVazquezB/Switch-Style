@@ -12,7 +12,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -38,6 +37,7 @@ import com.example.switchstyle.api.SessionManager;
 import com.google.gson.JsonObject;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -50,18 +50,23 @@ import retrofit2.Response;
 public class CatalogoProductos extends AppCompatActivity {
 
     private static final String PREFS_FAVORITOS = "favoritos_prefs";
+
     private List<Publicacion> publicaciones;
     private PublicacionAdapter adapter;
     private SessionManager session;
     private SharedPreferences prefs;
     private ApiService apiService;
-    private String userKey; // clave única por usuario
+    private String userKey;
+    private ProgressBar progressGeneral;
+
+    // Banderas de carga
+    private boolean ropaCargada = false;
+    private boolean accesoriosCargados = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         session = new SessionManager(this);
-        prefs = getSharedPreferences(PREFS_FAVORITOS, Context.MODE_PRIVATE);
         apiService = RetrofitClient.getClient().create(ApiService.class);
 
         if (!session.isLoggedIn()) {
@@ -73,33 +78,22 @@ public class CatalogoProductos extends AppCompatActivity {
             return;
         }
 
-        userKey = "favoritos_" + session.getUserId();
-
         setContentView(R.layout.activity_catalogo_productos);
         setTitle("Catálogo de Productos");
 
+        userKey = "favoritos_" + session.getUserId();
+        prefs = getSharedPreferences(PREFS_FAVORITOS, Context.MODE_PRIVATE);
+
         RecyclerView recyclerView = findViewById(R.id.recyclerViewProductos);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        progressGeneral = findViewById(R.id.progressBarGeneral); // 🔹 Asegurate de tenerlo en tu layout
 
         publicaciones = new ArrayList<>();
         adapter = new PublicacionAdapter(publicaciones);
         recyclerView.setAdapter(adapter);
 
         cargarCatalogoCompleto();
-        initNavigation();
-    }
-
-    private void initNavigation() {
-        LinearLayout navHome = findViewById(R.id.nav_home);
-        LinearLayout navRegister = findViewById(R.id.nav_register);
-        LinearLayout navCatalogs = findViewById(R.id.nav_catalogs);
-
-        if (navHome != null)
-            navHome.setOnClickListener(v -> Toast.makeText(this, "Inicio", Toast.LENGTH_SHORT).show());
-        if (navRegister != null)
-            navRegister.setOnClickListener(v -> Toast.makeText(this, "Registro", Toast.LENGTH_SHORT).show());
-        if (navCatalogs != null)
-            navCatalogs.setOnClickListener(v -> Toast.makeText(this, "Catálogo", Toast.LENGTH_SHORT).show());
     }
 
     @SuppressLint("NotifyDataSetChanged")
@@ -107,20 +101,18 @@ public class CatalogoProductos extends AppCompatActivity {
         publicaciones.clear();
         adapter.notifyDataSetChanged();
 
-        String token = session.getToken();
-        if (token == null || token.isEmpty()) {
-            Toast.makeText(this, "Sesión expirada. Iniciá sesión nuevamente.", Toast.LENGTH_SHORT).show();
-            return;
-        }
+        ropaCargada = false;
+        accesoriosCargados = false;
+        progressGeneral.setVisibility(View.VISIBLE);
 
         Set<String> favoritos = obtenerFavoritosLocales();
 
-        cargarEndpoint(apiService.getProductos(token), favoritos);
-        cargarEndpoint(apiService.getRopa(), favoritos);
-        cargarEndpoint(apiService.getAccesorios(), favoritos);
+        // 🔹 Cargar ambos endpoints y mezclar al final
+        cargarEndpoint(apiService.getRopa(), favoritos, true);
+        cargarEndpoint(apiService.getAccesorios(), favoritos, false);
     }
 
-    private void cargarEndpoint(Call<List<Product>> call, Set<String> favoritos) {
+    private void cargarEndpoint(Call<List<Product>> call, Set<String> favoritos, boolean esRopa) {
         call.enqueue(new Callback<List<Product>>() {
             @SuppressLint("NotifyDataSetChanged")
             @Override
@@ -134,7 +126,7 @@ public class CatalogoProductos extends AppCompatActivity {
                                 if (img.getUrl() != null && !img.getUrl().isEmpty()) {
                                     imagenes.add(img.getUrl());
                                 } else if (img.getRuta() != null && !img.getRuta().isEmpty()) {
-                                    imagenes.add("https://fls-9ff7de2a-dac8-4f28-a8fd-04a22564ad02.laravel.cloud/" + img.getRuta());
+                                    imagenes.add("https://switchstyle.laravel.cloud/" + img.getRuta());
                                 }
                             }
                         } else if (p.getImagen_url() != null && !p.getImagen_url().isEmpty()) {
@@ -144,17 +136,33 @@ public class CatalogoProductos extends AppCompatActivity {
                         boolean esFav = favoritos.contains(String.valueOf(p.getId()));
                         publicaciones.add(new Publicacion(p.getId(), imagenes, esFav));
                     }
-
-                    adapter.notifyDataSetChanged();
                 } else {
                     Log.e("CatalogoProductos", "Error al cargar productos: código " + response.code());
+                }
+
+                if (esRopa) ropaCargada = true;
+                else accesoriosCargados = true;
+
+                if (ropaCargada && accesoriosCargados) {
+                    Collections.shuffle(publicaciones); // 🔄 mezcla aleatoria total
+                    adapter.notifyDataSetChanged();
+                    progressGeneral.setVisibility(View.GONE);
                 }
             }
 
             @Override
             public void onFailure(@NonNull Call<List<Product>> call, @NonNull Throwable t) {
-                Log.e("CatalogoProductos", "Fallo al cargar productos: " + t.getMessage());
+                Log.e("CatalogoProductos", "Fallo al cargar ropa/accesorios: " + t.getMessage());
                 Toast.makeText(CatalogoProductos.this, "Error al conectar con el servidor", Toast.LENGTH_SHORT).show();
+
+                if (esRopa) ropaCargada = true;
+                else accesoriosCargados = true;
+
+                if (ropaCargada && accesoriosCargados) {
+                    Collections.shuffle(publicaciones);
+                    adapter.notifyDataSetChanged();
+                    progressGeneral.setVisibility(View.GONE);
+                }
             }
         });
     }
@@ -234,8 +242,7 @@ public class CatalogoProductos extends AppCompatActivity {
         @NonNull
         @Override
         public PublicacionViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            View view = LayoutInflater.from(parent.getContext())
-                    .inflate(R.layout.item_publicacion, parent, false);
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_publicacion, parent, false);
             return new PublicacionViewHolder(view);
         }
 
@@ -252,19 +259,33 @@ public class CatalogoProductos extends AppCompatActivity {
         class PublicacionViewHolder extends RecyclerView.ViewHolder {
             ViewPager2 viewPagerImagenes;
             ImageButton btnMeGusta;
-            TextView tvContadorImagenes;
-            ViewPager2.OnPageChangeCallback callback;
+            TextView tvContador;
 
             PublicacionViewHolder(@NonNull View itemView) {
                 super(itemView);
                 viewPagerImagenes = itemView.findViewById(R.id.viewPagerImagenes);
                 btnMeGusta = itemView.findViewById(R.id.btnMeGusta);
-                tvContadorImagenes = itemView.findViewById(R.id.tvContadorImagenes);
+                tvContador = itemView.findViewById(R.id.tvContadorImagenes);
             }
 
             void bind(Publicacion publicacion) {
                 ImagenAdapter imagenAdapter = new ImagenAdapter(publicacion.urlsImagenes);
                 viewPagerImagenes.setAdapter(imagenAdapter);
+
+                int total = publicacion.urlsImagenes.size();
+                if (total > 0) {
+                    tvContador.setText("1");
+                } else {
+                    tvContador.setText("0");
+                }
+
+                viewPagerImagenes.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
+                    @Override
+                    public void onPageSelected(int position) {
+                        super.onPageSelected(position);
+                        tvContador.setText(String.valueOf(position + 1));
+                    }
+                });
 
                 btnMeGusta.setImageResource(publicacion.meGusta
                         ? R.drawable.favorite_filled_24px
@@ -277,36 +298,6 @@ public class CatalogoProductos extends AppCompatActivity {
                             ? R.drawable.favorite_filled_24px
                             : R.drawable.favorite_24px);
                 });
-
-                // contador inicial
-                if (publicacion.urlsImagenes != null && !publicacion.urlsImagenes.isEmpty()) {
-                    tvContadorImagenes.setText(
-                            itemView.getContext().getString(
-                                    R.string.contador_imagenes,
-                                    1,
-                                    publicacion.urlsImagenes.size()
-                            )
-                    );
-                } else {
-                    tvContadorImagenes.setText("");
-                }
-
-                if (callback != null)
-                    viewPagerImagenes.unregisterOnPageChangeCallback(callback);
-
-                callback = new ViewPager2.OnPageChangeCallback() {
-                    @Override
-                    public void onPageSelected(int position) {
-                        tvContadorImagenes.setText(
-                                itemView.getContext().getString(
-                                        R.string.contador_imagenes,
-                                        position + 1,
-                                        publicacion.urlsImagenes.size()
-                                )
-                        );
-                    }
-                };
-                viewPagerImagenes.registerOnPageChangeCallback(callback);
             }
         }
     }
@@ -322,8 +313,7 @@ public class CatalogoProductos extends AppCompatActivity {
         @NonNull
         @Override
         public ImagenViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            View view = LayoutInflater.from(parent.getContext())
-                    .inflate(R.layout.item_imagen, parent, false);
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_imagen, parent, false);
             return new ImagenViewHolder(view);
         }
 
@@ -331,11 +321,6 @@ public class CatalogoProductos extends AppCompatActivity {
         public void onBindViewHolder(@NonNull ImagenViewHolder holder, int position) {
             String url = urls.get(position);
             holder.progressBar.setVisibility(View.VISIBLE);
-
-            if (url == null || url.isEmpty()) {
-                holder.progressBar.setVisibility(View.GONE);
-                return;
-            }
 
             Glide.with(holder.imageView.getContext())
                     .load(url)
@@ -345,7 +330,6 @@ public class CatalogoProductos extends AppCompatActivity {
                         @Override
                         public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
                             holder.progressBar.setVisibility(View.GONE);
-                            Log.e("GlideError", "Error al cargar imagen: " + (e != null ? e.getMessage() : "Desconocido"));
                             return false;
                         }
 

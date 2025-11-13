@@ -21,7 +21,7 @@ const Footer = ({ darkMode }) => {
   const handleAppDownload = () => {
     setShowModal(true);
 
-    const fileId = '1pk-R8qao_OVm0ad5XkL_Gd74kcvmwfcF';
+    const fileId = '18ZaHMcwWyMKFi2wrgLBKWYEfrQCUfhci';
     const directDownloadLink = `https://drive.google.com/uc?export=download&id=${fileId}`; 
     
     const link = document.createElement('a');

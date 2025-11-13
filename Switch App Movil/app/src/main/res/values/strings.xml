@@ -72,5 +72,6 @@
     <string name="iniciar_sesion_o_registrarse">Iniciar Sesion o Registrarse</string>
     <string name="apellido">Apellido</string>
     <string name="nombre_y_apellido">Nombre y Apellido</string>
+    <string name="_1">1</string>
 
 </resources>

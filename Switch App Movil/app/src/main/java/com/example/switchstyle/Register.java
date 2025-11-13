@@ -42,6 +42,7 @@ public class Register extends AppCompatActivity {
         LinearLayout navHome = findViewById(R.id.nav_home);
         LinearLayout navCatalogs = findViewById(R.id.nav_catalogs);
 
+        // ---- Botón de Registro ----
         if (btnRegister != null) {
             btnRegister.setOnClickListener(v -> {
                 Log.d("ButtonCheck", "¡Hiciste click en el botón de Registrar!");
@@ -59,6 +60,7 @@ public class Register extends AppCompatActivity {
             });
         }
 
+        // ---- Ir al Login ----
         if (btnIrLogin != null) {
             btnIrLogin.setOnClickListener(v -> {
                 startActivity(new Intent(Register.this, LoginActivity.class));
@@ -66,6 +68,7 @@ public class Register extends AppCompatActivity {
             });
         }
 
+        // ---- Navegación inferior ----
         if (navHome != null) navHome.setOnClickListener(v -> {
             startActivity(new Intent(Register.this, MainActivity.class));
             finishAffinity();
@@ -73,14 +76,25 @@ public class Register extends AppCompatActivity {
 
         if (navCatalogs != null) navCatalogs.setOnClickListener(v -> {
             if (session.isLoggedIn()) {
-                startActivity(new Intent(Register.this, CatalogoProductos.class));
+                Intent intent = new Intent(Register.this, CatalogoProductos.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
                 finishAffinity();
             } else {
-                Toast.makeText(Register.this, "Acceso restringido. Logueate primero", Toast.LENGTH_SHORT).show();
+                // Mostrar la misma pantalla de validación que en MainActivity
+                setContentView(R.layout.activity_login_validation);
+                setTitle("Acceso restringido");
+
+                Button btnIrLoginDesdeValidacion = findViewById(R.id.btnIrRegistro);
+                btnIrLoginDesdeValidacion.setOnClickListener(view -> {
+                    startActivity(new Intent(Register.this, LoginActivity.class));
+                    finish();
+                });
             }
         });
     }
 
+    // ---- Registro de usuario ----
     private void registerUser(String nameUser, String emailUser, String passUser) {
         ApiService apiService = RetrofitClient.getClient().create(ApiService.class);
         RegisterRequest request = new RegisterRequest(nameUser, emailUser, passUser, "Free");
