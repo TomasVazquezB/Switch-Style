@@ -24,14 +24,17 @@ export function LoginPage() {
 
     try {
       // 1️⃣ Obtener cookie CSRF antes de login
-      await api.get("/sanctum/csrf-cookie");
+      /* await api.get("/sanctum/csrf-cookie"); */
+      await backendApi.get("/sanctum/csrf-cookie");
       await fetch("https://switchstyle.laravel.cloud/sanctum/csrf-cookie", {
         credentials: "include",
       });
 
       // 2️⃣ Enviar solicitud de inicio de sesión al backend
-      const response = await api.post(
-        "/api/login",
+      const response = await backendApi.post(
+        "/login",
+        /* await api.post(
+        "/api/login", */
         {
           email: formData.identificador.trim(),
           password: formData.contrasena.trim(),
