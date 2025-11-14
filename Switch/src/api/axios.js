@@ -58,12 +58,12 @@ export default api;
 
 // 🔹 Nueva instancia para endpoints del backend (como /user)
 export const backendApi = axios.create({
-  baseURL: ROOT_URL, // 👉 apunta al backend Laravel
+  baseURL: `${ROOT_URL}/api`,  // ⬅️ ESTE es el cambio clave
   headers: {
     "Content-Type": "application/json",
     Accept: "application/json",
   },
-  withCredentials: true, // necesario para Sanctum
+  withCredentials: true,
 });
 
 // Copiamos los interceptores de api (para token + CSRF)

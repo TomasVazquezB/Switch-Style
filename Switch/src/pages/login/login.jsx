@@ -24,17 +24,13 @@ export function LoginPage() {
 
     try {
       // 1️⃣ Obtener CSRF Cookie (solo UNA VEZ)
-      await backendApi.get("/sanctum/csrf-cookie");
+      await csrf();
 
-      // 2️⃣ Login correcto a Laravel
-      const response = await backendApi.post(
-        "/login",
-        {
-          email: formData.identificador.trim(),
-          password: formData.contrasena.trim(),
-        },
-        { withCredentials: true }
-      );
+      const response = await backendApi.post("/login", {
+        email: formData.identificador.trim(),
+        password: formData.contrasena.trim(),
+      });
+
 
       // 3️⃣ Usuario recibido
       const user = response.data.user || response.data.usuario || response.data;
