@@ -43,14 +43,15 @@ class AuthenticatedSessionController extends Controller
 
 
 
-    public function destroy(Request $request)
+public function destroy(Request $request)
 {
     Auth::logout();
 
     $request->session()->invalidate();
     $request->session()->regenerateToken();
 
-    return redirect(config('https://switchstyle.vercel.app'));
+    return redirect()->away(config('app.frontend_url', 'https://switchstyle.vercel.app'));
 }
+
 
 }
