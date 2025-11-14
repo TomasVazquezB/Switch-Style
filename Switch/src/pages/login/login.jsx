@@ -23,18 +23,12 @@ export function LoginPage() {
     setError(null);
 
     try {
-      // 1️⃣ Obtener cookie CSRF antes de login
-      /* await api.get("/sanctum/csrf-cookie"); */
+      // 1️⃣ Obtener CSRF Cookie (solo UNA VEZ)
       await backendApi.get("/sanctum/csrf-cookie");
-      await fetch("https://switchstyle.laravel.cloud/sanctum/csrf-cookie", {
-        credentials: "include",
-      });
 
-      // 2️⃣ Enviar solicitud de inicio de sesión al backend
+      // 2️⃣ Login correcto a Laravel
       const response = await backendApi.post(
         "/login",
-        /* await api.post(
-        "/api/login", */
         {
           email: formData.identificador.trim(),
           password: formData.contrasena.trim(),
@@ -42,20 +36,13 @@ export function LoginPage() {
         { withCredentials: true }
       );
 
-      // 3️⃣ Guardar el usuario en el contexto y en localStorage
+      // 3️⃣ Usuario recibido
       const user = response.data.user || response.data.usuario || response.data;
 
-      const token = response.data.token;
-      if (token) {
-        localStorage.setItem("token", token);
-      }
-
-
-      // Normalizamos las claves del usuario
       const usuarioNormalizado = {
-        id: user.id || user.ID || null,
+        id: user.id || null,
         nombre: user.nombre || user.Nombre || user.name || "Usuario",
-        correo: user.correo || user.email || user.Correo_Electronico || "",
+        correo: user.correo || user.email || "",
         rol: user.rol || user.Tipo_Usuario || "Usuario",
       };
 
@@ -64,50 +51,29 @@ export function LoginPage() {
 
       alert(`✅ Bienvenido ${usuarioNormalizado.nombre}`);
 
-      // 4️⃣ Redirigir según el rol del usuario
-      if (user.Tipo_Usuario === "Admin") {
-        try {
-          // Enviar login también al backend de Laravel Cloud
-          await fetch("https://switchstyle.laravel.cloud/login", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            credentials: "include",
-            body: JSON.stringify({
-              email: formData.identificador.trim(),
-              password: formData.contrasena.trim(),
-            }),
-          });
-        } catch (err) {
-          console.error("Error iniciando sesión en Laravel Cloud:", err);
-        }
-
-        // Luego redirigir al panel
+      // 4️⃣ Redirección por rol
+      if (usuarioNormalizado.rol === "Admin") {
         window.location.href = "https://switchstyle.laravel.cloud/inicio";
       } else {
         navigate("/");
         setTimeout(() => window.location.reload(), 300);
       }
 
-
-      /*  // 5️⃣ Refrescamos la página para cargar datos del contexto
-       setTimeout(() => {
-         window.location.reload();
-       }, 300); */
-
     } catch (err) {
       console.error("❌ Error al iniciar sesión:", err);
 
       if (err.response?.status === 419) {
-        setError("Error de sesión (CSRF). Refresca la página e inténtalo otra vez");
+        setError("Error de sesión (CSRF). Refresca la página e inténtalo nuevamente.");
       } else if (err.response?.status === 401) {
         setError("Usuario o contraseña incorrectos.");
-      } else if (err.response?.status === 422) {
-        setError("Por favor completa todos los campos correctamente");
+      } else if (err.response?.status === 405) {
+        setError("Método inválido. Verifica que el backend acepte POST en /login.");
       } else {
-        setError(err.response?.data?.message || "Error inesperado al iniciar sesión");
+        setError("Error inesperado al iniciar sesión.");
       }
     }
   };
+
 
   return (
     <div className="login-container">
