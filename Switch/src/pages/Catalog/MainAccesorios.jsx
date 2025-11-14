@@ -52,7 +52,7 @@ function useThemeEstilo() {
   return estilo;
 }
 
-const CATEGORIES_DB = ['Anillos', 'Collares', 'Aritos'];
+const CATEGORIES_DB = ['Anillos', 'Collares', 'Aritos', 'Carteras y Mochilas', 'Cinturones', 'Billeteras', 'Gorras'];
 
 const MainAccesorios = () => {
   const estilo = useThemeEstilo();
