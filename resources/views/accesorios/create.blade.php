@@ -62,7 +62,6 @@
                 <option value="claro" {{ old('estilo','claro')==='claro' ? 'selected' : '' }}>Claro</option>
                 <option value="oscuro" {{ old('estilo')==='oscuro' ? 'selected' : '' }}>Oscuro</option>
             </select>
-            @error('estilo')<p class="text-xs text-red-600 mt-1">{{ $message }}</p>@enderror
         </div>
 
         <div>

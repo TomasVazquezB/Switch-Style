@@ -11,6 +11,19 @@ use Illuminate\Support\Facades\Storage;
 
 class AccesorioController extends Controller
 {
+    private function categoriasAccesorios()
+    {
+        return Categoria::whereIn('nombre', [
+            'Anillos',
+            'Collares',
+            'Aritos',
+            'Carteras y Mochilas',
+            'Billeteras',
+            'Cinturones',
+            'Gorras',
+        ])->orderBy('nombre')->get();
+    }
+
     public function index(Request $request)
     {
         $theme = $request->query('theme');
@@ -34,14 +47,14 @@ class AccesorioController extends Controller
             ->paginate(8)
             ->appends($request->query());
 
-        $categorias = Categoria::whereIn('nombre', ['Anillos', 'Collares', 'Aritos'])->get();
+        $categorias = $this->categoriasAccesorios();
 
         return view('accesorios.index', compact('accesorios', 'categorias', 'theme'));
     }
 
     public function create()
     {
-        $categorias = Categoria::whereIn('nombre', ['Anillos', 'Collares', 'Aritos'])->get();
+        $categorias = $this->categoriasAccesorios();
         return view('accesorios.create', compact('categorias'));
     }
 
@@ -93,7 +106,7 @@ class AccesorioController extends Controller
     public function edit($id)
     {
         $accesorio  = Accesorio::with('imagenes')->findOrFail($id);
-        $categorias = Categoria::whereIn('nombre', ['Anillos', 'Collares', 'Aritos'])->get();
+        $categorias = $this->categoriasAccesorios();
 
         return view('accesorios.edit', compact('accesorio', 'categorias'));
     }

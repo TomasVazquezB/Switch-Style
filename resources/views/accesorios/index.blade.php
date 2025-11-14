@@ -12,7 +12,16 @@
     @endif
 
     @php
-        $soloAccesorios = ['Collares', 'Anillos', 'Aritos'];
+        $soloAccesorios = [
+            'Anillos',
+            'Collares',
+            'Aritos',
+            'Carteras y Mochilas',
+            'Billeteras',
+            'Cinturones',
+            'Gorras',
+        ];
+
         $themeLocal = request('theme', 'light');
         $paramsBase = request()->except(['page']);
     @endphp
