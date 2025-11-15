@@ -26,7 +26,7 @@ export function LoginPage() {
       // 1️⃣ Obtener CSRF Cookie (solo UNA VEZ)
       await csrf();
 
-      const response = await backendApi.post("/api/login", {
+      const response = await backendApi.post("/login", {
         email: formData.identificador.trim(),
         password: formData.contrasena.trim(),
       });
