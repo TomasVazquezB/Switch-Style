@@ -60,7 +60,7 @@ export default api;
 
 // 🔹 Nueva instancia para endpoints del backend (como /user)
 export const backendApi = axios.create({
-  baseURL: ROOT_URL,  // ❗ SIN /api
+  baseURL: `${ROOT_URL}/api`,
   headers: {
     "Content-Type": "application/json",
     Accept: "application/json",
@@ -71,11 +71,11 @@ export const backendApi = axios.create({
 // Copiamos los interceptores de api (para token + CSRF)
 backendApi.interceptors.request.use(
   (config) => {
-    const xsrfToken = getCookie("XSRF-TOKEN");
-    if (xsrfToken) config.headers["X-XSRF-TOKEN"] = xsrfToken;
+    const token = getCookie("XSRF-TOKEN");
 
-    const token = obtenerToken?.();
-    if (token) config.headers.Authorization = `Bearer ${token}`;
+    if (token) {
+      config.headers["X-XSRF-TOKEN"] = token;
+    }
 
     return config;
   },
