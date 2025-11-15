@@ -21,7 +21,7 @@ localhost,
 localhost:5173,
 switchstyle.vercel.app,
 switchstyle.laravel.cloud,
-.switchstyle.laravel.cloud,
+switchstyle.laravel.cloud,
 .laravel.cloud
 ')),
     /*
