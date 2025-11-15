@@ -58,7 +58,7 @@ export default api;
 
 // 🔹 Nueva instancia para endpoints del backend (como /user)
 export const backendApi = axios.create({
-  baseURL: `${ROOT_URL}/api`,  // ⬅️ ESTE es el cambio clave
+  baseURL: ROOT_URL,  // ❗ SIN /api
   headers: {
     "Content-Type": "application/json",
     Accept: "application/json",
