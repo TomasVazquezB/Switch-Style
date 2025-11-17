@@ -37,7 +37,7 @@ class AuthController extends Controller
 
         // Crear token personal(sanctum)
 /*         $token = $user->createToken('auth_token')->plainTextToken;*/
-        $token = $user->createToken('mobile-or-web-token')->plainTextToken;
+        $token = $user->createToken("web-token")->plainTextToken;
 
 
         return response()->json([
