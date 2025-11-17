@@ -49,12 +49,17 @@ api.interceptors.request.use(
 
 export const publicApi = axios.create({
   baseURL: BASE_URL,
-  headers: {
-    "Content-Type": "application/json",
-    Accept: "application/json",
-  },
-  withCredentials: false,
+  headers: { "Content-Type": "application/json", Accept: "application/json" },
+  withCredentials: false, // tokens no necesitan cookies
 });
+
+export function setAuthToken(token) {
+  if (token) {
+    publicApi.defaults.headers.Authorization = `Bearer ${token}`;
+  } else {
+    delete publicApi.defaults.headers.Authorization;
+  }
+}
 
 export default api;
 
