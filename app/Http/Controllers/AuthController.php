@@ -35,8 +35,10 @@ class AuthController extends Controller
             return response()->json(['message' => 'Credenciales inválidas'], 401);
         }
 
-        // Crear token Sanctum
-        $token = $user->createToken('auth_token')->plainTextToken;
+        // Crear token personal(sanctum)
+/*         $token = $user->createToken('auth_token')->plainTextToken;*/
+        $token = $user->createToken('mobile-or-web-token')->plainTextToken;
+
 
         return response()->json([
             'message' => 'Login exitoso',
