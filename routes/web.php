@@ -24,8 +24,7 @@ Route::middleware('guest')->group(function () {
 });
 
 // API login (si lo usás)
-Route::post('/api/login', [AuthController::class, 'login']);
-
+/* Route::post('/api/login', [AuthController::class, 'login']);*/
 // Logout y dashboard
 Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])->middleware('auth')->name('logout');
 Route::get('/dashboard', fn() => view('dashboard'))->middleware('auth')->name('dashboard');
