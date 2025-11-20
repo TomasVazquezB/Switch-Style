@@ -76,7 +76,7 @@ export default function Pago() {
   const finalizarPedido = async ({ metodo, external_id, extra = {} }) => {
     try {
       setLoading(true);
-      console.log("➡️ Posteando pedido a:", axios.defaults.baseURL);
+      console.log("➡️ Posteando pedido a:", backendApi.defaults.baseURL);
 
       await csrf();
 
