@@ -22,7 +22,7 @@ export const secureApi = axios.create({
     "Content-Type": "application/json",
     Accept: "application/json",
   },
-  withCredentials: true, // Necesario para Sanctum
+  withCredentials: false, // Necesario para Sanctum
 });
 
 const api = axios.create({
@@ -31,7 +31,7 @@ const api = axios.create({
     "Content-Type": "application/json",
     Accept: "application/json",
   },
-  withCredentials: true,
+  withCredentials: false,
 });
 
 api.interceptors.request.use(
@@ -70,7 +70,7 @@ export const backendApi = axios.create({
     "Content-Type": "application/json",
     Accept: "application/json",
   },
-  withCredentials: true,
+  withCredentials: false,
 });
 
 backendApi.interceptors.request.use((config) => {

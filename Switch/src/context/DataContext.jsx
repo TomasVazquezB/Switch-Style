@@ -1,5 +1,6 @@
 import React, { createContext, useState, useEffect } from "react";
-import api, { csrf, publicApi } from "../api/axios";
+/* import api, { csrf, publicApi } from "../api/axios";*/
+import { backendApi, publicApi } from "../api/axios";
 import { guardarUsuario, obtenerUsuario, cerrarSesion } from "../api/auth";
 
 const DataContext = createContext();
@@ -11,19 +12,19 @@ const DataProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  const initCsrf = async () => {
+  /* const initCsrf = async () => {
     try {
       await csrf();
     } catch (err) {
       console.error("❌ Error al obtener CSRF:", err);
       setError("No se pudo inicializar CSRF");
     }
-  };
+  }; */
 
   const login = async (email, password) => {
     try {
-      await initCsrf();
-      const response = await api.post("/login", { email, password });
+      /* await initCsrf(); */
+      const response = await backendApi.post("/login", { email, password });
       const { user } = response.data;
       guardarUsuario(user);
       setUsuario(user);
@@ -38,7 +39,7 @@ const DataProvider = ({ children }) => {
 
   const logout = async () => {
     try {
-      await api.post("/logout");
+      await backendApi.post("/logout");
     } catch (err) {
       console.error("❌ Error en logout:", err);
     } finally {
@@ -69,8 +70,8 @@ const DataProvider = ({ children }) => {
 
   const fetchUsuario = async () => {
     try {
-      await initCsrf();
-      const { data } = await api.get("/api/usuario"); // o "/api/usuario" según tu backend
+      /* await initCsrf(); */
+      const { data } = await backendApi.get("/api/usuario"); // o "/api/usuario" según tu backend
       setUsuario(data);
     } catch (err) {
       console.error("❌ Error al obtener usuario:", err);
@@ -80,14 +81,10 @@ const DataProvider = ({ children }) => {
 
 
   useEffect(() => {
-    const fetchData = async () => {
-      setLoading(true);
-      await fetchProductos();
-      if (usuario) await fetchUsuario();
-      setLoading(false);
-    };
-    fetchData();
-  }, [usuario]);
+    fetchProductos();
+    if (localStorage.getItem("token")) fetchUsuario();
+  }, []);   // ✅ corre una sola vez
+
 
   return (
     <DataContext.Provider value={{ productos, usuarios, usuario, setUsuario, loading, error, login, logout, fetchProductos, fetchUsuario, }}>{children}</DataContext.Provider>
