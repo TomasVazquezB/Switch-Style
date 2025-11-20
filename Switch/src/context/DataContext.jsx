@@ -67,17 +67,18 @@ const DataProvider = ({ children }) => {
       setProductos([]);
     }
   };
-
+  
   const fetchUsuario = async () => {
     try {
-      /* await initCsrf(); */
-      const { data } = await backendApi.get("/api/usuario"); // o "/api/usuario" según tu backend
-      setUsuario(data);
-    } catch (err) {
-      console.error("❌ Error al obtener usuario:", err);
-      setError("Error al obtener usuario");
-    }
-  };
+    /* await initCsrf(); */
+    const { data } = await backendApi.get("/usuario"); 
+    setUsuario(data);
+    setError(null);
+  } catch (err) {
+    console.error("❌ Error al obtener usuario:", err);
+    setError("Error al obtener usuario");
+  }
+};
 
 
   useEffect(() => {
