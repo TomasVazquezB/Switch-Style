@@ -1,6 +1,6 @@
 import React, { useState, useContext } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import { publicApi, setAuthToken } from "../../api/axios";
+import { backendApi, setAuthToken } from "../../api/axios";
 import { DataContext } from "../../context/DataContext.jsx";
 import "./login.css";
 
@@ -22,7 +22,7 @@ export function LoginPage() {
     setError(null);
 
     try {
-      const response = await publicApi.post("/login", {
+      const response = await backendApi.post("/login", {
         email: formData.identificador.trim(),
         password: formData.contrasena.trim(),
       });
@@ -42,12 +42,12 @@ export function LoginPage() {
 
       alert(`Bienvenido ${usuarioNormalizado.nombre}`);
 
-      /* if (usuarioNormalizado.rol === "Admin") {
+      if (usuarioNormalizado.rol === "Admin") {
         window.location.href = "https://switchstyle.laravel.cloud/inicio";
       } else {
         navigate("/");
         setTimeout(() => window.location.reload(), 300);
-      } */
+      }
 
     } catch (err) {
       console.error("Error al iniciar sesión:", err);

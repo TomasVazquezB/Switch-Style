@@ -73,19 +73,13 @@ export const backendApi = axios.create({
   withCredentials: true,
 });
 
-// Copiamos los interceptores de api (para token + CSRF)
-backendApi.interceptors.request.use(
-  (config) => {
-    const token = getCookie("XSRF-TOKEN");
-
-    if (token) {
-      config.headers["X-XSRF-TOKEN"] = token;
-    }
-
-    return config;
-  },
-  (error) => Promise.reject(error)
-);
+backendApi.interceptors.request.use((config) => {
+  const token = localStorage.getItem("token");
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+  return config;
+});
 
 // Copiamos los interceptores del api principal
 secureApi.interceptors.request.use(

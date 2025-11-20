@@ -78,22 +78,15 @@ export default function Pago() {
       setLoading(true);
       console.log("➡️ Posteando pedido a:", axios.defaults.baseURL);
 
-      // 👇 Paso 1: obtener CSRF
-      await csrf();
+      await backendApi.post("/crear-pedido", {
+        ...payload,
+        subtotal: Number(subtotal),
+        total: Number(total),
+        metodo_pago: metodo,
+        external_id,
+        extra,
+      });
 
-      // 👇 Paso 2: enviar pedido con credenciales
-      await axios.post(
-        "/api/crear-pedido",
-        {
-          ...payload,
-          subtotal: Number(subtotal),
-          total: Number(total),
-          metodo_pago: metodo,
-          external_id,
-          extra,
-        },
-        { withCredentials: true } // 👈 asegura que se manden las cookies
-      );
 
       // 🔹 Limpiamos todo y redirigimos
       localStorage.removeItem("carrito");
