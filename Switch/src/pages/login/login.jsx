@@ -2,6 +2,7 @@ import React, { useState, useContext } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { backendApi, setAuthToken } from "../../api/axios";
 import { DataContext } from "../../context/DataContext.jsx";
+import { guardarUsuario } from "../../api/auth";
 import "./login.css";
 
 export function LoginPage() {
@@ -36,10 +37,8 @@ export function LoginPage() {
         rol: user.rol || "Usuario",
       };
 
-      localStorage.setItem("token", response.data.token);
+      guardarUsuario(usuarioNormalizado, response.data.token);
       setAuthToken(response.data.token);
-
-      guardarUsuario(usuarioNormalizado);
       setUsuario(usuarioNormalizado);
 
       alert(`Bienvenido ${usuarioNormalizado.nombre}`);
