@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { backendApi as axios } from "../../api/axios";
+import { backendApi} from "../../api/axios";
 import { toast } from "react-toastify";
 import { PayPalButtons } from "@paypal/react-paypal-js";
 import { csrf } from "../../api/axios"; // al principio del archivo
@@ -77,6 +77,8 @@ export default function Pago() {
     try {
       setLoading(true);
       console.log("➡️ Posteando pedido a:", axios.defaults.baseURL);
+
+      await csrf();
 
       await backendApi.post("/crear-pedido", {
         ...payload,
