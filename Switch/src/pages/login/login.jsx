@@ -36,11 +36,11 @@ export function LoginPage() {
         rol: user.rol || "Usuario",
       };
 
-      setUsuario(usuarioNormalizado);
-
-      // Guardar token
       localStorage.setItem("token", response.data.token);
       setAuthToken(response.data.token);
+
+      guardarUsuario(usuarioNormalizado);
+      setUsuario(usuarioNormalizado);
 
       alert(`Bienvenido ${usuarioNormalizado.nombre}`);
 
