@@ -19,7 +19,7 @@
 }
 
 .registro-image {
-  width: 90%; 
+  width: 100%; 
   max-width: none;
   height: 110%;
   object-fit: cover;
