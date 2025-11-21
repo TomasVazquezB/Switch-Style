@@ -19,11 +19,11 @@
 }
 
 .registro-image {
-  width: 100%; 
+  width: 90%; 
   max-width: none;
-  height: 110%;
+  height: 150%;
   object-fit: cover;
-  margin-top: 80px;
+  margin-top: 250px;
   }
 
 .registro-box {
