@@ -13,6 +13,8 @@ export function QuienesSomosPage({ darkMode }) {
   return (
     <div className="container-quienessomos">
       <div className="content">
+        <br/>
+        <br />
         <h1 className="quienessomos"style={{ color: darkMode ? "#ffffffff" : "#000000ff" }}>¿Quiénes Somos?</h1>
         <p className="info"style={{ color: darkMode ? "#ffffffff" : "#000000ff" }}>Somos un equipo apasionado por innovar y crear soluciones que mejoren el mundo. Descubre al equipo que está detrás de esta visión</p>
         <div className="team-cards">
