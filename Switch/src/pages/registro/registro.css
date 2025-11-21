@@ -1,7 +1,7 @@
 .registro-container {
   display: flex;
   flex-wrap: wrap;
-  min-height: calc(100vh - 120px); 
+  min-height: 100vh;   /* <-- clave */
   margin-top: -180px;
   margin-bottom: 0px;
   padding: -50px;
