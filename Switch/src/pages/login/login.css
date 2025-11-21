@@ -1,13 +1,13 @@
 .login-container {
   display: flex;
   flex-wrap: wrap;
-  min-height: calc(100vh - 180px);
+  min-height: 100vh;     /* <-- lo importante */
   justify-content: space-between;
   margin-top: -170px;
 }
 
 .image-container-login {
-  flex: 0.4;
+  flex: 1;
   display: flex;
   justify-content: flex-start;
   align-items: center;
@@ -16,7 +16,7 @@
 }
 
 .login-image {
-  width: 80%;
+  width: 100%;
   max-width: none;
   height: 100%;
   object-fit: cover;
@@ -24,7 +24,7 @@
 }
 
 .login-box {
-  flex: 0.6;
+  flex: 1;
   display: flex;
   justify-content: center;
   align-items: center;
