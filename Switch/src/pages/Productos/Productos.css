@@ -235,9 +235,9 @@ label.text-gray-700 {
   color: #222 !important; 
 }
 
-body.dark-mode label.text-gray-700 {
+/* body.dark-mode label.text-gray-700 {
   color: #f0f0f0 !important;
-}
+} */
 
 .review-card {
   background-color: #ffffff;           
@@ -427,4 +427,7 @@ body.dark-mode label.text-gray-700 {
   margin-bottom: 0.5rem;
 }
 
-
+.producto-info input[type="number"] {
+  color: #000 !important;   /* texto negro en modo claro */
+  background-color: #fff !important;
+}

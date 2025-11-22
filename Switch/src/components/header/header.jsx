@@ -145,7 +145,7 @@ const Header = ({ toggleTheme, darkMode }) => {
           <Navbar.Collapse id="navbarNav">
             <Nav className="me-auto align-items-center">
               <div className="mode-switch d-flex align-items-center me-3">
-                <BsMoon
+                <BsSun
                   className={`mode-icon ${
                     darkMode ? "active text-white" : "inactive text-dark"
                   }`}
@@ -158,7 +158,7 @@ const Header = ({ toggleTheme, darkMode }) => {
                   />
                   <span className="slider"></span>
                 </label>
-                <BsSun
+                <BsMoon
                   className={`mode-icon ${
                     darkMode ? "inactive text-secondary" : "active text-warning"
                   }`}
