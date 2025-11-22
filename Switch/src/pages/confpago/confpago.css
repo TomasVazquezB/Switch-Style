@@ -264,3 +264,8 @@
 .confpago-btn-sec:hover {
   color: var(--btn-sec-text) !important;
 }
+
+.confpago-btn-sec,
+.confpago-btn-sec:hover {
+  color: #ffffff !important;
+}
