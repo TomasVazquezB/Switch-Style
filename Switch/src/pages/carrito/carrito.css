@@ -390,3 +390,20 @@ body.dark-mode .cart-product p,
 body.dark-mode .cart-product input {
   color: #f3f3f3;
 }
+
+/* --- Carrito vacío --- */
+.light-mode .carrito-vacio {
+  color: #000000;
+}
+
+.dark-mode .carrito-vacio {
+  color: #ffffff;
+}
+
+.light-mode .carrito-vacio2 {
+  color: #333333;
+}
+
+.dark-mode .carrito-vacio2 {
+  color: #cccccc;
+}
