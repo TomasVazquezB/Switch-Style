@@ -396,13 +396,13 @@ body.dark-mode .cart-product input {
 }
 
 .dark-mode .carrito-vacio {
-  color: #ffffff !important;
+  color: #000000 !important;
 }
 
 .light-mode .carrito-vacio2 {
-  color: #333333 !important;
+  color: #000000 !important;
 }
 
 .dark-mode .carrito-vacio2 {
-  color: #cccccc !important;
+  color: #000000 !important;
 }
