@@ -208,7 +208,7 @@ const Productos = ({ darkMode }) => {
           alignItems: "start"
         }}
       >
-        <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}>
+        <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem", marginTop: "15px" }}>
           {(productoData.imagenes || []).map((imgItem, index) => {
             const key = String(imgItem?.ruta || "").replace(
               /^https?:\/\/[^/]+\/?/,
