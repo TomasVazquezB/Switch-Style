@@ -330,8 +330,8 @@ body.dark-mode label.text-gray-700 {
 }
 
 /* --- Ajuste para catálogos (MainHombres, MainMujeres, etc.) --- */
-/* NO borrar el padding ya definido arriba */
-.producto-grid-container {
+.producto-grid-container, 
+.content {
   max-width: none !important;
   width: 100% !important;
   margin: 0 !important;
