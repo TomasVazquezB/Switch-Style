@@ -56,7 +56,7 @@ export function RegistroPage() {
             <div className="registro-box">
                 <div className="registro-form">
                     <form onSubmit={handleSubmit}>
-                        <h1 className="bienvenida">cabeza de plomo</h1>
+                        <h1 className="bienvenida">Registrarse</h1>
                         <h3 className="informacion-registro">Registrate para unirte a nuestra comunidad</h3>
 
                         <div className="form-row">

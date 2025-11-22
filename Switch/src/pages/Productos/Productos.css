@@ -340,3 +340,85 @@ body.dark-mode label.text-gray-700 {
   width: 100% !important;
   display: block !important;
 }
+
+/* Contenedor general */
+.content {
+  padding-top: 100px; /* evita que choque con el header */
+  padding-bottom: 40px;
+}
+
+/* FORZAR colores correctos en los textos */
+.producto-info h2,
+.producto-info p,
+.producto-info .precio,
+.producto-info .payment-info,
+.producto-info label,
+.producto-info span {
+  color: #111 !important; /* gris oscuro profesional */
+}
+
+/* Precio */
+.precio {
+  font-size: 1.6rem;
+  font-weight: bold;
+  margin-top: 0.5rem;
+  color: #222 !important;
+}
+
+/* Contenedor de la imagen principal */
+.main-image {
+  width: 100%;
+  height: auto;
+  border-radius: 0.75rem;
+}
+
+/* Miniaturas */
+.thumbnail {
+  border: 2px solid transparent;
+  transition: border 0.2s ease-in-out;
+}
+
+.thumbnail.active {
+  border: 2px solid #000;
+}
+
+/* Tallas */
+.talla-btn {
+  padding: 0.4rem 0.8rem;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  background: white;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  color: #111;
+}
+
+.talla-btn.active {
+  background: #000;
+  color: white;
+  border-color: #000;
+}
+
+/* Tabs */
+.tab-button {
+  padding: 0.6rem 1rem;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: 1rem;
+  color: #555;
+  border-bottom: 2px solid transparent;
+}
+
+.tab-button.active {
+  color: #000;
+  border-bottom: 2px solid #000;
+}
+
+/* Review cards */
+.review-card {
+  padding: 1rem;
+  background: #fafafa;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+}
