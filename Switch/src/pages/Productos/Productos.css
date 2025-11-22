@@ -3,6 +3,8 @@
     padding: 2rem;
     font-family: 'Inter', sans-serif;
     display: block;
+    padding-top: 100px; /* evita que choque con el header */
+    padding-bottom: 40px;
 }
 
 .producto-grid-container {
@@ -341,11 +343,7 @@ body.dark-mode label.text-gray-700 {
   display: block !important;
 }
 
-/* Contenedor general */
-.content {
-  padding-top: 100px; /* evita que choque con el header */
-  padding-bottom: 40px;
-}
+
 
 /* FORZAR colores correctos en los textos */
 .producto-info h2,
