@@ -427,7 +427,6 @@ label.text-gray-700 {
   margin-bottom: 0.5rem;
 }
 
-.producto-info input[type="number"] {
-  color: #000 !important;   /* texto negro en modo claro */
-  background-color: #fff !important;
+input{
+  color: black;
 }
