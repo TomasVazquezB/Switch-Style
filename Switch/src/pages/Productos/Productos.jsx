@@ -287,14 +287,7 @@ const Productos = ({ darkMode }) => {
 
           {tipo.includes("ropa") && productoData.tallas?.length > 0 && (
             <div>
-              <p
-                style={{
-                  fontWeight: 500,
-                  marginBottom: "0.5rem"
-                }}
-              >
-                Tallas disponibles:
-              </p>
+              <p className="titulo-tallas">Tallas disponibles:</p>
               <div
                 style={{
                   display: "flex",

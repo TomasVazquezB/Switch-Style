@@ -330,12 +330,12 @@ body.dark-mode label.text-gray-700 {
 }
 
 /* --- Ajuste para catálogos (MainHombres, MainMujeres, etc.) --- */
-.producto-grid-container,
-.content {
+/* NO borrar el padding ya definido arriba */
+.producto-grid-container {
   max-width: none !important;
   width: 100% !important;
-  padding: 0 !important;
   margin: 0 !important;
+  padding: 0 1rem !important;
 }
 
 .product-card > * {
@@ -419,4 +419,14 @@ body.dark-mode label.text-gray-700 {
   background: #fafafa;
   border-radius: 8px;
   border: 1px solid #ddd;
+}
+
+.titulo-tallas {
+  color: #111 !important;
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+}
+
+.dark .titulo-tallas {
+  color: #fff !important;
 }
