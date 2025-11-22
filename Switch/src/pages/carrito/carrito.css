@@ -391,19 +391,18 @@ body.dark-mode .cart-product input {
   color: #f3f3f3;
 }
 
-/* --- Carrito vacío --- */
 .light-mode .carrito-vacio {
-  color: #000000;
+  color: #000000 !important;
 }
 
 .dark-mode .carrito-vacio {
-  color: #ffffff;
+  color: #ffffff !important;
 }
 
 .light-mode .carrito-vacio2 {
-  color: #333333;
+  color: #333333 !important;
 }
 
 .dark-mode .carrito-vacio2 {
-  color: #cccccc;
+  color: #cccccc !important;
 }
