@@ -1,7 +1,22 @@
 import api from "./axios";
 
+// ==========================
+// NORMALIZAR USUARIO
+// ==========================
 export const guardarUsuario = (usuario, token) => {
-  if (usuario) localStorage.setItem("usuario", JSON.stringify(usuario));
+  if (usuario) {
+
+    const usuarioNormalizado = {
+      id: usuario.id,
+      nombre: usuario.nombre || usuario.name || "Usuario",
+      correo: usuario.correo || usuario.email || "",
+      rol: usuario.rol || usuario.role || "Usuario",
+      token: token || usuario.token || null,
+    };
+
+    localStorage.setItem("usuario", JSON.stringify(usuarioNormalizado));
+  }
+
   if (token) localStorage.setItem("token", token);
 };
 
@@ -12,7 +27,8 @@ export const obtenerUsuario = () => {
 
 export const obtenerToken = () => localStorage.getItem("token");
 
-export const estaAutenticado = () => Boolean(obtenerUsuario() && obtenerToken());
+export const estaAutenticado = () =>
+  Boolean(obtenerUsuario() && obtenerToken());
 
 export const cerrarSesion = async () => {
   try {
@@ -27,7 +43,7 @@ export const cerrarSesion = async () => {
 
 export const login = async (correo, password) => {
   try {
-    const res = await api.post("/login", {correo, password,});
+    const res = await api.post("/login", { correo, password });
 
     const usuario = res.data.user || res.data.usuario || null;
     const token = res.data.token || null;
