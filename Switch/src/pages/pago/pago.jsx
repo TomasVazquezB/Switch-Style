@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { backendApi} from "../../api/axios";
+import { backendApi } from "../../api/axios";
 import { toast } from "react-toastify";
 import { PayPalButtons } from "@paypal/react-paypal-js";
 import { csrf } from "../../api/axios"; // al principio del archivo
@@ -137,82 +137,84 @@ export default function Pago() {
   const { envio, moneda } = payload;
 
   return (
-    <div className="pago-uni-container">
-      <h2 className="confirmarcion-pago">Confirmacion de Pago</h2>
-      <section className="pago-card">
-        <h3 className="direccion-envio">Dirección de envío</h3>
-        <p className="pago-muted">{envio?.nombre} {envio?.apellido} · {envio?.telefono}</p>
-        <p className="pago-muted">{envio?.direccion?.calle} {envio?.direccion?.numero} {envio?.direccion?.pisoDepto ? `, ${envio?.direccion?.pisoDepto}` : ""}</p>
-        <p className="pago-muted">{envio?.direccion?.ciudad}, {envio?.direccion?.provincia} ({envio?.direccion?.codigoPostal})</p>
-        <p className="pago-muted">Entrega: {envio?.entrega?.fecha} · {envio?.entrega?.franja}</p>
-        <button className="pago-btn-link" onClick={() => navigate("/confpago")}>Cambiar datos de envío</button>
-      </section>
+    <div className="pago-page-wrapper">
+      <div className="pago-uni-container">
+        <h2 className="confirmarcion-pago">Confirmacion de Pago</h2>
+        <section className="pago-card">
+          <h3 className="direccion-envio">Dirección de envío</h3>
+          <p className="pago-muted">{envio?.nombre} {envio?.apellido} · {envio?.telefono}</p>
+          <p className="pago-muted">{envio?.direccion?.calle} {envio?.direccion?.numero} {envio?.direccion?.pisoDepto ? `, ${envio?.direccion?.pisoDepto}` : ""}</p>
+          <p className="pago-muted">{envio?.direccion?.ciudad}, {envio?.direccion?.provincia} ({envio?.direccion?.codigoPostal})</p>
+          <p className="pago-muted">Entrega: {envio?.entrega?.fecha} · {envio?.entrega?.franja}</p>
+          <button className="pago-btn-link" onClick={() => navigate("/confpago")}>Cambiar datos de envío</button>
+        </section>
 
-      <section className="pago-card">
-        <h3 className="tus-productos">Tus productos</h3>
-        {payload.carrito.map((item, idx) => {
-          const p = buscarProducto(item);
-          const img = p || item ? getImagen(item, p) : "";
-          const unit = parseFloat(p?.precio ?? 0) || parseFloat(item?.precio ?? 0) || 0;
-          const line = (unit * (item.cantidad || 1)).toFixed(2);
-          return (
-            <div key={idx} className="pago-resumen-item">
-              {img ? <img src={img} alt={p?.titulo || "Producto"} /> : <div className="pago-ph" />}
-              <div className="pago-resumen-info">
-                <div className="pago-tit">{p?.titulo || item?.titulo || "Producto"}</div>
-                <div className="pago-sub"> {moneda}{unit.toFixed(2)} · x{item.cantidad} {item.talla ? ` · Talle ${item.talla}` : ""}</div>
+        <section className="pago-card">
+          <h3 className="tus-productos">Tus productos</h3>
+          {payload.carrito.map((item, idx) => {
+            const p = buscarProducto(item);
+            const img = p || item ? getImagen(item, p) : "";
+            const unit = parseFloat(p?.precio ?? 0) || parseFloat(item?.precio ?? 0) || 0;
+            const line = (unit * (item.cantidad || 1)).toFixed(2);
+            return (
+              <div key={idx} className="pago-resumen-item">
+                {img ? <img src={img} alt={p?.titulo || "Producto"} /> : <div className="pago-ph" />}
+                <div className="pago-resumen-info">
+                  <div className="pago-tit">{p?.titulo || item?.titulo || "Producto"}</div>
+                  <div className="pago-sub"> {moneda}{unit.toFixed(2)} · x{item.cantidad} {item.talla ? ` · Talle ${item.talla}` : ""}</div>
+                </div>
+                <div className="pago-resumen-linea">{moneda}{line}</div>
               </div>
-              <div className="pago-resumen-linea">{moneda}{line}</div>
-            </div>
-          );
-        })}
-      </section>
+            );
+          })}
+        </section>
 
-      <section className="pago-card pago-resumen-unificado">
-        <div className="pago-row">
-          <span className="sub-total">Subtotal</span>
-          <strong>{moneda}{subtotal}</strong>
-        </div>
-        <div className="pago-row">
-          <span className="envio-pago">Envío</span>
-          <span className="pago-muted">Se calculará si aplica</span>
-        </div>
-        <div className="pago-row pago-total">
-          <span className="total-pago">Total</span>
-          <strong>{moneda}{total}</strong>
-        </div>
-      </section>
+        <section className="pago-card pago-resumen-unificado">
+          <div className="pago-row">
+            <span className="sub-total">Subtotal</span>
+            <strong>{moneda}{subtotal}</strong>
+          </div>
+          <div className="pago-row">
+            <span className="envio-pago">Envío</span>
+            <span className="pago-muted">Se calculará si aplica</span>
+          </div>
+          <div className="pago-row pago-total">
+            <span className="total-pago">Total</span>
+            <strong>{moneda}{total}</strong>
+          </div>
+        </section>
 
-      <section className="pago-card">
-        <div className="pago-pay-wrap">
-          <PayPalButtons
-            style={{ layout: "vertical", height: 48, shape: "rect", label: "paypal", tagline: false }}
-            createOrder={createOrder}
-            onApprove={onApprove}
-            onError={onError}
+        <section className="pago-card">
+          <div className="pago-pay-wrap">
+            <PayPalButtons
+              style={{ layout: "vertical", height: 48, shape: "rect", label: "paypal", tagline: false }}
+              createOrder={createOrder}
+              onApprove={onApprove}
+              onError={onError}
+              disabled={loading}
+              forceReRender={[total]}
+            />
+          </div>
+
+          {/* 🧩 Botón de pago simulado */}
+          <button
+            type="button"
+            className="pago-btn-falso"
             disabled={loading}
-            forceReRender={[total]}
-          />
-        </div>
+            onClick={() =>
+              finalizarPedido({
+                metodo: "simulado",
+                external_id: "fake-" + Date.now(),
+                extra: { nota: "Pago simulado para pruebas" },
+              })
+            }
+          >
+            Confirmar pago (simulado)
+          </button>
+        </section>
 
-        {/* 🧩 Botón de pago simulado */}
-        <button
-          type="button"
-          className="pago-btn-falso"
-          disabled={loading}
-          onClick={() =>
-            finalizarPedido({
-              metodo: "simulado",
-              external_id: "fake-" + Date.now(),
-              extra: { nota: "Pago simulado para pruebas" },
-            })
-          }
-        >
-          Confirmar pago (simulado)
-        </button>
-      </section>
-
-      <p className="nota-final">Al confirmar el pago, registraremos tu pedido y lo verás en <b>Mis Pedidos</b></p>
+        <p className="nota-final">Al confirmar el pago, registraremos tu pedido y lo verás en <b>Mis Pedidos</b></p>
+      </div>
     </div>
   );
 }
