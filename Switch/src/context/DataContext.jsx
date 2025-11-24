@@ -30,11 +30,16 @@ export const DataProvider = ({ children }) => {
       const response = await backendApi.post("/login", { email, password });
       const { user, token } = response.data;
 
-      const usuarioNormalizado = normalizarUsuario(user, token);
+      const usuarioNormalizado = {
+        id: user.id,
+        nombre: user.name || "Usuario",
+        correo: user.email,
+        rol: user.rol || "Usuario",
+        token: token,
+      };
 
-      guardarUsuario(usuarioNormalizado, token);
+      guardarUsuario(usuarioNormalizado);
       setUsuario(usuarioNormalizado);
-
       setError(null);
       return true;
 
@@ -66,15 +71,20 @@ export const DataProvider = ({ children }) => {
     try {
       const { data } = await backendApi.get("/usuario");
 
-      const usuarioNormalizado = normalizarUsuario(data, usuario?.token);
-      setUsuario(usuarioNormalizado);
+      const usuarioNormalizado = {
+        id: data.id,
+        nombre: data.name || "Usuario",
+        correo: data.email,
+        rol: data.rol || "Usuario",
+      };
 
-      guardarUsuario(usuarioNormalizado);
+      setUsuario(usuarioNormalizado);
 
     } catch (err) {
       console.error("❌ Error al obtener usuario:", err);
     }
   };
+
 
   // --------------------------
   // PRODUCTOS
