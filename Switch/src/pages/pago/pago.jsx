@@ -4,6 +4,8 @@ import { backendApi } from "../../api/axios";
 import { toast } from "react-toastify";
 import { PayPalButtons } from "@paypal/react-paypal-js";
 import { csrf } from "../../api/axios"; // al principio del archivo
+import { useContext } from "react";
+import { DataContext } from "../../context/DataContext";
 import "./pago.css";
 
 export default function Pago() {
@@ -12,6 +14,17 @@ export default function Pago() {
   const [loading, setLoading] = useState(false);
   const [productos, setProductos] = useState([]);
   const [accesorios, setAccesorios] = useState([]);
+
+  const { usuario } = useContext(DataContext);
+
+  useEffect(() => {
+    if (!usuario) {
+      toast.error("Debes iniciar sesión para pagar");
+      navigate("/login");
+      return;
+    }
+  }, [usuario, navigate]);
+
 
   useEffect(() => {
     const p = JSON.parse(localStorage.getItem("checkout_payload") || "null");
@@ -191,7 +204,7 @@ export default function Pago() {
               createOrder={createOrder}
               onApprove={onApprove}
               onError={onError}
-              disabled={loading}
+              disabled={!usuario || loading}
               forceReRender={[total]}
             />
           </div>
@@ -201,13 +214,20 @@ export default function Pago() {
             type="button"
             className="pago-btn-falso"
             disabled={loading}
-            onClick={() =>
+            onClick={() => {
+              if (!usuario) {
+                toast.error("Debes iniciar sesión para pagar");
+                navigate("/login");
+                return;
+              }
+
               finalizarPedido({
                 metodo: "simulado",
                 external_id: "fake-" + Date.now(),
                 extra: { nota: "Pago simulado para pruebas" },
-              })
-            }
+              });
+            }}
+
           >
             Confirmar pago (simulado)
           </button>

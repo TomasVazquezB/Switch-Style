@@ -2,11 +2,11 @@ import React, { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { publicApi } from '../../api/axios';
-import { useNavigate } from "react-router-dom"; 
+import { useNavigate } from "react-router-dom";
 import './carrito.css';
 
 const Carrito = () => {
-    const navigate = useNavigate(); 
+    const navigate = useNavigate();
 
     const [carritoData, setCarritoData] = useState(() => {
         try {
@@ -57,7 +57,7 @@ const Carrito = () => {
         const producto = buscarProducto(item);
         const tallaData = producto?.tallas?.find(t => t.nombre === item.talla);
 
-        let stockDisponible = producto?.stock || producto?.cantidad || 100; 
+        let stockDisponible = producto?.stock || producto?.cantidad || 100;
         if (tallaData) stockDisponible = tallaData.pivot?.cantidad || 100;
 
         if (nuevaCantidad < 1) return;
@@ -78,14 +78,23 @@ const Carrito = () => {
         setCarritoData(actualizado);
         localStorage.setItem('carrito', JSON.stringify(actualizado));
     };
+    
+    const { usuario } = useContext(DataContext);
 
-     const handleProceedToPayment = () => {
-         if (carritoData.length === 0) {
-             toast.error("Tu carrito está vacío");
-             return;
-         }
-         navigate("/confpago"); 
-     };
+    const handleProceedToPayment = () => {
+        if (carritoData.length === 0) {
+            toast.error("Tu carrito está vacío");
+            return;
+        }
+
+        if (!usuario) {
+            toast.error("Debes iniciar sesión para continuar");
+            navigate("/login");
+            return;
+        }
+
+        navigate("/confpago");
+    };
 
     return (
         <div className="cart-container">
@@ -99,10 +108,10 @@ const Carrito = () => {
                         const producto = buscarProducto(item);
                         if (!producto) return null;
 
-                        const imagen = item.ruta_imagen 
-                            ? item.ruta_imagen 
-                            : producto.ruta_imagen?.startsWith('http') 
-                                ? item.ruta_imagen 
+                        const imagen = item.ruta_imagen
+                            ? item.ruta_imagen
+                            : producto.ruta_imagen?.startsWith('http')
+                                ? item.ruta_imagen
                                 : toImageUrl(producto.ruta_imagen);
                         const talla = item.talla ? ` | ${item.talla}` : '';
 
@@ -110,20 +119,20 @@ const Carrito = () => {
                             <div key={index} className="cart-product">
                                 <br />
                                 <img src={imagen} alt={producto.titulo} />
-                                <br/>
+                                <br />
                                 <div className="cart-product-info">
                                     <h4>{producto.titulo}</h4>
                                     <p>{moneda}{parseFloat(producto.precio).toFixed(2)}{talla}</p>
                                     <div className="cart-qty-controls">
                                         <button onClick={() => actualizarCantidad(index, item.cantidad - 1)}>-</button>
-                                        <input 
-                                            type="number" 
-                                            value={item.cantidad} 
-                                            min="1" 
-                                            onChange={(e) => actualizarCantidad(index, parseInt(e.target.value))} 
+                                        <input
+                                            type="number"
+                                            value={item.cantidad}
+                                            min="1"
+                                            onChange={(e) => actualizarCantidad(index, parseInt(e.target.value))}
                                         />
                                         <button onClick={() => actualizarCantidad(index, item.cantidad + 1)}>+</button>
-                                        <br/>
+                                        <br />
                                     </div>
                                 </div>
                                 <br />
@@ -136,16 +145,16 @@ const Carrito = () => {
 
             <div className="order-summary">
                 <h3>Resumen de la Compra</h3>
-                <br/>
+                <br />
                 <div className="summary-line">
                     <span>Subtotal</span>
                     <span>{moneda}{calcularTotal()}</span>
                 </div>
                 <div className="total">
-                     <span className="total-label">Total</span>
-                     <span className="total-amount">{moneda}{calcularTotal()}</span>
+                    <span className="total-label">Total</span>
+                    <span className="total-amount">{moneda}{calcularTotal()}</span>
                 </div>
-                     <button className="buttom-pago" onClick={handleProceedToPayment}>Proceder al Pago 💰</button> 
+                <button className="buttom-pago" onClick={handleProceedToPayment}>Proceder al Pago 💰</button>
             </div>
         </div>
     );

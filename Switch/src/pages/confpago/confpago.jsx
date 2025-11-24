@@ -83,8 +83,16 @@ export default function ConfPago() {
     return true;
   };
 
+  const { usuario } = useContext(DataContext);
+
   const continuarAPago = () => {
     if (!validar()) return;
+
+    if (!usuario) {
+      toast.error("Debes iniciar sesión para continuar");
+      navigate("/login");
+      return;
+    }
 
     const payload = {
       envio: {
