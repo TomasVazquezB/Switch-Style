@@ -30,9 +30,17 @@ export function LoginPage() {
 
       const user = response.data.user;
 
+      console.log("USER DEL BACK:", user);
+
       const usuarioNormalizado = {
         id: user.id,
-        nombre: user.name || "Usuario",
+        nombre:
+          user.name ||
+          user.nombre ||
+          user.username ||
+          user.nombre_completo ||
+          user.Nombre ||
+          "Usuario",
         correo: user.email,
         rol: user.rol || "Usuario",
       };
