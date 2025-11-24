@@ -10,35 +10,30 @@ import { BsMoon, BsSun } from "react-icons/bs";
 import { DataContext } from "../../context/DataContext";
 
 const Header = ({ toggleTheme, darkMode }) => {
-  const [usuario, setUsuario] = useState(null);
+  const { usuario, logout, productos } = useContext(DataContext);
+
   const [showProfileMenu, setShowProfileMenu] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [showSuggestions, setShowSuggestions] = useState(false);
+
   const navigate = useNavigate();
   const location = useLocation();
-  const { productos } = useContext(DataContext);
 
+  // --------------------------------------------
+  // Cerrar menú al cambiar de ruta
+  // --------------------------------------------
   useEffect(() => {
-    const actualizarUsuario = () => {
-      const userData = localStorage.getItem("usuario");
-      setUsuario(userData ? JSON.parse(userData) : null);
-    };
-    actualizarUsuario();
-    window.addEventListener("usuario-actualizado", actualizarUsuario);
-    return () => {
-      window.removeEventListener("usuario-actualizado", actualizarUsuario);
-    };
-  }, []);
-
-  useEffect(() => {
-    setSearchQuery("");
     setShowProfileMenu(false);
+    setSearchQuery("");
   }, [location.pathname]);
 
+  // --------------------------------------------
+  // Cerrar menú al hacer click fuera
+  // --------------------------------------------
   useEffect(() => {
     const handleClickOutside = (event) => {
-      const profileContainer = document.querySelector(".profile-container");
-      if (profileContainer && !profileContainer.contains(event.target)) {
+      const profileMenu = document.querySelector(".profile-container");
+      if (profileMenu && !profileMenu.contains(event.target)) {
         setShowProfileMenu(false);
       }
     };
@@ -50,16 +45,14 @@ const Header = ({ toggleTheme, darkMode }) => {
     e.preventDefault();
     if (!searchQuery.trim()) return;
 
-    const producto = productos.find(
-      (p) =>
-        p.titulo &&
-        p.titulo.toLowerCase() === searchQuery.trim().toLowerCase()
+    const match = productos.find(
+      (p) => p.titulo && p.titulo.toLowerCase() === searchQuery.toLowerCase()
     );
 
-    if (producto) {
-      const tipo = producto.tipo?.toLowerCase();
-      if (tipo === "accesorios") navigate(`/producto/accesorios/${producto.id}`);
-      else navigate(`/producto/ropa/${producto.id}`);
+    if (match) {
+      const tipo = match.tipo?.toLowerCase();
+      if (tipo === "accesorios") navigate(`/producto/accesorios/${match.id}`);
+      else navigate(`/producto/ropa/${match.id}`);
     }
 
     setSearchQuery("");
@@ -71,31 +64,24 @@ const Header = ({ toggleTheme, darkMode }) => {
     const tipo = p.tipo?.toLowerCase();
     if (tipo === "accesorios") navigate(`/producto/accesorios/${p.id}`);
     else navigate(`/producto/ropa/${p.id}`);
-    setSearchQuery("");
     setShowSuggestions(false);
+    setSearchQuery("");
   };
 
   const goToCart = () => navigate("/carrito");
 
-  const handleProfileClick = () =>
-    setShowProfileMenu((prev) => !prev);
-
-  const handleLogout = () => {
-    localStorage.removeItem("usuario");
-    setUsuario(null);
-    setShowProfileMenu(false);
-    navigate("/login");
+  const handleProfileClick = () => {
+    if (!usuario) navigate("/login");
+    else setShowProfileMenu((prev) => !prev);
   };
 
   const handleGoToPanel = () => {
-    const userData = JSON.parse(localStorage.getItem("usuario"));
-    const token = userData?.token;
+    const token = usuario?.token;
     if (!token) {
       window.location.href = "https://switchstyle.laravel.cloud/login";
       return;
     }
-    const panelUrl = `https://switchstyle.laravel.cloud/auto-login?token=${token}`;
-    window.location.href = panelUrl;
+    window.location.href = `https://switchstyle.laravel.cloud/auto-login?token=${token}`;
   };
 
   const getLinkClass = (isActive) =>
@@ -200,6 +186,7 @@ const Header = ({ toggleTheme, darkMode }) => {
               </Nav.Link>
             </Nav>
 
+            {/* ======================= BUSCADOR ======================= */}
             <div className="search-bar" style={{ position: "relative" }}>
               <form className="search-form" onSubmit={handleSearch}>
                 <input
@@ -235,9 +222,7 @@ const Header = ({ toggleTheme, darkMode }) => {
                         onClick={() => handleSuggestionClick(p)}
                       >
                         <div className="suggestion-info">
-                          <span className="suggestion-title">
-                            {p.titulo}
-                          </span>
+                          <span className="suggestion-title">{p.titulo}</span>
                           <span className="suggestion-price">
                             ${p.precio || p.Precio}
                           </span>
@@ -249,6 +234,7 @@ const Header = ({ toggleTheme, darkMode }) => {
               </form>
             </div>
 
+            {/* ======================= CARRITO ======================= */}
             <Nav.Link onClick={goToCart} className="carrito">
               <FaShoppingCart
                 size={21}
@@ -258,15 +244,12 @@ const Header = ({ toggleTheme, darkMode }) => {
               />
             </Nav.Link>
 
+            {/* ======================= PERFIL ======================= */}
             <Nav className="ms-auto">
               <div className="profile-container">
                 <Nav.Link
                   as="div"
-                  onClick={
-                    usuario
-                      ? handleProfileClick
-                      : () => navigate("/login")
-                  }
+                  onClick={handleProfileClick}
                   className="login-buttom"
                   style={{ cursor: "pointer" }}
                 >
@@ -285,26 +268,24 @@ const Header = ({ toggleTheme, darkMode }) => {
                     <div className="px-4 py-2 border-b text-sm">
                       Hola {usuario.nombre}
                     </div>
-                    <NavLink
-                      to="/pedidos"
-                      className="profile-link"
-                    >
+
+                    <NavLink to="/pedidos" className="profile-link">
                       Mis pedidos
                     </NavLink>
-                    <NavLink
-                      to="/favoritos"
-                      className="profile-link"
-                    >
+
+                    <NavLink to="/favoritos" className="profile-link">
                       Mis favoritos
                     </NavLink>
+
                     <button
                       onClick={handleGoToPanel}
                       className="profile-link w-100 text-left"
                     >
                       Panel de Productos
                     </button>
+
                     <button
-                      onClick={handleLogout}
+                      onClick={logout}
                       className="profile-link w-100 text-left"
                     >
                       Cerrar sesión
