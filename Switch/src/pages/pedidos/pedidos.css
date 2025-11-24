@@ -1,3 +1,20 @@
+:root {
+  --bg: #f9fafb;
+  --card: #ffffff;
+  --text: #111827;
+  --text-muted: #6b7280;
+  --accent: #2563eb;
+}
+
+/* 🌙 MODO OSCURO NEUTRO — SIN TONOS AZULES */
+.dark-mode {
+  --bg: #121212;            /* fondo general */
+  --card: #1e1e1e;          /* tarjeta */
+  --text: #f5f5f5;          /* texto principal */
+  --text-muted: #b5b5b5;    /* texto secundario */
+  --accent: #3b82f6;        /* si deseas mantener enlaces azules */
+}
+
 /* CONTENEDOR GENERAL */
 .mis-pedidos-container {
   background-color: var(--bg);
