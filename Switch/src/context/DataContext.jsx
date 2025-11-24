@@ -32,11 +32,12 @@ export const DataProvider = ({ children }) => {
 
       const usuarioNormalizado = {
         id: user.id,
-        nombre: user.name || "Usuario",
-        correo: user.email,
-        rol: user.rol || "Usuario",
+        nombre: user.nombre || user.name || "Usuario",
+        correo: user.email || user.correo,
+        rol: user.rol || user.role || "Usuario",
         token: token,
       };
+
 
       guardarUsuario(usuarioNormalizado);
       setUsuario(usuarioNormalizado);
@@ -73,17 +74,20 @@ export const DataProvider = ({ children }) => {
 
       const usuarioNormalizado = {
         id: data.id,
-        nombre: data.name || "Usuario",
-        correo: data.email,
-        rol: data.rol || "Usuario",
+        nombre: data.nombre || data.name || "Usuario",
+        correo: data.email || data.correo,
+        rol: data.rol || data.role || "Usuario",
+        token: obtenerUsuario()?.token || null,
       };
 
       setUsuario(usuarioNormalizado);
+      guardarUsuario(usuarioNormalizado);
 
     } catch (err) {
       console.error("❌ Error al obtener usuario:", err);
     }
   };
+
 
 
   // --------------------------
