@@ -71,9 +71,20 @@ export const DataProvider = ({ children }) => {
   const fetchUsuario = async () => {
     try {
       const { data } = await backendApi.get("/usuario");
-      const usuarioNormalizado = normalizarUsuario(data, obtenerUsuario()?.token);
+
+      const usuarioLocal = obtenerUsuario();
+
+      const usuarioNormalizado = {
+        id: data.id ?? usuarioLocal?.id,
+        nombre: data.nombre || data.name || usuarioLocal?.nombre || "Usuario",
+        correo: data.email || data.correo || usuarioLocal?.correo,
+        rol: data.rol || data.role || usuarioLocal?.rol || "Usuario",
+        token: usuarioLocal?.token ?? null,
+      };
+
       setUsuario(usuarioNormalizado);
       guardarUsuario(usuarioNormalizado);
+
     } catch (err) {
       console.error("❌ Error al obtener usuario:", err);
     }
