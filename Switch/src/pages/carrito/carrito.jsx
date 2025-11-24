@@ -4,6 +4,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import { publicApi } from '../../api/axios';
 import { useNavigate } from "react-router-dom";
 import { useContext } from "react";
+import { DataContext } from "../../context/DataContext";
 import './carrito.css';
 
 const Carrito = () => {
