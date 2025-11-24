@@ -3,6 +3,7 @@ import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { publicApi } from '../../api/axios';
 import { useNavigate } from "react-router-dom";
+import { useContext } from "react";
 import './carrito.css';
 
 const Carrito = () => {
@@ -78,7 +79,7 @@ const Carrito = () => {
         setCarritoData(actualizado);
         localStorage.setItem('carrito', JSON.stringify(actualizado));
     };
-    
+
     const { usuario } = useContext(DataContext);
 
     const handleProceedToPayment = () => {
@@ -95,6 +96,7 @@ const Carrito = () => {
 
         navigate("/confpago");
     };
+
 
     return (
         <div className="cart-container">

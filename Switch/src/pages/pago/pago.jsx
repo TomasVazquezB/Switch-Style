@@ -204,7 +204,7 @@ export default function Pago() {
               createOrder={createOrder}
               onApprove={onApprove}
               onError={onError}
-              disabled={!usuario || loading}
+              disabled={loading}
               forceReRender={[total]}
             />
           </div>
@@ -214,20 +214,13 @@ export default function Pago() {
             type="button"
             className="pago-btn-falso"
             disabled={loading}
-            onClick={() => {
-              if (!usuario) {
-                toast.error("Debes iniciar sesión para pagar");
-                navigate("/login");
-                return;
-              }
-
+            onClick={() =>
               finalizarPedido({
                 metodo: "simulado",
                 external_id: "fake-" + Date.now(),
                 extra: { nota: "Pago simulado para pruebas" },
-              });
-            }}
-
+              })
+            }
           >
             Confirmar pago (simulado)
           </button>

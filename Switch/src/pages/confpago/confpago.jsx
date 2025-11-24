@@ -3,6 +3,9 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "./confpago.css";
+import { useContext } from "react";
+import { DataContext } from "../../context/DataContext";
+
 
 const emptyForm = {
   nombre: "",
