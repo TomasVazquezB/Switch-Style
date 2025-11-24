@@ -43,12 +43,8 @@ export function LoginPage() {
 
       alert(`Bienvenido ${usuarioNormalizado.nombre}`);
 
-      if (usuarioNormalizado.rol === "Admin") {
-        window.location.href = "https://switchstyle.laravel.cloud/inicio";
-      } else {
-        navigate("/");
-        setTimeout(() => window.location.reload(), 300);
-      }
+      navigate("/");
+      setTimeout(() => window.location.reload(), 300);
 
     } catch (err) {
       console.error("Error al iniciar sesión:", err);
