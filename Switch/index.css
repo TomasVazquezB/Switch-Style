@@ -36,7 +36,6 @@ body {
 
 .app-content {
   flex-grow: 1;
-  background: transparent !important;
 }
 
 :root {
