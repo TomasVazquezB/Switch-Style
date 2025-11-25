@@ -169,13 +169,7 @@ body.light-mode .text-gray-600 {
   color: #000000 !important;
 }
 
-.todo-espaciado{
-  min-height: 100vh;
-}
 
-body {
-    min-height: 100vh;
-}
 
 .favoritos-page {
     min-height: calc(100vh - 0px);
