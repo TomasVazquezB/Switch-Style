@@ -1,5 +1,5 @@
 .container-quienessomos {
-  min-height: 100vh;
+  min-height: 10vh;
   padding: 0;
   text-align: center;
   transition: background-color 0.4s ease, color 0.4s ease;
@@ -21,7 +21,6 @@
   max-width: 1300px;
   margin: 0 auto;
   padding: 20px;
-  
 }
 
 .quienessomos {
