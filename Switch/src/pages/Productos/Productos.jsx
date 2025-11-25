@@ -146,6 +146,16 @@ const Productos = ({ darkMode }) => {
 
   const handleAgregarAlCarrito = () => {
     if (!productoData) return;
+
+    // 1. Validar login
+    const user = usuario || JSON.parse(localStorage.getItem("user"));
+    if (!user || !user.id) {
+      toast.error("Debes iniciar sesión para agregar al carrito");
+      navigate("/login");
+      return;
+    }
+
+    // 2. Validaciones normales
     if (!talla && tipo.includes("ropa")) {
       toast.error("Seleccione una talla");
       return;
@@ -155,6 +165,7 @@ const Productos = ({ darkMode }) => {
       return;
     }
 
+    // 3. Imagen
     const key = productoData?.imagenes?.[0]?.ruta || imgKey || "";
     const imgUrl = toImageUrl(key);
 
@@ -167,14 +178,18 @@ const Productos = ({ darkMode }) => {
       cantidad
     };
 
+    // 4. Carrito personal por usuario
+    const carritoKey = `carrito_${user.id}`;
+
     let carritoExistente = [];
     try {
-      const guardado = JSON.parse(localStorage.getItem("carrito"));
+      const guardado = JSON.parse(localStorage.getItem(carritoKey));
       carritoExistente = Array.isArray(guardado) ? guardado : [];
     } catch {
       carritoExistente = [];
     }
 
+    // 5. Si ya existe el mismo item, sumar cantidad
     const index = carritoExistente.findIndex(
       (item) =>
         item.producto_id === nuevoItem.producto_id &&
@@ -187,7 +202,9 @@ const Productos = ({ darkMode }) => {
       carritoExistente.push(nuevoItem);
     }
 
-    localStorage.setItem("carrito", JSON.stringify(carritoExistente));
+    // 6. Guardar
+    localStorage.setItem(carritoKey, JSON.stringify(carritoExistente));
+
     toast.success("Producto agregado al carrito");
     setTimeout(() => navigate("/carrito"), 800);
   };
