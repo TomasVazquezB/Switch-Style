@@ -101,7 +101,7 @@ const Favoritos = () => {
   // Estado de carga
   if (loading) {
     return (
-      <div className="favoritos-page text-center mt-16 todo-espaciado">
+      <div className="favoritos-page text-center mt-16">
         <h2 className="favoritos-2">Favoritos</h2>
         <p className="text-gray-500 text-lg">Verificando tu sesión...</p>
       </div>
