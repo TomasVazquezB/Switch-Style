@@ -5,7 +5,6 @@
   transition: background-color 0.4s ease, color 0.4s ease;
   background-color: #ffffff; 
   color: #1e1e1e; 
-  
 }
 
 .container-quienessomos.light-mode {
@@ -22,7 +21,7 @@
   max-width: 1300px;
   margin: 0 auto;
   padding: 20px;
-  padding-top: 60px;
+  
 }
 
 .quienessomos {
