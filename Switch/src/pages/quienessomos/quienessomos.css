@@ -5,7 +5,7 @@
   transition: background-color 0.4s ease, color 0.4s ease;
   background-color: #ffffff; 
   color: #1e1e1e; 
-  z-index: 1;
+  
 }
 
 .container-quienessomos.light-mode {
