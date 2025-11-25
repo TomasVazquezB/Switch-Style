@@ -171,8 +171,4 @@ body.light-mode .text-gray-600 {
 
 .loading-state {
   min-height: 100vh;      /* cubre toda la pantalla */
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
 }
