@@ -1,14 +1,11 @@
 .container-quienessomos {
   min-height: 100vh;
-  position: relative;
-  background: #fff;
   padding: 0;
   text-align: center;
   transition: background-color 0.4s ease, color 0.4s ease;
-  background-color: var(--color-fondo);
+  background-color: #ffffff; 
   color: #1e1e1e; 
   z-index: 1;
-  border: 3px solid red !important;
 }
 
 .container-quienessomos.light-mode {
@@ -159,12 +156,4 @@ body.light-mode .info {
   .quienessomos {
     font-size: 2.2em;
   }
-}
-
-body.light {
-  background-color: #ffffff;
-}
-
-body.dark {
-  background-color: #121212;
 }
