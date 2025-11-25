@@ -140,7 +140,8 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 70vh;
+  min-height: 100vh;   /* ocupará TODA la pantalla */
+  padding: 2rem;
   text-align: center;
   transition: all 0.3s ease;
 }
