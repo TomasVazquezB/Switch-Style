@@ -85,27 +85,25 @@ const Header = ({ toggleTheme, darkMode }) => {
   };
 
   const getLinkClass = (isActive) =>
-    `nav-link ${darkMode ? "text-white" : "text-dark"} ${
-      isActive ? "active-link" : ""
+    `nav-link ${darkMode ? "text-white" : "text-dark"} ${isActive ? "active-link" : ""
     }`;
 
   const filteredSuggestions =
     searchQuery.length > 0
       ? productos
-          .filter((p) =>
-            `${p.titulo || ""} ${p.tipo || ""} ${p.descripcion || ""}`
-              .toLowerCase()
-              .includes(searchQuery.toLowerCase())
-          )
-          .slice(0, 5)
+        .filter((p) =>
+          `${p.titulo || ""} ${p.tipo || ""} ${p.descripcion || ""}`
+            .toLowerCase()
+            .includes(searchQuery.toLowerCase())
+        )
+        .slice(0, 5)
       : [];
 
   return (
     <>
       <div
-        className={`offer-bar ${
-          darkMode ? "bg-dark text-white" : "bg-light text-dark"
-        } text-center pt-2 pb-1`}
+        className={`offer-bar ${darkMode ? "bg-dark text-white" : "bg-light text-dark"
+          } text-center pt-2 pb-1`}
       >
         <p className="offer-bar-text">
           ¡Registrate para obtener ofertas únicas y obtené un 15% en tu primer compra!
@@ -132,9 +130,8 @@ const Header = ({ toggleTheme, darkMode }) => {
             <Nav className="me-auto align-items-center">
               <div className="mode-switch d-flex align-items-center me-3">
                 <BsSun
-                  className={`mode-icon ${
-                    darkMode ? "active text-white" : "inactive text-dark"
-                  }`}
+                  className={`mode-icon ${darkMode ? "active text-white" : "inactive text-dark"
+                    }`}
                 />
                 <label className="switch mx-2">
                   <input
@@ -145,9 +142,8 @@ const Header = ({ toggleTheme, darkMode }) => {
                   <span className="slider"></span>
                 </label>
                 <BsMoon
-                  className={`mode-icon ${
-                    darkMode ? "inactive text-secondary" : "active text-warning"
-                  }`}
+                  className={`mode-icon ${darkMode ? "inactive text-secondary" : "active text-warning"
+                    }`}
                 />
               </div>
             </Nav>
@@ -198,22 +194,18 @@ const Header = ({ toggleTheme, darkMode }) => {
                     setShowSuggestions(true);
                   }}
                   onFocus={() => setShowSuggestions(true)}
-                  onBlur={() =>
-                    setTimeout(() => setShowSuggestions(false), 150)
-                  }
-                  className={`search-input ${
-                    darkMode ? "bg-dark text-white" : "bg-light text-dark"
-                  }`}
+                  onBlur={() => setTimeout(() => setShowSuggestions(false), 150)}
+                  className="search-input"
                 />
+
                 <button type="submit" className="search-icon-btn">
                   <FaSearch size={18} />
                 </button>
 
                 {showSuggestions && filteredSuggestions.length > 0 && (
                   <div
-                    className={`search-suggestions ${
-                      darkMode ? "dark" : "light"
-                    }`}
+                    className={`search-suggestions ${darkMode ? "dark" : "light"
+                      }`}
                   >
                     {filteredSuggestions.map((p) => (
                       <div
@@ -238,9 +230,8 @@ const Header = ({ toggleTheme, darkMode }) => {
             <Nav.Link onClick={goToCart} className="carrito">
               <FaShoppingCart
                 size={21}
-                className={`navbar-icon ${
-                  darkMode ? "text-white" : "text-dark"
-                }`}
+                className={`navbar-icon ${darkMode ? "text-white" : "text-dark"
+                  }`}
               />
             </Nav.Link>
 
@@ -261,9 +252,8 @@ const Header = ({ toggleTheme, darkMode }) => {
 
                 {usuario && showProfileMenu && (
                   <div
-                    className={`profile-menu ${
-                      darkMode ? "bg-dark text-white" : "bg-light text-dark"
-                    }`}
+                    className={`profile-menu ${darkMode ? "bg-dark text-white" : "bg-light text-dark"
+                      }`}
                   >
                     <div className="px-4 py-2 border-b text-sm">
                       Hola {usuario.nombre}
