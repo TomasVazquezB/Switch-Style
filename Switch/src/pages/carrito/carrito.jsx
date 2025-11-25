@@ -7,19 +7,30 @@ import { useContext } from "react";
 import { DataContext } from "../../context/DataContext";
 import './carrito.css';
 
+const getCartKey = (usuario) => {
+    if (!usuario?.id) return "carrito_guest";
+    return `carrito_${usuario.id}`;
+};
+
+
 const Carrito = () => {
     const navigate = useNavigate();
 
-    const [carritoData, setCarritoData] = useState(() => {
+    const { usuario } = useContext(DataContext);
+
+    const [carritoData, setCarritoData] = useState([]);
+
+    useEffect(() => {
+        const key = getCartKey(usuario);
         try {
-            const saved = localStorage.getItem('carrito');
+            const saved = localStorage.getItem(key);
             const parsed = saved ? JSON.parse(saved) : [];
-            return Array.isArray(parsed) ? parsed : [];
-        } catch (error) {
-            console.error("Error al parsear carrito:", error);
-            return [];
+            setCarritoData(Array.isArray(parsed) ? parsed : []);
+        } catch {
+            setCarritoData([]);
         }
-    });
+    }, [usuario]);
+
 
     const [productos, setProductos] = useState([]);
     const [accesorios, setAccesorios] = useState([]);
@@ -71,17 +82,17 @@ const Carrito = () => {
         const actualizado = [...carritoData];
         actualizado[index].cantidad = nuevaCantidad;
         setCarritoData(actualizado);
-        localStorage.setItem('carrito', JSON.stringify(actualizado));
+        localStorage.setItem(getCartKey(usuario), JSON.stringify(actualizado));
     };
 
     const eliminarProducto = (index) => {
         const actualizado = [...carritoData];
         actualizado.splice(index, 1);
         setCarritoData(actualizado);
-        localStorage.setItem('carrito', JSON.stringify(actualizado));
+        localStorage.setItem(getCartKey(usuario), JSON.stringify(actualizado));
     };
 
-    const { usuario } = useContext(DataContext);
+    
 
     const handleProceedToPayment = () => {
         if (carritoData.length === 0) {
