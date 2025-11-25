@@ -1,9 +1,9 @@
-.light-mode body {
+body.light-mode {
   background-color: #ffffff; 
   color: #111827;
 }
 
-.dark-mode body {
+body.dark-mode {
   background-color: #000000; 
   color: #ffffff;
 }
@@ -169,9 +169,6 @@ body.light-mode .text-gray-600 {
   color: #000000 !important;
 }
 
-.loading-state {
-  min-height: 100vh;      /* cubre toda la pantalla */
-  display: flex;
-  justify-content: center;
-  align-items: center;
+.todo-espaciado{
+  min-height: 100vh;
 }
