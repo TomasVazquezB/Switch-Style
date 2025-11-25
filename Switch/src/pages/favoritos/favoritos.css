@@ -1,10 +1,10 @@
 body.light-mode {
-  background-color: #ffffff; 
+  background-color: #ffffff;
   color: #111827;
 }
 
 body.dark-mode {
-  background-color: #000000; 
+  background-color: #000000;
   color: #ffffff;
 }
 
@@ -27,16 +27,16 @@ body.dark-mode {
 .favoritos-page-title a,
 .favoritos-page-price a {
   text-decoration: none !important;
-  color: inherit; 
+  color: inherit;
 }
 
 .light-mode .favoritos-page {
-  background-color: #ffffff; 
+  background-color: #ffffff;
   color: #111827;
 }
 
 .dark-mode .favoritos-page {
-  background-color: #121212; 
+  background-color: #121212;
   color: #ffffff;
 }
 
@@ -99,7 +99,7 @@ body.dark-mode {
 
 .favoritos-page-title,
 .favoritos-page-price {
-  text-decoration: none; 
+  text-decoration: none;
 }
 
 .favoritos-page-title {
@@ -169,13 +169,13 @@ body.light-mode .text-gray-600 {
   color: #000000 !important;
 }
 
-
-
 .favoritos-page {
-    min-height: calc(100vh - 0px);
-    width: 100%;
-    background-color: #000;
-    position: relative;
-    z-index: 0;
-    padding-top: 40px; /* si querés espacio debajo del header */
+  min-height: auto !important;
+  height: auto !important;
+  width: 100%;
+  background-color: #000;
+  position: relative;
+  z-index: 0;
+  padding-top: 40px;
+  /* si querés espacio debajo del header */
 }
