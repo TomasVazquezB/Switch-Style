@@ -516,3 +516,13 @@ body.dark-mode .suggestion-item:hover {
 .dark-mode .suggestion-price {
   color: #ffffff;
 }
+
+.search-form {
+  border-radius: 30px !important;
+  background-color: inherit !important;
+}
+
+.search-input {
+  background-color: inherit !important;
+  border-radius: 30px !important;
+}
