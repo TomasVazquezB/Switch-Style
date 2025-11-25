@@ -172,3 +172,7 @@ body.light-mode .text-gray-600 {
 .todo-espaciado{
   min-height: 100vh;
 }
+
+body {
+    min-height: 100vh;
+}
