@@ -172,7 +172,7 @@ body.light-mode .text-gray-600 {
 
 
 .favoritos-page {
-    min-height: calc(100vh - 0px);
+    min-height: 71vh;
     width: 100%;
     background-color: #000;
     position: relative;
