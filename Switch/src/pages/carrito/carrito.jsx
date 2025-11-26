@@ -20,6 +20,8 @@ const Carrito = () => {
 
     const [carritoData, setCarritoData] = useState([]);
 
+    const [cargando, setCargando] = useState(true);
+
     useEffect(() => {
         const key = getCartKey(usuario);
         try {
@@ -45,6 +47,7 @@ const Carrito = () => {
                 ]);
                 setProductos(ropaRes.data);
                 setAccesorios(accesoriosRes.data);
+                setCargando(false);   // ✔ FIN DE CARGA
             } catch (error) {
                 console.error("Error al obtener productos o accesorios:", error);
             }
@@ -116,7 +119,9 @@ const Carrito = () => {
         navigate("/confpago");
     };
 
-    
+    if (cargando) {
+        return <div className="cart-container"><p>Cargando productos...</p></div>;
+    }
 
     return (
         <div className="cart-container">
@@ -129,9 +134,14 @@ const Carrito = () => {
                     carritoData.map((item, index) => {
                         const producto = buscarProducto(item);
                         if (!producto) {
+                            // ❌ Si todavía no cargaron productos del backend, NO mostrar error
+                            if (cargando) return null;
+
+                            // ✔ Solo mostrar error si realmente no existe
                             toast.error("Hay productos que ya no están disponibles. Actualiza tu carrito.");
                             return null;
                         }
+
 
                         const imagen = item.ruta_imagen
                             ? item.ruta_imagen
