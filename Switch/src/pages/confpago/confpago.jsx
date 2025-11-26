@@ -26,9 +26,17 @@ const emptyForm = {
 export default function ConfPago() {
   const navigate = useNavigate();
 
+  const { usuario } = useContext(DataContext);
+
+  const getCartKey = (usuario) => {
+    if (!usuario?.id) return "carrito_guest";
+    return `carrito_${usuario.id}`;
+  };
+
   const [carrito] = useState(() => {
     try {
-      const saved = localStorage.getItem("carrito");
+      const key = getCartKey(usuario);
+      const saved = localStorage.getItem(key);
       const parsed = saved ? JSON.parse(saved) : [];
       return Array.isArray(parsed) ? parsed : [];
     } catch {
@@ -86,7 +94,6 @@ export default function ConfPago() {
     return true;
   };
 
-  const { usuario } = useContext(DataContext);
 
   const continuarAPago = () => {
     if (!validar()) return;
