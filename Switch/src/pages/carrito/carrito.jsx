@@ -92,7 +92,7 @@ const Carrito = () => {
         localStorage.setItem(getCartKey(usuario), JSON.stringify(actualizado));
     };
 
-    
+
 
     const handleProceedToPayment = () => {
         if (carritoData.length === 0) {
@@ -104,6 +104,13 @@ const Carrito = () => {
             toast.error("Debes iniciar sesión para continuar");
             navigate("/login");
             return;
+        }
+        for (const item of carritoData) {
+            const p = buscarProducto(item);
+            if (!p) {
+                toast.error("Tu carrito contiene productos inexistentes o sin stock. Revísalo.");
+                return;
+            }
         }
 
         navigate("/confpago");
@@ -120,7 +127,10 @@ const Carrito = () => {
                 ) : (
                     carritoData.map((item, index) => {
                         const producto = buscarProducto(item);
-                        if (!producto) return null;
+                        if (!producto) {
+                            toast.error("Hay productos que ya no están disponibles. Actualiza tu carrito.");
+                            return null;
+                        }
 
                         const imagen = item.ruta_imagen
                             ? item.ruta_imagen

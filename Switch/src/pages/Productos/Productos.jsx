@@ -171,6 +171,7 @@ const Productos = ({ darkMode }) => {
 
     const nuevoItem = {
       producto_id: productoData.id,
+      tipo: tipo.includes("accesorio") ? "accesorio" : "ropa",   // <- FIX
       titulo: productoData.titulo,
       precio: productoData.precio,
       ruta_imagen: imgUrl,
