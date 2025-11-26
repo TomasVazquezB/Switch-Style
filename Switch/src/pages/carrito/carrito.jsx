@@ -116,19 +116,7 @@ const Carrito = () => {
         navigate("/confpago");
     };
 
-    // 🚨 DETECCIÓN GLOBAL DE ITEMS INEXISTENTES
-    const itemsInvalidos = carritoData.some((item) => !buscarProducto(item));
-
-    if (itemsInvalidos) {
-        return (
-            <div className="cart-container">
-                <h2 style={{ color: "red", textAlign: "center", marginTop: "30px" }}>
-                    Hay productos que ya no están disponibles. Por favor actualiza tu carrito.
-                </h2>
-            </div>
-        );
-    }
-
+    
 
     return (
         <div className="cart-container">
