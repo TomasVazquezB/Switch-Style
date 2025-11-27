@@ -23,6 +23,7 @@
 
 .offer-bar-text {
   transition: color 0.3s ease;
+  margin-top: 8px;
 }
 
 .dark-mode .offer-bar-text {
