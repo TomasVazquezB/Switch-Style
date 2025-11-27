@@ -158,7 +158,6 @@
 
 /* ----------- MODO OSCURO ----------- */
 body.dark-mode .content {
-    background-color: #111;
     color: #f5f5f5;
 }
 
