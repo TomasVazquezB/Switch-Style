@@ -275,6 +275,7 @@ body.dark-mode .sidebar input[type="range"]::-moz-range-thumb {
   flex: 1;
   box-sizing: border-box;
   padding: 0 24px 0 0;
+  margin-bottom: 30px;
 }
 
 /* =========================
