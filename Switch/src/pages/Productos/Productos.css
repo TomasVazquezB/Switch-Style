@@ -430,3 +430,11 @@ label.text-gray-700 {
 input{
   color: black;
 }
+
+/* SOLO catálogos */
+.catalog {
+  max-width: none !important;
+  width: 100% !important;
+  margin: 0 !important;
+  padding: 0 1rem !important;
+}

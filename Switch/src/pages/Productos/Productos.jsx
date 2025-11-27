@@ -215,7 +215,7 @@ const Productos = ({ darkMode }) => {
   if (!productoData) return <div className="content">Cargando producto...</div>;
 
   return (
-    <div className={`content ${darkMode ? "dark" : ""}`}>
+    <div className={`content catalog ${darkMode ? "dark" : ""}`}>
       <div
         style={{
           maxWidth: "1200px",
