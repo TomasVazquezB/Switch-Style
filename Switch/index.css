@@ -36,12 +36,10 @@ body {
 
 .app-content {
   flex-grow: 1;
+  background-color: var(--background-color);
 }
 
 
-footer {
-  margin-top: auto;
-}
 
 :root {
   --background-color: #ffffff;
