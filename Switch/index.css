@@ -35,7 +35,8 @@ body {
 }
 
 .app-content {
-  flex-grow: 1;
+  /* flex-grow: 1; */
+   flex: 0 0 auto;
 }
 
 :root {
