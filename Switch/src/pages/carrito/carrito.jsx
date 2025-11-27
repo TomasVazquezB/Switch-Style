@@ -124,13 +124,14 @@ const Carrito = () => {
             navigate("/login");
             return;
         }
-        for (const item of carritoData) {
-            const p = buscarProducto(item);
-            if (!p) {
-                toast.error("Tu carrito contiene productos inexistentes o sin stock. Revísalo.");
-                return;
-            }
-        }
+        // for (const item of carritoData) {
+        //     const p = buscarProducto(item);
+        //     if (!p) {
+        //         toast.error("Tu carrito contiene productos inexistentes o sin stock. Revísalo.");
+        //         return;
+        //     }
+        // }
+
 
         navigate("/confpago");
     };
