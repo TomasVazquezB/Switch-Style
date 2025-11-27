@@ -55,6 +55,22 @@ const Carrito = () => {
         fetchData();
     }, []);
 
+    useEffect(() => {
+        if (cargando) return; // esperamos a que cargue ropa + accesorios
+
+        let hayEliminados = false;
+
+        for (const item of carritoData) {
+            const p = buscarProducto(item);
+            if (!p) hayEliminados = true;
+        }
+
+        if (hayEliminados) {
+            toast.error("Hay productos que ya no están disponibles. Actualiza tu carrito.");
+        }
+
+    }, [cargando, carritoData, productos, accesorios]);
+
     const buscarProducto = (item) => {
         const fuente = item.tipo === 'accesorio' ? accesorios : productos;
         return fuente.find(p => p.id === item.producto_id);
@@ -133,14 +149,8 @@ const Carrito = () => {
                 ) : (
                     carritoData.map((item, index) => {
                         const producto = buscarProducto(item);
-                        if (!producto) {
-                            // ❌ Si todavía no cargaron productos del backend, NO mostrar error
-                            if (cargando) return null;
+                        if (!producto) return null;
 
-                            // ✔ Solo mostrar error si realmente no existe
-                            toast.error("Hay productos que ya no están disponibles. Actualiza tu carrito.");
-                            return null;
-                        }
 
 
                         const imagen = item.ruta_imagen
