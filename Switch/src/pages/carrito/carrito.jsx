@@ -55,7 +55,7 @@ const Carrito = () => {
         fetchData();
     }, []);
 
-    useEffect(() => {
+    /* useEffect(() => {
         if (cargando) return; // esperamos a que cargue ropa + accesorios
 
         let hayEliminados = false;
@@ -69,7 +69,7 @@ const Carrito = () => {
             toast.error("Hay productos que ya no están disponibles. Actualiza tu carrito.");
         }
 
-    }, [cargando, carritoData, productos, accesorios]);
+    }, [cargando, carritoData, productos, accesorios]); */
 
     const buscarProducto = (item) => {
         const fuente = item.tipo === 'accesorio' ? accesorios : productos;
