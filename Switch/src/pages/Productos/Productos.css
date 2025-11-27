@@ -330,8 +330,9 @@ label.text-gray-700 {
     color: #ffffff;
 }
 
-/* SOLO para páginas de productos, NO global */
-.producto-grid-container {
+/* --- Ajuste para catálogos (MainHombres, MainMujeres, etc.) --- */
+.producto-grid-container, 
+.content {
   max-width: none !important;
   width: 100% !important;
   margin: 0 !important;
