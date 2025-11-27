@@ -212,7 +212,14 @@ const Productos = ({ darkMode }) => {
 
   const sinStock = Number(stockDisponible) === 0;
 
-  if (!productoData) return <div className="content producto-page">Cargando producto...</div>;
+  if (!productoData) {
+    return (
+      <div className="content producto-cargando">
+        Cargando producto...
+      </div>
+    );
+  }
+
 
   return (
     <div className={`content producto-page ${darkMode ? "dark" : ""}`}>
