@@ -37,6 +37,13 @@ body {
 .app-content {
   flex-grow: 1;
   background-color: var(--background-color);
+  background-clip: padding-box; 
+  box-shadow: none;              
+  position: relative;  
+}
+
+body.dark-mode .app-content {
+  background-color: var(--background-color);
 }
 
 
