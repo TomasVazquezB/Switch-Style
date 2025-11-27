@@ -158,7 +158,8 @@
 
 /* ----------- MODO OSCURO ----------- */
 body.dark-mode .content {
-  color: #f5f5f5;
+    background-color: #111;
+    color: #f5f5f5;
 }
 
 /* Precio */
@@ -329,9 +330,8 @@ label.text-gray-700 {
     color: #ffffff;
 }
 
-/* --- Ajuste para catálogos (MainHombres, MainMujeres, etc.) --- */
-.producto-grid-container, 
-.content {
+/* SOLO para páginas de productos, NO global */
+.producto-grid-container {
   max-width: none !important;
   width: 100% !important;
   margin: 0 !important;
