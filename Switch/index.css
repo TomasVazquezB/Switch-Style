@@ -40,6 +40,7 @@ body {
   background-clip: padding-box; 
   box-shadow: none;              
   position: relative;  
+  overflow: hidden;
 }
 
 .app-content > *:last-child {
@@ -51,9 +52,6 @@ body.dark-mode .app-content {
   background-color: var(--background-color);
 }
 
-.app-content {
-  overflow: hidden;    /* cuidado: puede cortar elementos con dropdowns; quitar si rompe */
-}
 
 
 
