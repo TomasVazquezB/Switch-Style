@@ -36,11 +36,6 @@ html {
   color: #f0f0f0;
 }
 
-.home-index.light .service-title,
-.home-index.light .service-description {
-  color: #121212;
-}
-
 .home-index.dark {
   background-color: #121212;
   color: white;
@@ -110,7 +105,7 @@ html {
 .home-index.light .service-description,
 .home-index.light .service-title,
 .home-index.light .download-text {
-  color: black;
+  color: rgb(255, 255, 255);
 }
 
 .home-index.light .download-row {
@@ -315,7 +310,7 @@ html {
 
 .mas-buscado {
   text-align: center;
-  margin-bottom: -6px;
+  margin-bottom: -9px;
   font-size: 2rem;
   font-weight: 600;
   color: #000000; 
@@ -339,22 +334,21 @@ html {
   grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
   justify-content: center;
   flex-wrap: wrap;
-  gap: 40px;
+  gap: 20px;
 }
 
 .card-home {
   background: linear-gradient(145deg, #1e1e1e, #2a2a2a);
   border-radius: 20px;
-  padding: 0;
+  padding: 0px;
   flex: 1 1 240px;
   max-width: 220px;
-  margin: 15px;
+  margin: 14px;
   overflow: hidden;
   box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
   display: flex;
   flex-direction: column;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
-  cursor: pointer;
   opacity: 0;
   transform: translateY(20px);
   animation: fadeInUp 0.6s ease forwards;
@@ -523,7 +517,7 @@ html {
   text-align: center;
   font-size: 2.2rem;
   margin-bottom: 13px;
-  margin-top: 7px;
+  margin-top: -6px;
   font-weight: bold;
   letter-spacing: 0.5px;
   color: var(--text-color, #000000);
@@ -892,4 +886,64 @@ html {
 
   }
 } 
+.tutorial-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0,0,0,0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+}
 
+.tutorial-modal {
+  background: #fff;
+  color: #222;
+  padding: 2rem;
+  border-radius: 16px;
+  max-width: 400px;
+  text-align: center;
+  box-shadow: 0 0 20px rgba(0,0,0,0.3);
+}
+
+.tutorial-modal h2 {
+  margin-bottom: 1rem;
+}
+
+.tutorial-btn {
+  margin-top: 1.5rem;
+  padding: 0.6rem 1.2rem;
+  background-color: #000;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.tutorial-btn:hover {
+  background-color: #333;
+}
+
+@keyframes rotateLight {
+  from { transform: rotateY(-180deg) scale(0.8); opacity: 0; }
+  to { transform: rotateY(0deg) scale(1); opacity: 1; }
+}
+
+@keyframes rotateDark {
+  from { transform: rotateY(180deg) scale(0.8); opacity: 0; }
+  to { transform: rotateY(0deg) scale(1); opacity: 1; }
+}
+
+.home-index.light .tutorial-modal {
+  animation: rotateLight 0.8s ease forwards;
+}
+
+.home-index.dark .tutorial-modal {
+  animation: rotateDark 0.8s ease forwards;
+}
+
+.tutorial-modal {
+  transform-style: preserve-3d;
+  backface-visibility: hidden;
+  transition: transform 0.8s ease;
+}

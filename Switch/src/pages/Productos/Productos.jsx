@@ -1,241 +1,449 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import axios from "../../api/axios"; // Tu axios ya tiene baseURL configurado
+import { publicApi } from "../../api/axios";
 import { toast } from "react-toastify";
-import { PayPalButtons } from "@paypal/react-paypal-js";
-import './Productos.css';
+import "./Productos.css";
 
-const BASE_API = "https://switchstyle.laravel.cloud/api";
-const BASE_STORAGE = "https://switchstyle.laravel.cloud/storage";
+const BUCKET_BASE = (import.meta.env.VITE_ASSETS_BASE || "").replace(/\/+$/, "");
+const PLACEHOLDER =
+  "data:image/svg+xml;utf8," +
+  encodeURIComponent(
+    `<svg xmlns="http://www.w3.org/2000/svg" width="800" height="600">
+    <rect width="100%" height="100%" fill="#f3f4f6"/>
+    <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle"
+      font-family="Arial" font-size="24" fill="#9ca3af">Sin imagen</text>
+  </svg>`
+  );
 
-const Productos = () => {
-    const { tipo, productoId } = useParams();
-    const navigate = useNavigate();
-    const [productoData, setProductoData] = useState(null);
-    const [talla, setTalla] = useState('');
-    const [cantidad, setCantidad] = useState(1);
-    const [stockDisponible, setStockDisponible] = useState(0);
-    const [img, setImg] = useState('');
-    const [activeTab, setActiveTab] = useState('descripcion');
-    const [preferenceId, setPreferenceId] = useState(null);
-    const [mostrarPagos, setMostrarPagos] = useState(false);
-    const [sortReviews, setSortReviews] = useState('recientes');
+function toImageUrl(rawPath) {
+  if (!rawPath) return PLACEHOLDER;
+  if (/^https?:\/\//i.test(rawPath)) return rawPath;
+  let key = String(rawPath)
+    .replace(/^https?:\/\/[^/]+\/?/, "")
+    .replace(/^\/+/, "")
+    .replace(/^storage\//, "");
+  return BUCKET_BASE ? `${BUCKET_BASE}/${encodeURI(key)}` : PLACEHOLDER;
+}
 
-    const [favoritos, setFavoritos] = useState(() => {
-        const stored = localStorage.getItem("favoritos");
-        return stored ? JSON.parse(stored) : [];
+const Productos = ({ darkMode }) => {
+  const { tipo, productoId } = useParams();
+  const navigate = useNavigate();
+
+  const [productoData, setProductoData] = useState(null);
+  const [talla, setTalla] = useState("");
+  const [cantidad, setCantidad] = useState(1);
+  const [stockDisponible, setStockDisponible] = useState(0);
+  const [imgKey, setImgKey] = useState("");
+  const [activeTab, setActiveTab] = useState("descripcion");
+
+  const [usuario, setUsuario] = useState(() => {
+    try {
+      const u = localStorage.getItem("usuario"); // 👈 mismo nombre que en Favoritos
+      return u ? JSON.parse(u) : null;
+    } catch {
+      return null;
+    }
+  });
+
+
+  const [favoritos, setFavoritos] = useState(() => {
+    try {
+      const stored = localStorage.getItem("favoritos");
+      return stored ? JSON.parse(stored) : [];
+    } catch {
+      return [];
+    }
+  });
+
+  useEffect(() => {
+    const syncUser = () => {
+      try {
+        const u = localStorage.getItem("user");
+        setUsuario(u ? JSON.parse(u) : null);
+      } catch {
+        setUsuario(null);
+      }
+    };
+    window.addEventListener("storage", syncUser);
+    return () => window.removeEventListener("storage", syncUser);
+  }, []);
+
+  const [reviewsBase] = useState([
+    { id: 1, autor: "Juan Pérez", fecha: "2025-06-01", comentario: "Muy buen producto", puntuacion: 5 },
+    { id: 2, autor: "Ana Fernández", fecha: "2025-06-05", comentario: "Podría ser mejor", puntuacion: 3 },
+    { id: 3, autor: "Sofía de los Montes", fecha: "2025-08-12", comentario: "Excelente calidad y precio, muy recomendado", puntuacion: 4 },
+    { id: 4, autor: "Pedro Campos", fecha: "2025-10-04", comentario: "Llegó en mal estado, no me gustó", puntuacion: 1 },
+    { id: 5, autor: "Lucía Romero", fecha: "2025-09-15", comentario: "Perfecto, justo lo que buscaba", puntuacion: 5 },
+    { id: 6, autor: "Matías López", fecha: "2025-09-27", comentario: "Buena relación precio-calidad", puntuacion: 4 },
+    { id: 7, autor: "Carolina Varela", fecha: "2025-10-02", comentario: "El envío fue rápido y el producto excelente", puntuacion: 5 },
+    { id: 8, autor: "Tomás Alvarez", fecha: "2025-10-10", comentario: "El color no era igual al de la foto", puntuacion: 2 },
+    { id: 9, autor: "Valentina Torres", fecha: "2025-10-18", comentario: "Me encantó, lo volvería a comprar", puntuacion: 5 }
+  ]);
+
+  const [reviews, setReviews] = useState([]);
+  useEffect(() => {
+    const cantidadRandom = Math.floor(Math.random() * 4) + 2;
+    const mezcladas = [...reviewsBase].sort(() => Math.random() - 0.5);
+    setReviews(mezcladas.slice(0, cantidadRandom));
+  }, [productoId, reviewsBase]);
+
+  useEffect(() => {
+    const endpoint = tipo.includes("accesorio") ? "accesorios" : "ropa";
+    publicApi
+      .get(`/${endpoint}/${productoId}`)
+      .then((res) => {
+        const data = res.data || {};
+        setProductoData(data);
+        const primeraRuta =
+          data?.imagenes?.[0]?.ruta ||
+          data?.ruta_imagen ||
+          data?.imagen_url ||
+          "";
+        const key = String(primeraRuta).replace(/^https?:\/\/[^/]+\/?/, "");
+        setImgKey(key);
+        if (tipo.includes("accesorio")) setStockDisponible(Number(data.stock || 0));
+      })
+      .catch(() => toast.error("Producto no encontrado"));
+  }, [productoId, tipo]);
+
+  const handleSeleccionTalla = (nombreTalla) => {
+    if (talla === nombreTalla) {
+      setTalla("");
+      setStockDisponible(0);
+      setCantidad(1);
+    } else {
+      const tallaData = productoData?.tallas?.find((t) => t.nombre === nombreTalla);
+      const stock = Number(tallaData?.pivot?.cantidad || 0);
+      if (stock === 0) {
+        toast.error("⚠️ No hay stock disponible para esta talla");
+        return;
+      }
+      setTalla(nombreTalla);
+      setStockDisponible(stock);
+      setCantidad(1);
+    }
+  };
+
+  const toggleFavorito = () => {
+    const user = usuario || JSON.parse(localStorage.getItem("usuario"));
+
+    if (!user) {
+      toast.warning("Debes iniciar sesión para agregar a favoritos 🔐", { autoClose: 4000 });
+      return;
+    }
+
+    if (!productoData) return;
+    setFavoritos((prev) => {
+      const existe = prev.includes(productoData.id);
+      const nuevos = existe
+        ? prev.filter((id) => id !== productoData.id)
+        : [...prev, productoData.id];
+      localStorage.setItem("favoritos", JSON.stringify(nuevos));
+      toast.success(existe ? "Quitado de favoritos 🤍" : "Agregado a favoritos ❤️");
+      return nuevos;
     });
+  };
 
-    const [reviews] = useState([
-        { id: 1, autor: 'Juan Perez', fecha: '2025-06-01', comentario: 'Muy buen producto.', puntuacion: 5 },
-        { id: 2, autor: 'Ana Fernandez', fecha: '2025-06-05', comentario: 'Podría ser mejor.', puntuacion: 3 },
-        { id: 3, autor: 'Sofia De los montes', fecha: '2025-08-12', comentario: 'Excelente calidad y precio muy recomendado.', puntuacion: 4 },
-        { id: 4, autor: 'Pedro Manuel Campos', fecha: '2025-10-04', comentario: 'Me llego en mal estado el producto.', puntuacion: 1 }
-    ]);
+  const handleAgregarAlCarrito = () => {
+    if (!productoData) return;
 
-    useEffect(() => {
-        const endpoint = tipo.includes('accesorio') ? 'accesorios' : 'ropa';
-        const url = `${BASE_API}/${endpoint}/${productoId}`;
-        axios.get(url)
-            .then(res => {
-                setProductoData(res.data);
-                if (res.data.imagenes?.length > 0) {
-                    setImg(`${BASE_STORAGE}/${res.data.imagenes[0].ruta}`);
-                }
-                if (tipo.includes('accesorio')) {
-                    setStockDisponible(res.data.stock || 0);
-                }
-            })
-            .catch(() => toast.error("Producto no encontrado"));
-    }, [productoId, tipo]);
+    // 1. Validar login
+    const user = usuario || JSON.parse(localStorage.getItem("user"));
+    if (!user || !user.id) {
+      toast.error("Debes iniciar sesión para agregar al carrito");
+      navigate("/login");
+      return;
+    }
 
-    const toggleFavorito = () => {
-        setFavoritos((prev) => {
-            let nuevos;
-            if (prev.includes(productoData.id)) {
-                nuevos = prev.filter((id) => id !== productoData.id);
-            } else {
-                nuevos = [...prev, productoData.id];
-            }
-            localStorage.setItem("favoritos", JSON.stringify(nuevos));
-            return nuevos;
-        });
+    // 2. Validaciones normales
+    if (!talla && tipo.includes("ropa")) {
+      toast.error("Seleccione una talla");
+      return;
+    }
+    if (cantidad < 1 || (tipo.includes("ropa") && cantidad > stockDisponible)) {
+      toast.error("Cantidad inválida");
+      return;
+    }
+
+    // 3. Imagen
+    const key = productoData?.imagenes?.[0]?.ruta || imgKey || "";
+    const imgUrl = toImageUrl(key);
+
+    const nuevoItem = {
+      producto_id: productoData.id,
+      tipo: tipo.includes("accesorio") ? "accesorio" : "ropa",   // <- FIX
+      titulo: productoData.titulo,
+      precio: productoData.precio,
+      ruta_imagen: imgUrl,
+      talla: tipo.includes("ropa") ? talla : null,
+      cantidad
     };
 
-    const handleSeleccionTalla = (nombreTalla) => {
-        setTalla(nombreTalla);
-        const tallaData = productoData.tallas.find(t => t.nombre === nombreTalla);
-        setStockDisponible(tallaData?.pivot?.cantidad || 0);
-        setCantidad(1);
-    };
+    // 4. Carrito personal por usuario
+    const carritoKey = `carrito_${user.id}`;
 
-    const handleAgregarAlCarrito = () => {
-        if (!talla && tipo.includes('ropa')) return toast.error('Seleccione una talla');
-        if (cantidad < 1 || cantidad > stockDisponible) return toast.error('Cantidad inválida');
+    let carritoExistente = [];
+    try {
+      const guardado = JSON.parse(localStorage.getItem(carritoKey));
+      carritoExistente = Array.isArray(guardado) ? guardado : [];
+    } catch {
+      carritoExistente = [];
+    }
 
-        const nuevoItem = {
-            producto_id: productoData.id,
-            titulo: productoData.titulo,
-            precio: productoData.precio,
-            ruta_imagen: productoData.imagenes?.[0]?.ruta ? `${BASE_STORAGE}/${productoData.imagenes[0].ruta}` : '',
-            talla: tipo.includes('ropa') ? talla : null,
-            cantidad
-        };
-
-        let carritoExistente;
-        try {
-            const guardado = JSON.parse(localStorage.getItem("carrito"));
-            carritoExistente = Array.isArray(guardado) ? guardado : [];
-        } catch (e) {
-            carritoExistente = [];
-        }
-
-        const index = carritoExistente.findIndex((item) => item.producto_id === nuevoItem.producto_id && item.talla === nuevoItem.talla);
-
-        if (index >= 0) {
-            carritoExistente[index].cantidad += cantidad;
-        } else {
-            carritoExistente.push(nuevoItem);
-        }
-
-        localStorage.setItem("carrito", JSON.stringify(carritoExistente));
-        toast.success("Producto agregado al carrito");
-        setTimeout(() => navigate('/carrito'), 1000);
-    };
-
-    const generarPreferencia = () => {
-        if (!talla && tipo.includes('ropa')) return toast.error('Seleccione una talla.');
-        const producto = {
-            title: productoData.titulo,
-            quantity: cantidad,
-            currency_id: "ARS",
-            unit_price: productoData.precio
-        };
-
-        fetch(`${BASE_API}/create_preference`, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ items: [producto] })
-        })
-        .then(res => res.json())
-        .then(data => {
-            setPreferenceId(data.preferenceId);
-            setMostrarPagos(true);
-        });
-    };
-
-    if (!productoData) return <div className="content">Cargando producto...</div>;
-
-    const sinStock = stockDisponible === 0;
-
-    return (
-        <div className="content">
-            <div style={{maxWidth: '1200px',margin: '0 auto',display: 'grid',gridTemplateColumns: '120px auto 1.2fr',columnGap: '1rem',alignItems: 'start'}}>
-                {/* Miniaturas */}
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
-                    {productoData.imagenes.map((imgItem, index) => {
-                        const ruta = `${BASE_STORAGE}/${imgItem.ruta}`;
-                        return (
-                        <img key={index} src={ruta} alt={`Miniatura ${index + 1}`} onClick={() => setImg(ruta)} className={`thumbnail ${img === ruta ? 'active' : ''}`}/>
-                        );
-                    })}
-                </div>
-
-                {/* Imagen principal */}
-                <div style={{ backgroundColor: '#f9f9f9', padding: '1rem', borderRadius: '0.75rem' }}><img src={img} alt="Producto" className="main-image"/></div>
-
-                {/* Información */}
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
-                    <div>
-                        <h2 style={{ fontSize: '2rem', fontWeight: 'bold' }}>{productoData.titulo}</h2>
-                        <p style={{ fontSize: '1.5rem', fontWeight: 'bold', color: '#000000ff', marginTop: '1rem' }}>${Number(productoData.precio).toFixed(2)}</p>
-                        <button onClick={toggleFavorito} style={{marginTop: '0.5rem',background: 'none',border: 'none',cursor: 'pointer',fontSize: '1.2rem',color: favoritos.includes(productoData.id) ? 'red' : '#888'}}>{favoritos.includes(productoData.id) ? '❤️ Quitar de favoritos' : '🤍 Agregar a favoritos'}</button>
-                        {tipo.includes('accesorio') && (
-                            <p style={{ fontSize: '1rem', marginTop: '0.5rem', color: sinStock ? 'red' : '#555' }}>{sinStock ? 'Sin stock disponible' : `Stock disponible: ${stockDisponible}`}</p>
-                        )}
-                    </div>
-
-                    {/* Selección de talla */}
-                    {tipo.includes('ropa') && productoData.tallas?.length > 0 && (
-                        <div>
-                            <p style={{ fontWeight: 500, marginBottom: '0.5rem' }}>Tallas disponibles:</p>
-                            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
-                                {productoData.tallas.map((t, index) => (
-                                    <button key={index} onClick={() => handleSeleccionTalla(t.nombre)} className={`talla-btn ${talla === t.nombre ? 'active' : ''}`}>{t.nombre}</button>
-                                ))}
-                            </div>
-                            {talla && (
-                                <div className="mt-4">
-                                    <label className="block text-sm font-medium text-gray-700 mb-1">Cantidad (Stock disponible: {stockDisponible})</label>
-                                    <input type="number" min="1" max={stockDisponible} value={cantidad} onChange={(e) => setCantidad(parseInt(e.target.value))} className="border px-3 py-1 w-24 rounded"/>
-                                </div>
-                            )}
-                        </div>
-                    )}
-
-                    {/* Cantidad accesorios */}
-                    {tipo.includes('accesorio') && !sinStock && (
-                        <div className="mt-4">
-                            <label className="block text-sm font-medium text-gray-700 mb-1">Cantidad</label>
-                            <input type="number" min="1" max={stockDisponible} value={cantidad} onChange={(e) => setCantidad(parseInt(e.target.value))} className="border px-3 py-1 w-24 rounded"/>
-                        </div>
-                    )}
-
-                    {/* Botones */}
-                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1rem' }}>
-                        <button className="button carrito" onClick={handleAgregarAlCarrito} disabled={sinStock} style={sinStock ? { backgroundColor: '#ccc', cursor: 'not-allowed' } : {}}>Agregar al carrito</button>
-                        <button className="button comprar" onClick={generarPreferencia} disabled={sinStock} style={sinStock ? { backgroundColor: '#ccc', cursor: 'not-allowed' } : {}}>Comprar ahora</button>
-                    </div>
-
-                    {/* PayPal */}
-                    {mostrarPagos && (
-                        <div style={{ marginTop: '2rem' }}>
-                            <PayPalButtons
-                                style={{ layout: "horizontal" }}
-                                createOrder={(data, actions) => actions.order.create({ purchase_units: [{ amount: { value: productoData.precio.toFixed(2) } }] })}
-                                onApprove={(data, actions) => actions.order.capture().then(details => {
-                                    toast.success(`Pago aprobado por ${details.payer.name.given_name}`);
-                                    navigate("/carrito");
-                                })}
-                            />
-                        </div>
-                    )}
-                </div>
-            </div>
-
-            {/* Tabs descripción / reviews */}
-            <div style={{marginTop: '4rem', maxWidth: '1000px', marginLeft: 'auto', marginRight: 'auto'}}>
-                <div style={{display: 'flex', gap: '1rem',borderBottom: '1px solid #ddd', marginBottom: '1rem'}}>
-                    <button onClick={() => setActiveTab('descripcion')} className={`tab-button ${activeTab === 'descripcion' ? 'active' : ''}`}>Descripción</button>
-                    <button onClick={() => setActiveTab('reviews')} className={`tab-button ${activeTab === 'reviews' ? 'active' : ''}`}>Reviews({reviews.length})</button>
-                </div>
-
-                {activeTab === 'descripcion' ? (
-                    <p style={{ color: '#444', fontSize: '0.95rem' }}>{productoData.descripcion}</p>
-                ) : (
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-                        <select value={sortReviews} onChange={(e) => setSortReviews(e.target.value)}
-                            style={{padding: '0.5rem', fontSize: '0.875rem', borderRadius: '0.375rem', border: '1px solid #ccc', width: 'fit-content'}}>    
-                            <option value="recientes">Más recientes</option>
-                            <option value="mejor">Mejor puntuados</option>
-                            <option value="peor">Peor puntuados</option>
-                        </select>
-
-                        {reviews.map(review => (
-                            <div key={review.id} className="review-card">
-                                <div style={{display: 'flex',justifyContent: 'space-between', fontSize: '0.875rem'}}>
-                                    <span className="review-author">{review.autor}</span>
-                                    <span className="review-date">{review.fecha}</span>
-                                </div>
-                                <p className="review-text">{review.comentario}</p>
-                                <p className="review-stars">⭐ {review.puntuacion}/5</p>
-                            </div>
-                        ))}
-                    </div>
-                )}
-            </div>
-        </div>
+    // 5. Si ya existe el mismo item, sumar cantidad
+    const index = carritoExistente.findIndex(
+      (item) =>
+        item.producto_id === nuevoItem.producto_id &&
+        item.talla === nuevoItem.talla
     );
+
+    if (index >= 0) {
+      carritoExistente[index].cantidad += cantidad;
+    } else {
+      carritoExistente.push(nuevoItem);
+    }
+
+    // 6. Guardar
+    localStorage.setItem(carritoKey, JSON.stringify(carritoExistente));
+
+    toast.success("Producto agregado al carrito");
+    setTimeout(() => navigate("/carrito"), 800);
+  };
+
+  const sinStock = Number(stockDisponible) === 0;
+
+  if (!productoData) {
+    return (
+      <div className="content producto-cargando">
+        Cargando producto...
+      </div>
+    );
+  }
+
+
+  return (
+    <div className={`content producto-page ${darkMode ? "dark" : ""}`}>
+      <div
+        style={{
+          maxWidth: "1200px",
+          margin: "0 auto",
+          display: "grid",
+          gridTemplateColumns: "120px auto 1.2fr",
+          columnGap: "1rem",
+          alignItems: "start"
+        }}
+      >
+        <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem", marginTop: "15px" }}>
+          {(productoData.imagenes || []).map((imgItem, index) => {
+            const key = String(imgItem?.ruta || "").replace(
+              /^https?:\/\/[^/]+\/?/,
+              ""
+            );
+            const active = imgKey === key;
+            return (
+              <img
+                key={index}
+                src={toImageUrl(key)}
+                alt={`Miniatura ${index + 1}`}
+                onClick={() => setImgKey(key)}
+                className={`thumbnail ${active ? "active" : ""
+                  } h-24 w-20 object-cover rounded cursor-pointer`}
+              />
+            );
+          })}
+        </div>
+
+        <div
+          style={{
+            backgroundColor: "#fff",
+            padding: "1rem",
+            borderRadius: "0.75rem"
+          }}
+        >
+          <img src={toImageUrl(imgKey)} alt="Producto" className="main-image" />
+        </div>
+
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            gap: "1.5rem"
+          }}
+        >
+          <div className="producto-info">
+            <h2>{productoData.titulo}</h2>
+            <p className="precio">${Number(productoData.precio).toFixed(2)}</p>
+
+            <div className="payment-info">
+              💳 Visa, Mastercard, Mercado Pago <br />
+              🔥 10% de descuento por transferencia o efectivo
+            </div>
+
+            <button
+              onClick={toggleFavorito}
+              style={{
+                marginTop: "0.5rem",
+                background: "none",
+                border: "none",
+                cursor: "pointer",
+                fontSize: "1.2rem",
+                color: favoritos.includes(productoData.id) ? "red" : "#888"
+              }}
+            >
+              {favoritos.includes(productoData.id)
+                ? "❤️ Quitar de favoritos"
+                : "🤍 Agregar a favoritos"}
+            </button>
+
+            {tipo.includes("accesorio") && (
+              <p
+                style={{
+                  fontSize: "1rem",
+                  marginTop: "0.5rem",
+                  color: sinStock ? "red" : "#555"
+                }}
+              >
+                {sinStock
+                  ? "Sin stock disponible"
+                  : `Stock disponible: ${stockDisponible}`}
+              </p>
+            )}
+          </div>
+
+          {tipo.includes("ropa") && productoData.tallas?.length > 0 && (
+            <div>
+              <p className="titulo-tallas">Tallas disponibles:</p>
+              <div
+                style={{
+                  display: "flex",
+                  flexWrap: "wrap",
+                  gap: "0.5rem"
+                }}
+              >
+                {productoData.tallas.map((t, index) => (
+                  <button
+                    key={index}
+                    onClick={() => handleSeleccionTalla(t.nombre)}
+                    className={`talla-btn ${talla === t.nombre ? "active" : ""
+                      }`}
+                  >
+                    {t.nombre}
+                  </button>
+                ))}
+              </div>
+
+              {talla && (
+                <div className="mt-4">
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Cantidad (Stock disponible: {stockDisponible})
+                  </label>
+                  <input
+                    type="number"
+                    min="1"
+                    max={stockDisponible}
+                    value={cantidad}
+                    onChange={(e) =>
+                      setCantidad(parseInt(e.target.value) || 1)
+                    }
+                    className="border px-3 py-1 w-24 rounded"
+                  />
+                </div>
+              )}
+            </div>
+          )}
+
+          {tipo.includes("accesorio") && !sinStock && (
+            <div className="mt-4">
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Cantidad
+              </label>
+              <input
+                type="number"
+                min="1"
+                max={stockDisponible}
+                value={cantidad}
+                onChange={(e) =>
+                  setCantidad(parseInt(e.target.value) || 1)
+                }
+                className="border px-3 py-1 w-24 rounded"
+              />
+            </div>
+          )}
+
+          <button
+            className="button carrito"
+            onClick={handleAgregarAlCarrito}
+            disabled={sinStock}
+          >
+            🛒 Agregar al carrito
+          </button>
+        </div>
+      </div>
+
+      <div
+        style={{
+          marginTop: "4rem",
+          maxWidth: "1000px",
+          margin: "4rem auto"
+        }}
+      >
+        <div
+          style={{
+            display: "flex",
+            gap: "1rem",
+            borderBottom: "1px solid #ddd",
+            marginBottom: "1rem"
+          }}
+        >
+          <button
+            onClick={() => setActiveTab("descripcion")}
+            className={`tab-button ${activeTab === "descripcion" ? "active" : ""
+              }`}
+          >
+            Descripción
+          </button>
+          <button
+            onClick={() => setActiveTab("reviews")}
+            className={`tab-button ${activeTab === "reviews" ? "active" : ""
+              }`}
+          >
+            Reviews ({reviews.length})
+          </button>
+        </div>
+
+        {activeTab === "descripcion" ? (
+          <p style={{ color: "#444", fontSize: "0.95rem" }}>
+            {productoData.descripcion}
+          </p>
+        ) : (
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              gap: "1rem"
+            }}
+          >
+            {reviews.map((review) => (
+              <div key={review.id} className="review-card">
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    fontSize: "0.875rem"
+                  }}
+                >
+                  <span className="review-author">{review.autor}</span>
+                  <span className="review-date">{review.fecha}</span>
+                </div>
+                <p className="review-text">{review.comentario}</p>
+                <p className="review-stars">⭐ {review.puntuacion}/5</p>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+    </div>
+  );
 };
 
 export default Productos;

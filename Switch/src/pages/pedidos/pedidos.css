@@ -1,0 +1,174 @@
+:root {
+  --bg: #f9fafb;
+  --card: #ffffff;
+  --text: #111827;
+  --text-muted: #6b7280;
+  --accent: #2563eb;
+}
+
+/* 🌙 MODO OSCURO NEUTRO — SIN TONOS AZULES */
+.dark-mode {
+  --bg: #121212;            /* fondo general */
+  --card: #1e1e1e;          /* tarjeta */
+  --text: #f5f5f5;          /* texto principal */
+  --text-muted: #b5b5b5;    /* texto secundario */
+  --accent: #3b82f6;        /* si deseas mantener enlaces azules */
+}
+
+/* CONTENEDOR GENERAL */
+.mis-pedidos-container {
+  background-color: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  padding: 2rem;
+}
+
+/* TÍTULO */
+.titulo-pedidos {
+  font-size: 2rem;
+  font-weight: 700;
+  text-align: center;
+  margin-bottom: 2rem;
+  color: var(--text);
+}
+
+/* LISTA */
+.lista-pedidos {
+  display: grid;
+  gap: 1.5rem;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+/* TARJETAS */
+.pedido-card {
+  background: var(--card);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  padding: 1rem 1.2rem;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+}
+
+.pedido-card:hover {
+  transform: translateY(-3px);
+}
+
+/* HEADER DE CADA PEDIDO */
+.pedido-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.pedido-id {
+  font-weight: bold;
+  color: var(--text);
+}
+
+/* ESTADOS (las etiquetas de color) */
+.estado {
+  padding: 0.4rem 0.8rem;
+  border-radius: 1rem;
+  font-size: 0.85rem;
+  text-transform: capitalize;
+  color: #fff;
+  /* SIEMPRE BLANCO para que se vea bien en oscuro */
+}
+
+.estado.pendiente {
+  background-color: #f59e0b;
+}
+
+.estado.entregado {
+  background-color: #10b981;
+}
+
+.estado.cancelado {
+  background-color: #ef4444;
+}
+
+.estado.enviado {
+  background-color: #3b82f6;
+}
+
+/* DETALLES */
+.pedido-detalle p {
+  margin: 0.3rem 0;
+  font-size: 0.95rem;
+  color: var(--text);
+}
+
+/* MENSAJES VACÍO / ERROR */
+.pedidos-loading,
+.pedidos-error,
+.sin-pedidos {
+  text-align: center;
+  margin-top: 2rem;
+  font-size: 1.1rem;
+  color: var(--text-muted);
+}
+
+/* VARIABLES MODO CLARO */
+:root {
+  --bg: #f9fafb;
+  --card: #ffffff;
+  --text: #111827;
+  --text-muted: #6b7280;
+  --accent: #2563eb;
+}
+
+/* VARIABLES MODO OSCURO */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0f172a;
+    --card: #1e293b;
+    --text: #f1f5f9;
+    --text-muted: #94a3b8;
+    --accent: #3b82f6;
+  }
+
+  .pedido-card {
+    box-shadow: 0 2px 8px rgba(255, 255, 255, 0.05);
+    border-color: rgba(255, 255, 255, 0.05);
+  }
+}
+
+
+.cartel-sesion {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;   /* ocupará TODA la pantalla */
+  padding: 2rem;
+  text-align: center;
+  transition: all 0.3s ease;
+}
+
+.dark-mode .cartel-sesion {
+  background-color: var(--color-bg-dark, #121212);
+  color: var(--color-text-dark, #ffffff);
+}
+
+.light-mode .cartel-sesion {
+  background-color: var(--color-bg, #f8f9fa);
+  color: var(--color-text, #1a1a1a);
+}
+
+.cartel-sesion-contenido {
+  padding: 2rem 4rem;
+  border-radius: 16px;
+  backdrop-filter: blur(12px);
+  max-width: 700px;
+}
+
+.dark-mode .cartel-sesion-contenido {
+  background: var(--card-bg-dark, rgba(41, 40, 40, 0.6));
+  box-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
+}
+
+.light-mode .cartel-sesion-contenido {
+  background: var(--card-bg, rgba(255, 255, 255, 0.6));
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+}

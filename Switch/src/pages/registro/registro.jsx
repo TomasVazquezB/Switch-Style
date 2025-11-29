@@ -29,7 +29,8 @@ export function RegistroPage() {
 
         try {
             const usuario = await registrarUsuario(formData);
-            alert(`Usuario ${usuario.nombre} registrado con éxito`);
+            alert(`Usuario ${usuario.usuario?.nombre || "Nuevo usuario"} registrado con éxito`);
+
 
             setFormData({
                 nombre: '',

@@ -1,9 +1,10 @@
 .content {
     background-color: #fff;
     padding: 2rem;
-    margin-top: 3rem;
     font-family: 'Inter', sans-serif;
     display: block;
+    padding-top: 100px; /* evita que choque con el header */
+    padding-bottom: 40px;
 }
 
 .producto-grid-container {
@@ -75,23 +76,22 @@
 }
 
 .button.carrito {
-    background-color: #000;
+    background-color: #16a34a; /* verde */
     color: #fff;
     border: none;
+    padding: 0.6rem 1rem;      /* altura ok */
+    font-size: 0.95rem;
+    border-radius: 0.35rem;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+    max-width: 280px;          /* ancho máximo */
+    text-align: center;        /* texto centrado */
+    white-space: nowrap;       /* evita que se rompa en varias líneas */
 }
 
 .button.carrito:hover {
-    background-color: #1a1a1a;
-}
-
-.button.comprar {
-    background-color: #16a34a;
-    color: #fff;
-    border: none;
-}
-
-.button.comprar:hover {
     background-color: #15803d;
+    transform: scale(1.02);
 }
 
 .tab-button {
@@ -106,7 +106,7 @@
 
 .tab-button.active {
     border-color: #000;
-    color: #000;
+
 }
 
 .review-card {
@@ -152,4 +152,295 @@
     .talla-btn {
         padding: 0.4rem 1rem;
     }
+}
+
+/* === FIX de contraste específico para Productos.jsx === */
+
+/* ----------- MODO OSCURO ----------- */
+body.dark-mode .content {
+    color: #f5f5f5;
+}
+
+/* Precio */
+body.dark-mode p[style*="color: #000000"] {
+  color: #ffffff !important;
+}
+
+/* "Tallas disponibles" */
+body.dark-mode p[style*="font-weight: 500"] {
+  color: #ffffff !important;
+}
+
+/* Descripción */
+body.dark-mode p[style*="color: #444"] {
+  color: #dddddd !important;
+}
+
+/* Referencia de imagen del producto */
+body.dark-mode .thumbnail {
+  color: #ffffff !important;
+  background-color: #1a1a1a !important;
+  border: 1px solid #333 !important;
+}
+
+body.dark-mode .talla-btn {
+  color: #000000 !important;
+  background-color: #ffffff !important;
+  border: 1px solid #888;
+}
+body.dark-mode .talla-btn.active {
+  background-color: #222 !important;
+  color: #ffffff !important;
+  border-color: #fff;
+}
+
+body.light-mode .content {
+  color: #000000;
+}
+
+body.light-mode p[style*="color: #ffffff"] {
+  color: #000000 !important;
+}
+
+body.light-mode p[style*="font-weight: 500"] {
+  color: #000000 !important;
+}
+
+body.light-mode p[style*="color: #444"] {
+  color: #111111 !important;
+}
+
+body.light-mode .thumbnail {
+  color: #000000 !important;
+  background-color: #ffffff !important;
+  border: 1px solid #ccc !important;
+}
+
+body.light-mode .talla-btn {
+  color: #ffffff !important;
+  background-color: #000000 !important;
+  border: 1px solid #888;
+}
+body.light-mode .talla-btn.active {
+  background-color: #f0f0f0 !important;
+  color: #000000 !important;
+  border-color: #000;
+}
+
+body.dark-mode .main-image {
+  color: #000000; 
+}
+
+label.text-gray-700 {
+  color: #222 !important; 
+}
+
+/* body.dark-mode label.text-gray-700 {
+  color: #f0f0f0 !important;
+} */
+
+.review-card {
+  background-color: #ffffff;           
+  color: #1c1c1c;                        
+  padding: 1rem 1.5rem;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+.review-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.dark .review-card {
+  background-color: #2b2b2b;             
+  color: #f0f0f0;                        
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 2px 10px rgba(255, 255, 255, 0.05);
+}
+
+.dark .review-card:hover {
+  box-shadow: 0 4px 14px rgba(255, 255, 255, 0.12);
+}
+
+.review-author {
+  font-weight: 600;
+  color:#f0f0f0;
+}
+
+.review-text {
+  font-weight: 600;
+  color:#f0f0f0;
+}
+
+.light-mode .review-author {
+  font-weight: 600;
+  color:#000000;
+}
+
+.light-mode .review-text {
+  font-weight: 600;
+  color:#000000;
+}
+
+.review-date {
+  font-size: 0.85rem;
+  color: #666;
+}
+
+.dark .review-date {
+  color: #bbb;
+}
+
+.review-stars {
+  color: #ffcc00;
+  font-weight: 600;
+  margin-top: 0.5rem;
+}
+
+.payment-info {
+  margin: 0.5rem 0;
+  font-size: 0.9rem;
+  color: #000; 
+  transition: color 0.3s;
+}
+
+.dark .payment-info {
+  color: #fff;
+}
+
+.producto-info h2 {
+    margin-top: 14px;       
+    margin-bottom: 0.25rem;
+    line-height: 1.2;
+    font-size: 2rem;
+}
+
+.producto-info p.precio {
+    margin-top: 13px;
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+.dark .producto-info h2,
+.dark .producto-info p.precio {
+    color: #ffffff;
+}
+
+/* --- Ajuste para catálogos (MainHombres, MainMujeres, etc.) --- */
+.producto-grid-container, 
+.content {
+  max-width: none !important;
+  width: 100% !important;
+  margin: 0 !important;
+  padding: 0 1rem !important;
+}
+
+.product-card > * {
+  width: 100% !important;
+  display: block !important;
+}
+
+
+
+/* FORZAR colores correctos en los textos */
+.producto-info h2,
+.producto-info p,
+.producto-info .precio,
+.producto-info .payment-info,
+.producto-info label,
+.producto-info span {
+  color: #111 !important; /* gris oscuro profesional */
+}
+
+/* Precio */
+.precio {
+  font-size: 1.6rem;
+  font-weight: bold;
+  margin-top: 0.5rem;
+  color: #222 !important;
+}
+
+/* Contenedor de la imagen principal */
+.main-image {
+  width: 100%;
+  height: auto;
+  border-radius: 0.75rem;
+}
+
+/* Miniaturas */
+.thumbnail {
+  border: 2px solid transparent;
+  transition: border 0.2s ease-in-out;
+}
+
+.thumbnail.active {
+  border: 2px solid #000;
+}
+
+/* Tallas */
+.talla-btn {
+  padding: 0.4rem 0.8rem;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  background: white;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  color: #111;
+}
+
+.talla-btn.active {
+  background: #000;
+  color: white;
+  border-color: #000;
+}
+
+/* Tabs */
+.tab-button {
+  padding: 0.6rem 1rem;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: 1rem;
+  color: #555;
+  border-bottom: 2px solid transparent;
+}
+
+.tab-button.active {
+  color: #000;
+  border-bottom: 2px solid #000;
+}
+
+/* Review cards */
+.review-card {
+  padding: 1rem;
+  background: #fafafa;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+}
+
+.titulo-tallas {
+  color: #111 !important;
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+}
+
+input{
+  color: black;
+}
+
+.producto-page {
+  background: #fff !important;
+  padding: 2rem  !important;
+  padding-top: 15px !important; /* evita choque con header */
+  /* min-height: calc(100vh - 80px);  evita franjas */ 
+}
+
+.producto-cargando {
+  min-height: calc(100vh - 80px); /* empuja hasta casi el footer */
+  background: #fff !important; /* o el fondo que quieras */
+  color: #000 !important;
+  padding-top: 120px; /* para que no choque con el header */
 }

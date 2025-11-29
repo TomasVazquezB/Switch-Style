@@ -1,0 +1,271 @@
+.confpago-page .confpago-container {
+  max-width: 960px;
+  margin: 24px auto;
+  padding: 10px 4px;
+}
+
+.light-mode .confpago-page {
+  --bg-color: #f9fafb;
+  --border-color: #e5e7eb;
+  --text-color: #111827;
+  --input-border: #d1d5db;
+  --input-focus: #2c2c2c;
+  --focus-shadow: rgba(0, 0, 0, 0.4);
+  --btn-prim-bg: #000000;
+  --btn-prim-text: #ffffff;
+  --btn-sec-bg: #ffffff;
+  --btn-sec-text: #111827;
+  --btn-sec-border: #d1d5db;
+}
+
+.dark-mode .confpago-page {
+  --bg-color: #1d1e1f;
+  --border-color: #d0d3d8;
+  --text-color: #f1f5f9;
+  --input-border: #2f2f31;
+  --input-focus: #000000;
+  --focus-shadow: rgba(55, 56, 56, 0.4);
+  --btn-prim-bg: #484849;
+  --btn-prim-text: #ffffff;
+  --btn-sec-bg: #313233;
+  --btn-sec-text: #f1f5f9;
+  --btn-sec-border: #232324;
+}
+
+.datos-envio {
+  margin-bottom: 14px;
+}
+
+.light-mode .datos-envio {
+  color: #252525;
+}
+
+.dark-mode .datos-envio {
+  color: #f1f1f1;
+}
+
+.dark-mode .confirmacion-i {
+  color: #f1f1f1;
+}
+
+.confpago-page .confpago-left {
+  background-color: var(--bg-color);
+  border: 1px solid var(--border-color);
+  border-radius: 16px;
+  padding: 20px;
+  color: var(--text-color);
+}
+
+.confpago-page h2 {
+  margin-top: 0;
+  color: var(--text-color);
+}
+
+.confpago-page .confpago-h3 {
+  margin: 16px 0 8px;
+  color: var(--text-color);
+}
+
+.confpago-page .confpago-grid-2,
+.confpago-page .confpago-grid-3 {
+  display: grid;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+.confpago-page .confpago-grid-2 {
+  grid-template-columns: 1fr 1fr;
+}
+.confpago-page .confpago-grid-3 {
+  grid-template-columns: 1.2fr .6fr .8fr;
+}
+
+.confpago-page .confpago-label {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.confpago-page .confpago-label-text {
+  font-size: 0.9rem;
+  color: var(--text-color);
+}
+
+.confpago-page .confpago-input,
+.confpago-page .confpago-textarea {
+  border: 1px solid var(--input-border);
+  border-radius: 14px;
+  padding: 10px 18px;
+  font-size: 0.95rem;
+  outline: none;
+  background: #ffffff;
+  color:#000000;
+  transition: border 0.3s, box-shadow 0.3s, background 0.3s, color 0.3s;
+}
+
+.confpago-page .confpago-input:focus,
+.confpago-page .confpago-textarea:focus {
+  border-color: var(--input-focus);
+  box-shadow: 0 0 0 2px var(--focus-shadow);
+}
+
+.confpago-page .confpago-actions {
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
+  margin-top: 8px;
+}
+
+.confpago-page .confpago-btn {
+  border-radius: 999px;
+  padding: 10px 16px;
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: background 0.3s, color 0.3s, border 0.3s, box-shadow 0.3s;
+}
+
+.confpago-page .confpago-btn:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px var(--focus-shadow);
+}
+
+.confpago-page .confpago-btn-prim {
+  background: var(--btn-prim-bg);
+  color: var(--btn-prim-text);
+}
+
+.confpago-page .confpago-btn-prim:hover {
+  opacity: 0.9;
+}
+
+.confpago-page .confpago-btn-sec {
+  background: var(--btn-sec-bg);
+  color: var(--btn-sec-text);
+  border-color: var(--btn-sec-border);
+}
+
+.confpago-page .confpago-btn-sec:hover {
+  opacity: 0.9;
+}
+
+
+@media (max-width: 960px) {
+  .confpago-page .confpago-grid-3 {
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .confpago-page .confpago-grid-2,
+  .confpago-page .confpago-grid-3 {
+    grid-template-columns: 1fr;
+  }
+}
+
+.confpago-page {
+  display: flex;
+  justify-content: center;
+  padding: 2rem;
+  color: #fff;
+}
+
+.confpago-container {
+  width: 100%;
+  max-width: 900px;
+  border-radius: 16px;
+  padding: 2rem;
+}
+
+.confpago-label-text {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 0.4rem;
+  color: #eaeaea;
+}
+
+.confpago-input,
+.confpago-textarea,
+.confpago-select {
+  width: 100%;
+  padding: 0.7rem 1rem;
+  border: 1px solid #333;
+  border-radius: 8px;
+  background: #1a1a1a; 
+  color: #f5f5f5;
+  font-size: 0.95rem;
+  transition: all 0.2s ease;
+}
+
+.confpago-input:focus,
+.confpago-textarea:focus,
+.confpago-select:focus {
+  outline: none;
+  border-color: #000000;
+  box-shadow: 0 0 6px #00000066;
+}
+
+.confpago-btn {
+  padding: 0.8rem 1.5rem;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background 0.2s;
+}
+
+.confpago-btn-prim {
+  background: #161616;
+  color: #fff;
+}
+
+.confpago-btn-prim:hover {
+  background: #161616;
+}
+
+.confpago-btn-sec {
+  background: transparent;
+  border: 1px solid #666;
+  color: #ccc;
+}
+
+.confpago-btn-sec:hover {
+  background: #222;
+}
+
+.confpago-grid-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.confpago-grid-3 {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 1rem;
+}
+
+.confpago-actions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 2rem;
+}
+
+.datos-envio,
+.confpago-h3 {
+  color: #fff;
+  font-weight: 700;
+  margin-bottom: 1rem;
+}
+
+/* FIX: asegurar que el botón secundario tenga texto visible SIEMPRE */
+.confpago-btn-sec {
+  color: var(--btn-sec-text) !important;
+}
+
+.confpago-btn-sec:hover {
+  color: var(--btn-sec-text) !important;
+}
+
+
+.confpago-btn-sec:hover {
+  color: #ffffff !important;
+}

@@ -1,20 +1,38 @@
 import React, { useEffect, useState } from 'react';
-import { PayPalButtons } from "@paypal/react-paypal-js";
 import { toast } from 'react-toastify';
-import axios from '../../api/axios'; 
+import 'react-toastify/dist/ReactToastify.css';
+import { publicApi } from '../../api/axios';
+import { useNavigate } from "react-router-dom";
+import { useContext } from "react";
+import { DataContext } from "../../context/DataContext";
 import './carrito.css';
 
+const getCartKey = (usuario) => {
+    if (!usuario?.id) return "carrito_guest";
+    return `carrito_${usuario.id}`;
+};
+
+
 const Carrito = () => {
-    const [carritoData, setCarritoData] = useState(() => {
+    const navigate = useNavigate();
+
+    const { usuario } = useContext(DataContext);
+
+    const [carritoData, setCarritoData] = useState([]);
+
+    const [cargando, setCargando] = useState(true);
+
+    useEffect(() => {
+        const key = getCartKey(usuario);
         try {
-            const saved = localStorage.getItem('carrito');
+            const saved = localStorage.getItem(key);
             const parsed = saved ? JSON.parse(saved) : [];
-            return Array.isArray(parsed) ? parsed : [];
-        } catch (error) {
-            console.error("Error al parsear carrito:", error);
-            return [];
+            setCarritoData(Array.isArray(parsed) ? parsed : []);
+        } catch {
+            setCarritoData([]);
         }
-    });
+    }, [usuario]);
+
 
     const [productos, setProductos] = useState([]);
     const [accesorios, setAccesorios] = useState([]);
@@ -24,17 +42,34 @@ const Carrito = () => {
         const fetchData = async () => {
             try {
                 const [ropaRes, accesoriosRes] = await Promise.all([
-                    axios.get('/ropa'),
-                    axios.get('/accesorios')
+                    publicApi.get('/ropa'),
+                    publicApi.get('/accesorios')
                 ]);
                 setProductos(ropaRes.data);
                 setAccesorios(accesoriosRes.data);
+                setCargando(false);   // ✔ FIN DE CARGA
             } catch (error) {
                 console.error("Error al obtener productos o accesorios:", error);
             }
         };
         fetchData();
     }, []);
+
+    /* useEffect(() => {
+        if (cargando) return; // esperamos a que cargue ropa + accesorios
+
+        let hayEliminados = false;
+
+        for (const item of carritoData) {
+            const p = buscarProducto(item);
+            if (!p) hayEliminados = true;
+        }
+
+        if (hayEliminados) {
+            toast.error("Hay productos que ya no están disponibles. Actualiza tu carrito.");
+        }
+
+    }, [cargando, carritoData, productos, accesorios]); */
 
     const buscarProducto = (item) => {
         const fuente = item.tipo === 'accesorio' ? accesorios : productos;
@@ -54,8 +89,8 @@ const Carrito = () => {
         const producto = buscarProducto(item);
         const tallaData = producto?.tallas?.find(t => t.nombre === item.talla);
 
-        let stockDisponible = producto?.stock || producto?.cantidad || 1;
-        if (tallaData) stockDisponible = tallaData.pivot?.cantidad || 1;
+        let stockDisponible = producto?.stock || producto?.cantidad || 100;
+        if (tallaData) stockDisponible = tallaData.pivot?.cantidad || 100;
 
         if (nuevaCantidad < 1) return;
         if (nuevaCantidad > stockDisponible) {
@@ -66,47 +101,84 @@ const Carrito = () => {
         const actualizado = [...carritoData];
         actualizado[index].cantidad = nuevaCantidad;
         setCarritoData(actualizado);
-        localStorage.setItem('carrito', JSON.stringify(actualizado));
+        localStorage.setItem(getCartKey(usuario), JSON.stringify(actualizado));
     };
 
     const eliminarProducto = (index) => {
         const actualizado = [...carritoData];
         actualizado.splice(index, 1);
         setCarritoData(actualizado);
-        localStorage.setItem('carrito', JSON.stringify(actualizado));
+        localStorage.setItem(getCartKey(usuario), JSON.stringify(actualizado));
     };
+
+
+
+    const handleProceedToPayment = () => {
+        if (carritoData.length === 0) {
+            toast.error("Tu carrito está vacío");
+            return;
+        }
+
+        if (!usuario) {
+            toast.error("Debes iniciar sesión para continuar");
+            navigate("/login");
+            return;
+        }
+        // for (const item of carritoData) {
+        //     const p = buscarProducto(item);
+        //     if (!p) {
+        //         toast.error("Tu carrito contiene productos inexistentes o sin stock. Revísalo.");
+        //         return;
+        //     }
+        // }
+
+
+        navigate("/confpago");
+    };
+
+    if (cargando) {
+        return <div className="cart-container"><p>Cargando productos...</p></div>;
+    }
 
     return (
         <div className="cart-container">
             <div className="cart-items">
                 <h2 className="carrito-vacio">Carrito de Compras</h2>
+                <br />
                 {carritoData.length === 0 ? (
-                    <p className="carrito-vacio">Tu carrito está vacío</p>
+                    <p className="carrito-vacio2">Tu carrito está vacío</p>
                 ) : (
                     carritoData.map((item, index) => {
                         const producto = buscarProducto(item);
                         if (!producto) return null;
 
+
+
                         const imagen = item.ruta_imagen
                             ? item.ruta_imagen
                             : producto.ruta_imagen?.startsWith('http')
-                                ? producto.ruta_imagen
-                                : `${axios.defaults.baseURL}/storage/${producto.ruta_imagen}`;
+                                ? item.ruta_imagen
+                                : toImageUrl(producto.ruta_imagen);
                         const talla = item.talla ? ` | ${item.talla}` : '';
 
                         return (
                             <div key={index} className="cart-product">
                                 <br />
                                 <img src={imagen} alt={producto.titulo} />
-                                <br/>
+                                <br />
                                 <div className="cart-product-info">
                                     <h4>{producto.titulo}</h4>
                                     <p>{moneda}{parseFloat(producto.precio).toFixed(2)}{talla}</p>
                                     <div className="cart-qty-controls">
                                         <button onClick={() => actualizarCantidad(index, item.cantidad - 1)}>-</button>
-                                        <input type="number" value={item.cantidad} min="1" onChange={(e) => actualizarCantidad(index, parseInt(e.target.value))} />
+                                        <input
+                                            type="number"
+                                            value={item.cantidad}
+                                            min="1"
+                                            onChange={(e) => actualizarCantidad(index, parseInt(e.target.value))}
+                                        />
                                         <button onClick={() => actualizarCantidad(index, item.cantidad + 1)}>+</button>
-                                        <br/>
+                                        <br />
                                     </div>
                                 </div>
                                 <br />
@@ -119,22 +191,16 @@ const Carrito = () => {
 
             <div className="order-summary">
                 <h3>Resumen de la Compra</h3>
-                <br/>
+                <br />
                 <div className="summary-line">
                     <span>Subtotal</span>
                     <span>{moneda}{calcularTotal()}</span>
                 </div>
-                <div className="summary-line">
-                    <span>Estimacion de Envio y Impuestos</span>
-                    <span>{moneda}0.00</span>
-                </div>
                 <div className="total">
-                     <span className="total-label">Total</span>
-                     <span className="total-amount">{moneda}{calcularTotal()}</span>
+                    <span className="total-label">Total</span>
+                    <span className="total-amount">{moneda}{calcularTotal()}</span>
                 </div>
-                <div className="pay-buttons">
-                    <PayPalButtons style={{ layout: 'vertical' }} />
-                </div>
+                <button className="buttom-pago" onClick={handleProceedToPayment}>Proceder al Pago 💰</button>
             </div>
         </div>
     );

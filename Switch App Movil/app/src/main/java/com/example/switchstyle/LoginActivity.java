@@ -20,7 +20,6 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class LoginActivity extends AppCompatActivity {
-
     private EditText email, password;
     private SessionManager sessionManager;
     private ApiService apiService;
@@ -42,13 +41,13 @@ public class LoginActivity extends AppCompatActivity {
         sessionManager = new SessionManager(this);
         apiService = RetrofitClient.getClient().create(ApiService.class);
 
-        // Si ya hay sesión iniciada, ir directo al catálogo
+        // Si ya está logueado, ir directamente al catálogo
         if (sessionManager.isLoggedIn()) {
             startActivity(new Intent(LoginActivity.this, CatalogoProductos.class));
             finish();
         }
 
-        // Login
+        // Botón de login
         btnLogin.setOnClickListener(view -> {
             String emailUser = email.getText().toString().trim();
             String passUser = password.getText().toString().trim();
@@ -74,10 +73,20 @@ public class LoginActivity extends AppCompatActivity {
 
         navCatalogs.setOnClickListener(v -> {
             if (sessionManager.isLoggedIn()) {
-                startActivity(new Intent(LoginActivity.this, CatalogoProductos.class));
+                Intent intent = new Intent(LoginActivity.this, CatalogoProductos.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
                 finish();
             } else {
-                startActivity(new Intent(LoginActivity.this, LoginValidationActivity.class));
+                // Mostrar pantalla de validación como en MainActivity
+                setContentView(R.layout.activity_login_validation);
+                setTitle("Acceso restringido");
+
+                Button btnIrLoginDesdeValidacion = findViewById(R.id.btnIrRegistro);
+                btnIrLoginDesdeValidacion.setOnClickListener(view -> {
+                    startActivity(new Intent(LoginActivity.this, LoginActivity.class));
+                    finish();
+                });
             }
         });
     }
@@ -103,9 +112,7 @@ public class LoginActivity extends AppCompatActivity {
                     }
 
                     String userName = (auth.getUser() != null && auth.getUser().getNombre() != null)
-                            ? auth.getUser().getNombre()
-                            : "usuario";
-
+                            ? auth.getUser().getNombre() : "usuario";
                     Toast.makeText(LoginActivity.this, "Bienvenido/a " + userName, Toast.LENGTH_LONG).show();
 
                     startActivity(new Intent(LoginActivity.this, CatalogoProductos.class));

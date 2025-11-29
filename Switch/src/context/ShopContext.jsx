@@ -1,28 +1,33 @@
-import { createContext, useEffect, useState } from "react";
+import React, { createContext, useEffect, useState } from "react";
 import { productos } from "../assets/assets";
 import { useNavigate } from "react-router-dom";
-import { toast } from 'react-toastify';
+import { toast } from "react-toastify";
 
 export const ShopContext = createContext();
 
 const ShopContextProvider = (props) => {
-    const moneda = '$';
+    const moneda = "$";
     const delivery_fee = 10;
     const navigate = useNavigate();
 
-    const [search, setSearch] = useState('');
+    const [search, setSearch] = useState("");
     const [showSearch, setShowSearch] = useState(false);
 
+    // -----------------------
+    // 🛒 CARRITO
+    // -----------------------
     const [carritoItems, setCarritoItems] = useState(() => {
-        const dataGuardada = localStorage.getItem('carrito');
+        const dataGuardada = localStorage.getItem("carrito");
         return dataGuardada ? JSON.parse(dataGuardada) : {};
     });
 
-    useEffect(() => {localStorage.setItem('carrito', JSON.stringify(carritoItems));
+    useEffect(() => {
+        localStorage.setItem("carrito", JSON.stringify(carritoItems));
     }, [carritoItems]);
 
     const agregarAlCarrito = async (itemId, talla) => {
-        if (!talla) {toast.error('Seleccione talla del producto');
+        if (!talla) {
+            toast.error("Seleccione talla del producto");
             return;
         }
 
@@ -40,7 +45,7 @@ const ShopContextProvider = (props) => {
         }
 
         setCarritoItems(carritoData);
-        toast.success('Producto agregado al carrito');
+        toast.success("Producto agregado al carrito");
     };
 
     const quitarDelCarrito = (itemId, talla) => {
@@ -72,10 +77,10 @@ const ShopContextProvider = (props) => {
                 delete carritoData[itemId];
             }
 
-            toast.info('Producto eliminado del carrito');
+            toast.info("Producto eliminado del carrito");
         } else {
             carritoData[itemId][talla] = cantidad;
-            toast.success('Cantidad actualizada');
+            toast.success("Cantidad actualizada");
         }
         setCarritoItems(carritoData);
     };
@@ -88,7 +93,7 @@ const ShopContextProvider = (props) => {
                     if (carritoItems[items][item] > 0) {
                         totalCount += carritoItems[items][item];
                     }
-                } catch (error) { }
+                } catch (error) {}
             }
         }
         return totalCount;
@@ -97,7 +102,7 @@ const ShopContextProvider = (props) => {
     const getCarritoCantidad = () => {
         let totalCantidad = 0;
         for (const id in carritoItems) {
-            const producto = productos.find(p => p._id === id);
+            const producto = productos.find((p) => p._id === id);
             if (!producto) continue;
 
             for (const talla in carritoItems[id]) {
@@ -113,23 +118,59 @@ const ShopContextProvider = (props) => {
         toast.info("Carrito vaciado");
     };
 
+    // -----------------------
+    // ⭐ FAVORITOS
+    // -----------------------
     const [favoritos, setFavoritos] = useState(() => {
-        const favsGuardados = localStorage.getItem('favoritos');
+        const favsGuardados = localStorage.getItem("favoritos");
         return favsGuardados ? JSON.parse(favsGuardados) : [];
     });
 
-    useEffect(() => {localStorage.setItem('favoritos', JSON.stringify(favoritos));
+    useEffect(() => {
+        localStorage.setItem("favoritos", JSON.stringify(favoritos));
     }, [favoritos]);
 
-    const toggleFavorito = (productoId) => {setFavoritos(prev => prev.includes(productoId) ? prev.filter(id => id !== productoId) : [...prev, productoId]);
+    const toggleFavorito = (productoId) => {
+        setFavoritos((prev) =>
+            prev.includes(productoId)
+                ? prev.filter((id) => id !== productoId)
+                : [...prev, productoId]
+        );
     };
 
     const esFavorito = (productoId) => favoritos.includes(productoId);
 
-    const value = {moneda,delivery_fee,productos,navigate,search, setSearch,showSearch, setShowSearch,agregarAlCarrito,quitarDelCarrito,updateCantidad,carritoItems,getCarritoCount,getCarritoCantidad,limpiarCarrito,favoritos,toggleFavorito,esFavorito};
+    // -----------------------
+    // CONTEXTO VALUE
+    // -----------------------
+    const value = {
+        moneda,
+        delivery_fee,
+        productos,
+        navigate,
+
+        search,
+        setSearch,
+        showSearch,
+        setShowSearch,
+
+        agregarAlCarrito,
+        quitarDelCarrito,
+        updateCantidad,
+        carritoItems,
+        getCarritoCount,
+        getCarritoCantidad,
+        limpiarCarrito,
+
+        favoritos,
+        toggleFavorito,
+        esFavorito,
+    };
 
     return (
-        <ShopContext.Provider value={value}>{props.children}</ShopContext.Provider>
+        <ShopContext.Provider value={value}>
+            {props.children}
+        </ShopContext.Provider>
     );
 };
 

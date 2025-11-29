@@ -1,0 +1,44 @@
+/* ======== MODO OSCURO TARJETAS ======== */
+
+/* Fondo de la tarjeta */
+body.dark-mode .product-card {
+  background-color: #1e1e1e !important;
+  color: #f5f5f5 !important;
+  border: 1px solid #333;
+  border-radius: 12px;
+}
+
+/* Título y precio */
+body.dark-mode .product-card h3,
+body.dark-mode .product-card p {
+  color: #f5f5f5 !important;
+}
+
+/* Imagen: bordes suaves */
+body.dark-mode .product-card img {
+  border-radius: 12px 12px 0 0;
+  background-color: #2a2a2a;
+}
+
+
+body.dark-mode .product-card button:hover {
+  background-color: #e5e5e5 !important;
+  transform: scale(1.03);
+}
+
+/* MODO CLARO (refuerzo, por si hereda del override) */
+body.light-mode .product-card {
+  background-color: #ffffff !important;
+  color: #111 !important;
+}
+
+body.light-mode .product-card button {
+  background-color: #000000 !important;
+  color: #ffffff !important;
+  border-radius: 8px;
+  font-weight: 600;
+}
+
+body.light-mode .product-card button:hover {
+  background-color: #333 !important;
+}

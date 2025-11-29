@@ -1,18 +1,14 @@
 package com.example.switchstyle.api;
 
 import com.google.gson.annotations.SerializedName;
-
 public class User {
     @SerializedName("id")
     private int id;
-
-    @SerializedName("nombre")
+    @SerializedName(value = "nombre", alternate = {"Nombre"})
     private String nombre;
-
-    @SerializedName("correo")
+    @SerializedName(value = "correo", alternate = {"Correo_Electronico"})
     private String correo;
-
-    @SerializedName("rol")
+    @SerializedName(value = "rol", alternate = {"Tipo_Usuario"})
     private String rol;
 
     public int getId() { return id; }

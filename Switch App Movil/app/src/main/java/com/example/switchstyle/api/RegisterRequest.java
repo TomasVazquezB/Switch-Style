@@ -3,7 +3,6 @@ package com.example.switchstyle.api;
 import com.google.gson.annotations.SerializedName;
 
 public class RegisterRequest {
-
     @SerializedName("nombre")
     private String nombre;
 
@@ -13,13 +12,18 @@ public class RegisterRequest {
     @SerializedName("password")
     private String password;
 
-    public RegisterRequest(String nombre, String correo, String password) {
+    @SerializedName("tipo")
+    private String tipo;
+
+    public RegisterRequest(String nombre, String correo, String password, String tipo) {
         this.nombre = nombre;
         this.correo = correo;
         this.password = password;
+        this.tipo = tipo;
     }
 
     public String getNombre() { return nombre; }
     public String getCorreo() { return correo; }
     public String getPassword() { return password; }
+    public String getTipo() { return tipo; }
 }

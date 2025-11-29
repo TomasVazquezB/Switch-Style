@@ -1,117 +1,162 @@
 import React, { createContext, useState, useEffect } from "react";
-import api, { csrf } from "../api/axios";
+import { backendApi, publicApi } from "../api/axios";
 import { guardarUsuario, obtenerUsuario, cerrarSesion } from "../api/auth";
 
-const DataContext = createContext();
+export const DataContext = createContext();
 
-const DataProvider = ({ children }) => {
+const normalizarUsuario = (user, token = null) => {
+  if (!user) return null;
+
+  return {
+    id: user.id,
+    nombre: user.nombre || user.name || user.Nombre || "Usuario",
+    correo: user.email || user.correo,
+    rol: user.rol || user.role || "Usuario",
+    token: token ?? user.token ?? null,
+  };
+};
+
+export const DataProvider = ({ children }) => {
   const [productos, setProductos] = useState([]);
-  const [usuarios, setUsuarios] = useState([]);
-  const [usuario, setUsuario] = useState(obtenerUsuario());
+  const [usuario, setUsuario] = useState(normalizarUsuario(obtenerUsuario()));
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // 🔹 Inicializar CSRF para todas las llamadas
-  const initCsrf = async () => {
-    try {
-      await csrf();
-    } catch (err) {
-      console.error("Error al obtener CSRF:", err);
-      setError("No se pudo inicializar CSRF");
-    }
-  };
-
-  // 🔹 Login
+  // --------------------------
+  // LOGIN
+  // --------------------------
   const login = async (email, password) => {
     try {
-      await initCsrf();
-      const response = await api.post("/login", { email, password });
-      const { user } = response.data;
-      guardarUsuario(user); // guarda en localStorage
-      setUsuario(user);
+      const response = await backendApi.post("/login", { email, password });
+      const { user, token } = response.data;
+
+      const usuarioNormalizado = {
+        id: user.id,
+        nombre: user.nombre || user.name || "Usuario",
+        correo: user.email || user.correo,
+        rol: user.rol || user.role || "Usuario",
+        token: token,
+      };
+
+
+      guardarUsuario(usuarioNormalizado);
+      setUsuario(usuarioNormalizado);
       setError(null);
       return true;
+
     } catch (err) {
-      console.error("Error en login:", err);
+      console.error("❌ Error en login:", err);
       setError("Credenciales inválidas o error de conexión");
       return false;
     }
   };
 
-  // 🔹 Logout
+  // --------------------------
+  // LOGOUT
+  // --------------------------
   const logout = async () => {
     try {
-      await api.post("/logout");
+      await backendApi.post("/logout");
     } catch (err) {
-      console.error("Error en logout:", err);
+      console.error("❌ Error en logout:", err);
     } finally {
       cerrarSesion();
       setUsuario(null);
     }
   };
 
-  // 🔹 Obtener productos
-  const fetchProductos = async (darkMode = false) => {
+  // --------------------------
+  // OBTENER USUARIO DEL BACKEND
+  // --------------------------
+  const fetchUsuario = async () => {
     try {
-      const response = await api.get("/ropa");
-      const productosConImagen = response.data.map((producto) => {
-        let imagenNormal = `https://switchstyle.laravel.cloud/storage/${producto.Imagen}`;
-        if (producto.ImagenNocturna && darkMode) {
-          imagenNormal = `https://switchstyle.laravel.cloud/storage/${producto.ImagenNocturna}`;
-        }
-        return { ...producto, imagen_url: imagenNormal };
-      });
-      setProductos(productosConImagen);
+      const { data } = await backendApi.get("/usuario");
+
+      const usuarioLocal = obtenerUsuario();
+
+      const usuarioNormalizado = {
+        id: data.id ?? usuarioLocal?.id,
+        nombre: data.nombre || data.name || usuarioLocal?.nombre || "Usuario",
+        correo: data.email || data.correo || usuarioLocal?.correo,
+        rol: data.rol || data.role || usuarioLocal?.rol || "Usuario",
+        token: usuarioLocal?.token ?? null,
+      };
+
+      setUsuario(usuarioNormalizado);
+      guardarUsuario(usuarioNormalizado);
+
     } catch (err) {
-      console.error("Error al obtener productos:", err);
+      console.error("❌ Error al obtener usuario:", err);
+    }
+  };
+
+
+
+  // --------------------------
+  // PRODUCTOS
+  // --------------------------
+  const fetchProductos = async () => {
+    try {
+      const [ropaRes, accesoriosRes] = await Promise.all([
+        publicApi.get("/ropa"),
+        publicApi.get("/accesorios"),
+      ]);
+
+      const ropaData = Array.isArray(ropaRes.data) ? ropaRes.data : [];
+      const accesoriosData = Array.isArray(accesoriosRes.data) ? accesoriosRes.data : [];
+
+      const ropaNormalizada = ropaData.map((producto) => ({
+        ...producto,
+        imagen_url: producto.Imagen ? `https://switchstyle.laravel.cloud/storage/${producto.Imagen}` : null,
+        titulo: producto.Titulo || producto.titulo || "",
+        tipo: producto.Tipo || producto.tipo || "",
+        descripcion: producto.Descripcion || producto.descripcion || "",
+        categoria: "Ropa",
+        tipoProducto: "ropa",
+      }));
+
+      const accesoriosNormalizados = accesoriosData.map((producto) => ({
+        ...producto,
+        imagen_url: producto.ruta_imagen ? `https://switchstyle.laravel.cloud/storage/${producto.ruta_imagen}` : null,
+        titulo: producto.titulo || producto.Titulo || "",
+        tipo: "Accesorio",
+        descripcion: producto.descripcion || producto.Descripcion || "",
+        categoria: "Accesorios",
+        tipoProducto: "accesorio",
+      }));
+
+      setProductos([...ropaNormalizada, ...accesoriosNormalizados]);
+
+    } catch (err) {
+      console.error("❌ Error al obtener productos:", err);
       setError("Error al obtener productos");
     }
   };
 
-  // 🔹 Obtener usuarios (protegido)
-  const fetchUsuarios = async () => {
-    try {
-      await initCsrf(); // 🔹 Asegurarse de CSRF antes de llamar a endpoint protegido
-      const response = await api.get("/usuario");
-      setUsuarios(response.data);
-    } catch (err) {
-      console.error("Error al obtener usuarios:", err);
-      setError("Error al obtener usuarios");
-    }
-  };
-
-  const ropa = productos.filter((p) => p.Tipo === "Ropa");
-  const accesorios = productos.filter((p) => p.Tipo === "Accesorios");
-
+  // --------------------------
+  // INIT
+  // --------------------------
   useEffect(() => {
-    const fetchData = async () => {
-      setLoading(true);
-      await fetchProductos();
-      if (usuario) await fetchUsuarios(); // 🔹 Solo si hay sesión
-      setLoading(false);
-    };
-    fetchData();
-  }, [usuario]); // 🔹 Dependencia de usuario
+    fetchProductos();
+    const tokenGuardado = obtenerUsuario()?.token;
+    if (tokenGuardado) fetchUsuario();
+  }, []);
 
   return (
     <DataContext.Provider
       value={{
         productos,
-        ropa,
-        accesorios,
-        usuarios,
         usuario,
+        setUsuario,
         loading,
         error,
         login,
         logout,
         fetchProductos,
-        fetchUsuarios,
+        fetchUsuario,
       }}
     >
       {children}
     </DataContext.Provider>
   );
 };
-
-export { DataContext, DataProvider };

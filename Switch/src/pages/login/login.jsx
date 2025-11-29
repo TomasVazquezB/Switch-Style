@@ -1,14 +1,18 @@
 import React, { useState, useContext } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import api, { csrf } from "../../api/axios";
-import { DataContext } from "../../context/DataContext.jsx"; 
+import { backendApi, setAuthToken } from "../../api/axios";
+import { DataContext } from "../../context/DataContext.jsx";
+import { guardarUsuario } from "../../api/auth";
 import "./login.css";
 
 export function LoginPage() {
-  const [formData, setFormData] = useState({ identificador: "", contrasena: "" });
+  const [formData, setFormData] = useState({
+    identificador: "",
+    contrasena: "",
+  });
   const [error, setError] = useState(null);
   const navigate = useNavigate();
-  const { setUsuario } = useContext(DataContext); 
+  const { setUsuario } = useContext(DataContext);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -19,37 +23,44 @@ export function LoginPage() {
     setError(null);
 
     try {
-      // 1️⃣ Obtener cookie CSRF
-      await csrf();
-
-      // 2️⃣ Hacer login → ruta correcta /login
-      const response = await api.post("/login", {
-        email: formData.identificador,
-        password: formData.contrasena,
+      const response = await backendApi.post("/login", {
+        email: formData.identificador.trim(),
+        password: formData.contrasena.trim(),
       });
 
       const user = response.data.user;
 
-      // 3️⃣ Guardar usuario en localStorage y contexto
-      localStorage.setItem("usuario", JSON.stringify(user));
-      setUsuario(user); 
+      console.log("USER DEL BACK:", user);
 
-      alert(`Bienvenido ${user.Nombre || user.name || ""}`);
+      const usuarioNormalizado = {
+        id: user.id,
+        nombre:
+          user.name ||
+          user.nombre ||
+          user.username ||
+          user.nombre_completo ||
+          user.Nombre ||
+          "Usuario",
+        correo: user.email,
+        rol: user.rol || "Usuario",
+      };
 
-      // 4️⃣ Redirigir según rol
-      if (user.Tipo_Usuario === "Admin") {
-        window.location.href = "https://switchstyle.laravel.cloud/admin";
-      } else {
-        navigate("/");
-      }
+      guardarUsuario(usuarioNormalizado, response.data.token);
+      setAuthToken(response.data.token);
+      setUsuario(usuarioNormalizado);
+
+      alert(`Bienvenido ${usuarioNormalizado.nombre}`);
+
+      navigate("/");
+      setTimeout(() => window.location.reload(), 300);
+
     } catch (err) {
-      console.error(err);
-      if (err.response?.status === 419) {
-        setError("Error de sesión. Intenta recargar la página.");
-      } else if (err.response?.status === 401) {
+      console.error("Error al iniciar sesión:", err);
+
+      if (err.response?.status === 401) {
         setError("Usuario o contraseña incorrectos.");
       } else {
-        setError(err.response?.data?.message || "Error al iniciar sesión.");
+        setError("Error inesperado.");
       }
     }
   };
@@ -59,7 +70,7 @@ export function LoginPage() {
       <div className="image-container-login">
         <img
           src="https://res.cloudinary.com/switchstyle/image/upload/v1756993827/login_myoobt.jpg"
-          alt="Imagen"
+          alt="Imagen de inicio de sesión"
           className="login-image"
         />
       </div>
@@ -68,6 +79,7 @@ export function LoginPage() {
         <div className="login-form">
           <h1 className="bienvenida">Ingresar</h1>
           <h3 className="bienvenido">Bienvenido de vuelta</h3>
+
           <form onSubmit={handleSubmit}>
             <input
               type="text"
@@ -78,6 +90,7 @@ export function LoginPage() {
               onChange={handleChange}
               className="form-control input_user"
             />
+
             <input
               type="password"
               name="contrasena"
@@ -87,12 +100,16 @@ export function LoginPage() {
               onChange={handleChange}
               className="form-control input_user"
             />
+
             {error && <div className="alert alert-danger">{error}</div>}
+
             <button type="submit" className="button-login">
               Ingresar
             </button>
+
             <p className="registro-link">
-              ¿Todavía no estás registrado? <Link to="/registro">Regístrate aquí</Link>
+              ¿Todavía no estás registrado?{" "}
+              <Link to="/registro">Regístrate aquí</Link>
             </p>
           </form>
         </div>

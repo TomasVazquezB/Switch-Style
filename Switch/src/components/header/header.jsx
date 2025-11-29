@@ -1,100 +1,112 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import "./header.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
-import { NavLink, useNavigate, Link } from "react-router-dom";
+import { NavLink, useNavigate, useLocation } from "react-router-dom";
 import { FaSearch, FaShoppingCart, FaUser } from "react-icons/fa";
 import { BsMoon, BsSun } from "react-icons/bs";
-import { useLocation } from "react-router-dom";
+import { DataContext } from "../../context/DataContext";
 
 const Header = ({ toggleTheme, darkMode }) => {
-  const [usuario, setUsuario] = useState(null);
+  const { usuario, logout, productos } = useContext(DataContext);
+
   const [showProfileMenu, setShowProfileMenu] = useState(false);
-  const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState("");
+  const [showSuggestions, setShowSuggestions] = useState(false);
+
+  const navigate = useNavigate();
   const location = useLocation();
 
-  const handleClick = (e) => {
-    const links = document.querySelectorAll(".nav-link");
-    links.forEach((link) => link.classList.remove("clicked"));
-    e.target.classList.add("clicked");
-    setTimeout(() => {
-      e.target.classList.remove("clicked");
-    }, 2000);
-  };
+  // --------------------------------------------
+  // Cerrar menú al cambiar de ruta
+  // --------------------------------------------
+  useEffect(() => {
+    setShowProfileMenu(false);
+    setSearchQuery("");
+  }, [location.pathname]);
+
+  // --------------------------------------------
+  // Cerrar menú al hacer click fuera
+  // --------------------------------------------
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      const profileMenu = document.querySelector(".profile-container");
+      if (profileMenu && !profileMenu.contains(event.target)) {
+        setShowProfileMenu(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
 
   const handleSearch = (e) => {
     e.preventDefault();
-    if (searchQuery.trim()) {
-      navigate(`/buscar?q=${encodeURIComponent(searchQuery)}`);
-      setSearchQuery(""); // 🧹 Limpia el campo después de buscar
+    if (!searchQuery.trim()) return;
+
+    const match = productos.find(
+      (p) => p.titulo && p.titulo.toLowerCase() === searchQuery.toLowerCase()
+    );
+
+    if (match) {
+      const tipo = match.tipo?.toLowerCase();
+      if (tipo === "accesorios") navigate(`/producto/accesorios/${match.id}`);
+      else navigate(`/producto/ropa/${match.id}`);
     }
+
+    setSearchQuery("");
+    setShowSuggestions(false);
   };
 
-  const handleProfileClick = () => setShowProfileMenu(!showProfileMenu);
-
-  const handleLogout = () => {
-    localStorage.removeItem("usuario");
-    setUsuario(null);
-    setShowProfileMenu(false);
-    navigate("/login");
+  const handleSuggestionClick = (p) => {
+    if (!p) return;
+    const tipo = p.tipo?.toLowerCase();
+    if (tipo === "accesorios") navigate(`/producto/accesorios/${p.id}`);
+    else navigate(`/producto/ropa/${p.id}`);
+    setShowSuggestions(false);
+    setSearchQuery("");
   };
-
-  useEffect(() => {
-    const actualizarUsuario = () => {
-      const userData = localStorage.getItem("usuario");
-      if (userData) {
-        setUsuario(JSON.parse(userData));
-      } else {
-        setUsuario(null);
-      }
-    };
-
-    actualizarUsuario();
-    window.addEventListener("usuario-actualizado", actualizarUsuario);
-    return () =>
-      window.removeEventListener("usuario-actualizado", actualizarUsuario);
-  }, []);
-
-  useEffect(() => {
-    setSearchQuery(""); // 🧼 Limpia el input al montar el header
-  }, []);
-
-  useEffect(() => {
-    setSearchQuery(""); // 🧭 Limpia el buscador al cambiar de ruta
-  }, [location.pathname]);
 
   const goToCart = () => navigate("/carrito");
 
-  useEffect(() => {
-    const body = document.body;
-    const navbars = document.querySelectorAll(".navbar-top, .navbar-bottom");
-    body.classList.remove("dark-mode", "light-mode");
-    navbars.forEach((nav) => nav.classList.remove("navbar-light-mode"));
+  const handleProfileClick = () => {
+    if (!usuario) navigate("/login");
+    else setShowProfileMenu((prev) => !prev);
+  };
 
-    if (darkMode) {
-      body.classList.add("dark-mode");
-    } else {
-      body.classList.add("light-mode");
-      navbars.forEach((nav) => nav.classList.add("navbar-light-mode"));
+  const handleGoToPanel = () => {
+    const token = usuario?.token;
+    if (!token) {
+      window.location.href = "https://switchstyle.laravel.cloud/login";
+      return;
     }
-  }, [darkMode]);
+    window.location.href = `https://switchstyle.laravel.cloud/auto-login?token=${token}`;
+  };
 
   const getLinkClass = (isActive) =>
     `nav-link ${darkMode ? "text-white" : "text-dark"} ${isActive ? "active-link" : ""
     }`;
 
+  const filteredSuggestions =
+    searchQuery.length > 0
+      ? productos
+        .filter((p) =>
+          `${p.titulo || ""} ${p.tipo || ""} ${p.descripcion || ""}`
+            .toLowerCase()
+            .includes(searchQuery.toLowerCase())
+        )
+        .slice(0, 5)
+      : [];
+
   return (
     <>
       <div
-        className={`offer-bar ${darkMode ? "bg-ultra-light" : "bg-ultra-dark"
-          } text-center pt-4 pb-2`}
+        className={`offer-bar ${darkMode ? "bg-dark text-white" : "bg-light text-dark"
+          } text-center pt-2 pb-1`}
       >
         <p className="offer-bar-text">
-          ¡Registrate para obtener ofertas unicas y obten un 15% en tu primer
-          compra!
+          ¡Registrate para obtener ofertas únicas y obtené un 15% en tu primer compra!
         </p>
       </div>
 
@@ -103,27 +115,25 @@ const Header = ({ toggleTheme, darkMode }) => {
         className={`navbar-top ${darkMode ? "bg-dark" : "bg-light"}`}
       >
         <Container fluid>
-          <Navbar.Brand
-            as={NavLink}
-            to="/"
-            onClick={() => navigate("/")}
-          >
+          <Navbar.Brand as={NavLink} to="/">
             <img
               src="https://res.cloudinary.com/switchstyle/image/upload/v1756993378/Logo%20Switch%20Style.png"
               width="90"
               height="50"
+              alt="Logo Switch Style"
               className="d-inline-block align-top"
-              alt="Logo"
             />
           </Navbar.Brand>
+
           <Navbar.Toggle aria-controls="navbarNav" />
           <Navbar.Collapse id="navbarNav">
-            <Nav className="me-auto">
-              <div className="mode-switch">
-                <BsMoon
-                  className={`mode-icon ${darkMode ? "active" : "inactive"}`}
+            <Nav className="me-auto align-items-center">
+              <div className="mode-switch d-flex align-items-center me-3">
+                <BsSun
+                  className={`mode-icon ${darkMode ? "active text-white" : "inactive text-dark"
+                    }`}
                 />
-                <label className="switch">
+                <label className="switch mx-2">
                   <input
                     type="checkbox"
                     onChange={toggleTheme}
@@ -131,151 +141,92 @@ const Header = ({ toggleTheme, darkMode }) => {
                   />
                   <span className="slider"></span>
                 </label>
-                <BsSun
-                  className={`mode-icon ${darkMode ? "inactive" : "active"}`}
+                <BsMoon
+                  className={`mode-icon ${darkMode ? "inactive text-secondary" : "active text-warning"
+                    }`}
                 />
               </div>
             </Nav>
 
-            <Container fluid>
-              <Nav
-                className="navbar-ropa"
-                style={{ justifyContent: "space-evenly", width: "100%" }}
+            <Nav
+              className="navbar-ropa"
+              style={{ justifyContent: "space-evenly", width: "100%" }}
+            >
+              <Nav.Link
+                as={NavLink}
+                to="/MainHombres"
+                className={({ isActive }) => getLinkClass(isActive)}
               >
-                <div className="nav-dropdown">
-                  <Nav.Link
-                    as={NavLink}
-                    to="/MainHombres"
-                    className={({ isActive }) => getLinkClass(isActive)}
-                  >
-                    Hombres
-                  </Nav.Link>
-                  <div className="dropdown-menu">
-                    <NavLink
-                      to="/ropa/hombres/remeras"
-                      className={({ isActive }) => getLinkClass(isActive)}
-                    >
-                      Remeras
-                    </NavLink>
-                    <NavLink
-                      to="/ropa/hombres/pantalones"
-                      className={({ isActive }) => getLinkClass(isActive)}
-                    >
-                      Pantalones
-                    </NavLink>
-                    <NavLink
-                      to="/ropa/hombres/camperas"
-                      className={({ isActive }) => getLinkClass(isActive)}
-                    >
-                      Camperas
-                    </NavLink>
-                  </div>
-                </div>
-                <div className="nav-dropdown">
-                  <Nav.Link
-                    as={NavLink}
-                    to="/MainMujeres"
-                    className={({ isActive }) => getLinkClass(isActive)}
-                  >
-                    Mujeres
-                  </Nav.Link>
-                  <div className="dropdown-menu">
-                    <NavLink
-                      to="/ropa/mujeres/remeras"
-                      className={({ isActive }) => getLinkClass(isActive)}
-                    >
-                      Remeras
-                    </NavLink>
-                    <NavLink
-                      to="/ropa/mujeres/pantalones"
-                      className={({ isActive }) => getLinkClass(isActive)}
-                    >
-                      Pantalones
-                    </NavLink>
-                    <NavLink
-                      to="/ropa/mujeres/camperas"
-                      className={({ isActive }) => getLinkClass(isActive)}
-                    >
-                      Camperas
-                    </NavLink>
-                  </div>
-                </div>
-                <div className="nav-dropdown">
-                  <Nav.Link
-                    as={NavLink}
-                    to="/MainKids"
-                    className={({ isActive }) => getLinkClass(isActive)}
-                  >
-                    Chicos
-                  </Nav.Link>
-                  <div className="dropdown-menu">
-                    <NavLink
-                      to="/ropa/kids/remeras"
-                      className={({ isActive }) => getLinkClass(isActive)}
-                    >
-                      Remeras
-                    </NavLink>
-                    <NavLink
-                      to="/ropa/kids/pantalones"
-                      className={({ isActive }) => getLinkClass(isActive)}
-                    >
-                      Pantalones
-                    </NavLink>
-                    <NavLink
-                      to="/ropa/kids/camperas"
-                      className={({ isActive }) => getLinkClass(isActive)}
-                    >
-                      Camperas
-                    </NavLink>
-                  </div>
-                </div>
-                <div className="nav-dropdown">
-                  <Nav.Link
-                    as={NavLink}
-                    to="/accesorios"
-                    className={({ isActive }) => getLinkClass(isActive)}
-                  >
-                    Accesorios
-                  </Nav.Link>
-                  <div className="dropdown-menu">
-                    <NavLink
-                      to="/accesorios/cadenas"
-                      className={({ isActive }) => getLinkClass(isActive)}
-                    >
-                      Cadenas
-                    </NavLink>
-                    <NavLink
-                      to="/accesorios/anillos"
-                      className={({ isActive }) => getLinkClass(isActive)}
-                    >
-                      Anillos
-                    </NavLink>
-                    <NavLink
-                      to="/accesorios/brazaletes"
-                      className={({ isActive }) => getLinkClass(isActive)}
-                    >
-                      Brazaletes
-                    </NavLink>
-                  </div>
-                </div>
-              </Nav>
-            </Container>
+                Hombres
+              </Nav.Link>
+              <Nav.Link
+                as={NavLink}
+                to="/MainMujeres"
+                className={({ isActive }) => getLinkClass(isActive)}
+              >
+                Mujeres
+              </Nav.Link>
+              <Nav.Link
+                as={NavLink}
+                to="/MainKids"
+                className={({ isActive }) => getLinkClass(isActive)}
+              >
+                Chicos
+              </Nav.Link>
+              <Nav.Link
+                as={NavLink}
+                to="/accesorios"
+                className={({ isActive }) => getLinkClass(isActive)}
+              >
+                Accesorios
+              </Nav.Link>
+            </Nav>
 
-            <div className="search-bar">
-              <form onSubmit={handleSearch} className="search-form">
+            {/* ======================= BUSCADOR ======================= */}
+            <div className="search-bar" style={{ position: "relative" }}>
+              <form className="search-form" onSubmit={handleSearch}>
                 <input
                   type="text"
-                  placeholder="Buscar"
+                  placeholder="Buscar..."
                   value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
+                  onChange={(e) => {
+                    setSearchQuery(e.target.value);
+                    setShowSuggestions(true);
+                  }}
+                  onFocus={() => setShowSuggestions(true)}
+                  onBlur={() => setTimeout(() => setShowSuggestions(false), 150)}
                   className="search-input"
                 />
+
                 <button type="submit" className="search-icon-btn">
                   <FaSearch size={18} />
                 </button>
+
+                {showSuggestions && filteredSuggestions.length > 0 && (
+                  <div
+                    className={`search-suggestions ${darkMode ? "dark" : "light"
+                      }`}
+                  >
+                    {filteredSuggestions.map((p) => (
+                      <div
+                        key={p.id}
+                        className="suggestion-item"
+                        onClick={() => handleSuggestionClick(p)}
+                      >
+                        <div className="suggestion-info">
+                          <span className="suggestion-title">{p.titulo}</span>
+                          <span className="suggestion-price">
+                            ${p.precio || p.Precio}
+                          </span>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
               </form>
             </div>
 
+            {/* ======================= CARRITO ======================= */}
             <Nav.Link onClick={goToCart} className="carrito">
               <FaShoppingCart
                 size={21}
@@ -284,74 +235,54 @@ const Header = ({ toggleTheme, darkMode }) => {
               />
             </Nav.Link>
 
-            <Nav.Link
-              as={Link}
-              to="/login"
-              onClick={handleClick}
-              className="login-buttom"
-            >
-              <FaUser size={20} style={{ marginRight: "8px" }} />
-            </Nav.Link>
-
+            {/* ======================= PERFIL ======================= */}
             <Nav className="ms-auto">
-              {usuario ? (
-                <div className="profile-container">
-                  <img
-                    src={usuario.foto || "/default-avatar.png"}
-                    alt="Perfil"
-                    className="w-8 h-8 rounded-full cursor-pointer"
-                    onClick={handleProfileClick}
+              <div className="profile-container">
+                <Nav.Link
+                  as="div"
+                  onClick={handleProfileClick}
+                  className="login-buttom"
+                  style={{ cursor: "pointer" }}
+                >
+                  <FaUser
+                    size={20}
+                    className={darkMode ? "text-white" : "text-dark"}
                   />
-                  {showProfileMenu && (
-                    <div className="profile-menu">
-                      <div className="px-4 py-2 border-b border-gray-200 text-sm font-medium">
-                        Hola, {usuario.nombre}
-                      </div>
-                      <NavLink
-                        to="/perfil"
-                        className={`block px-4 py-2 text-sm ${darkMode
-                          ? "text-white hover:bg-gray-700"
-                          : "text-gray-800 hover:bg-gray-100"
-                          }`}
-                      >
-                        Mi Perfil
-                      </NavLink>
-                      <NavLink
-                        to="/pedidos"
-                        className={`block px-4 py-2 text-sm ${darkMode
-                          ? "text-white hover:bg-gray-700"
-                          : "text-gray-800 hover:bg-gray-100"
-                          }`}
-                      >
-                        Mis pedidos
-                      </NavLink>
-                      <NavLink
-                        to="/favoritos"
-                        className={`block px-4 py-2 text-sm ${darkMode
-                          ? "text-white hover:bg-gray-700"
-                          : "text-gray-800 hover:bg-gray-100"
-                          }`}
-                      >
-                        Mis favoritos
-                      </NavLink>
+                </Nav.Link>
 
-                      <a
-                        href="https://switchstyle.laravel.cloud/login"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className={`block px-4 py-2 text-sm ${darkMode
-                          ? "text-white hover:bg-gray-700"
-                          : "text-gray-800 hover:bg-gray-100"
-                          }`}
-                      >
-                        Ir al Gestor de Productos
-                      </a>
-
-                      <button onClick={handleLogout}>Cerrar sesión</button>
+                {usuario && showProfileMenu && (
+                  <div
+                    className={`profile-menu ${darkMode ? "bg-dark text-white" : "bg-light text-dark"
+                      }`}
+                  >
+                    <div className="px-4 py-2 border-b text-sm">
+                      Hola {usuario.nombre}
                     </div>
-                  )}
-                </div>
-              ) : null}
+
+                    <NavLink to="/pedidos" className="profile-link">
+                      Mis pedidos
+                    </NavLink>
+
+                    <NavLink to="/favoritos" className="profile-link">
+                      Mis favoritos
+                    </NavLink>
+
+                    <button
+                      onClick={handleGoToPanel}
+                      className="profile-link w-100 text-left"
+                    >
+                      Panel de Productos
+                    </button>
+
+                    <button
+                      onClick={logout}
+                      className="profile-link w-100 text-left"
+                    >
+                      Cerrar sesión
+                    </button>
+                  </div>
+                )}
+              </div>
             </Nav>
           </Navbar.Collapse>
         </Container>
