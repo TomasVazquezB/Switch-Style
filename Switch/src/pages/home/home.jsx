@@ -73,23 +73,23 @@ const Home = ({ darkMode }) => {
 
   const [showImagePopup, setShowImagePopup] = useState(false);
 
-  /* 
-// 🔒 Versión original que solo mostraba el popup UNA VEZ
-useEffect(() => {
-  const popupShown = localStorage.getItem("homeImagePopupShown");  // revisa si ya se mostró
-  if (!popupShown) {
-    setShowImagePopup(true); // si no se mostró nunca → mostrar popup
-  }
-}, []);
-*/
+
+  // 🔒 Versión original que solo mostraba el popup UNA VEZ
+  useEffect(() => {
+    const popupShown = localStorage.getItem("homeImagePopupShown");  // revisa si ya se mostró
+    if (!popupShown) {
+      setShowImagePopup(true); // si no se mostró nunca → mostrar popup
+    }
+  }, []);
+
 
   //
   // 👇 Versión temporal para desarrollo
   // 🔄 Muestra el popup SIEMPRE (cada F5)
   // ------------------------------
-  useEffect(() => {
-    setShowImagePopup(true);  // siempre abrir el popup al cargar Home
-  }, []);
+  /*  useEffect(() => {
+     setShowImagePopup(true);  // siempre abrir el popup al cargar Home
+   }, []); */
 
   // ---------------------------------------------
   // ❌ Cierra el popup
@@ -98,11 +98,11 @@ useEffect(() => {
   const closeImagePopup = () => {
     setShowImagePopup(false);
 
-    /* 
+
     // 🟢 Cuando termines de editar el popup, descomentá esta línea.
     // Hará que el popup se muestre solo una vez por usuario.
     localStorage.setItem("homeImagePopupShown", "true");
-    */
+
   };
 
 
