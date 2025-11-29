@@ -81,8 +81,8 @@ const Home = ({ darkMode }) => {
   }, []);
 
   const closeImagePopup = () => {
-    setShowImagePopup(false);
-    localStorage.setItem("homeImagePopupShown", "true");
+    setShowImagePopup(true);
+    /*     localStorage.setItem("homeImagePopupShown", "true");*/
   };
 
 
