@@ -895,7 +895,7 @@ html {
   }
 }
 
-.tutorial-modal-backdrop {
+/* .tutorial-modal-backdrop {
   position: fixed;
   inset: 0;
   background-color: rgba(0, 0, 0, 0.6);
@@ -945,7 +945,7 @@ html {
   align-items: center;
   justify-content: center;
   z-index: 2000;
-}
+} */
 
 .tutorial-modal {
   background: #fff;
@@ -1014,6 +1014,7 @@ html {
 }
 
 
+/* FONDO OSCURO DEL POPUP */
 .popup-backdrop {
   position: fixed;
   top: 0;
@@ -1025,43 +1026,44 @@ html {
   justify-content: center;
   align-items: center;
   padding: 20px;
-  /* separarlo del borde */
   z-index: 9998;
 }
 
+/* CAJA DEL POPUP */
 .popup-box {
   position: relative;
   background: white;
-  /* mejora contraste */
   padding: 15px;
   border-radius: 12px;
   max-width: 450px;
   width: 100%;
   max-height: 90vh;
   overflow: auto;
-  /* evita recorte */
 }
 
+/* IMAGEN */
 .popup-img {
   width: 100%;
   height: auto;
-  display: block;
   border-radius: 10px;
+  display: block;
 }
 
+/* BOTÓN DE CIERRE (X) */
 .popup-close {
   position: absolute;
-  top: -12px;
-  right: -12px;
-  background: rgba(0, 0, 0, 0.7);
+  top: -15px;
+  right: -15px;
+  background: rgba(0, 0, 0, 0.8);
   color: white;
   border: none;
   border-radius: 50%;
-  width: 32px;
-  height: 32px;
+  width: 34px;
+  height: 34px;
   cursor: pointer;
   font-size: 18px;
   display: flex;
   align-items: center;
   justify-content: center;
+  z-index: 9999;
 }
