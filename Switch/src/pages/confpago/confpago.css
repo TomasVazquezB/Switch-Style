@@ -255,3 +255,17 @@
   font-weight: 700;
   margin-bottom: 1rem;
 }
+
+/* FIX: asegurar que el botón secundario tenga texto visible SIEMPRE */
+.confpago-btn-sec {
+  color: var(--btn-sec-text) !important;
+}
+
+.confpago-btn-sec:hover {
+  color: var(--btn-sec-text) !important;
+}
+
+
+.confpago-btn-sec:hover {
+  color: #ffffff !important;
+}

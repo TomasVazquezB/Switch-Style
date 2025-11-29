@@ -56,45 +56,37 @@ const ProductoItem = ({ id, img, nombre, precio, tipo, eager = false }) => {
   const isStringTitle = typeof nombre === 'string';
 
   return (
-    <div
-      className={`product-card rounded-2xl shadow-md transition-all duration-300 overflow-hidden ${
-        darkMode
-          ? 'bg-[#1e1e1e] text-gray-100 hover:shadow-gray-800/40'
-          : 'bg-white text-gray-900 hover:shadow-gray-300/40'
-      }`}
+    <Link
+      to={`/producto/${tipo}/${id}`}
+      onClick={() => window.scrollTo(0, 0)}
+      className="block"
     >
-      <Link
-        to={`/producto/${tipo}/${id}`}
-        onClick={() => window.scrollTo(0, 0)}
-        className="block"
-      >
-        <div className="h-[500px] overflow-hidden">
-          <img
-            src={img || FALLBACK_IMG}
-            alt={isStringTitle ? nombre : 'Producto'}
-            loading={eager ? 'eager' : 'lazy'}
-            decoding="async"
-            className="w-full h-full object-cover transition-transform duration-300 hover:scale-105"
-            onError={(e) => {
-              e.target.onerror = null;
-              e.target.src = FALLBACK_IMG;
-            }}
-          />
-        </div>
+      <div className="h-[500px] overflow-hidden">
+        <img
+          src={img || FALLBACK_IMG}
+          alt={isStringTitle ? nombre : 'Producto'}
+          loading={eager ? 'eager' : 'lazy'}
+          decoding="async"
+          className="w-full h-full object-cover transition-transform duration-300 hover:scale-105"
+          onError={(e) => {
+            e.target.onerror = null;
+            e.target.src = FALLBACK_IMG;
+          }}
+        />
+      </div>
 
-        <div className="p-4">
-          {isStringTitle ? (
-            <p className="text-base font-semibold truncate">{nombre}</p>
-          ) : (
-            nombre
-          )}
-          <p className="text-sm mt-1 opacity-90">
-            {moneda}
-            {precio}
-          </p>
-        </div>
-      </Link>
-    </div>
+      <div className="px-4 pb-4 pt-2">
+        {isStringTitle ? (
+          <p className="text-base font-semibold truncate">{nombre}</p>
+        ) : (
+          nombre
+        )}
+        <p className="text-sm mt-1 opacity-90">
+          {moneda}
+          {precio}
+        </p>
+      </div>
+    </Link>
   );
 };
 

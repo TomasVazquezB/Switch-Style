@@ -1,5 +1,5 @@
 .container-quienessomos {
-  min-height: 10vh;
+  min-height: 75vh;
   padding: 0;
   text-align: center;
   transition: background-color 0.4s ease, color 0.4s ease;
@@ -14,7 +14,7 @@
 
 .container-quienessomos.dark-mode {
   background-color: #121212;
-  color: #000000;
+  color: #ffffff;
 }
 
 .content {
@@ -49,8 +49,8 @@ body.light-mode .info {
   color: #000000 !important;
 }
 
-body.dark-mode .quienessomos,
-body.dark-mode .info {
+.container-quienessomos.dark-mode .quienessomos,
+.container-quienessomos.dark-mode .info {
   color: #ffffff !important;
 }
 
@@ -83,8 +83,8 @@ body.dark-mode .info {
 }
 
 .team-card.dark-mode {
-  background-color: #000000; 
-  color: #050505; 
+  background-color: #1e1e1e;
+  color: #ffffff;
   box-shadow: 0 4px 12px rgba(255, 255, 255, 0.05);
 }
 

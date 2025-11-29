@@ -1,17 +1,38 @@
+:root {
+  --bg: #f9fafb;
+  --card: #ffffff;
+  --text: #111827;
+  --text-muted: #6b7280;
+  --accent: #2563eb;
+}
+
+/* 🌙 MODO OSCURO NEUTRO — SIN TONOS AZULES */
+.dark-mode {
+  --bg: #121212;            /* fondo general */
+  --card: #1e1e1e;          /* tarjeta */
+  --text: #f5f5f5;          /* texto principal */
+  --text-muted: #b5b5b5;    /* texto secundario */
+  --accent: #3b82f6;        /* si deseas mantener enlaces azules */
+}
+
+/* CONTENEDOR GENERAL */
 .mis-pedidos-container {
-  background-color: #ffffff;
-  color: #000000;
+  background-color: var(--bg);
+  color: var(--text);
   min-height: 100vh;
   padding: 2rem;
 }
 
+/* TÍTULO */
 .titulo-pedidos {
   font-size: 2rem;
   font-weight: 700;
   text-align: center;
   margin-bottom: 2rem;
+  color: var(--text);
 }
 
+/* LISTA */
 .lista-pedidos {
   display: grid;
   gap: 1.5rem;
@@ -19,11 +40,13 @@
   margin: 0 auto;
 }
 
+/* TARJETAS */
 .pedido-card {
-  background: #f9f9f9;
-  border: 1px solid #ddd;
+  background: var(--card);
+  border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 12px;
   padding: 1rem 1.2rem;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
 }
 
@@ -31,6 +54,7 @@
   transform: translateY(-3px);
 }
 
+/* HEADER DE CADA PEDIDO */
 .pedido-header {
   display: flex;
   justify-content: space-between;
@@ -40,15 +64,17 @@
 
 .pedido-id {
   font-weight: bold;
-  color: #000000;
+  color: var(--text);
 }
 
+/* ESTADOS (las etiquetas de color) */
 .estado {
   padding: 0.4rem 0.8rem;
   border-radius: 1rem;
   font-size: 0.85rem;
   text-transform: capitalize;
-  color: rgb(0, 0, 0);
+  color: #fff;
+  /* SIEMPRE BLANCO para que se vea bien en oscuro */
 }
 
 .estado.pendiente {
@@ -63,14 +89,18 @@
   background-color: #ef4444;
 }
 
-.pedido-detalle p {
-  margin: 0.3rem 0;
-  font-size: 0.95rem;
-}
-
 .estado.enviado {
   background-color: #3b82f6;
 }
+
+/* DETALLES */
+.pedido-detalle p {
+  margin: 0.3rem 0;
+  font-size: 0.95rem;
+  color: var(--text);
+}
+
+/* MENSAJES VACÍO / ERROR */
 .pedidos-loading,
 .pedidos-error,
 .sin-pedidos {
@@ -80,6 +110,7 @@
   color: var(--text-muted);
 }
 
+/* VARIABLES MODO CLARO */
 :root {
   --bg: #f9fafb;
   --card: #ffffff;
@@ -88,6 +119,7 @@
   --accent: #2563eb;
 }
 
+/* VARIABLES MODO OSCURO */
 @media (prefers-color-scheme: dark) {
   :root {
     --bg: #0f172a;
@@ -99,14 +131,17 @@
 
   .pedido-card {
     box-shadow: 0 2px 8px rgba(255, 255, 255, 0.05);
+    border-color: rgba(255, 255, 255, 0.05);
   }
 }
+
 
 .cartel-sesion {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 70vh;
+  min-height: 100vh;   /* ocupará TODA la pantalla */
+  padding: 2rem;
   text-align: center;
   transition: all 0.3s ease;
 }

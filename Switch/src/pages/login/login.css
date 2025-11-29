@@ -1,7 +1,7 @@
 .login-container {
   display: flex;
   flex-wrap: wrap;
-  min-height: calc(100vh - 180px);
+  min-height: 100vh;     /* <-- lo importante */
   justify-content: space-between;
   margin-top: -170px;
 }

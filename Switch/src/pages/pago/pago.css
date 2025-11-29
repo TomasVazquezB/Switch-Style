@@ -224,3 +224,11 @@
   opacity: 0.6;
   cursor: not-allowed;
 }
+
+.pago-page-wrapper {
+  background: var(--bg-page);
+  min-height: 100vh;
+  width: 100%;
+  padding: 2rem 0;
+  transition: background 0.3s ease;
+}

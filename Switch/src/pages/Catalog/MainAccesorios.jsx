@@ -27,35 +27,9 @@ function toAccesorioImageUrl(rawPath) {
   return BUCKET_BASE ? `${BUCKET_BASE}/accesorios/${encodeURIComponent(key)}` : PLACEHOLDER;
 }
 
-function getThemeAsEstilo() {
-  const ls = (localStorage.getItem('theme') || '').toLowerCase();
-  const isDark =
-    ls === 'dark' ||
-    document.body.classList.contains('dark-mode') ||
-    document.documentElement.classList.contains('dark');
-  return isDark ? 'oscuro' : 'claro';
-}
+const CATEGORIES_DB = ['Anillos', 'Collares', 'Aritos', 'Carteras y Mochilas', 'Cinturones', 'Billeteras', 'Gorras'];
 
-function useThemeEstilo() {
-  const [estilo, setEstilo] = useState(getThemeAsEstilo());
-  useEffect(() => {
-    const sync = () => setEstilo(getThemeAsEstilo());
-    window.addEventListener('storage', sync);
-    const mo = new MutationObserver(sync);
-    mo.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
-    mo.observe(document.body, { attributes: true, attributeFilter: ['class'] });
-    return () => {
-      window.removeEventListener('storage', sync);
-      mo.disconnect();
-    };
-  }, []);
-  return estilo;
-}
-
-const CATEGORIES_DB = ['Anillos', 'Collares', 'Aritos'];
-
-const MainAccesorios = () => {
-  const estilo = useThemeEstilo();
+const MainAccesorios = ({ darkMode }) => {
   const [productos, setProductos] = useState([]);
   const [categorias, setCategorias] = useState([]);
   const [sortTipo, setSortTipo] = useState('relevante');
@@ -68,8 +42,11 @@ const MainAccesorios = () => {
     async function fetchData() {
       try {
         const res = await publicApi.get('/accesorios', {
-          params: { estilo },
+          params: {
+            theme: darkMode ? 'dark' : 'light',
+          },
         });
+
         if (!cancel) {
           setProductos(Array.isArray(res.data) ? res.data : []);
         }
@@ -84,7 +61,7 @@ const MainAccesorios = () => {
     return () => {
       cancel = true;
     };
-  }, [estilo]);
+  }, [darkMode]);
 
   const maxPrice = useMemo(() => {
     const precios = productos.map((p) => Number(p?.precio || 0));

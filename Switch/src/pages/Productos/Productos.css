@@ -3,6 +3,8 @@
     padding: 2rem;
     font-family: 'Inter', sans-serif;
     display: block;
+    padding-top: 100px; /* evita que choque con el header */
+    padding-bottom: 40px;
 }
 
 .producto-grid-container {
@@ -156,7 +158,7 @@
 
 /* ----------- MODO OSCURO ----------- */
 body.dark-mode .content {
-  color: #f5f5f5;
+    color: #f5f5f5;
 }
 
 /* Precio */
@@ -233,9 +235,9 @@ label.text-gray-700 {
   color: #222 !important; 
 }
 
-body.dark-mode label.text-gray-700 {
+/* body.dark-mode label.text-gray-700 {
   color: #f0f0f0 !important;
-}
+} */
 
 .review-card {
   background-color: #ffffff;           
@@ -328,15 +330,117 @@ body.dark-mode label.text-gray-700 {
 }
 
 /* --- Ajuste para catálogos (MainHombres, MainMujeres, etc.) --- */
-.producto-grid-container,
+.producto-grid-container, 
 .content {
   max-width: none !important;
   width: 100% !important;
-  padding: 0 !important;
   margin: 0 !important;
+  padding: 0 1rem !important;
 }
 
 .product-card > * {
   width: 100% !important;
   display: block !important;
+}
+
+
+
+/* FORZAR colores correctos en los textos */
+.producto-info h2,
+.producto-info p,
+.producto-info .precio,
+.producto-info .payment-info,
+.producto-info label,
+.producto-info span {
+  color: #111 !important; /* gris oscuro profesional */
+}
+
+/* Precio */
+.precio {
+  font-size: 1.6rem;
+  font-weight: bold;
+  margin-top: 0.5rem;
+  color: #222 !important;
+}
+
+/* Contenedor de la imagen principal */
+.main-image {
+  width: 100%;
+  height: auto;
+  border-radius: 0.75rem;
+}
+
+/* Miniaturas */
+.thumbnail {
+  border: 2px solid transparent;
+  transition: border 0.2s ease-in-out;
+}
+
+.thumbnail.active {
+  border: 2px solid #000;
+}
+
+/* Tallas */
+.talla-btn {
+  padding: 0.4rem 0.8rem;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  background: white;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  color: #111;
+}
+
+.talla-btn.active {
+  background: #000;
+  color: white;
+  border-color: #000;
+}
+
+/* Tabs */
+.tab-button {
+  padding: 0.6rem 1rem;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: 1rem;
+  color: #555;
+  border-bottom: 2px solid transparent;
+}
+
+.tab-button.active {
+  color: #000;
+  border-bottom: 2px solid #000;
+}
+
+/* Review cards */
+.review-card {
+  padding: 1rem;
+  background: #fafafa;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+}
+
+.titulo-tallas {
+  color: #111 !important;
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+}
+
+input{
+  color: black;
+}
+
+.producto-page {
+  background: #fff !important;
+  padding: 2rem  !important;
+  padding-top: 15px !important; /* evita choque con header */
+  /* min-height: calc(100vh - 80px);  evita franjas */ 
+}
+
+.producto-cargando {
+  min-height: calc(100vh - 80px); /* empuja hasta casi el footer */
+  background: #fff !important; /* o el fondo que quieras */
+  color: #000 !important;
+  padding-top: 120px; /* para que no choque con el header */
 }

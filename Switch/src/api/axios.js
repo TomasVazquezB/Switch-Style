@@ -5,8 +5,10 @@ export const BASE_URL = "https://switchstyle.laravel.cloud/api";
 export const ROOT_URL = "https://switchstyle.laravel.cloud";
 
 function getCookie(name) {
-  const match = document.cookie.match(new RegExp("(^| )" + name + "=([^;]+)"));
-  return match ? decodeURIComponent(match[2]) : null;
+  const value = `; ${document.cookie}`;
+  const parts = value.split(`; ${name}=`);
+  if (parts.length === 2) return decodeURIComponent(parts.pop().split(';')[0]);
+  return null;
 }
 
 export const csrf = async () => {
@@ -20,7 +22,7 @@ export const secureApi = axios.create({
     "Content-Type": "application/json",
     Accept: "application/json",
   },
-  withCredentials: true, // Necesario para Sanctum
+  withCredentials: false, // Necesario para Sanctum
 });
 
 const api = axios.create({
@@ -29,7 +31,7 @@ const api = axios.create({
     "Content-Type": "application/json",
     Accept: "application/json",
   },
-  withCredentials: true,
+  withCredentials: false,
 });
 
 api.interceptors.request.use(
@@ -47,6 +49,23 @@ api.interceptors.request.use(
 
 export const publicApi = axios.create({
   baseURL: BASE_URL,
+  headers: { "Content-Type": "application/json", Accept: "application/json" },
+  withCredentials: false, // tokens no necesitan cookies
+});
+
+export function setAuthToken(token) {
+  if (token) {
+    publicApi.defaults.headers.Authorization = `Bearer ${token}`;
+  } else {
+    delete publicApi.defaults.headers.Authorization;
+  }
+}
+
+export default api;
+
+// 🔹 Nueva instancia para endpoints del backend (como /user)
+export const backendApi = axios.create({
+  baseURL: `${ROOT_URL}/api`,
   headers: {
     "Content-Type": "application/json",
     Accept: "application/json",
@@ -54,31 +73,13 @@ export const publicApi = axios.create({
   withCredentials: false,
 });
 
-export default api;
-
-// 🔹 Nueva instancia para endpoints del backend (como /user)
-export const backendApi = axios.create({
-  baseURL: ROOT_URL, // 👉 apunta al backend Laravel
-  headers: {
-    "Content-Type": "application/json",
-    Accept: "application/json",
-  },
-  withCredentials: true, // necesario para Sanctum
+backendApi.interceptors.request.use((config) => {
+  const token = localStorage.getItem("token");
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+  return config;
 });
-
-// Copiamos los interceptores de api (para token + CSRF)
-backendApi.interceptors.request.use(
-  (config) => {
-    const xsrfToken = getCookie("XSRF-TOKEN");
-    if (xsrfToken) config.headers["X-XSRF-TOKEN"] = xsrfToken;
-
-    const token = obtenerToken?.();
-    if (token) config.headers.Authorization = `Bearer ${token}`;
-
-    return config;
-  },
-  (error) => Promise.reject(error)
-);
 
 // Copiamos los interceptores del api principal
 secureApi.interceptors.request.use(

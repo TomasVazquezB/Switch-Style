@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import { backendApi as axios } from '../../api/axios';
+import { publicApi as axios } from '../../api/axios';
 import './favoritos.css';
 
 const PLACEHOLDER =
@@ -69,8 +69,8 @@ const Favoritos = () => {
 
       try {
         const [ropaRes, accRes] = await Promise.all([
-          axios.get('/api/ropa'),
-          axios.get('/api/accesorios')
+          axios.get('/ropa'),
+          axios.get('/accesorios')
         ]);
 
         const ropaFav = ropaRes.data.filter(p => fav.includes(p.id));

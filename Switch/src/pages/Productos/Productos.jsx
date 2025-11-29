@@ -146,6 +146,16 @@ const Productos = ({ darkMode }) => {
 
   const handleAgregarAlCarrito = () => {
     if (!productoData) return;
+
+    // 1. Validar login
+    const user = usuario || JSON.parse(localStorage.getItem("user"));
+    if (!user || !user.id) {
+      toast.error("Debes iniciar sesión para agregar al carrito");
+      navigate("/login");
+      return;
+    }
+
+    // 2. Validaciones normales
     if (!talla && tipo.includes("ropa")) {
       toast.error("Seleccione una talla");
       return;
@@ -155,11 +165,13 @@ const Productos = ({ darkMode }) => {
       return;
     }
 
+    // 3. Imagen
     const key = productoData?.imagenes?.[0]?.ruta || imgKey || "";
     const imgUrl = toImageUrl(key);
 
     const nuevoItem = {
       producto_id: productoData.id,
+      tipo: tipo.includes("accesorio") ? "accesorio" : "ropa",   // <- FIX
       titulo: productoData.titulo,
       precio: productoData.precio,
       ruta_imagen: imgUrl,
@@ -167,14 +179,18 @@ const Productos = ({ darkMode }) => {
       cantidad
     };
 
+    // 4. Carrito personal por usuario
+    const carritoKey = `carrito_${user.id}`;
+
     let carritoExistente = [];
     try {
-      const guardado = JSON.parse(localStorage.getItem("carrito"));
+      const guardado = JSON.parse(localStorage.getItem(carritoKey));
       carritoExistente = Array.isArray(guardado) ? guardado : [];
     } catch {
       carritoExistente = [];
     }
 
+    // 5. Si ya existe el mismo item, sumar cantidad
     const index = carritoExistente.findIndex(
       (item) =>
         item.producto_id === nuevoItem.producto_id &&
@@ -187,17 +203,26 @@ const Productos = ({ darkMode }) => {
       carritoExistente.push(nuevoItem);
     }
 
-    localStorage.setItem("carrito", JSON.stringify(carritoExistente));
+    // 6. Guardar
+    localStorage.setItem(carritoKey, JSON.stringify(carritoExistente));
+
     toast.success("Producto agregado al carrito");
     setTimeout(() => navigate("/carrito"), 800);
   };
 
   const sinStock = Number(stockDisponible) === 0;
 
-  if (!productoData) return <div className="content">Cargando producto...</div>;
+  if (!productoData) {
+    return (
+      <div className="content producto-cargando">
+        Cargando producto...
+      </div>
+    );
+  }
+
 
   return (
-    <div className={`content ${darkMode ? "dark" : ""}`}>
+    <div className={`content producto-page ${darkMode ? "dark" : ""}`}>
       <div
         style={{
           maxWidth: "1200px",
@@ -208,7 +233,7 @@ const Productos = ({ darkMode }) => {
           alignItems: "start"
         }}
       >
-        <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}>
+        <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem", marginTop: "15px" }}>
           {(productoData.imagenes || []).map((imgItem, index) => {
             const key = String(imgItem?.ruta || "").replace(
               /^https?:\/\/[^/]+\/?/,
@@ -287,14 +312,7 @@ const Productos = ({ darkMode }) => {
 
           {tipo.includes("ropa") && productoData.tallas?.length > 0 && (
             <div>
-              <p
-                style={{
-                  fontWeight: 500,
-                  marginBottom: "0.5rem"
-                }}
-              >
-                Tallas disponibles:
-              </p>
+              <p className="titulo-tallas">Tallas disponibles:</p>
               <div
                 style={{
                   display: "flex",

@@ -65,7 +65,7 @@ export function MisPedidos() {
   return (
     <div className="mis-pedidos-container">
       <h1 className="titulo-pedidos">
-        {`Pedidos de ${nombreUsuario || "Usuario"}`}
+        Pedidos de {usuario?.nombre ?? "Usuario"}
       </h1>
 
       {pedidos.length === 0 ? (
