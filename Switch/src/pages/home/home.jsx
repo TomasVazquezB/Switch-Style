@@ -73,15 +73,20 @@ const Home = ({ darkMode }) => {
 
   const [showImagePopup, setShowImagePopup] = useState(false);
 
-  useEffect(() => {
+  /* useEffect(() => {
     const popupShown = localStorage.getItem("homeImagePopupShown");
     if (!popupShown) {
       setShowImagePopup(true);
     }
+  }, []); */
+
+  useEffect(() => {
+    setShowImagePopup(true);  // siempre mostrar
   }, []);
 
+
   const closeImagePopup = () => {
-    setShowImagePopup(true);
+    setShowImagePopup(false);
     /*     localStorage.setItem("homeImagePopupShown", "true");*/
   };
 
