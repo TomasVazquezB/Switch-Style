@@ -998,8 +998,8 @@ html {
 
 .popup-close {
   position: absolute;
-  top: -15px;
-  right: -15px;
+  top: 0px;
+  right: 0px;
   background: rgba(0, 0, 0, 0.85);
   color: white;
   border: none;
