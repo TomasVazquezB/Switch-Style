@@ -996,19 +996,23 @@ html {
   display: block;
 }
 
+/* Botón de cierre: SIEMPRE dentro del popup */
 .popup-close {
   position: absolute;
-  top: 0px;
-  right: 0px;
-  background: rgba(0, 0, 0, 0.85);
+  top: 10px;
+  /* separada del borde */
+  right: 10px;
+  /* separada del borde */
+  background: rgba(0, 0, 0, 0.8);
   color: white;
   border: none;
   border-radius: 50%;
-  width: 36px;
-  height: 36px;
+  width: 32px;
+  height: 32px;
   cursor: pointer;
   font-size: 20px;
   display: flex;
   align-items: center;
   justify-content: center;
+  z-index: 10;
 }
