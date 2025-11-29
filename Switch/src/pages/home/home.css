@@ -895,14 +895,12 @@ html {
   }
 }
 
-/* .tutorial-modal-backdrop {
+ .tutorial-modal-backdrop {
   position: fixed;
   inset: 0;
   background-color: rgba(0, 0, 0, 0.6);
 
-
-
-  .popup-backdrop {
+  /* .popup-backdrop {
     position: fixed;
     top: 0;
     left: 0;
@@ -940,12 +938,12 @@ html {
     cursor: pointer;
     font-size: 18px;
   }
-
+ */
   display: flex;
   align-items: center;
   justify-content: center;
   z-index: 2000;
-} */
+} 
 
 .tutorial-modal {
   background: #fff;
