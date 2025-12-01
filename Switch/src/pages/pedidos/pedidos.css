@@ -17,8 +17,8 @@
 
 /* CONTENEDOR GENERAL */
 .mis-pedidos-container {
-  background-color: var(--bg);
-  color: var(--text);
+  background-color: var(--bg, #f9fafb) !important;
+  color: var(--text, #111827) !important;
   min-height: 100vh;
   padding: 2rem;
 }
@@ -120,20 +120,13 @@
 }
 
 /* VARIABLES MODO OSCURO */
-@media (prefers-color-scheme: dark) {
-  :root {
-    --bg: #0f172a;
-    --card: #1e293b;
-    --text: #f1f5f9;
-    --text-muted: #94a3b8;
-    --accent: #3b82f6;
-  }
+
 
   .pedido-card {
     box-shadow: 0 2px 8px rgba(255, 255, 255, 0.05);
     border-color: rgba(255, 255, 255, 0.05);
   }
-}
+
 
 
 .cartel-sesion {
