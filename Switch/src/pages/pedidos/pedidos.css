@@ -79,7 +79,7 @@
 
 .pedido-id {
   font-weight: bold;
-  color: var(--text);
+  color: white;
 }
 
 /* =========================================================
@@ -105,7 +105,7 @@
 .pedido-detalle p {
   margin: 0.3rem 0;
   font-size: 0.95rem;
-  color: var(--text);
+  color: white;
 }
 
 /* =========================================================
