@@ -68,28 +68,64 @@ const Home = ({ darkMode }) => {
 
   const closeModal = () => {
     setShowModal(false);
-    localStorage.setItem('tutorialShown', 'true'); 
+    localStorage.setItem('tutorialShown', 'true');
   };
+
+  const [showImagePopup, setShowImagePopup] = useState(false);
+
+
+  // 🔒 Versión original que solo mostraba el popup UNA VEZ
+  useEffect(() => {
+    const popupShown = localStorage.getItem("homeImagePopupShown");  // revisa si ya se mostró
+    if (!popupShown) {
+      setShowImagePopup(true); // si no se mostró nunca → mostrar popup
+    }
+  }, []);
+
+
+  //
+  // 👇 Versión temporal para desarrollo
+  // 🔄 Muestra el popup SIEMPRE (cada F5)
+  // ------------------------------
+  /*  useEffect(() => {
+     setShowImagePopup(true);  // siempre abrir el popup al cargar Home
+   }, []); */
+
+  // ---------------------------------------------
+  // ❌ Cierra el popup
+  // ❗ No guarda nada en localStorage (para que siga apareciendo mientras editás)
+  // ---------------------------------------------
+  const closeImagePopup = () => {
+    setShowImagePopup(false);
+
+
+    // 🟢 Cuando termines de editar el popup, descomentá esta línea.
+    // Hará que el popup se muestre solo una vez por usuario.
+    localStorage.setItem("homeImagePopupShown", "true");
+
+  };
+
+
+
 
   return (
     <ErrorBoundary>
       <div className={`home-index ${darkMode ? 'dark' : 'light'}`}>
-        
-     {showModal && (
-  <div className="tutorial-modal-backdrop">
-    <div className="tutorial-modal">
-      <h2>¡Bienvenido a Switch Style! 👋</h2>
-      <p>En este sitio encontrarás un <strong>Switch</strong> que te permite cambiar entre el modo claro y el modo oscuro.  
-        Esta función adapta la apariencia del sitio según el momento del día:  
-        si es de día, verás estilos pensados para el día, y si es de noche, diseños ideales para la noche.
-        <br /><br />
-        Puedes encontrar el interruptor en la esquina superior derecha.  
-        Al activarlo, todo el sitio cambiará automáticamente su aspecto.
-      </p>
-      <button className="tutorial-btn" onClick={closeModal}>¡Entendido!</button>
-    </div>
-  </div>
-)}
+
+        {showImagePopup && (
+          <div className="popup-backdrop">
+            <div className="popup-box">
+              <img
+                src="https://res.cloudinary.com/dms4m8cnu/image/upload/v1764452292/POPUP_aqxs6j.png"
+                alt="Promo"
+                className="popup-img"
+              />
+
+              <button className="popup-close" onClick={closeImagePopup}>✖</button>
+            </div>
+          </div>
+        )}
+
         {/* CONTENIDO PRINCIPAL */}
         <div id="varkalaCarousel" className="carousel slide varkala-carousel" data-bs-ride="carousel" data-bs-interval="5000">
           <div className="carousel-wrapper">
@@ -134,7 +170,7 @@ const Home = ({ darkMode }) => {
         </div>
         <div>
           <h2 className="mas-buscado">Lo más buscado</h2>
-          <br/>
+          <br />
           <div className="card-container">
             {cardImages.map((image, index) => (
               <div className="card-home" key={index}>
